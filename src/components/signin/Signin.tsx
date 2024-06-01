@@ -33,9 +33,9 @@ export default function SignIn() {
                   <Image src="/assets/images/kakao.svg" width={17} height={15} alt="kakao" />
                 </p>
                 <p className="flex justify-center items-center bg-[#03cf5d] w-10 h-10 rounded-full">
-                  <Image src="/assets/images/naver.svg" width={17} height={15} alt="kakao" />
+                  <Image src="/assets/images/naver.svg" width={17} height={15} alt="naver" />
                 </p>
-                <Image src="/assets/images/google.svg" width={40} height={40} alt="kakao" />
+                <Image src="/assets/images/google_logo.svg" width={40} height={40} alt="google" />
               </div>
             </div>
           </div>
