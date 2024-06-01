@@ -1,5 +1,11 @@
 import Image from 'next/image';
+import Header from './components/Header';
 
 export default function Home() {
-  return <main>홈 페이지</main>;
+  return (
+    <>
+      <Header />
+      <main />
+    </>
+  );
 }
