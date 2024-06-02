@@ -1,3 +1,13 @@
+import Header from './components/Header';
+import MainMap from './components/MainMap';
+import LandingModal from './components/modal/Landing';
+
 export default function Home() {
-  return <main>홈 페이지</main>;
+  return (
+    <>
+      <Header />
+      <MainMap />
+      <LandingModal />
+    </>
+  );
 }
