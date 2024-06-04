@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
 import './globals.css';
+import SignIn from '@/components/signin/Signin';
+import localFont from 'next/font/local';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={pretendard.className}>{children}</body>
+      <body className={pretendard.className}>
+        <main>{children}</main>
+        <SignIn />
+      </body>
     </html>
   );
 }
