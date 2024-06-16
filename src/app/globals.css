@@ -10,3 +10,19 @@ body {
     text-wrap: balance;
   }
 }
+
+.swiper-pagination-bullet {
+  background-color: #303030 !important;
+  width:7px !important;
+  height:7px !important;
+  margin:10px !important
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+ background-color: #212121 !important;
+}
+
+.swiper-pagination {
+  position: relative !important;
+  margin-top:30px !important;
+}

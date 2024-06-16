@@ -1,3 +1,4 @@
+import ItemSwiper from '@/components/product/ItemSwiper';
 import ShareMap from '@/components/product/map/ShareMap';
 import Image from 'next/image';
 import React from 'react';
@@ -22,7 +23,7 @@ export default function page() {
           </div>
         </div>
         <div className="">
-          <Image src="/assets/images/sample/book.png" alt="책" width={440} height={474} />
+          <ItemSwiper />
         </div>
         <div className="mt-[70px]">
           <p>
