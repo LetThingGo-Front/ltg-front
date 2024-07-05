@@ -7,10 +7,8 @@ export default function ShareMap() {
   return (
     <MapDiv
       style={{
-        width: '100%',
-        height: 214,
+        height: '100%',
       }}
-      className="h-[calc(100vh-136px)]"
     >
       <NaverMap
         defaultCenter={{
@@ -25,7 +23,7 @@ export default function ShareMap() {
             lng: 126.9783882,
           }}
           icon={{
-            url: '/assets/images/sample/marker.png',
+            url: '/assets/images/sample/marker.svg',
             size: { width: 49, height: 36 },
             scaledSize: { width: 40, height: 40 },
             anchor: { x: 25, y: 25 },
