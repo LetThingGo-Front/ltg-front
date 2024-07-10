@@ -9,7 +9,7 @@ type Props = {
 };
 export default function RequestPopup({ setRequestPopup }: Props) {
   return (
-    <div className="fixed duration-500 w-[1260px] h-[1058px] z-[11] bottom-0 right-0 bg-white rounded-tl-3xl">
+    <div className="fixed duration-500 z-[11] w-[calc(100%-660px)] h-[calc(100%-21px)] bottom-0 left-[660px] bg-white rounded-tl-3xl">
       <div>
         <div className="flex justify-between items-center px-[45px] py-10">
           <button onClick={() => setRequestPopup(false)}>
@@ -18,7 +18,7 @@ export default function RequestPopup({ setRequestPopup }: Props) {
           <p className="font-bold text-[28px]">나눔신청</p>
           <div className="w-[72px]"></div>
         </div>
-        <div className="w-[1175px] h-[758px]">
+        <div className="flex flex-col justify-center items-center w-full">
           <PopupDetail />
           <div>프로필</div>
         </div>

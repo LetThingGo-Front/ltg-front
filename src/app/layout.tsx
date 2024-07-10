@@ -26,6 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <MapsProvider clientId={clientId}>
         <body className={pretendard.className}>
+          <header className="w-full h-[130px] bg-gray-100">헤더</header>
           <main>{children}</main>
           <SignIn />
         </body>

@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function page() {
   return (
-    <div className="mt-[150px] w-full">
+    <div>
       <Item />
     </div>
   );

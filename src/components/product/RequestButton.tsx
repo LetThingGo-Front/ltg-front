@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 type Props = {
@@ -6,15 +8,26 @@ type Props = {
 };
 
 export default function RequestButton({ request }: Props) {
+  const [isHover, setIsHover] = useState(false);
   return (
     <div
-      className={`flex rounded-full relative items-center gap-[66px] w-[442px] h-[72px] p-4 shadow-[0_0_15px_-10px_rgba(0,0,0,0.75)] font-semibold text-gray-800 backdrop-blur-lg border-white border-2`}
+      className={`flex rounded-full relative items-center gap-[66px] w-[442px] h-[72px] p-4 shadow-[0_0_10px_0_rgba(0,0,0,0.10)] font-semibold text-grey-800 backdrop-blur-[50px] border-white border-2`}
     >
-      <button className="flex justify-center items-center gap-3 p-3 relative w-[176px] h-12 z-10" onClick={request}>
-        <Image src="/assets/images/button/thing_md.svg" alt="나눔 신청" width={24} height={24} />
+      <button
+        className="duration-500 ease-in-out hover:rounded-full hover:bg-grey-800 hover:text-white flex justify-center items-center gap-3 p-3 relative w-[176px] h-12 z-10"
+        onClick={request}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+      >
+        <Image
+          src={`/assets/images/button/${isHover ? 'thing_md_white.svg' : 'thing_md_black.svg'}`}
+          alt="나눔 신청"
+          width={24}
+          height={24}
+        />
         <p>나눔 신청</p>
       </button>
-      <button className="flex justify-center items-center gap-3 p-3 relative w-[176px] h-12 z-10">
+      <button className=" duration-500 ease-in-out hover:rounded-full hover:bg-grey-800 hover:text-white flex justify-center items-center gap-3 p-3 relative w-[176px] h-12 z-10">
         <Image src="/assets/images/button/thunder.svg" alt="나눔 신청" width={32} height={32} />
         <p>오늘 번개 신청</p>
       </button>

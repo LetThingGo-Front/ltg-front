@@ -7,34 +7,42 @@ import ShareMap from './map/ShareMap';
 import RequestButton from './RequestButton';
 import RequestPopup from './popup/RequestPopup';
 import FadeInWrapper from '../common/FadeInWrapper';
+import ProfileButton from './ProfileButton';
 
 export default function Item() {
   const [requestPopup, setRequestPopup] = useState(false);
+  const [star, setStar] = useState(false);
+
   return (
-    <div className={`flex justify-center`}>
+    <div className="flex justify-center mb-[82px]">
       <div
-        className={`relative flex justify-center ${requestPopup ? 'max-w-[660px] px-24 -translate-x-full' : 'max-w-[800px] translate-x-0'} max-h-[828px] duration-500`}
+        className={`relative flex justify-center ${requestPopup ? 'w-[660px] px-24 -translate-x-[590px]' : 'w-[800px] translate-x-0'} max-h-[828px] duration-500`}
       >
-        <div className="absolute w-full flex flex-col justify-center items-center gap-4 backdrop-blur-lg bg-white bg-opacity-80 z-10">
+        <div className="absolute w-full flex flex-col justify-center items-center gap-[10px] py-[10px] backdrop-blur-lg bg-white bg-opacity-80 z-10">
           <div className="flex justify-center items-center gap-3">
             <p className="font-bold text-[28px]">세상에서 가장 쉬운 코딩책</p>
-            <Image src="/assets/images/sample/star.png" alt="bookmark" width={24} height={24} />
+            <p onClick={() => setStar(!star)} className="cursor-pointer">
+              <Image
+                src={`/assets/images/button/${star ? 'star_select.svg' : 'star_default.svg'}`}
+                alt="bookmark"
+                width={24}
+                height={24}
+              />
+            </p>
           </div>
           <div className="flex gap-3 text-xs font-semibold">
             <span className="px-3 py-2 bg-blue-500 rounded-md text-white">도서</span>
-            <span className="px-3 py-2 bg-gray-100 rounded-md text-gray-800">거의 사용안해서 새것 같음</span>
+            <span className="px-3 py-2 bg-grey-100 rounded-md text-grey-800">거의 사용안해서 새것 같음</span>
           </div>
         </div>
-        <div className="flex flex-col gap-[52px] overflow-x-hidden pt-[110px] scrollbar-hide">
+        <div className="flex flex-col overflow-x-hidden pt-[112px] gap-[52px] scrollbar-hide">
           <div className="flex justify-center">
-            <div className="w-[440px]">
+            <div className="w-[440px] h-[474px]">
               <ItemSwiper />
             </div>
           </div>
-          <div className="flex justify-center items-center gap-2">
-            <Image src="/assets/images/sample/profile.png" alt="프로필" width={32} height={32} />
-            <p className="font-bold text-gray-800">바쁜 날다람쥐</p>
-            <p className="text-sm font-semibold text-gray-500">오늘 올림</p>
+          <div className="flex justify-center relative">
+            <ProfileButton />
           </div>
           <div className="text-center text-xl">
             <p>
@@ -54,7 +62,7 @@ export default function Item() {
             </div>
           )}
         </div>
-        <div className="flex justify-center items-center w-full absolute bottom-[-40px]">
+        <div className="flex justify-center items-center w-full absolute bottom-0">
           {!requestPopup && <RequestButton request={() => setRequestPopup(true)} />}
         </div>
       </div>

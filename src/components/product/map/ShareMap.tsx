@@ -8,6 +8,8 @@ export default function ShareMap() {
     <MapDiv
       style={{
         height: '100%',
+        borderRadius: '10px',
+        overflow: 'hidden',
       }}
     >
       <NaverMap
