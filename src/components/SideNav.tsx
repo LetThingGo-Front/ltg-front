@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function SideNav() {
   return (
-    <div className="fixed top-0 left-0 bg-white p-20 rounded-tr-lg h-dvh mt-10 md:hidden">
+    <div className="hidden fixed top-0 left-0 bg-white p-20 rounded-tr-lg h-dvh mt-10 md:hidden">
       <div className="h-3/5 pb-10">
         <li className="list-none space-y-14 text-center font-bold">
           <ul>홈</ul>
