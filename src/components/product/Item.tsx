@@ -14,9 +14,9 @@ export default function Item() {
   const [star, setStar] = useState(false);
 
   return (
-    <div className="flex justify-center mb-[82px]">
+    <div className="flex justify-center">
       <div
-        className={`relative flex justify-center ${requestPopup ? 'sm:w-[660px] sm:px-24 sm:-translate-x-[590px]' : 'sm:w-[800px] sm:translate-x-0'} h-[calc(100vh-64px)] sm:max-h-[828px] duration-500`}
+        className={`relative flex justify-center ${requestPopup ? 'sm:w-[660px] sm:px-24 sm:-translate-x-[570px] sm:h-full' : 'sm:w-[800px] sm:translate-x-0 sm:max-h-[828px]'} h-[calc(100vh-64px)] duration-500`}
       >
         <div className="absolute w-full flex flex-col justify-center items-center gap-[12px] sm:gap-5 max-sm:px-[50px] py-[10px] backdrop-blur-lg bg-white bg-opacity-80 z-10">
           <div className="flex justify-center items-center gap-1 sm:gap-3 max-sm:h-[30px]">
@@ -64,7 +64,7 @@ export default function Item() {
             </div>
           )}
         </div>
-        <div className="flex justify-center items-center w-full fixed bottom-5 sm:bottom-0">
+        <div className="flex justify-center w-full fixed bottom-5 sm:bottom-0">
           {!requestPopup && <RequestButton request={() => setRequestPopup(true)} />}
         </div>
       </div>
