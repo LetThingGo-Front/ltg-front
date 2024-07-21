@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import SignIn from '@/components/signin/Signin';
+import Header from '@/components/Header';
+import SideNav from '@/components/SideNav';
+
 import localFont from 'next/font/local';
 import MapsProvider from '@/provider/MapsProvider';
 
@@ -26,9 +29,10 @@ export default function RootLayout({
     <html lang="en">
       <MapsProvider clientId={clientId}>
         <body className={pretendard.className}>
-          <header className="w-full h-[108px] sm:h-[130px] bg-gray-100">헤더</header>
-          <main>{children}</main>
           <SignIn />
+          <Header />
+          <main>{children}</main>
+          <SideNav />
         </body>
       </MapsProvider>
     </html>

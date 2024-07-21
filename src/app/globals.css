@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .w-mainlist-responsive {
+    width: calc(100vw - 100px);
+  }
+
+  .h-dvh-minus-header {
+    height: calc(100lvh - 780px);
+  }
+
+  .h-dvh-minus-header-mobile {
+    height: calc(100dvh - 190px);
+  }
+
+  .h-mainmap-responsive {
+    height: calc(100dvh - 266px);
+  }
+}
+
 body {
   overflow-y:hidden;
 }
