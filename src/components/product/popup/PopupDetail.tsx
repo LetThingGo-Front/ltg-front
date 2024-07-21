@@ -6,7 +6,7 @@ import Calendar from './Calendar';
 export default function PopupDetail() {
   return (
     <div className="flex flex-col items-center relative w-full sm:w-[946px] h-full sm:h-[704p] gap-[25px] sm:gap-9 px-5 sm:px-6 pt-[26px] sm:pt-8 pb-5 sm:pb-9">
-      <p className="w-[84px] sm:w-[102px] h-[21px] sm:h-[31px] max-sm:text-xs text-center rounded sm:rounded-lg font-bold px-2 sm:px-3 py-[2px] sm:py-1 bg-green-400">
+      <p className="w-[84px] sm:w-[102px] h-[21px] sm:h-[31px] max-sm:text-xs text-center rounded sm:rounded-lg font-bold px-2 sm:px-3 py-[2px] sm:py-1 bg-green-400 ">
         나눔 장소 A
       </p>
       <div className="sm:hidden flex-col justify-start items-center gap-3 flex">
