@@ -2,12 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 import SignIn from '@/components/signin/Signin';
 import Header from '@/components/Header';
-import MainMap from '@/components/MainMap';
-import LandingModal from '@/components/modal/Landing';
 import SideNav from '@/components/SideNav';
 
 import localFont from 'next/font/local';
-import ListItem from '@/components/ListItem';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -28,12 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={pretendard.className}>
-        <main>{children}</main>
         <SignIn />
         <Header />
-        <MainMap />
-        {/* <LandingModal /> */}
-        {/* <SideNav /> */}
+        <main>{children}</main>
+        <SideNav />
       </body>
     </html>
   );
