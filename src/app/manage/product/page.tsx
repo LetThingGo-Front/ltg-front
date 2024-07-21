@@ -1,6 +1,5 @@
 'use client';
 
-import Header from '@/components/Header';
 import ListItem from '@/components/ListItem';
 import MainMap from '@/components/MainMap';
 import React, { useRef, useState } from 'react';
@@ -39,7 +38,6 @@ export default function Page() {
 
   return (
     <>
-      <Header />
       <MainMap />
       <div
         className="absolute bottom-0 md:bottom-[48px] left-0 md:w-mainlist-responsive max-w-[1840px] h-[258px] mx-0 md:mx-[40px] overflow-hidden px-[44px] pt-[24px] pb-[36px] rounded-[30px] bg-white/50 backdrop-blur-sm shadow-[0_4px_30px_0_rgba(0, 0, 0, 0.20)] cursor-grab"
