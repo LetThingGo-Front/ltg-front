@@ -21,10 +21,39 @@
 }
 
 body {
+  overflow-y:hidden;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.swiper-pagination-bullet {
+  background-color: #303030 !important;
+  width:8px !important;
+  height:8px !important;
+  margin:10px !important
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+ background-color: #191919 !important;
+}
+
+.swiper-pagination {
+  position: relative !important;
+  margin-top:18px !important;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #191919;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #BABABA;
 }
