@@ -6,7 +6,7 @@ import CloseButton from './button/CloseButton';
 
 export default function SignIn() {
   // 사이트 확인용으로 true로 설정, 실제로는 false로 설정
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div
       className={`${!isOpen && 'hidden'} fixed flex justify-center items-center w-full h-[calc(100%-32px)] mt-8 top-0 left-0 z-10 backdrop-blur-lg`}
