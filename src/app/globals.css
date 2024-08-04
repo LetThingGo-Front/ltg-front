@@ -4,7 +4,7 @@
 
 @layer utilities {
   .w-mainlist-responsive {
-    width: calc(100vw - 100px);
+    width: calc(100vw - 40px);
   }
 
   .h-dvh-minus-header {
@@ -21,7 +21,7 @@
 }
 
 body {
-  overflow-y:hidden;
+  overflow-y: hidden;
 }
 
 @layer utilities {
@@ -32,18 +32,18 @@ body {
 
 .swiper-pagination-bullet {
   background-color: #303030 !important;
-  width:8px !important;
-  height:8px !important;
-  margin:10px !important
+  width: 8px !important;
+  height: 8px !important;
+  margin: 10px !important;
 }
 
 .swiper-pagination-bullet.swiper-pagination-bullet-active {
- background-color: #191919 !important;
+  background-color: #191919 !important;
 }
 
 .swiper-pagination {
   position: relative !important;
-  margin-top:18px !important;
+  margin-top: 18px !important;
 }
 
 ::-webkit-scrollbar {
@@ -55,5 +55,5 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #BABABA;
+  background-color: #bababa;
 }
