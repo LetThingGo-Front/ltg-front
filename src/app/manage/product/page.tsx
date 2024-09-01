@@ -2,63 +2,78 @@
 
 import ListItem from '@/components/ListItem';
 import MainMap from '@/components/MainMap';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function Page() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  const [mobileListPaddingX, setMobileListPaddingX] = useState('0px');
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  const onMouseDown = (e: React.MouseEvent) => {
-    if (containerRef.current) {
-      setIsDragging(true);
-      setStartX(e.pageX - containerRef.current.offsetLeft);
-      setScrollLeft(containerRef.current.scrollLeft);
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      const containerWidth = containerRef.current ? containerRef.current.offsetWidth : 0;
+      const listItemWidth = 312; // ListItem의 너비
 
-  const onMouseLeave = () => {
-    setIsDragging(false);
-  };
+      if (window.innerWidth < 768) {
+        // md breakpoint
+        const newPaddingX = (containerWidth - listItemWidth) / 2;
+        setMobileListPaddingX(newPaddingX > 0 ? `${newPaddingX}px` : '0px');
+      } else {
+        setMobileListPaddingX('0px');
+      }
+    };
 
-  const onMouseUp = () => {
-    setIsDragging(false);
-  };
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    if (containerRef.current) {
-      e.preventDefault();
-      const x = e.pageX - containerRef.current.offsetLeft;
-      const walk = (x - startX) * 2; // Scroll speed
-      containerRef.current.scrollLeft = scrollLeft - walk;
-    }
+  const handleExpandClick = () => {
+    setIsExpanded(prev => !prev); // 클릭 시 높이를 토글
   };
 
   return (
     <>
       <MainMap />
       <div
-        className="absolute bottom-0 md:bottom-[48px] left-0 md:w-mainlist-responsive max-w-[1840px] h-[258px] mx-0 md:mx-[40px] overflow-hidden px-[44px] pt-[24px] pb-[36px] rounded-[30px] bg-white/50 backdrop-blur-sm shadow-[0_4px_30px_0_rgba(0, 0, 0, 0.20)] cursor-grab"
+        className="absolute bottom-0 md:bottom-[48px] left-0 w-[100%] 
+        md:w-mainlist-responsive max-w-[1840px]  duration-500 overflow-auto md:mx-[40px] md:px-[44px] pt-[24px] pb-[36px] rounded-[30px] bg-white/50 hover:bg-black/10 backdrop-blur-sm shadow-[0_4px_30px_0_rgba(0, 0, 0, 0.20)]"
         id="browser-list-div"
+        style={{
+          paddingLeft: mobileListPaddingX,
+          paddingRight: mobileListPaddingX,
+          height: isExpanded ? '765px' : '258px', // 상태에 따라 높이 변경
+          transition: 'height 0.5s ease',
+        }}
         ref={containerRef}
-        onMouseDown={onMouseDown}
-        onMouseLeave={onMouseLeave}
-        onMouseUp={onMouseUp}
-        onMouseMove={onMouseMove}
       >
-        <div className="w-[281px] h-[4px] mb-[28px] mx-[auto] bg-white"></div>
-        <div className="mb-[20px]">
-          <span className="text-[20px] text-grey-800">검색 결과 </span>
+        <div
+          className="w-[281px] h-[4px] mb-[28px] mx-[auto] bg-white hover:bg-green-400"
+          onClick={handleExpandClick}
+        ></div>
+        <div>
+          <span className="text-[20px] text-grey-800 md:ms-[44px]">검색 결과 </span>
           <span className="text-[20px] text-grey-500">(13)</span>
         </div>
-        <div className="flex gap-[48px]">
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
+        <div
+          className={`h-full mt-[20px] mb-[36px] ${isExpanded ? 'overflow-y-auto' : 'overflow-x-auto'} cursor-grab`}
+          style={{ maxHeight: isExpanded ? 'calc(100% - 100px)' : 'none' }} // 스크롤 가능한 영역의 최대 높이 설정
+        >
+          <div
+            className="md:grid gap-[48px] md:ms-[44px] mb-[40px]"
+            style={{ gridTemplateColumns: `repeat(auto-fit, minmax(312px, 1fr))` }}
+          >
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            <ListItem />
+          </div>
         </div>
       </div>
     </>
