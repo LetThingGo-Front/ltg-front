@@ -31,7 +31,7 @@ export default function RootLayout({
         <body className={pretendard.className}>
           <SignIn />
           <Header />
-          <main>{children}</main>
+          <main className="">{children}</main>
           <SideNav />
         </body>
       </MapsProvider>

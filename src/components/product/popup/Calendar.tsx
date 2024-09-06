@@ -34,8 +34,8 @@ export default function Calendar() {
       <div className="max-sm:hidden flex-col justify-start items-center gap-3 flex">
         <div className="justify-start items-center gap-2 inline-flex">
           <div className="justify-start items-center gap-px flex">
-            <div className="w-[26px] h-[26px] px-[6.50px] py-[5.42px] justify-center items-center flex">
-              <Image src="/assets/images/location.svg" alt="location" width={26} height={26} />
+            <div className="w-[36px] h-[36px] px-[6.50px] py-[5.42px] justify-center items-center flex">
+              <Image src="/assets/images/location_marked.svg" alt="location" width={36} height={36} />
             </div>
             <div className="text-grey-500 text-base font-bold">강남구 논현동</div>
           </div>
