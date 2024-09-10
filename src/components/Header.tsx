@@ -5,6 +5,9 @@ import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const pathname = usePathname();
+  const goNaverLogin = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/naver`;
+  };
 
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
@@ -82,6 +85,7 @@ export default function Header() {
           <button
             className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
             style={{ backgroundColor: COLOR.BUTTON_COLOR }}
+            onClick={() => goNaverLogin()}
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
