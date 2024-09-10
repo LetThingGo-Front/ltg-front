@@ -20,6 +20,21 @@ export const metadata: Metadata = {
 
 const clientId = process.env.NAVER_MAPS_CLIENT_ID!;
 
+const getRenewalToken = async () => {
+  try {
+    const res = await fetch(`https://letthinggo.duckdns.org/v1/reissue`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+    const data = res.json();
+    console.log(data.then(res => console.log(res)));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+getRenewalToken();
+
 export default function RootLayout({
   children,
 }: Readonly<{
