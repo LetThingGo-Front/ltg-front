@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
@@ -7,6 +8,29 @@ export default function Header() {
   const pathname = usePathname();
   const goNaverLogin = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/naver`;
+  };
+  const getUserInfo = async () => {
+    try {
+      console.log('getUserInfo!!!');
+      const res = await axios.get(`/test/users/19`, {
+        withCredentials: true,
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getRenewalToken = async () => {
+    try {
+      console.log('getRenewalToken!!!');
+      const res = await axios.post(`/v1/reissue`, {
+        withCredentials: true,
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const COLOR = {
@@ -89,6 +113,8 @@ export default function Header() {
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
+          <button onClick={() => getUserInfo()}>유저정보 조회</button>
+          <button onClick={() => getRenewalToken()}>토큰 재발급</button>
           {/* <Image/> */}
         </div>
       </div>
