@@ -12,7 +12,7 @@ export default function Header() {
   const getUserInfo = async () => {
     try {
       console.log('getUserInfo!!!');
-      const res = await axios.get(`/test/users/19`, {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/test/users/19`, {
         withCredentials: true,
       });
       console.log(res.data);
@@ -24,7 +24,7 @@ export default function Header() {
   const getRenewalToken = async () => {
     try {
       console.log('getRenewalToken!!!');
-      const res = await axios.post(`/v1/reissue`, {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/reissue`, {
         withCredentials: true,
       });
       console.log(res.data);
