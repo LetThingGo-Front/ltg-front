@@ -13,6 +13,45 @@ export interface TokenRequestDto {
   externalToken: string;
 }
 
+export interface AddrAndAvailDto {
+  address?: string;
+  addressDescription?: string;
+  district?: string;
+  dong?: string;
+  latitude?: number;
+  longitude?: number;
+  lightningYn?: string;
+  availabilityCode?: string;
+  availabiltyList?: AvailabiltyDto[];
+}
+
+export interface AvailabiltyDto {
+  dayOfWeek?: string;
+  startTime?: string;
+  endTime?: string;
+}
+
+export interface CreateRequest {
+  /** @format int64 */
+  userId?: number;
+  /** @format int64 */
+  category?: number;
+  itemStatus?: string;
+  itemName?: string;
+  itemDescription?: string;
+  itemAttachList?: ItemAttachDto[];
+  addrAndAvailList?: AddrAndAvailDto[];
+}
+
+export interface ItemAttachDto {
+  itemAttachName?: string;
+  /** @format byte */
+  itemAttachSize?: string;
+  itemAttachUrl?: string;
+  itemAttachExts?: string;
+  thumYn?: string;
+}
+
 export interface GroupCodeCreateRequest {
   /**
    * 그룹코드
@@ -145,60 +184,98 @@ export interface CodeDto {
   codeSeq: number;
 }
 
+/** 나눔 신청 가능 시간 DTO */
 export interface AppAvailabilityDto {
-  availableDate?: string;
-  startTime?: string;
-  endTime?: string;
+  /**
+   * 나눔신청가능시간ID
+   * @format int64
+   * @example 1
+   */
+  appAvailabilityId?: number;
+  /**
+   * 가능 날짜
+   * @example "20240831"
+   */
+  availableDate: string;
+  /**
+   * 시작 시간
+   * @example "0900"
+   */
+  startTime: string;
+  /**
+   * 종료 시간
+   * @example "1000"
+   */
+  endTime: string;
+  /**
+   * 신청 상태
+   * @example "N"
+   */
+  appApplicationStatus?: string;
 }
 
+/** 나눔 신청 생성 요청 DTO */
 export interface ApplicationCreateRequest {
-  /** @format int64 */
-  userId?: number;
-  /** @format int64 */
-  locationId?: number;
+  /**
+   * 나눔장소ID
+   * @format int64
+   * @example 1
+   */
+  locationId: number;
+  /**
+   * 메모
+   * @minLength 0
+   * @maxLength 1000
+   * @example "1"
+   */
   memo?: string;
+  /** 나눔 신청 가능 시간 목록 */
   appAvailabilities?: AppAvailabilityDto[];
   /** @format int64 */
   itemId?: number;
 }
 
-export interface AddrAndAvailDto {
+/** 나눔 신청 생성 응답 DTO */
+export interface ApplicationCreateResponse {
+  /**
+   * 나눔신청ID
+   * @format int64
+   * @example 1
+   */
+  applicationId?: number;
+  /**
+   * 메모
+   * @example "나눔 신청 메모"
+   */
+  memo?: string;
+  /** 나눔 장소 정보 DTO */
+  location?: ApplicationLocationDto;
+  /** 나눔 신청 가능 시간 목록 */
+  appAvailabilities?: AppAvailabilityDto[];
+}
+
+/** 나눔 장소 정보 DTO */
+export interface ApplicationLocationDto {
+  /**
+   * 주소
+   * @example "서울 서초구 강남대로 447"
+   */
   address?: string;
-  addressDescription?: string;
-  district?: string;
-  dong?: string;
+  /**
+   * 위치 설명
+   * @example "자라 건물 앞"
+   */
+  description?: string;
+  /**
+   * 위도
+   * @example 37.596693
+   */
   latitude?: number;
+  /**
+   * 경도
+   * @example 26.985783
+   */
   longitude?: number;
-  lightningYn?: string;
-  availabilityCode?: string;
-  availabiltyList?: AvailabiltyDto[];
-}
-
-export interface AvailabiltyDto {
-  dayOfWeek?: string;
-  startTime?: string;
-  endTime?: string;
-}
-
-export interface CreateRequest {
-  /** @format int64 */
-  userId?: number;
-  /** @format int64 */
-  category?: number;
-  itemStatus?: string;
-  itemName?: string;
-  itemDescription?: string;
-  itemAttachList?: ItemAttachDto[];
-  addrAndAvailList?: AddrAndAvailDto[];
-}
-
-export interface ItemAttachDto {
-  itemAttachName?: string;
-  /** @format byte */
-  itemAttachSize?: string;
-  itemAttachUrl?: string;
-  itemAttachExts?: string;
-  thumYn?: string;
 }
 
 export interface CodeSearchRequest {
@@ -262,41 +339,167 @@ export interface GroupCodeSearchRequest {
   groupCodeName?: string;
 }
 
+export interface Pageable {
+  /**
+   * @format int32
+   * @min 0
+   */
+  page?: number;
+  /**
+   * @format int32
+   * @min 1
+   */
+  size?: number;
+  sort?: string[];
+}
+
+/** 나눔 신청 믈픔 DTO */
+export interface ApplicationItemDto {
+  /**
+   * 물품썸네일이미지URL
+   * @example "https://example.com/attachments/attachment1.jpg"
+   */
+  thumbnail?: string;
+  /**
+   * 물품명
+   * @example "Java의 정석"
+   */
+  itemName?: string;
+  /**
+   * 카테고리명
+   * @example "도서"
+   */
+  categoryName?: string;
+  /**
+   * 물품상태명
+   * @example "거의 사용안해서 새것 같음"
+   */
+  itemStatusName?: string;
+  /**
+   * 물품상세설명
+   * @example "물품상세설명"
+   */
+  description?: string;
+}
+
+/** 내 나눔 신청 리스트 DTO */
+export interface ApplicationSearchResponse {
+  /**
+   * 나눔신청ID
+   * @format int64
+   * @example 1
+   */
+  applicationId?: number;
+  /**
+   * 일정조율상태메시지
+   * @example "바쁜날다람쥐님의 나눔 수락 대기 중"
+   */
+  scheduleProcessMessage?: string;
+  /**
+   * 나눔 신청 상태
+   * @example "1"
+   */
+  applicationStatus?: string;
+  /**
+   * 나눔 신청 상태명
+   * @example "수락 대기 중"
+   */
+  applicationStatusName?: string;
+  /**
+   * 메모
+   * @example "나눔 신청 메모"
+   */
+  memo?: string;
+  /** 나눔 장소 정보 DTO */
+  location?: ApplicationLocationDto;
+  /** 나눔 신청 믈픔 DTO */
+  item?: ApplicationItemDto;
+  /** 나눔 신청 가능 시간 목록 */
+  appAvailabilities?: AppAvailabilityDto[];
+}
+
+/** ApplicationSearchResponse의 페이징 응답 */
+export interface ApplicationSearchResponsePage {
+  content?: ApplicationSearchResponse[];
+  pageable?: PageableObject;
+  /** @format int32 */
+  totalPages?: number;
+  /** @format int64 */
+  totalElements?: number;
+  last?: boolean;
+  /** @format int32 */
+  size?: number;
+  /** @format int32 */
+  number?: number;
+  sort?: SortObject;
+  /** @format int32 */
+  numberOfElements?: number;
+  first?: boolean;
+  empty?: boolean;
+}
+
+export interface PageableObject {
+  /** @format int64 */
+  offset?: number;
+  sort?: SortObject;
+  /** @format int32 */
+  pageSize?: number;
+  paged?: boolean;
+  unpaged?: boolean;
+  /** @format int32 */
+  pageNumber?: number;
+}
+
+export interface SortObject {
+  empty?: boolean;
+  unsorted?: boolean;
+  sorted?: boolean;
+}
+
+/** @example {"status":"success","data":{}} */
 export type ReissueData = string;
 
-export type ReissueError = string;
-
-export type LoginData = string;
+export type LoginData = any;
 
 export type LoginError = string;
 
+/** @example {"status":"success","data":{}} */
 export type LogoutData = string;
 
+export type AddItemData = string;
+
+export type AddItemError = string;
+
+/** @example {"status":"success","data":[{"groupCode":"AP001","groupCodeName":"나눔신청상태코드","mngDes1":"","mngDes2":"","mngDes3":"","mngDes4":"","description":"나눔 신청 상태 코드입니다.","useYn":"Y"}]} */
 export type RetrieveGroupCodes1Data = string;
 
+export type RetrieveGroupCodes1Error = string;
+
+/** @example {"status":"success","data":{"groupCode":"10002","groupCodeName":"테스트 코드","mngDes1":"string","mngDes2":"string","mngDes3":"string","mngDes4":"string","description":"테스트 그룹 코드 입니다.","useYn":"Y"},"_links":{"self":{"href":"http://localhost:8080/v1/group-codes/10002"},"all-group-codes":{"href":"http://localhost:8080/v1/group-codes"}}} */
 export type CreateGroupCodeData = string;
 
 export type CreateGroupCodeError = string;
 
-export type CreateCodeData = string;
+export type CreateCodeData = any;
 
 export type CreateCodeError = string;
 
-export type CreateApplicationData = string;
+export type RetrieveApplicationsData = ApplicationSearchResponsePage;
+
+export type CreateApplicationData = ApplicationCreateResponse;
 
 export type CreateApplicationError = string;
 
-export type AddItemData = string;
-
+/** @example {"status":"success","data":{"groupCode":"AP001","groupCodeName":"나눔신청상태코드","mngDes1":"","mngDes2":"","mngDes3":"","mngDes4":"","description":"나눔 신청 상태 코드입니다.","useYn":"Y","codes":[{"code":"1","codeKorName":"수락 대기 중","codeEngName":"WAITING","mngItem1":"","mngItem2":"","mngItem3":"","mngItem4":"","description":"","useYn":"Y","codeSeq":1}]}} */
 export type RetrieveCodesData = string;
 
-export type RetrieveCodesError = string;
-
+/** @example {"status":"success","data":{"groupCode":"AP001","groupCodeName":"나눔신청상태코드","mngDes1":"","mngDes2":"","mngDes3":"","mngDes4":"","description":"나눔 신청 상태 코드입니다.","useYn":"Y","codes":[{"code":"1","codeKorName":"수락 대기 중","codeEngName":"WAITING","mngItem1":"","mngItem2":"","mngItem3":"","mngItem4":"","description":"","useYn":"Y","codeSeq":1}]}} */
 export type RetrieveCodes1Data = string;
 
-export type RetrieveCodes1Error = string;
-
+/** @example {"status":"success","data":[{"groupCode":"AP001","groupCodeName":"나눔신청상태코드","mngDes1":"","mngDes2":"","mngDes3":"","mngDes4":"","description":"나눔 신청 상태 코드입니다.","useYn":"Y"}]} */
 export type RetrieveGroupCodesData = string;
+
+export type RetrieveGroupCodesError = string;
 
 export type RetrieveAllUsersData = string;
 

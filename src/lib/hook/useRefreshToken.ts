@@ -1,23 +1,21 @@
-import { useSession, signOut } from 'next-auth/react';
 import axios from '../axios';
-import utils from '@/utils/cmmnUtil';
+import useUserStore from '@/store/UserStore';
 
 export function useRefreshToken() {
-  const { data: session, update } = useSession();
-  const user = JSON.parse(utils.getStorage('user'));
-
+  const { userInfo, setUserInfo, clearUserInfo } = useUserStore();
   const refreshToken = async () => {
     const res = await axios
-      .post('/api/v1/common/renewal', {
-        refreshToken: utils.getStorage('refreshToken'), // 쿠키 저장일 경우 변경 필요
-        userId: user.id,
+      .post('/v1/reissue', {
+        withCredentials: true,
       })
       .catch(error => {
+        // 로그아웃 처리하고 홈화면으로 보내야하나?
         console.log(`useRefreshToken: ${error}`);
-        signOut();
+        axios.post('/v1/logout');
+        clearUserInfo();
       });
-    if (res?.status && session) {
-      update({ ...session, accessToken: res?.headers.authorization.split('Bearer ')[1] });
+    if (res?.status) {
+      setUserInfo({ ...userInfo, accessToken: res?.headers.authorization.split('Bearer ')[1] });
     }
 
     return res?.headers.authorization.split('Bearer ')[1];

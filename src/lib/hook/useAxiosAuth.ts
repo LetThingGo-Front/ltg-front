@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { axiosAuth } from '@/lib/axios';
 import { useRefreshToken } from './useRefreshToken';
-import utils from '@/utils/cmmnUtil';
+import useUserStore from '@/store/UserStore';
 
 const useAxiosAuth = () => {
+  const { userInfo } = useUserStore();
   const refreshToken = useRefreshToken();
 
   useEffect(() => {
@@ -11,7 +12,7 @@ const useAxiosAuth = () => {
       config => {
         const updatedConfig = { ...config };
         if (!updatedConfig.headers.Authorization) {
-          updatedConfig.headers.Authorization = `Bearer ${utils.getStorage('accessToken')}`;
+          updatedConfig.headers.Authorization = `Bearer ${userInfo.accessToken}`;
         }
         return updatedConfig;
       },

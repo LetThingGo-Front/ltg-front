@@ -20,6 +20,21 @@ export const metadata: Metadata = {
 
 const clientId = process.env.NAVER_MAPS_CLIENT_ID!;
 
+const getRnewalToken = async () => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/reissue`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+getRnewalToken();
+
 export default function RootLayout({
   children,
 }: Readonly<{

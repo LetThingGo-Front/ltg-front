@@ -1,10 +1,12 @@
 'use client';
 
+import useLoginPopupStore from '@/store/LoginStore';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const pathname = usePathname();
+  const { actions } = useLoginPopupStore(); // 로그인 팝업 오픈
 
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
@@ -82,6 +84,7 @@ export default function Header() {
           <button
             className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
             style={{ backgroundColor: COLOR.BUTTON_COLOR }}
+            onClick={() => actions.openLoginPopup()}
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
