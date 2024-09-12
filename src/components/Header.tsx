@@ -33,6 +33,30 @@ export default function Header() {
     }
   };
 
+  const getUserInfoDirect = async () => {
+    try {
+      console.log('getUserInfo!!!');
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/test/users/19`, {
+        withCredentials: true,
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getRenewalTokenDirect = async () => {
+    try {
+      console.log('getRenewalToken!!!');
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/reissue`, {
+        withCredentials: true,
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
   };
@@ -115,6 +139,8 @@ export default function Header() {
           </button>
           <button onClick={() => getUserInfo()}>유저정보 조회</button>
           <button onClick={() => getRenewalToken()}>토큰 재발급</button>
+          <button onClick={() => getUserInfoDirect()}>유저정보 조회(back url)</button>
+          <button onClick={() => getRenewalTokenDirect()}>토큰 재발급(back url)</button>
           {/* <Image/> */}
         </div>
       </div>
