@@ -1,11 +1,14 @@
 'use client';
 
 import axios from 'axios';
+import { headers } from 'next/headers';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Header() {
   const pathname = usePathname();
+  const [accessToken, setAccessToken] = useState('');
   const goNaverLogin = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/naver`;
   };
@@ -35,7 +38,7 @@ export default function Header() {
 
   const getUserInfoDirect = async () => {
     try {
-      console.log('getUserInfo!!!');
+      console.log('getUserInfoDirect!!!');
       const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/test/users/19`, {
         withCredentials: true,
       });
@@ -47,9 +50,38 @@ export default function Header() {
 
   const getRenewalTokenDirect = async () => {
     try {
-      console.log('getRenewalToken!!!');
+      console.log('getRenewalTokenDirect!!!');
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/reissue`, {
         withCredentials: true,
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCookieAccessToken = async () => {
+    try {
+      console.log('getCookieAccessToken!!!');
+      const res = await axios.get(`/api/cookie`, {
+        withCredentials: true,
+      });
+      console.log(res.data);
+      setAccessToken(res.data.accessToken);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getRenewalTokenSetToken = async () => {
+    try {
+      console.log('getRenewalToken!!!');
+      console.log(`accessToken: ${accessToken}`);
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/reissue`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
       console.log(res.data);
     } catch (error) {
@@ -137,10 +169,10 @@ export default function Header() {
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
-          <button onClick={() => getUserInfo()}>유저정보 조회</button>
-          <button onClick={() => getRenewalToken()}>토큰 재발급</button>
           <button onClick={() => getUserInfoDirect()}>유저정보 조회(back url)</button>
           <button onClick={() => getRenewalTokenDirect()}>토큰 재발급(back url)</button>
+          <button onClick={() => getCookieAccessToken()}>쿠키 불러오기</button>
+          <button onClick={() => getRenewalTokenSetToken()}>토큰 재발급(add token)</button>
           {/* <Image/> */}
         </div>
       </div>
