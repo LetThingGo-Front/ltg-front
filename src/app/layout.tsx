@@ -33,7 +33,7 @@ const getRenewalToken = async () => {
   }
 };
 
-getRenewalToken();
+// getRenewalToken();
 
 export default function RootLayout({
   children,
