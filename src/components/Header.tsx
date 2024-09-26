@@ -20,6 +20,15 @@ export default function Header() {
     }
   };
 
+  const getUserList = async () => {
+    try {
+      const response = await axios.get(`/test/users`);
+      console.log(`res: ${response.data}`);
+    } catch (error) {
+      console.log(`error: ${error}`);
+    }
+  };
+
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
   };
@@ -100,7 +109,8 @@ export default function Header() {
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
-          <button onClick={() => getTokenRenewal()}>토큰 갱신!</button>
+          <button onClick={() => getTokenRenewal()}>토큰 갱신</button>
+          <button onClick={() => getUserList()}>유저 목록</button>
           {/* <Image/> */}
         </div>
       </div>
