@@ -13,7 +13,7 @@ export default function Header() {
 
   const getTokenRenewal = async () => {
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/reissue`);
+      const response = await axios.post(`/v1/reissue`);
       console.log(`res: ${response.data}`);
     } catch (error) {
       console.log(`error: ${error}`);
