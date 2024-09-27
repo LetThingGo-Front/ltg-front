@@ -3,8 +3,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/:path*',
-        destination: 'http://52.79.164.116/:path*',
+        source: '/v1/:path*',
+        destination: 'https://api.letthinggo.com/v1/:path*',
       },
     ];
   },

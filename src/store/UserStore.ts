@@ -1,26 +1,23 @@
 import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import createSelectors from './selectorStore';
 import User from '@/types/User';
-
-interface LoginUser extends User {
-  accessToken: string;
-}
+import axios from 'axios';
 
 type UserState = {
-  userInfo: LoginUser;
+  userInfo: User;
+  accessToken: string;
 };
 
 type UserAction = {
-  setUserInfo: (user: LoginUser) => void;
-  clearUserInfo: () => void;
+  setUserInfo: (user: User) => void;
+  setAccessToken: (accessToken: string) => void;
+  initUserInfo: () => void;
 };
 
 const initialUserInfo = {
-  id: 0,
-  nickname: '',
-  email: '',
+  userInfo: { id: 0, nickname: '', email: '' },
   accessToken: '',
 };
 
@@ -30,15 +27,25 @@ const userStore = create<UserState & UserAction>()(
   devtools(
     persist(
       immer(set => ({
-        userInfo: initialUserInfo,
-        setUserInfo: (user: LoginUser) => {
-          set({ userInfo: user });
+        ...initialUserInfo,
+        setUserInfo: (user: User) => {
+          set((state: UserState) => {
+            state.userInfo = user;
+          });
         },
-        clearUserInfo: () => {
-          set({ userInfo: initialUserInfo });
+        setAccessToken: (accessToken: string) => {
+          set((state: UserState) => {
+            state.accessToken = accessToken;
+          });
+        },
+        initUserInfo: () => {
+          set(initialUserInfo);
         },
       })),
-      { name: USER_KEY },
+      {
+        name: USER_KEY,
+        storage: createJSONStorage(() => localStorage),
+      },
     ),
   ),
 );

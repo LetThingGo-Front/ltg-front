@@ -1,12 +1,28 @@
 'use client';
 
 import useLoginPopupStore from '@/store/LoginStore';
+import useUserStore from '@/store/UserStore';
+import axios from 'axios';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const pathname = usePathname();
   const { actions } = useLoginPopupStore(); // 로그인 팝업 오픈
+  const { accessToken, initUserInfo } = useUserStore();
+
+  const getUserInfo = () => {
+    console.log(accessToken);
+  };
+
+  const setAccessToken = async () => {
+    try {
+      const res = await axios.post('/api/token');
+      console.log(res.data);
+    } catch (error) {
+      console.log(`setAccessToken fail: ${error}`);
+    }
+  };
 
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
@@ -88,6 +104,9 @@ export default function Header() {
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
+          <button onClick={setAccessToken}>setAccessToken</button>
+          <button onClick={getUserInfo}>getUserInfo</button>
+          <button onClick={initUserInfo}>유저 정보 초기화</button>
           {/* <Image/> */}
         </div>
       </div>

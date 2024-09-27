@@ -3,9 +3,10 @@ import './globals.css';
 import SignIn from '@/components/signin/Signin';
 import Header from '@/components/Header';
 import SideNav from '@/components/SideNav';
-
 import localFont from 'next/font/local';
 import MapsProvider from '@/provider/MapsProvider';
+import InitToken from '@/components/common/InitToken';
+import { cookies } from 'next/headers';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -20,26 +21,14 @@ export const metadata: Metadata = {
 
 const clientId = process.env.NAVER_MAPS_CLIENT_ID!;
 
-const getRnewalToken = async () => {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/reissue`, {
-      method: 'POST',
-      credentials: 'include',
-    });
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-getRnewalToken();
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const token = cookieStore?.get('accessToken')?.value ?? null;
+
   return (
     <html lang="en">
       <MapsProvider clientId={clientId}>
@@ -48,6 +37,7 @@ export default function RootLayout({
           <Header />
           <main className="">{children}</main>
           <SideNav />
+          <InitToken token={token} />
         </body>
       </MapsProvider>
     </html>
