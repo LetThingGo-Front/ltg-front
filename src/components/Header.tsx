@@ -5,6 +5,7 @@ import useUserStore from '@/store/UserStore';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import useAxiosAuth from '../lib/hook/useAxiosAuth';
+import axios from 'axios';
 
 export default function Header() {
   const pathname = usePathname();
@@ -16,8 +17,8 @@ export default function Header() {
 
   const logout = async () => {
     try {
-      const response = await useAxios.post('/v1/logout');
-      console.log(response.data);
+      await useAxios.post('/v1/logout');
+      await axios.delete('/api/token'); // 브라우저 accessToken Cookie 삭제
       initUserInfo();
       router.push('/');
     } catch (error) {
