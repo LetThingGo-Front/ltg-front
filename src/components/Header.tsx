@@ -91,7 +91,6 @@ export default function Header() {
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
-          <button onClick={() => getTokenRenewal()}>토큰 갱신!</button>
           {/* <Image/> */}
         </div>
       </div>
