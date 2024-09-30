@@ -10,9 +10,10 @@ export function useRefreshToken() {
     try {
       const reissueRes = await axios.post('/v1/reissue', { withCredentials: true });
       console.log(reissueRes);
-      const reissueAccessToken = reissueRes?.headers.Authorization.split('Bearer ')[1];
+      console.log(reissueRes?.headers.Authorization);
+      const reissueAccessToken = reissueRes?.headers.authorization.split('Bearer ')[1];
       console.log(reissueAccessToken);
-      if (reissueRes?.status === 200) setAccessToken(reissueAccessToken);
+      setAccessToken(reissueAccessToken);
 
       return reissueAccessToken;
     } catch (error) {
@@ -23,6 +24,8 @@ export function useRefreshToken() {
           },
         });
         console.log(logoutRes.data);
+        const deleteTokenRes = await axios.delete('/api/token');
+        console.log(deleteTokenRes.data);
         initUserInfo();
         window.location.href = '/';
       } catch (error) {
