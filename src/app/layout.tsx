@@ -3,7 +3,6 @@ import './globals.css';
 import SignIn from '@/components/signin/Signin';
 import Header from '@/components/Header';
 import SideNav from '@/components/SideNav';
-
 import localFont from 'next/font/local';
 import MapsProvider from '@/provider/MapsProvider';
 

@@ -11,15 +11,6 @@ export default function Header() {
     window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/naver`;
   };
 
-  const getTokenRenewal = async () => {
-    try {
-      const response = await axios.post(`/v1/reissue`);
-      console.log(`res: ${response.data}`);
-    } catch (error) {
-      console.log(`error: ${error}`);
-    }
-  };
-
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
   };
@@ -96,7 +87,7 @@ export default function Header() {
           <button
             className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
             style={{ backgroundColor: COLOR.BUTTON_COLOR }}
-            onClick={() => goNaverLogin()}
+            onClick={() => goNaverLogin()} // 임시로 네이버 로그인만 적용. 추후 카카오, 구글 로그인 추가 예정
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
