@@ -22,8 +22,10 @@ const useAxiosAuth = () => {
     const responseIntercept = axiosAuth.interceptors.response.use(
       response => response,
       error => {
+        console.log(`useAxiosAuth error`);
+        console.log(error);
         const prevRequest = error.config;
-        if (error.response.status === 498 && !prevRequest.sent) {
+        if (error.response.status === 401 && !prevRequest.sent) {
           prevRequest.sent = true;
           const reissueAccessToken = refreshToken();
           prevRequest.headers.Authorization = `Bearer ${reissueAccessToken}`;
