@@ -37,7 +37,7 @@ const useAxiosAuth = () => {
       axiosAuth.interceptors.request.eject(requestIntercept);
       axiosAuth.interceptors.response.eject(responseIntercept);
     };
-  }, [refreshToken]);
+  }, [accessToken, refreshToken]);
 
   return axiosAuth;
 };

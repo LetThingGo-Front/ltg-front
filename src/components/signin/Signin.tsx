@@ -7,7 +7,8 @@ import useLoginPopupStore from '@/store/LoginStore';
 
 export default function SignIn() {
   // 사이트 확인용으로 true로 설정, 실제로는 false로 설정
-  const { isOpen, actions } = useLoginPopupStore();
+  const isOpen = useLoginPopupStore.use.isOpen();
+  const closeLoginPopup = useLoginPopupStore.use.actions().closeLoginPopup;
   const socialLogin = async (provider: string) => {
     try {
       window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/${provider}`;
@@ -23,7 +24,7 @@ export default function SignIn() {
         <div className=" bg-black bg-opacity-70 text-gray-200 rounded-[20px] sm:min-w-[474px] sm:min-h-[630px] min-w-[304px] min-h-[556px]">
           <div className="flex justify-end">
             <div className="flex justify-center items-center w-[60px] h-[60px]">
-              <CloseButton close={() => actions.closeLoginPopup()} />
+              <CloseButton close={closeLoginPopup} />
             </div>
           </div>
           <div className="flex flex-col justify-center items-center mx-[30px] sm:mt-[120px] mt-[100px]">

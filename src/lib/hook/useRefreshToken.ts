@@ -23,6 +23,7 @@ export function useRefreshToken() {
         });
         console.log(logoutRes.data);
         initUserInfo();
+        window.location.href = '/';
       } catch (error) {
         console.log(`logout fail: ${error}`);
       }

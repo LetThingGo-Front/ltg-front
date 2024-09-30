@@ -2,25 +2,26 @@
 
 import useLoginPopupStore from '@/store/LoginStore';
 import useUserStore from '@/store/UserStore';
-import axios from 'axios';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import useAxiosAuth from '../lib/hook/useAxiosAuth';
 
 export default function Header() {
   const pathname = usePathname();
-  const { actions } = useLoginPopupStore(); // 로그인 팝업 오픈
-  const { accessToken, initUserInfo } = useUserStore();
+  const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup; // 로그인 팝업 오픈
+  const accessToken = useUserStore.use.accessToken();
+  const initUserInfo = useUserStore.use.initUserInfo();
+  const useAxios = useAxiosAuth();
+  const router = useRouter();
 
-  const getUserInfo = () => {
-    console.log(accessToken);
-  };
-
-  const setAccessToken = async () => {
+  const logout = async () => {
     try {
-      const res = await axios.post('/api/token');
-      console.log(res.data);
+      const response = await useAxios.post('/v1/logout');
+      console.log(response.data);
+      initUserInfo();
+      router.push('/');
     } catch (error) {
-      console.log(`setAccessToken fail: ${error}`);
+      console.error(`로그아웃 에러: ${error}`);
     }
   };
 
@@ -100,13 +101,12 @@ export default function Header() {
           <button
             className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
             style={{ backgroundColor: COLOR.BUTTON_COLOR }}
-            onClick={() => actions.openLoginPopup()}
+            onClick={openLoginPopup}
+            disabled={accessToken ? true : false}
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
-          <button onClick={setAccessToken}>setAccessToken</button>
-          <button onClick={getUserInfo}>getUserInfo</button>
-          <button onClick={initUserInfo}>유저 정보 초기화</button>
+          {accessToken && <button onClick={logout}>로그아웃</button>}
           {/* <Image/> */}
         </div>
       </div>
