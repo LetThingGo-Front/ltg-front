@@ -18,14 +18,8 @@ export function useRefreshToken() {
       return reissueAccessToken;
     } catch (error) {
       try {
-        const logoutRes = await axios.post('/v1/logout', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        console.log(logoutRes.data);
-        const deleteTokenRes = await axios.delete('/api/token');
-        console.log(deleteTokenRes.data);
+        await axios.delete('/api/accessToken');
+        await axios.delete('/api/refreshToken');
         initUserInfo();
         window.location.href = '/';
       } catch (error) {
