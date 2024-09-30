@@ -11,7 +11,8 @@ export function useRefreshToken() {
       const reissueRes = await axios.post('/v1/reissue', { withCredentials: true });
       console.log(reissueRes);
       const reissueAccessToken = reissueRes?.headers.Authorization.split('Bearer ')[1];
-      if (reissueRes?.status) setAccessToken(reissueAccessToken);
+      console.log(reissueAccessToken);
+      if (reissueRes?.status === 200) setAccessToken(reissueAccessToken);
 
       return reissueAccessToken;
     } catch (error) {

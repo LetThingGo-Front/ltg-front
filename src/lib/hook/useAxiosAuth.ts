@@ -28,6 +28,7 @@ const useAxiosAuth = () => {
         if (error.response.status === 401 && !prevRequest.sent) {
           prevRequest.sent = true;
           const reissueAccessToken = refreshToken();
+          console.log(`reissueAccessToken: ${reissueAccessToken}`);
           prevRequest.headers.Authorization = `Bearer ${reissueAccessToken}`;
           return axiosAuth(prevRequest);
         }
