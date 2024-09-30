@@ -21,13 +21,13 @@ const useAxiosAuth = () => {
 
     const responseIntercept = axiosAuth.interceptors.response.use(
       response => response,
-      error => {
+      async error => {
         console.log(`useAxiosAuth error`);
         console.log(error);
         const prevRequest = error.config;
         if (error.response.status === 401 && !prevRequest.sent) {
           prevRequest.sent = true;
-          const reissueAccessToken = refreshToken();
+          const reissueAccessToken = await refreshToken();
           console.log(`reissueAccessToken: ${reissueAccessToken}`);
           prevRequest.headers.Authorization = `Bearer ${reissueAccessToken}`;
           return axiosAuth(prevRequest);

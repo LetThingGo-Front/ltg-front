@@ -2,7 +2,6 @@ import axios from '../axios';
 import useUserStore from '@/store/UserStore';
 
 export function useRefreshToken() {
-  const accessToken = useUserStore.use.accessToken();
   const initUserInfo = useUserStore.use.initUserInfo();
   const setAccessToken = useUserStore.use.setAccessToken();
 
