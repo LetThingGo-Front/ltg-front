@@ -1,14 +1,28 @@
 'use client';
 
-import axios from 'axios';
+import useLoginPopupStore from '@/store/LoginStore';
+import useUserStore from '@/store/UserStore';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import useAxiosAuth from '../lib/hook/useAxiosAuth';
 
 export default function Header() {
   const pathname = usePathname();
+  const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup; // 로그인 팝업 오픈
+  const accessToken = useUserStore.use.accessToken();
+  const initUserInfo = useUserStore.use.initUserInfo();
+  const useAxios = useAxiosAuth();
+  const router = useRouter();
 
-  const goNaverLogin = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/naver`;
+  const logout = async () => {
+    try {
+      const response = await useAxios.post('/v1/logout');
+      console.log(response.data);
+      initUserInfo();
+      router.push('/');
+    } catch (error) {
+      console.error(`로그아웃 에러: ${error}`);
+    }
   };
 
   const COLOR = {
@@ -87,10 +101,12 @@ export default function Header() {
           <button
             className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
             style={{ backgroundColor: COLOR.BUTTON_COLOR }}
-            onClick={() => goNaverLogin()} // 임시로 네이버 로그인만 적용. 추후 카카오, 구글 로그인 추가 예정
+            onClick={openLoginPopup}
+            disabled={accessToken ? true : false}
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
+          {accessToken && <button onClick={logout}>로그아웃</button>}
           {/* <Image/> */}
         </div>
       </div>

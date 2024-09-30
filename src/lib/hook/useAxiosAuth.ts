@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { axiosAuth } from '@/lib/axios';
 import { useRefreshToken } from './useRefreshToken';
-import utils from '@/utils/cmmnUtil';
+import useUserStore from '@/store/UserStore';
 
 const useAxiosAuth = () => {
+  const accessToken = useUserStore.use.accessToken();
   const refreshToken = useRefreshToken();
 
   useEffect(() => {
@@ -11,7 +12,7 @@ const useAxiosAuth = () => {
       config => {
         const updatedConfig = { ...config };
         if (!updatedConfig.headers.Authorization) {
-          updatedConfig.headers.Authorization = `Bearer ${utils.getStorage('accessToken')}`;
+          updatedConfig.headers.Authorization = `Bearer ${accessToken}`;
         }
         return updatedConfig;
       },
@@ -22,10 +23,10 @@ const useAxiosAuth = () => {
       response => response,
       error => {
         const prevRequest = error.config;
-        if (error.response.data.header.resultCode === 401 && !prevRequest.sent) {
+        if (error.response.data.header.resultCode === 498 && !prevRequest.sent) {
           prevRequest.sent = true;
-          const accessToken = refreshToken();
-          prevRequest.headers.Authorization = `Bearer ${accessToken}`;
+          const reissueAccessToken = refreshToken();
+          prevRequest.headers.Authorization = `Bearer ${reissueAccessToken}`;
           console.log(prevRequest);
           return axiosAuth(prevRequest);
         }
@@ -36,7 +37,7 @@ const useAxiosAuth = () => {
       axiosAuth.interceptors.request.eject(requestIntercept);
       axiosAuth.interceptors.response.eject(responseIntercept);
     };
-  }, [refreshToken]);
+  }, [accessToken, refreshToken]);
 
   return axiosAuth;
 };

@@ -1,7 +1,7 @@
-import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import createSelectors from './selectorStore';
+import { create } from 'zustand';
 
 type SideNavState = {
   sideNav: boolean;

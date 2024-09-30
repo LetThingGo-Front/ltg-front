@@ -13,4 +13,5 @@ export const axiosAuth = axios.create({
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': BASE_URL ?? '',
   },
+  withCredentials: true,
 });

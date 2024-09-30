@@ -3,19 +3,28 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import CloseButton from './button/CloseButton';
+import useLoginPopupStore from '@/store/LoginStore';
 
 export default function SignIn() {
   // 사이트 확인용으로 true로 설정, 실제로는 false로 설정
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = useLoginPopupStore.use.isOpen();
+  const closeLoginPopup = useLoginPopupStore.use.actions().closeLoginPopup;
+  const socialLogin = async (provider: string) => {
+    try {
+      window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/${provider}`;
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div
-      className={`${!isOpen && 'hidden'} fixed flex justify-center items-center w-full h-[calc(100%-32px)] mt-8 top-0 left-0 z-10 backdrop-blur-lg`}
+      className={`${!isOpen && 'hidden'} fixed flex justify-center items-center w-full h-full top-0 left-0 z-10 backdrop-blur-lg`}
     >
       <div className="bg-white rounded-[20px] sm:min-w-[474px] sm:min-h-[630px] min-w-[304px] min-h-[556px]">
         <div className=" bg-black bg-opacity-70 text-gray-200 rounded-[20px] sm:min-w-[474px] sm:min-h-[630px] min-w-[304px] min-h-[556px]">
           <div className="flex justify-end">
             <div className="flex justify-center items-center w-[60px] h-[60px]">
-              <CloseButton close={() => setIsOpen(false)} />
+              <CloseButton close={closeLoginPopup} />
             </div>
           </div>
           <div className="flex flex-col justify-center items-center mx-[30px] sm:mt-[120px] mt-[100px]">
@@ -36,9 +45,21 @@ export default function SignIn() {
                     <Image src="/assets/images/kakao.svg" width={17} height={15} alt="kakao" />
                   </p>
                   <p className="flex justify-center items-center bg-[#03cf5d] w-10 h-10 rounded-full">
-                    <Image src="/assets/images/naver.svg" width={17} height={15} alt="naver" />
+                    <button
+                      onClick={() => {
+                        socialLogin('naver');
+                      }}
+                    >
+                      <Image src="/assets/images/naver.svg" width={17} height={15} alt="naver" />
+                    </button>
                   </p>
-                  <Image src="/assets/images/google_logo.svg" width={40} height={40} alt="google" />
+                  <button
+                    onClick={() => {
+                      socialLogin('google');
+                    }}
+                  >
+                    <Image src="/assets/images/google_logo.svg" width={40} height={40} alt="google" />
+                  </button>
                 </div>
               </div>
             </div>

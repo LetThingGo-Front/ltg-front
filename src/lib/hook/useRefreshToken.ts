@@ -1,26 +1,33 @@
-import { useSession, signOut } from 'next-auth/react';
 import axios from '../axios';
-import utils from '@/utils/cmmnUtil';
+import useUserStore from '@/store/UserStore';
 
 export function useRefreshToken() {
-  const { data: session, update } = useSession();
-  const user = JSON.parse(utils.getStorage('user'));
+  const accessToken = useUserStore.use.accessToken();
+  const initUserInfo = useUserStore.use.initUserInfo();
+  const setAccessToken = useUserStore.use.setAccessToken();
 
   const refreshToken = async () => {
-    const res = await axios
-      .post('/api/v1/common/renewal', {
-        refreshToken: utils.getStorage('refreshToken'), // 쿠키 저장일 경우 변경 필요
-        userId: user.id,
-      })
-      .catch(error => {
-        console.log(`useRefreshToken: ${error}`);
-        signOut();
-      });
-    if (res?.status && session) {
-      update({ ...session, accessToken: res?.headers.authorization.split('Bearer ')[1] });
-    }
+    try {
+      const reissueRes = await axios.post('/v1/reissue', { withCredentials: true });
+      console.log(reissueRes);
+      const reissueAccessToken = reissueRes?.headers.Authorization.split('Bearer ')[1];
+      if (reissueRes?.status) setAccessToken(reissueAccessToken);
 
-    return res?.headers.authorization.split('Bearer ')[1];
+      return reissueAccessToken;
+    } catch (error) {
+      try {
+        const logoutRes = await axios.post('/v1/logout', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        console.log(logoutRes.data);
+        initUserInfo();
+        window.location.href = '/';
+      } catch (error) {
+        console.log(`logout fail: ${error}`);
+      }
+    }
   };
 
   return refreshToken;
