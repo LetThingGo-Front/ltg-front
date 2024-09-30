@@ -23,11 +23,10 @@ const useAxiosAuth = () => {
       response => response,
       error => {
         const prevRequest = error.config;
-        if (error.response.data.header.resultCode === 498 && !prevRequest.sent) {
+        if (error.response.status === 498 && !prevRequest.sent) {
           prevRequest.sent = true;
           const reissueAccessToken = refreshToken();
           prevRequest.headers.Authorization = `Bearer ${reissueAccessToken}`;
-          console.log(prevRequest);
           return axiosAuth(prevRequest);
         }
         return Promise.reject(error);
