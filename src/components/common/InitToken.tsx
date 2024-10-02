@@ -8,12 +8,14 @@ type Props = {
   referer: string | null;
 };
 
+const LOGIN_REFERER_LIST = ['https://nid.naver.com/'];
+
 export default function InitToken({ token, referer }: Props) {
   const setAccessToken = useUserStore.use.setAccessToken();
 
   useEffect(() => {
-    console.log(`=================== init token referer: ${referer}`);
-    if (token) setAccessToken(token);
+    // access token이 있고, referer가 로그인 페이지일 경우에만 access token을 저장
+    if (token && referer && LOGIN_REFERER_LIST.includes(referer)) setAccessToken(token);
   }, []);
 
   return null;
