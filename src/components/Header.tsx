@@ -3,9 +3,8 @@
 import useLoginPopupStore from '@/store/LoginStore';
 import useUserStore from '@/store/UserStore';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import useAxiosAuth from '../lib/hook/useAxiosAuth';
-import axios from 'axios';
 
 export default function Header() {
   const pathname = usePathname();
@@ -13,13 +12,12 @@ export default function Header() {
   const accessToken = useUserStore.use.accessToken();
   const initUserInfo = useUserStore.use.initUserInfo();
   const useAxios = useAxiosAuth();
-  const router = useRouter();
 
   const logout = async () => {
     try {
       await useAxios.post('/v1/logout');
       initUserInfo();
-      if (pathname !== '/') router.push('/');
+      location.href = '/'; // referer 초기화 목적
     } catch (error) {
       console.error(`로그아웃 에러: ${error}`);
     }
