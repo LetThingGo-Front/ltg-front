@@ -18,9 +18,8 @@ export default function Header() {
   const logout = async () => {
     try {
       await useAxios.post('/v1/logout');
-      await axios.delete('/api/accessToken'); // 브라우저 accessToken Cookie 삭제
       initUserInfo();
-      router.push('/');
+      if (pathname !== '/') router.push('/');
     } catch (error) {
       console.error(`로그아웃 에러: ${error}`);
     }
