@@ -8,17 +8,13 @@ export function useRefreshToken() {
   const refreshToken = async () => {
     try {
       const reissueRes = await axios.post('/v1/reissue', { withCredentials: true });
-      console.log(reissueRes);
-      console.log(reissueRes?.headers.Authorization);
       const reissueAccessToken = reissueRes?.headers.authorization.split('Bearer ')[1];
-      console.log(reissueAccessToken);
       setAccessToken(reissueAccessToken);
 
       return reissueAccessToken;
     } catch (error) {
       try {
-        await axios.delete('/api/accessToken');
-        await axios.delete('/api/refreshToken');
+        // 로그아웃이 되어야 refresh token cookie가 삭제됨. 현재는 로그아웃도 access token 만료 시 에러 발생.
         initUserInfo();
         window.location.href = '/';
       } catch (error) {

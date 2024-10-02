@@ -26,22 +26,6 @@ export default function Header() {
     }
   };
 
-  const deleteRefreshToken = async () => {
-    try {
-      await axios.delete('/api/refreshToken'); // 브라우저 refreshToken Cookie 삭제
-    } catch (error) {
-      console.error(`deleteRefreshToken error: ${error}`);
-    }
-  };
-
-  const deleteAccessToken = async () => {
-    try {
-      await axios.delete('/api/accessToken'); // 브라우저 accessToken Cookie 삭제
-    } catch (error) {
-      console.error(`deleteAccessToken error: ${error}`);
-    }
-  };
-
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
   };
@@ -124,8 +108,6 @@ export default function Header() {
             로그인 후 새 나눔 등록, Let things go!
           </button>
           {accessToken && <button onClick={logout}>로그아웃</button>}
-          <button onClick={deleteRefreshToken}>refreshToken 삭제</button>
-          <button onClick={deleteAccessToken}>accessToken 삭제</button>
           {/* <Image/> */}
         </div>
       </div>

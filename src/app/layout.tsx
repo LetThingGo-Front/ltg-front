@@ -6,7 +6,7 @@ import SideNav from '@/components/SideNav';
 import localFont from 'next/font/local';
 import MapsProvider from '@/provider/MapsProvider';
 import InitToken from '@/components/common/InitToken';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -29,6 +29,8 @@ export default function RootLayout({
   const cookieStore = cookies();
   const token = cookieStore?.get('accessToken')?.value ?? null;
 
+  const headersList = headers();
+  const referer = headersList.get('referer') ?? null;
   return (
     <html lang="en">
       <MapsProvider clientId={clientId}>
@@ -37,7 +39,7 @@ export default function RootLayout({
           <Header />
           <main className="">{children}</main>
           <SideNav />
-          <InitToken token={token} />
+          <InitToken token={token} referer={referer} />
         </body>
       </MapsProvider>
     </html>
