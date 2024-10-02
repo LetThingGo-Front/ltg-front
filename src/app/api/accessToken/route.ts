@@ -3,7 +3,8 @@ import { cookies } from 'next/headers';
 
 const handler = async (request: NextRequest) => {
   if (request.method === 'DELETE') {
-    cookies().delete('accessToken');
+    const cookieStore = cookies();
+    cookieStore.delete('accessToken');
     return NextResponse.json({ status: 'success', data: {} });
   }
 };
