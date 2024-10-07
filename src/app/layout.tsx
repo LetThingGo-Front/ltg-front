@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = cookies();
-  const token = cookieStore?.get('accessToken')?.value ?? 'accessToken01';
+  const token = cookieStore?.get('accessToken')?.value ?? null;
 
   return (
     <html lang="en">
