@@ -5,7 +5,6 @@ import useUserStore from '@/store/UserStore';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { axiosAuth } from '@/lib/axios';
-import Link from 'next/link';
 
 export default function Header() {
   const pathname = usePathname();
@@ -26,9 +25,6 @@ export default function Header() {
 
   const logoutMultiple = () => {
     console.log(`로그아웃 동시 호출`);
-    axiosAuth.post('/v1/logout');
-    axiosAuth.post('/v1/logout');
-    axiosAuth.post('/v1/logout');
     axiosAuth.post('/v1/logout');
     axiosAuth.post('/v1/logout');
   };
