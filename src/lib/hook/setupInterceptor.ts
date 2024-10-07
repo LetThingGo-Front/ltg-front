@@ -5,8 +5,6 @@ import { getIsRefreshing, setIsRefreshing, addRefreshSubscriber, onRefreshed } f
 const refreshToken = async () => {
   const initUserInfo = useUserStore.use.initUserInfo();
   const setAccessToken = useUserStore.use.setAccessToken();
-  console.log(initUserInfo);
-  console.log(setAccessToken);
   try {
     const reissueRes = await axios.post('/v1/reissue', { withCredentials: true });
     const reissueAccessToken = reissueRes?.headers.authorization.split('Bearer ')[1];
@@ -60,6 +58,7 @@ const setupInterceptor = () => {
 
         prevRequest.sent = true;
         setIsRefreshing(true);
+        console.log(`setIsRefreshing after value: ${getIsRefreshing()}`);
 
         try {
           const reissueAccessToken = await refreshToken();
