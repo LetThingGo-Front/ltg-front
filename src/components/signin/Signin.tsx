@@ -42,7 +42,13 @@ export default function SignIn() {
                 <p className="sm:text-base text-sm">소셜 미디어 계정으로 로그인하기</p>
                 <div className="flex justify-between">
                   <p className="flex justify-center items-center bg-[#ffeC00] w-10 h-10 rounded-full">
-                    <Image src="/assets/images/kakao.svg" width={17} height={15} alt="kakao" />
+                    <button
+                      onClick={() => {
+                        socialLogin('kakao');
+                      }}
+                    >
+                      <Image src="/assets/images/kakao.svg" width={17} height={15} alt="kakao" />
+                    </button>
                   </p>
                   <p className="flex justify-center items-center bg-[#03cf5d] w-10 h-10 rounded-full">
                     <button

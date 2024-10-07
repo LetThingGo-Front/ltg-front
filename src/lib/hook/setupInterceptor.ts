@@ -1,13 +1,28 @@
 import axios, { axiosAuth } from '@/lib/axios';
 import useUserStore from '@/store/UserStore';
-import { getIsRefreshing, setIsRefreshing, addRefreshSubscriber, onRefreshed } from '../tokenService';
+
+let isRefreshing = false; // 재발급 진행 중 여부
+let refreshSubscribers: any = []; // 재발급 완료 후 대기 중인 요청 목록
+
+// 새로운 토큰이 발급되면 대기 중인 요청에 적용
+const onRefreshed = (newAccessToken: any) => {
+  refreshSubscribers.forEach((callback: any) => callback(newAccessToken));
+  refreshSubscribers = [];
+};
+
+// 재발급 중인 요청 대기 목록에 추가
+const addRefreshSubscriber = (callback: any) => {
+  refreshSubscribers.push(callback);
+};
 
 const refreshToken = async () => {
+  console.log(`refreshToken call!!`);
   const initUserInfo = useUserStore.use.initUserInfo();
   const setAccessToken = useUserStore.use.setAccessToken();
   try {
     const reissueRes = await axios.post('/v1/reissue', { withCredentials: true });
     const reissueAccessToken = reissueRes?.headers.authorization.split('Bearer ')[1];
+    console.log(`reissueAccessToken: ${reissueAccessToken}`);
     setAccessToken(reissueAccessToken);
 
     return reissueAccessToken;
@@ -44,10 +59,11 @@ const setupInterceptor = () => {
       console.log(error);
       const prevRequest = error.config;
       console.log(`===================== getIsRefreshing`);
-      console.log(getIsRefreshing());
+      console.log(isRefreshing);
       if (error.response.status === 401 && !prevRequest.sent) {
-        if (getIsRefreshing()) {
+        if (isRefreshing) {
           // 토큰 재발급 중일 때 대기 상태로 전환
+          console.log(`토큰 재발급 중일 때 대기 상태로 전환`);
           return new Promise(resolve => {
             addRefreshSubscriber((newAccessToken: any) => {
               prevRequest.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -57,20 +73,20 @@ const setupInterceptor = () => {
         }
 
         prevRequest.sent = true;
-        setIsRefreshing(true);
-        console.log(`setIsRefreshing after value: ${getIsRefreshing()}`);
+        isRefreshing = true;
+        console.log(`setIsRefreshing after value: ${isRefreshing}`);
 
         try {
           const reissueAccessToken = await refreshToken();
 
           // 대기 중인 모든 요청 처리
           onRefreshed(reissueAccessToken);
-          setIsRefreshing(false);
+          isRefreshing = false;
 
           prevRequest.headers.Authorization = `Bearer ${reissueAccessToken}`;
           return axiosAuth(prevRequest);
         } catch (error) {
-          setIsRefreshing(false);
+          isRefreshing = false;
           return Promise.reject(error);
         }
       }
