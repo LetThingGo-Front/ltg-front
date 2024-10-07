@@ -2,10 +2,8 @@ import axios, { axiosAuth } from '@/lib/axios';
 import useUserStore from '@/store/UserStore';
 import useUseTokenStore from '@/store/UseTokenStore';
 
-const refreshToken = async () => {
+const refreshToken = async (initUserInfo: () => void, setAccessToken: (arg0: any) => void) => {
   console.log(`refreshToken call!!`);
-  const initUserInfo = useUserStore.use.initUserInfo();
-  const setAccessToken = useUserStore.use.setAccessToken();
   try {
     const reissueRes = await axios.post('/v1/reissue', { withCredentials: true });
     const reissueAccessToken = reissueRes?.headers.authorization.split('Bearer ')[1];
@@ -16,8 +14,9 @@ const refreshToken = async () => {
   } catch (error) {
     try {
       // 로그아웃이 되어야 refresh token cookie가 삭제됨. 현재는 로그아웃도 access token 만료 시 에러 발생.
-      initUserInfo();
-      window.location.href = '/';
+      // initUserInfo();
+      // window.location.href = '/';
+      console.log(`/v1/reissue error`);
     } catch (error) {
       console.log(`logout fail: ${error}`);
     }
@@ -30,6 +29,8 @@ const setupInterceptor = () => {
   const addRefreshSubscriber = useUseTokenStore.use.addRefreshSubscriber();
   const setIsRefreshing = useUseTokenStore.use.setIsRefreshing();
   const accessToken = useUserStore.use.accessToken();
+  const initUserInfo = useUserStore.use.initUserInfo();
+  const setAccessToken = useUserStore.use.setAccessToken();
 
   console.log(`setupInterceptor accessToken: ${accessToken}`);
   axiosAuth.interceptors.request.use(
@@ -69,7 +70,7 @@ const setupInterceptor = () => {
         console.log(`setIsRefreshing after value: ${isRefreshing}`);
 
         try {
-          const reissueAccessToken = await refreshToken();
+          const reissueAccessToken = await refreshToken(initUserInfo, setAccessToken);
 
           // 대기 중인 모든 요청 처리
           onRefreshed(reissueAccessToken);
