@@ -3,7 +3,6 @@ import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import createSelectors from './selectorStore';
 import User from '@/types/User';
-import axios from 'axios';
 
 type UserState = {
   userInfo: User;
