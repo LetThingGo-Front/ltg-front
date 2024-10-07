@@ -3,24 +3,34 @@
 import useLoginPopupStore from '@/store/LoginStore';
 import useUserStore from '@/store/UserStore';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import useAxiosAuth from '../lib/hook/useAxiosAuth';
+import { usePathname, useRouter } from 'next/navigation';
+import axiosAuth from '@/lib/axios';
+import Link from 'next/link';
 
 export default function Header() {
   const pathname = usePathname();
   const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup; // 로그인 팝업 오픈
   const accessToken = useUserStore.use.accessToken();
   const initUserInfo = useUserStore.use.initUserInfo();
-  const useAxios = useAxiosAuth();
+  const router = useRouter();
 
   const logout = async () => {
     try {
-      await useAxios.post('/v1/logout');
+      await axiosAuth.post('/v1/logout');
       initUserInfo();
-      location.href = '/'; // referer 초기화 목적
+      router.push('/');
     } catch (error) {
       console.error(`로그아웃 에러: ${error}`);
     }
+  };
+
+  const logoutMultiple = () => {
+    console.log(`로그아웃 동시 호출`);
+    axiosAuth.post('/v1/logout');
+    axiosAuth.post('/v1/logout');
+    axiosAuth.post('/v1/logout');
+    axiosAuth.post('/v1/logout');
+    axiosAuth.post('/v1/logout');
   };
 
   const COLOR = {
@@ -105,6 +115,7 @@ export default function Header() {
             로그인 후 새 나눔 등록, Let things go!
           </button>
           {accessToken && <button onClick={logout}>로그아웃</button>}
+          <button onClick={logoutMultiple}>로그아웃 동시 호출</button>
           {/* <Image/> */}
         </div>
       </div>

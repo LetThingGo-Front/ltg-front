@@ -21,31 +21,14 @@ export const metadata: Metadata = {
 
 const clientId = process.env.NAVER_MAPS_CLIENT_ID!;
 
-const getRenewalToken = async () => {
-  try {
-    const res = await fetch(`https://letthinggo.duckdns.org/v1/reissue`, {
-      method: 'POST',
-      credentials: 'include',
-    });
-    const data = res.json();
-    console.log(data.then(res => console.log(res)));
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-// getRenewalToken();
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const cookieStore = cookies();
-  const token = cookieStore?.get('accessToken')?.value ?? null;
+  const token = cookieStore?.get('accessToken')?.value ?? 'accessToken01';
 
-  const headersList = headers();
-  const referer = headersList.get('referer') ?? null;
   return (
     <html lang="en">
       <MapsProvider clientId={clientId}>
@@ -54,7 +37,7 @@ export default function RootLayout({
           <Header />
           <main className="">{children}</main>
           <SideNav />
-          <InitToken token={token} referer={referer} />
+          <InitToken token={token} />
         </body>
       </MapsProvider>
     </html>

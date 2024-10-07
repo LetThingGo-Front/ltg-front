@@ -4,7 +4,6 @@ import useUserStore from '@/store/UserStore';
 export function useRefreshToken() {
   const initUserInfo = useUserStore.use.initUserInfo();
   const setAccessToken = useUserStore.use.setAccessToken();
-
   const refreshToken = async () => {
     try {
       const reissueRes = await axios.post('/v1/reissue', { withCredentials: true });
