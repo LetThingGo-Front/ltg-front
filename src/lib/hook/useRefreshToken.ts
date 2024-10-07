@@ -1,26 +1,26 @@
-import { useSession, signOut } from 'next-auth/react';
 import axios from '../axios';
-import utils from '@/utils/cmmnUtil';
+import useUserStore from '@/store/UserStore';
 
 export function useRefreshToken() {
-  const { data: session, update } = useSession();
-  const user = JSON.parse(utils.getStorage('user'));
+  const initUserInfo = useUserStore.use.initUserInfo();
+  const setAccessToken = useUserStore.use.setAccessToken();
 
   const refreshToken = async () => {
-    const res = await axios
-      .post('/api/v1/common/renewal', {
-        refreshToken: utils.getStorage('refreshToken'), // 쿠키 저장일 경우 변경 필요
-        userId: user.id,
-      })
-      .catch(error => {
-        console.log(`useRefreshToken: ${error}`);
-        signOut();
-      });
-    if (res?.status && session) {
-      update({ ...session, accessToken: res?.headers.authorization.split('Bearer ')[1] });
-    }
+    try {
+      const reissueRes = await axios.post('/v1/reissue', { withCredentials: true });
+      const reissueAccessToken = reissueRes?.headers.authorization.split('Bearer ')[1];
+      setAccessToken(reissueAccessToken);
 
-    return res?.headers.authorization.split('Bearer ')[1];
+      return reissueAccessToken;
+    } catch (error) {
+      try {
+        // 로그아웃이 되어야 refresh token cookie가 삭제됨. 현재는 로그아웃도 access token 만료 시 에러 발생.
+        initUserInfo();
+        window.location.href = '/';
+      } catch (error) {
+        console.log(`logout fail: ${error}`);
+      }
+    }
   };
 
   return refreshToken;

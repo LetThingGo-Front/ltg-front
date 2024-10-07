@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { AddItemData, CreateRequest } from './data-contracts';
+import { AddItemData, AddItemError, CreateRequest } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
 export class ItemController<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
@@ -19,13 +19,14 @@ export class ItemController<SecurityDataType = unknown> extends HttpClient<Secur
    * @tags item-controller
    * @name AddItem
    * @summary 나눔 등록 API
-   * @request POST:/test/items
+   * @request POST:/v1/items
    * @secure
    * @response `200` `AddItemData` OK
+   * @response `10201` `string` 사용자가 존재하지 않습니다.
    */
   addItem = (data: CreateRequest, params: RequestParams = {}) =>
-    this.request<AddItemData, any>({
-      path: `/test/items`,
+    this.request<AddItemData, AddItemError>({
+      path: `/v1/items`,
       method: 'POST',
       body: data,
       secure: true,
