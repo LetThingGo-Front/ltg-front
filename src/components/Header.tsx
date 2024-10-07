@@ -4,7 +4,7 @@ import useLoginPopupStore from '@/store/LoginStore';
 import useUserStore from '@/store/UserStore';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import axiosAuth from '@/lib/axios';
+import { axiosAuth } from '@/lib/axios';
 import Link from 'next/link';
 
 export default function Header() {
