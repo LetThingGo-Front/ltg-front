@@ -5,18 +5,20 @@ import useUserStore from '@/store/UserStore';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { axiosAuth } from '@/lib/axios';
+import utils from '@/utils/cmmnUtil';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
   const pathname = usePathname();
   const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup; // 로그인 팝업 오픈
-  const accessToken = useUserStore.use.accessToken();
-  const initUserInfo = useUserStore.use.initUserInfo();
   const router = useRouter();
+  const [isLogin, setIsLogin] = useState(false);
 
   const logout = async () => {
     try {
       await axiosAuth.post('/v1/logout');
-      initUserInfo();
+      utils.removeStorageAll();
       router.push('/');
     } catch (error) {
       console.error(`로그아웃 에러: ${error}`);
@@ -24,7 +26,8 @@ export default function Header() {
   };
 
   const logoutMultiple = () => {
-    console.log(`로그아웃 동시 호출`);
+    console.log(`api 동시 호출`);
+    axiosAuth.post('/v1/logout');
     axiosAuth.post('/v1/logout');
     axiosAuth.post('/v1/logout');
   };
@@ -32,6 +35,14 @@ export default function Header() {
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
   };
+
+  useEffect(() => {
+    const accessToken = utils.getStorage('accessToken');
+    if (accessToken) {
+      setIsLogin(true);
+    }
+  }, []);
+
   return (
     <>
       <div className="hidden md:flex px-10 py-8 bg-white">
@@ -43,7 +54,9 @@ export default function Header() {
           height={20}
         />
         <ul className="flex justify-between min-w-72 w-[312px] ms-10">
-          <li className="text-[16px] hover:font-bold cursor-pointer">나눔 탐색</li>
+          <li className="text-[16px] hover:font-bold cursor-pointer">
+            <Link href="/product/1">나눔 탐색</Link>
+          </li>
           <li className="text-[16px] hover:font-bold cursor-pointer">띵즈</li>
           <li className="text-[16px] hover:font-bold cursor-pointer">캘린더</li>
           <li className="text-[16px] hover:font-bold cursor-pointer">문의</li>
@@ -106,12 +119,12 @@ export default function Header() {
             className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
             style={{ backgroundColor: COLOR.BUTTON_COLOR }}
             onClick={openLoginPopup}
-            disabled={accessToken ? true : false}
+            disabled={isLogin}
           >
             로그인 후 새 나눔 등록, Let things go!
           </button>
-          {accessToken && <button onClick={logout}>로그아웃</button>}
-          <button onClick={logoutMultiple}>로그아웃 동시 호출</button>
+          {isLogin && <button onClick={logout}>로그아웃</button>}
+          <button onClick={logoutMultiple}>API 동시 호출</button>
           {/* <Image/> */}
         </div>
       </div>

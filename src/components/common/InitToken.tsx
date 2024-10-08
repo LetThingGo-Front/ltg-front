@@ -1,7 +1,7 @@
 'use client';
 
-import setupInterceptor from '@/lib/hook/setupInterceptor';
-import useUserStore from '@/store/UserStore';
+import setupInterceptor from '@/lib/setupInterceptor';
+import utils from '@/utils/cmmnUtil';
 import React, { useEffect } from 'react';
 
 type Props = {
@@ -9,11 +9,9 @@ type Props = {
 };
 
 export default function InitToken({ token }: Props) {
-  const setAccessToken = useUserStore.use.setAccessToken();
-  setupInterceptor();
-
   useEffect(() => {
-    if (token) setAccessToken(token);
+    setupInterceptor();
+    if (token) utils.setStorage('accessToken', token);
   }, []);
 
   return null;
