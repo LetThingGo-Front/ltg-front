@@ -8,7 +8,6 @@ const setupInterceptor = () => {
     config => {
       const updatedConfig = { ...config };
       if (!updatedConfig.headers.Authorization) {
-        console.log(utils.getStorage('accessToken'));
         const accessToken = utils.getStorage('accessToken');
         updatedConfig.headers.Authorization = `Bearer ${accessToken}`;
       }

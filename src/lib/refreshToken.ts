@@ -16,12 +16,11 @@ const refreshToken = async () => {
         { headers: { Authorization: `Bearer ${utils.getStorage('accessToken')}` }, withCredentials: true },
       );
       utils.removeStorageAll();
-      //   window.location.href = '/';
-      return null;
+      window.location.href = '/';
     } catch (error) {
       console.log(`logout fail: ${error}`);
       utils.removeStorageAll();
-      //   window.location.href = '/';
+      window.location.href = '/';
     }
   }
 };

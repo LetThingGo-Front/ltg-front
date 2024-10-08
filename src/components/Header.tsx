@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react';
 export default function Header() {
   const pathname = usePathname();
   const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup; // 로그인 팝업 오픈
-  const router = useRouter();
   const setLoginStatus = useLoginPopupStore.use.actions().setLoginStatus;
   const isLogin = useLoginPopupStore.use.isLogin();
 
@@ -24,13 +23,6 @@ export default function Header() {
     } catch (error) {
       console.error(`로그아웃 에러: ${error}`);
     }
-  };
-
-  const logoutMultiple = () => {
-    console.log(`api 동시 호출`);
-    axiosAuth.post('/v1/logout');
-    axiosAuth.post('/v1/logout');
-    axiosAuth.post('/v1/logout');
   };
 
   const COLOR = {
@@ -125,7 +117,6 @@ export default function Header() {
             로그인 후 새 나눔 등록, Let things go!
           </button>
           {isLogin && <button onClick={logout}>로그아웃</button>}
-          <button onClick={logoutMultiple}>API 동시 호출</button>
           {/* <Image/> */}
         </div>
       </div>
