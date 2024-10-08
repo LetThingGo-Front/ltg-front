@@ -5,17 +5,20 @@ import createSelectors from './selectorStore';
 
 type LoginPopupState = {
   isOpen: boolean;
+  isLogin: boolean;
 };
 
 type LoginPopupAction = {
   actions: {
     openLoginPopup: () => void;
     closeLoginPopup: () => void;
+    setLoginStatus: (status: boolean) => void;
   };
 };
 
 const initialPopup = {
   isOpen: false,
+  isLogin: false,
 };
 
 const loginPopupStore = create<LoginPopupState & LoginPopupAction>()(
@@ -24,12 +27,16 @@ const loginPopupStore = create<LoginPopupState & LoginPopupAction>()(
       ...initialPopup,
       actions: {
         openLoginPopup: () =>
-          set((state: { isOpen: boolean }) => {
+          set(state => {
             state.isOpen = true;
           }),
         closeLoginPopup: () =>
-          set((state: { isOpen: boolean }) => {
+          set(state => {
             state.isOpen = false;
+          }),
+        setLoginStatus: (status: boolean) =>
+          set(state => {
+            state.isLogin = status;
           }),
       },
     })),

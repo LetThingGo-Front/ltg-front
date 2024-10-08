@@ -13,13 +13,14 @@ export default function Header() {
   const pathname = usePathname();
   const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup; // 로그인 팝업 오픈
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(false);
+  const setLoginStatus = useLoginPopupStore.use.actions().setLoginStatus;
+  const isLogin = useLoginPopupStore.use.isLogin();
 
   const logout = async () => {
     try {
       await axiosAuth.post('/v1/logout');
       utils.removeStorageAll();
-      router.push('/');
+      window.location.href = '/';
     } catch (error) {
       console.error(`로그아웃 에러: ${error}`);
     }
@@ -39,7 +40,7 @@ export default function Header() {
   useEffect(() => {
     const accessToken = utils.getStorage('accessToken');
     if (accessToken) {
-      setIsLogin(true);
+      setLoginStatus(true);
     }
   }, []);
 
