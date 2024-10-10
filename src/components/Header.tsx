@@ -1,7 +1,6 @@
 'use client';
 
 import useLoginPopupStore from '@/store/LoginStore';
-import useUserStore from '@/store/UserStore';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { axiosAuth } from '@/lib/axios';
@@ -9,11 +8,13 @@ import utils from '@/utils/cmmnUtil';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-export default function Header() {
+type Props = {
+  token: string | null;
+};
+
+export default function Header({ token }: Props) {
   const pathname = usePathname();
   const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup; // 로그인 팝업 오픈
-  const setLoginStatus = useLoginPopupStore.use.actions().setLoginStatus;
-  const isLogin = useLoginPopupStore.use.isLogin();
 
   const logout = async () => {
     try {
@@ -28,13 +29,6 @@ export default function Header() {
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
   };
-
-  useEffect(() => {
-    const accessToken = utils.getStorage('accessToken');
-    if (accessToken) {
-      setLoginStatus(true);
-    }
-  }, []);
 
   return (
     <>
@@ -108,15 +102,18 @@ export default function Header() {
             <Image src="/images/appstore.png" alt="appstore" width={86} height={26} className="me-[20px]" />
             <Image src="/images/googleplay.png" alt="google-play" width={86} height={26} />
           </div> */}
-          <button
-            className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
-            style={{ backgroundColor: COLOR.BUTTON_COLOR }}
-            onClick={openLoginPopup}
-            disabled={isLogin}
-          >
-            로그인 후 새 나눔 등록, Let things go!
-          </button>
-          {isLogin && <button onClick={logout}>로그아웃</button>}
+          {!token ? (
+            <button
+              className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
+              style={{ backgroundColor: COLOR.BUTTON_COLOR }}
+              onClick={openLoginPopup}
+              disabled={false}
+            >
+              로그인 후 새 나눔 등록, Let things go!
+            </button>
+          ) : (
+            <button onClick={logout}>로그아웃</button>
+          )}
           {/* <Image/> */}
         </div>
       </div>

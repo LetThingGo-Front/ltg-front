@@ -10,12 +10,10 @@ type Props = {
 };
 
 export default function InitToken({ token }: Props) {
-  const setLoginStatus = useLoginPopupStore.use.actions().setLoginStatus;
   useEffect(() => {
     setupInterceptor();
     if (token) {
       utils.setStorage('accessToken', token);
-      setLoginStatus(true);
     }
   }, []);
 

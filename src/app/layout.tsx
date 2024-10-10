@@ -6,7 +6,7 @@ import SideNav from '@/components/SideNav';
 import localFont from 'next/font/local';
 import MapsProvider from '@/provider/MapsProvider';
 import InitToken from '@/components/common/InitToken';
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -27,17 +27,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = cookies();
-  const token = cookieStore?.get('accessToken')?.value ?? null;
+  const accessToken = cookieStore?.get('accessToken')?.value ?? null;
+  const refreshToken = cookieStore?.get('refreshToken')?.value ?? null;
 
   return (
     <html lang="en">
       <MapsProvider clientId={clientId}>
         <body className={pretendard.className}>
           <SignIn />
-          <Header />
+          <Header token={refreshToken} />
           <main className="">{children}</main>
           <SideNav />
-          <InitToken token={token} />
+          <InitToken token={accessToken} />
         </body>
       </MapsProvider>
     </html>
