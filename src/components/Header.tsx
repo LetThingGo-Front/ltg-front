@@ -2,11 +2,11 @@
 
 import useLoginPopupStore from '@/store/LoginStore';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { axiosAuth } from '@/lib/axios';
 import utils from '@/utils/cmmnUtil';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 type Props = {
   token: string | null;
@@ -29,6 +29,12 @@ export default function Header({ token }: Props) {
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
   };
+
+  useEffect(() => {
+    if (!token) {
+      utils.removeStorageAll();
+    }
+  }, []);
 
   return (
     <>

@@ -9,19 +9,8 @@ const refreshToken = async () => {
 
     return reissueAccessToken;
   } catch (error) {
-    try {
-      await axios.post(
-        '/v1/logout',
-        {},
-        { headers: { Authorization: `Bearer ${utils.getStorage('accessToken')}` }, withCredentials: true },
-      );
-      utils.removeStorageAll();
-      window.location.href = '/';
-    } catch (error) {
-      console.log(`logout fail: ${error}`);
-      utils.removeStorageAll();
-      window.location.href = '/';
-    }
+    utils.removeStorageAll();
+    window.location.href = '/';
   }
 };
 
