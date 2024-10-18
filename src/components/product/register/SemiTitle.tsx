@@ -3,13 +3,17 @@ import React from 'react';
 type Props = {
   title: string;
   required?: boolean;
+  subText?: string;
 };
 
-export default function SemiTitle({ title, required }: Props) {
+export default function SemiTitle({ title, required, subText }: Props) {
   return (
-    <div className="flex justify-start items-start">
-      <p className="text-xs sm:text-xl font-bold text-grey-800">{title}</p>
-      {required && <p className="text-rose-600 text-xs font-bold">*</p>}
+    <div className="flex flex-col gap-1">
+      <div className="flex items-start justify-start">
+        <p className="text-xs font-bold text-grey-800 sm:text-xl">{title}</p>
+        {required && <p className="text-xs font-bold text-rose-600">*</p>}
+      </div>
+      {subText && <p className="text-[8px] font-medium text-grey-400 sm:text-[13px]">{subText}</p>}
     </div>
   );
 }

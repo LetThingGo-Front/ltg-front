@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Line from './Line';
-import MinSemiTitle from './MinSemiTitle';
-import Image from 'next/image';
-import RegisterMap from './RegisterMap';
-import ToggleButton from './ToggleButton';
-import { days } from './constants/constants';
+import React, { useState } from "react";
+import Line from "./Line";
+import MinSemiTitle from "./MinSemiTitle";
+import Image from "next/image";
+import RegisterMap from "./RegisterMap";
+import ToggleButton from "./ToggleButton";
+import { days } from "./constants/constants";
+import TextInput from "./TextInput";
 
 type Props = {
   close: () => void;
@@ -14,92 +15,139 @@ type Props = {
 export default function RegistrationLocation({ close }: Props) {
   const [isTodayShare, setIsTodayShare] = useState(false);
   const [isDayShare, setIsDayShare] = useState(false);
+  const [selectDay, setSelectDay] = useState<Array<string>>([]);
+
   return (
-    <div className="flex flex-col items-center gap-[25px] sm:gap-[45px] h-full bg-gradient-to-b from-0% from-[#b7b7b7]/10 via-100%  to-[#E1F452]/10 to-[48%] rounded-[10px] px-[30px] py-[26px]">
-      <div className=" bg-green-400 rounded-[4px] px-2">
-        <p className="max-sm:text-[10px] text-center font-bold text-grey-900">나눔장소A</p>
+    <div className="flex h-full flex-col items-center gap-[25px] rounded-[10px] bg-ltg-gradient-b px-[30px] py-[26px] sm:gap-[45px]">
+      <div className="rounded-[4px] bg-green-400 px-2">
+        <p className="text-center font-bold text-grey-900 max-sm:text-[10px]">
+          나눔장소A
+        </p>
       </div>
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <div className="flex flex-col gap-2">
           <MinSemiTitle title="나눔 장소 설정" required />
           <Line />
         </div>
         <div className="flex gap-1">
           <div className="flex items-center p-1">
-            <div className="w-[10px] h-[10px] sm:w-4 sm:h-4">
-              <Image src="/assets/images/home.svg" width={16} height={16} alt="home" />
+            <div className="h-[10px] w-[10px] sm:h-4 sm:w-4">
+              <Image
+                src="/assets/images/home.svg"
+                width={16}
+                height={16}
+                alt="home"
+              />
             </div>
-            <p className="text-[8px] sm:text-xs text-grey-400 font-bold">집근처</p>
+            <p className="text-[8px] font-bold text-grey-400 sm:text-xs">
+              집근처
+            </p>
           </div>
           <div className="flex items-center p-1">
-            <div className="w-[10px] h-[10px] sm:w-4 sm:h-4">
-              <Image src="/assets/images/building.svg" width={16} height={16} alt="company" />
+            <div className="h-[10px] w-[10px] sm:h-4 sm:w-4">
+              <Image
+                src="/assets/images/building.svg"
+                width={16}
+                height={16}
+                alt="company"
+              />
             </div>
-            <p className="text-[8px] sm:text-xs text-grey-400 font-bold">회사 근처</p>
+            <p className="text-[8px] font-bold text-grey-400 sm:text-xs">
+              회사 근처
+            </p>
           </div>
           <div className="flex items-center p-1">
-            <div className="w-[10px] h-[10px] sm:w-4 sm:h-4">
-              <Image src="/assets/images/Location_marked.svg" width={16} height={16} alt="etc" />
+            <div className="h-[10px] w-[10px] sm:h-4 sm:w-4">
+              <Image
+                src="/assets/images/location_marker.svg"
+                width={16}
+                height={16}
+                alt="etc"
+              />
             </div>
-            <p className="text-[8px] sm:text-xs text-grey-400 font-bold">기타</p>
+            <p className="text-[8px] font-bold text-grey-400 sm:text-xs">
+              기타
+            </p>
           </div>
         </div>
-        <div className="relative flex h-8 sm:h-10 bg-black/5 rounded-[10px] border border-white backdrop-blur-[50px]">
+        <div className="relative flex h-8 rounded-[10px] border border-white bg-grey-50 backdrop-blur-[50px] sm:h-11">
           <input
-            className="w-full cursor-pointer px-7 bg-transparent text-[10px] sm:text-sm placeholder:text-[10px] sm:placeholder:text-sm placeholder:text-grey-500 placeholder:text-center"
+            className="w-full cursor-pointer bg-transparent px-7 text-[10px] placeholder:text-center placeholder:text-[10px] placeholder:text-grey-500 sm:text-sm sm:placeholder:text-sm"
             placeholder="주소를 검색하세요"
             disabled
           />
           <div className="absolute left-3 top-[10px] sm:top-[14px]">
-            <Image src="/assets/images/magnify.svg" width={12} height={12} alt="search" />
+            <Image
+              src="/assets/images/magnify.svg"
+              width={12}
+              height={12}
+              alt="search"
+            />
           </div>
         </div>
-        <div className="flex justify-center items-center h-8 sm:h-10 bg-black/10 rounded-[10px] backdrop-blur-[10px]">
-          <input
-            className="w-full cursor-pointer px-3 bg-transparent text-[10px] sm:text-sm placeholder:text-[10px] sm:placeholder:text-sm placeholder:text-grey-500"
-            placeholder="길안내(예: 지상 강남역 12번 출구 앞)"
-            disabled
-          />
-        </div>
+        <TextInput
+          placeholder="길안내(예: 지상 강남역 12번 출구 앞)"
+          clearText={() => {}}
+        />
       </div>
-      <div className="h-[120px] sm:h-[180px] w-full">
+      <div className="h-[120px] w-full sm:h-[180px]">
         <RegisterMap />
       </div>
-      <div className="flex flex-col w-full gap-2">
-        <MinSemiTitle title="나눔 장소 설정" />
+      <div className="flex w-full flex-col gap-2">
+        <MinSemiTitle title="나눔 가능 일정 선택" />
         <Line />
       </div>
-      <div className="flex flex-col gap-3 sm:gap-9 w-full">
-        <div className="flex justify-between items-center">
-          <p className="max-sm:text-[10px] text-grey-800 font-semibold">오늘 번개 나눔</p>
-          <ToggleButton toggle={() => setIsTodayShare(!isTodayShare)} on={isTodayShare} />
+      <div className="flex w-full flex-col gap-3 sm:gap-9">
+        <div className="flex items-center justify-between">
+          <p className="font-semibold text-grey-800 max-sm:text-[10px]">
+            오늘 번개 나눔
+          </p>
+          <ToggleButton
+            toggle={() => setIsTodayShare(!isTodayShare)}
+            on={isTodayShare}
+          />
         </div>
-        <div className="flex justify-between items-center">
-          <p className="max-sm:text-[10px] text-grey-800 font-semibold">나눔 가능 요일 및 시간대 선택</p>
+        <div className="flex items-center justify-between">
+          <p className="font-semibold text-grey-800 max-sm:text-[10px]">
+            나눔 가능 요일 및 시간대 선택
+          </p>
           <ToggleButton
             toggle={() => setIsDayShare(!isDayShare)}
             on={isDayShare}
-            onText="신청자"
+            onText="나눔자"
             offText="신청자"
             isShort={false}
           />
         </div>
         <div className="flex justify-between">
           {days.map((day, i) => (
-            <p key={day} className="max-sm:text-[10px] text-grey-300 font-semibold text-center px-2">
+            <button
+              key={day}
+              className={`px-2 font-semibold max-sm:text-[10px] ${selectDay.includes(day) ? "text-grey-800" : "text-grey-300"}`}
+              onClick={() => {
+                setSelectDay((prev) =>
+                  prev.includes(day)
+                    ? prev.filter((d) => d !== day)
+                    : [...prev, day],
+                );
+              }}
+            >
               {day}
-            </p>
+            </button>
           ))}
         </div>
-        <div className="max-sm:text-[8px] py-1 text-grey-300 font-semibold text-center rounded-full bg-black/5 ">
+        <div className="rounded-full bg-black/5 py-1 text-center font-semibold text-grey-300 max-sm:text-[8px]">
           시간 선택 하기
         </div>
       </div>
       <div className="flex flex-col gap-3">
-        <button className="bg-black text-[10px] sm:text-xs text-white font-semibold py-2 px-4 rounded-full">
+        <button className="rounded-full bg-black px-4 py-2 text-[10px] font-semibold text-white sm:text-xs">
           장소 및 일정 저장
         </button>
-        <button className="text-[10px] sm:text-xs text-grey-700 font-semibold py-2 px-4" onClick={close}>
+        <button
+          className="px-4 py-2 text-[10px] font-semibold text-grey-700 sm:text-xs"
+          onClick={close}
+        >
           닫기
         </button>
       </div>
