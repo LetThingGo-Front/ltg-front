@@ -11,12 +11,7 @@ import RegistrationLocation from "./RegistrationLocation";
 import ImageUpload from "./ImageUpload";
 import TextInput from "./TextInput";
 import GradationButton from "@/components/common/ui/button/GradationButton";
-import {
-  Controller,
-  SubmitHandler,
-  useFieldArray,
-  useForm,
-} from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { CreateItemPayload } from "@/models/data-contracts";
 
 export default function RegistrationForm() {
@@ -27,7 +22,8 @@ export default function RegistrationForm() {
     resetField,
   } = useForm<CreateItemPayload>();
 
-  const [openRegister, setOpenRegister] = useState(true);
+  const [isSaved, setSaved] = useState(false);
+  const [openLocation, setOpenLocation] = useState(false);
 
   const createItem: SubmitHandler<CreateItemPayload> = (data: unknown) => {
     const formData = new FormData();
@@ -58,7 +54,7 @@ export default function RegistrationForm() {
               onChange={(e) => onChange(e.target.value)}
             />
             {errors.itemCreateRequest?.itemName && (
-              <p className="text-xs font-semibold text-red-500">
+              <p className="font-semibold text-red-500 max-sm:text-xs">
                 {errors.itemCreateRequest.itemName.message}
               </p>
             )}
@@ -88,7 +84,7 @@ export default function RegistrationForm() {
               ))}
             </div>
             {errors.itemCreateRequest?.categoryId && (
-              <p className="text-xs font-semibold text-red-500">
+              <p className="font-semibold text-red-500 max-sm:text-xs">
                 {errors.itemCreateRequest.categoryId.message}
               </p>
             )}
@@ -113,7 +109,7 @@ export default function RegistrationForm() {
             </div>
             <ImageUpload onChange={onChange} />
             {errors.itemImages && (
-              <p className="text-xs font-semibold text-red-500">
+              <p className="font-semibold text-red-500 max-sm:text-xs">
                 {errors.itemImages.message}
               </p>
             )}
@@ -143,13 +139,14 @@ export default function RegistrationForm() {
               ))}
             </div>
             {errors.itemCreateRequest?.itemStatus && (
-              <p className="mt-1 text-xs font-semibold text-red-500">
+              <p className="mt-1 font-semibold text-red-500 max-sm:text-xs">
                 {errors.itemCreateRequest.itemStatus.message}
               </p>
             )}
           </div>
         )}
       />
+      {/* 나눔 장소 및 일정 */}
       <div>
         <div className="flex flex-col gap-2">
           <SemiTitle
@@ -160,70 +157,38 @@ export default function RegistrationForm() {
           <Line />
         </div>
         <div className="mt-3 flex flex-col gap-[18px] sm:gap-10">
-          <div className="flex h-[110px] flex-col gap-2 rounded-[10px] sm:h-[220px] sm:gap-5">
-            <div className="h-[90px] sm:h-[180px]">
-              <RegistrationMap
-                coordinate={{
-                  lat: 37.5666103,
-                  lng: 126.9783882,
-                }}
-                locationId="나눔 장소 A"
-              />
-            </div>
-            <div className="flex justify-between">
-              <div className="flex gap-3 text-[10px] font-bold text-grey-500 sm:text-sm">
-                <div className="flex gap-1">
-                  <div className="h-4 w-4 sm:h-5 sm:w-5">
-                    <Image
-                      src="/assets/images/location_marker.svg"
-                      alt="location"
-                      width={20}
-                      height={20}
-                    />
-                  </div>
-                  <p>강남구 논현동</p>
-                </div>
-                <div className="flex gap-1">
-                  <div className="h-4 w-4 sm:h-5 sm:w-5">
-                    <Image
-                      src="/assets/images/calendar.svg"
-                      width={20}
-                      height={20}
-                      alt="calendar"
-                    />
-                  </div>
-                  <p>주중 나눔 가능</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                className="text-[10px] font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
-              >
-                수정하기
+          {!openLocation && (
+            <div className="flex h-[110px] items-center justify-center rounded-[10px] bg-grey-50 hover:bg-grey-100 active:bg-grey-50/70 sm:h-[180px]">
+              <button onClick={() => setOpenLocation(true)} type="button">
+                <Image
+                  src="/assets/images/button/square_plus.svg"
+                  width={32}
+                  height={32}
+                  alt="add"
+                />
               </button>
             </div>
-          </div>
-          {!openRegister ? (
-            <div className="h-[110px] sm:h-[220px]">
-              <div className="flex h-[90px] items-center justify-center rounded-[10px] bg-grey-50 sm:h-[180px]">
-                <button onClick={() => setOpenRegister(true)} type="button">
-                  <Image
-                    src="/assets/images/button/square_plus.svg"
-                    width={32}
-                    height={32}
-                    alt="add"
-                  />
-                </button>
-              </div>
-            </div>
-          ) : (
-            <RegistrationLocation
-              close={() => setOpenRegister(false)}
-              locationId="나눔 장소 B"
+          )}
+          {openLocation && (
+            <Controller
+              control={control}
+              name="itemCreateRequest.itemLocations"
+              defaultValue={[]}
+              rules={{ required: "나눔 장소 및 일정은 필수입니다." }}
+              render={({ field: { onChange } }) => (
+                <RegistrationLocation
+                  close={() => setOpenLocation(false)}
+                  locationId="나눔 장소 A"
+                  isSaved={isSaved}
+                  setSaved={setSaved}
+                  onSave={onChange}
+                />
+              )}
             />
           )}
         </div>
       </div>
+      {/* 상세설명 */}
       <Controller
         control={control}
         name="itemCreateRequest.itemDescription"

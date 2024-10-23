@@ -12,6 +12,7 @@ type Props = {
   setAddress: (address: string) => void;
   isOpen: boolean;
   openPostcode: (open: boolean) => void;
+  setSimpleAddr: (address: string) => void;
 };
 
 const themeObj = {
@@ -50,14 +51,18 @@ export default function Postcode({
   setAddress,
   isOpen,
   openPostcode,
+  setSimpleAddr,
 }: Props) {
   const handleComplete = (data: {
     address: string;
     addressType?: string;
+    sigungu?: string;
     bname?: string;
     buildingName?: string;
   }) => {
-    const { address, addressType, bname, buildingName } = data;
+    console.log(data);
+    const { address, addressType, sigungu, bname, buildingName } = data;
+    // console.log({ address, addressType, bname, buildingName });
     let fullAddress = address;
     if (addressType === "R") {
       const extraAddress = [bname, buildingName]
@@ -66,6 +71,7 @@ export default function Postcode({
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
     setAddress(fullAddress);
+    setSimpleAddr(`${sigungu} ${bname}`);
     openPostcode(false);
   };
 

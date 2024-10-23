@@ -11,7 +11,6 @@ type Props = {
 };
 
 export default function ImageUpload({ onChange }: Props) {
-  console.log("ImageUpload render~");
   const [files, setFiles] = useState<Array<File & { preview: string }>>([]);
 
   const deleteFile = useCallback(

@@ -13,7 +13,7 @@ type Props = {
   setAddress?: (address: string) => void;
   coordinate: { lat: number; lng: number };
   setCoordinate?: (coord: { lat: number; lng: number }) => void;
-  locationId?: string;
+  locationId: string;
 };
 
 export default memo(function RegisterMap({
@@ -23,8 +23,8 @@ export default memo(function RegisterMap({
   setCoordinate,
   locationId,
 }: Props) {
-  console.log("RegisterMap render~");
   const [isMovingMarker, setIsMovingMarker] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const getReverseGeoCode = useCallback(
     async (lat: number, lng: number) => {
       if (!lat || !lng) {
@@ -87,6 +87,30 @@ export default memo(function RegisterMap({
     );
   }, [setCoordinate]);
 
+  useEffect(() => {
+    const mapElement = document.getElementById(locationId);
+    if (mapElement) {
+      mapElement.addEventListener("fullscreenchange", () => {
+        if (document.fullscreenElement) {
+          setIsDisabled(true);
+        } else {
+          setIsDisabled(false);
+        }
+      });
+    }
+    return () => {
+      if (mapElement) {
+        mapElement.removeEventListener("fullscreenchange", () => {
+          if (document.fullscreenElement) {
+            setIsDisabled(true);
+          } else {
+            setIsDisabled(false);
+          }
+        });
+      }
+    };
+  }, [locationId]);
+
   return (
     <MapDiv
       style={{
@@ -104,10 +128,18 @@ export default memo(function RegisterMap({
         </div>
       )}
       <FullScreenButton id={locationId} />
-      <NaverMap defaultCenter={coordinate} zoom={18}>
+      <NaverMap
+        defaultCenter={coordinate}
+        defaultZoom={18}
+        disableDoubleClickZoom={isDisabled}
+        disableDoubleTapZoom={isDisabled}
+        disableTwoFingerTapZoom={isDisabled}
+        draggable={isDisabled}
+        scrollWheel={isDisabled}
+      >
         <Marker
           position={coordinate}
-          draggable
+          draggable={isDisabled}
           icon={{
             url: "/assets/images/sample/marker.svg",
             size: { width: 49, height: 36 },
