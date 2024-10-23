@@ -1,16 +1,17 @@
-import React from 'react';
+import React from "react";
 
 type Props = {
   name: string;
   select?: boolean;
-  setValue: () => void;
+  onClick: () => void;
 };
 
-export default function ItemBox({ name, select, setValue }: Props) {
+export default function ItemBox({ name, select, onClick }: Props) {
   return (
     <button
-      className={`${select ? 'text-white bg-black' : 'text-grey-300 bg-grey-50'} w-max rounded-full py-1 sm:py-[6px] px-[10px] sm:px-4 text-[10px] sm:text-xs font-semibold text-center`}
-      onClick={setValue}
+      className={`${select ? "bg-black text-white" : "bg-grey-50 text-grey-300"} w-max cursor-pointer rounded-full px-[10px] py-1 text-center text-[10px] font-semibold sm:px-4 sm:py-[6px] sm:text-xs`}
+      onClick={onClick}
+      type="button"
     >
       {name}
     </button>

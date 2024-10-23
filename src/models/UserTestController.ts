@@ -9,10 +9,12 @@
  * ---------------------------------------------------------------
  */
 
-import { RetrieveAllUsersData, RetrieveUserTestData } from './data-contracts';
-import { HttpClient, RequestParams } from './http-client';
+import { RetrieveAllUsersData, RetrieveUserTestData } from "./data-contracts";
+import { HttpClient, RequestParams } from "./http-client";
 
-export class UserTestController<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
+export class UserTestController<
+  SecurityDataType = unknown,
+> extends HttpClient<SecurityDataType> {
   /**
    * @description 전체 사용자의 정보를 조회합니다.
    *
@@ -26,7 +28,7 @@ export class UserTestController<SecurityDataType = unknown> extends HttpClient<S
   retrieveAllUsers = (params: RequestParams = {}) =>
     this.request<RetrieveAllUsersData, any>({
       path: `/test/users`,
-      method: 'GET',
+      method: "GET",
       secure: true,
       ...params,
     });
@@ -43,7 +45,7 @@ export class UserTestController<SecurityDataType = unknown> extends HttpClient<S
   retrieveUserTest = (id: number, params: RequestParams = {}) =>
     this.request<RetrieveUserTestData, any>({
       path: `/test/users/${id}`,
-      method: 'GET',
+      method: "GET",
       secure: true,
       ...params,
     });

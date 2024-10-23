@@ -24,10 +24,12 @@ import {
   RetrieveGroupCodes1Error,
   RetrieveGroupCodesData,
   RetrieveGroupCodesError,
-} from './data-contracts';
-import { ContentType, HttpClient, RequestParams } from './http-client';
+} from "./data-contracts";
+import { ContentType, HttpClient, RequestParams } from "./http-client";
 
-export class CodeController<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
+export class CodeController<
+  SecurityDataType = unknown,
+> extends HttpClient<SecurityDataType> {
   /**
    * @description 그룹코드 정보를 조회합니다.
    *
@@ -47,7 +49,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
   ) =>
     this.request<RetrieveGroupCodes1Data, RetrieveGroupCodes1Error>({
       path: `/v1/group-codes`,
-      method: 'GET',
+      method: "GET",
       query: query,
       secure: true,
       ...params,
@@ -63,10 +65,13 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
    * @response `200` `CreateGroupCodeData` OK
    * @response `409` `string` Duplicate Code
    */
-  createGroupCode = (data: GroupCodeCreateRequest, params: RequestParams = {}) =>
+  createGroupCode = (
+    data: GroupCodeCreateRequest,
+    params: RequestParams = {},
+  ) =>
     this.request<CreateGroupCodeData, CreateGroupCodeError>({
       path: `/v1/group-codes`,
-      method: 'POST',
+      method: "POST",
       body: data,
       secure: true,
       type: ContentType.Json,
@@ -87,7 +92,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
   createCode = (data: CodeCreateRequest, params: RequestParams = {}) =>
     this.request<CreateCodeData, CreateCodeError>({
       path: `/v1/codes`,
-      method: 'POST',
+      method: "POST",
       body: data,
       secure: true,
       type: ContentType.Json,
@@ -114,7 +119,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
   ) =>
     this.request<RetrieveCodesData, void>({
       path: `/v1/group-codes/${groupCode}/codes/${code}`,
-      method: 'GET',
+      method: "GET",
       query: query,
       secure: true,
       ...params,
@@ -139,7 +144,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
   ) =>
     this.request<RetrieveCodes1Data, void>({
       path: `/v1/group-codes/${groupCode}/codes`,
-      method: 'GET',
+      method: "GET",
       query: query,
       secure: true,
       ...params,
@@ -164,7 +169,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
   ) =>
     this.request<RetrieveGroupCodesData, RetrieveGroupCodesError>({
       path: `/v1/group-codes/${groupCode}`,
-      method: 'GET',
+      method: "GET",
       query: query,
       secure: true,
       ...params,

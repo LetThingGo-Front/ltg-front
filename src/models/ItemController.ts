@@ -9,28 +9,64 @@
  * ---------------------------------------------------------------
  */
 
-import { AddItemData, AddItemError, CreateRequest } from './data-contracts';
-import { ContentType, HttpClient, RequestParams } from './http-client';
+import {
+  CreateItemData,
+  CreateItemError,
+  CreateItemPayload,
+  ItemSearchRequest,
+  Pageable,
+  RetrieveItemsData,
+} from "./data-contracts";
+import { ContentType, HttpClient, RequestParams } from "./http-client";
 
-export class ItemController<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
+export class ItemController<
+  SecurityDataType = unknown,
+> extends HttpClient<SecurityDataType> {
   /**
-   * @description 나눔 물품을 등록 위한 물품 정보를 등록합니다.
+   * No description
    *
    * @tags item-controller
-   * @name AddItem
-   * @summary 나눔 등록 API
+   * @name RetrieveItems
+   * @request GET:/v1/items
+   * @secure
+   * @response `200` `RetrieveItemsData` OK
+   */
+  retrieveItems = (
+    query: {
+      /** 나눔 물품 리스트 DTO */
+      itemSearchRequest?: ItemSearchRequest;
+      pageable: Pageable;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<RetrieveItemsData, any>({
+      path: `/v1/items`,
+      method: "GET",
+      query: query,
+      secure: true,
+      ...params,
+    });
+  /**
+   * @description 신규 나눔 물품 정보를 등록합니다.
+   *
+   * @tags item-controller
+   * @name CreateItem
+   * @summary 나눔 물품 등록 API
    * @request POST:/v1/items
    * @secure
-   * @response `200` `AddItemData` OK
-   * @response `10201` `string` 사용자가 존재하지 않습니다.
+   * @response `200` `CreateItemData` OK 또는 Validation Error
+   * @response `400` `string` Unsupported Image Format
+   * @response `404` `void` Not Found
+   * @response `413` `string` File Size Exceeded
+   * @response `500` `void` Interval Server Error
    */
-  addItem = (data: CreateRequest, params: RequestParams = {}) =>
-    this.request<AddItemData, AddItemError>({
+  createItem = (data: CreateItemPayload, params: RequestParams = {}) =>
+    this.request<CreateItemData, CreateItemError>({
       path: `/v1/items`,
-      method: 'POST',
+      method: "POST",
       body: data,
       secure: true,
-      type: ContentType.Json,
+      type: ContentType.FormData,
       ...params,
     });
 }

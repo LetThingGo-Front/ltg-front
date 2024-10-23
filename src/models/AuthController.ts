@@ -9,10 +9,18 @@
  * ---------------------------------------------------------------
  */
 
-import { LoginData, LoginError, LogoutData, ReissueData, TokenRequestDto } from './data-contracts';
-import { ContentType, HttpClient, RequestParams } from './http-client';
+import {
+  LoginData,
+  LoginError,
+  LogoutData,
+  ReissueData,
+  TokenRequestDto,
+} from "./data-contracts";
+import { ContentType, HttpClient, RequestParams } from "./http-client";
 
-export class AuthController<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
+export class AuthController<
+  SecurityDataType = unknown,
+> extends HttpClient<SecurityDataType> {
   /**
    * @description access토큰 만료 시 refresh 토큰으로 재발급
    *
@@ -27,7 +35,7 @@ export class AuthController<SecurityDataType = unknown> extends HttpClient<Secur
   reissue = (params: RequestParams = {}) =>
     this.request<ReissueData, void>({
       path: `/v1/reissue`,
-      method: 'POST',
+      method: "POST",
       secure: true,
       ...params,
     });
@@ -42,10 +50,14 @@ export class AuthController<SecurityDataType = unknown> extends HttpClient<Secur
    * @response `200` `LoginData` OK
    * @response `404` `string` Invalid Provider Name
    */
-  login = (provider: string, data: TokenRequestDto, params: RequestParams = {}) =>
+  login = (
+    provider: string,
+    data: TokenRequestDto,
+    params: RequestParams = {},
+  ) =>
     this.request<LoginData, LoginError>({
       path: `/v1/oauth/${provider}`,
-      method: 'POST',
+      method: "POST",
       body: data,
       secure: true,
       type: ContentType.Json,
@@ -64,7 +76,7 @@ export class AuthController<SecurityDataType = unknown> extends HttpClient<Secur
   logout = (params: RequestParams = {}) =>
     this.request<LogoutData, any>({
       path: `/v1/logout`,
-      method: 'POST',
+      method: "POST",
       secure: true,
       ...params,
     });

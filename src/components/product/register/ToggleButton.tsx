@@ -24,7 +24,7 @@ export default function ToggleButton({
     <div
       className={clsx(
         "flex h-5 w-[54px] cursor-pointer items-center justify-start gap-1 rounded-full p-[2px] sm:h-6 sm:w-[62px]",
-        on ? "justify-end bg-[#E1F452]" : "bg-neutral-300",
+        on ? "justify-end bg-green-400" : "bg-neutral-300",
       )}
       onClick={toggle}
     >
@@ -40,7 +40,6 @@ export default function ToggleButton({
       )}
       <motion.div
         className="flex h-4 w-4 items-center justify-center rounded-full bg-white sm:h-5 sm:w-5"
-        layout
         transition={duration.short}
       ></motion.div>
       {!on && (
