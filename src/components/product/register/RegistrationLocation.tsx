@@ -163,7 +163,11 @@ export default function RegistrationLocation({
       {isSaved && (
         <div className="flex h-[110px] flex-col gap-2 rounded-[10px] sm:h-[220px] sm:gap-5">
           <div className="h-[90px] sm:h-[180px]">
-            <RegistrationMap coordinate={coordinate} locationId={locationId} />
+            <RegistrationMap
+              coordinate={coordinate}
+              locationId={locationId}
+              setSimpleAddr={setSimpleAddr}
+            />
           </div>
           <div className="flex justify-between">
             <div className="flex gap-3 text-[10px] font-bold text-grey-500 sm:text-sm">
@@ -281,6 +285,7 @@ export default function RegistrationLocation({
             coordinate={coordinate}
             setCoordinate={setCoordinate}
             setAddress={setAddress}
+            setSimpleAddr={setSimpleAddr}
             locationId={locationId}
           />
         </div>

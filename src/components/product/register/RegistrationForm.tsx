@@ -158,16 +158,18 @@ export default function RegistrationForm() {
         </div>
         <div className="mt-3 flex flex-col gap-[18px] sm:gap-10">
           {!openLocation && (
-            <div className="flex h-[110px] items-center justify-center rounded-[10px] bg-grey-50 hover:bg-grey-100 active:bg-grey-50/70 sm:h-[180px]">
-              <button onClick={() => setOpenLocation(true)} type="button">
-                <Image
-                  src="/assets/images/button/square_plus.svg"
-                  width={32}
-                  height={32}
-                  alt="add"
-                />
-              </button>
-            </div>
+            <button
+              className="flex h-[110px] items-center justify-center rounded-[10px] bg-grey-50 hover:bg-grey-100 active:bg-grey-50/70 sm:h-[180px]"
+              onClick={() => setOpenLocation(true)}
+              type="button"
+            >
+              <Image
+                src="/assets/images/button/square_plus.svg"
+                width={32}
+                height={32}
+                alt="add"
+              />
+            </button>
           )}
           {openLocation && (
             <Controller

@@ -60,9 +60,7 @@ export default function Postcode({
     bname?: string;
     buildingName?: string;
   }) => {
-    console.log(data);
     const { address, addressType, sigungu, bname, buildingName } = data;
-    // console.log({ address, addressType, bname, buildingName });
     let fullAddress = address;
     if (addressType === "R") {
       const extraAddress = [bname, buildingName]

@@ -14,6 +14,7 @@ type Props = {
   coordinate: { lat: number; lng: number };
   setCoordinate?: (coord: { lat: number; lng: number }) => void;
   locationId: string;
+  setSimpleAddr?: (address: string) => void;
 };
 
 export default memo(function RegisterMap({
@@ -22,6 +23,7 @@ export default memo(function RegisterMap({
   coordinate,
   setCoordinate,
   locationId,
+  setSimpleAddr,
 }: Props) {
   const [isMovingMarker, setIsMovingMarker] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -47,8 +49,9 @@ export default memo(function RegisterMap({
               .join(", ");
 
             fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-            if (setAddress && setCoordinate) {
+            if (setAddress && setSimpleAddr) {
               setAddress(fullAddress);
+              setSimpleAddr(`${region.area2.name} ${region.area3.name}`);
             }
           }
           if (response.data.status.code === 3) {
@@ -68,7 +71,7 @@ export default memo(function RegisterMap({
         setIsMovingMarker(false);
       }
     },
-    [setAddress, setCoordinate],
+    [setAddress, setSimpleAddr],
   );
 
   useEffect(() => {
@@ -127,7 +130,6 @@ export default memo(function RegisterMap({
           {locationId}
         </div>
       )}
-      <FullScreenButton id={locationId} />
       <NaverMap
         defaultCenter={coordinate}
         defaultZoom={18}
@@ -137,6 +139,7 @@ export default memo(function RegisterMap({
         draggable={isDisabled}
         scrollWheel={isDisabled}
       >
+        <FullScreenButton id={locationId} />
         <Marker
           position={coordinate}
           draggable={isDisabled}
@@ -151,7 +154,11 @@ export default memo(function RegisterMap({
             getReverseGeoCode(e.coord.y, e.coord.x);
           }}
         />
-        <MoveCenter lat={coordinate.lat} lng={coordinate.lng} />
+        <MoveCenter
+          lat={coordinate.lat}
+          lng={coordinate.lng}
+          isDisabled={isDisabled}
+        />
         <ZoomControl address={address} zoom={18} />
       </NaverMap>
       {isMovingMarker && <LoadingSpinner />}
