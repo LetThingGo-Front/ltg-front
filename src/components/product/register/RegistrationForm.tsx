@@ -5,7 +5,6 @@ import Line from "@/components/product/register/Line";
 import Image from "next/image";
 import SemiTitle from "@/components/product/register/SemiTitle";
 import ItemBox from "@/components/product/register/ItemBox";
-import RegistrationMap from "@/components/product/register/RegistrationMap";
 import { category, itemStatus } from "./constants/constants";
 import RegistrationLocation from "./RegistrationLocation";
 import ImageUpload from "./ImageUpload";
@@ -13,6 +12,7 @@ import TextInput from "./TextInput";
 import GradationButton from "@/components/common/ui/button/GradationButton";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { CreateItemPayload } from "@/models/data-contracts";
+import utils from "@/utils/cmmnUtil";
 
 export default function RegistrationForm() {
   const {
@@ -147,37 +147,23 @@ export default function RegistrationForm() {
         )}
       />
       {/* 나눔 장소 및 일정 */}
-      <div>
-        <div className="flex flex-col gap-2">
-          <SemiTitle
-            title="나눔 장소 및 일정"
-            required
-            subText="최대 2개 등록 가능"
-          />
-          <Line />
-        </div>
-        <div className="mt-3 flex flex-col gap-[18px] sm:gap-10">
-          {!openLocation && (
-            <button
-              className="flex h-[110px] items-center justify-center rounded-[10px] bg-grey-50 hover:bg-grey-100 active:bg-grey-50/70 sm:h-[180px]"
-              onClick={() => setOpenLocation(true)}
-              type="button"
-            >
-              <Image
-                src="/assets/images/button/square_plus.svg"
-                width={32}
-                height={32}
-                alt="add"
+      <Controller
+        control={control}
+        name="itemCreateRequest.itemLocations"
+        defaultValue={[]}
+        rules={{ required: "나눔 장소 및 일정은 필수입니다." }}
+        render={({ field: { onChange } }) => (
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
+              <SemiTitle
+                title="나눔 장소 및 일정"
+                required
+                subText="최대 2개 등록 가능"
               />
-            </button>
-          )}
-          {openLocation && (
-            <Controller
-              control={control}
-              name="itemCreateRequest.itemLocations"
-              defaultValue={[]}
-              rules={{ required: "나눔 장소 및 일정은 필수입니다." }}
-              render={({ field: { onChange } }) => (
+              <Line />
+            </div>
+            <div className="mt-3 flex flex-col gap-[18px] sm:gap-10">
+              {openLocation ? (
                 <RegistrationLocation
                   close={() => setOpenLocation(false)}
                   locationId="나눔 장소 A"
@@ -185,11 +171,29 @@ export default function RegistrationForm() {
                   setSaved={setSaved}
                   onSave={onChange}
                 />
+              ) : (
+                <button
+                  className="flex h-[110px] items-center justify-center rounded-[10px] bg-grey-50 hover:bg-grey-100 active:bg-grey-50/70 sm:h-[180px]"
+                  onClick={() => setOpenLocation(true)}
+                  type="button"
+                >
+                  <Image
+                    src="/assets/images/button/square_plus.svg"
+                    width={32}
+                    height={32}
+                    alt="add"
+                  />
+                </button>
               )}
-            />
-          )}
-        </div>
-      </div>
+            </div>
+            {errors.itemCreateRequest?.itemLocations && (
+              <p className="font-semibold text-red-500 max-sm:text-xs">
+                {errors.itemCreateRequest.itemLocations.message}
+              </p>
+            )}
+          </div>
+        )}
+      />
       {/* 상세설명 */}
       <Controller
         control={control}
@@ -212,7 +216,12 @@ export default function RegistrationForm() {
           </div>
         )}
       />
-      <div className="mb-[130px] flex items-center justify-center sm:mt-[60px]">
+      {!utils.isEmpty(errors) && (
+        <p className="font-semibold text-red-500 max-sm:text-xs">
+          필수 항목이 비어 있습니다. 확인 후 완료해주세요.
+        </p>
+      )}
+      <div className="mb-[130px] flex flex-col items-center justify-center gap-3 sm:mt-[60px]">
         <GradationButton buttonText="나눔 등록 완료" type="submit" />
       </div>
     </form>

@@ -28,17 +28,19 @@ export default function SearchInput({
     >
       <div
         className={clsx(
-          "flex w-full cursor-pointer items-center justify-center bg-transparent px-7 text-center text-inherit sm:text-sm",
+          "flex w-full cursor-pointer items-center justify-center bg-transparent text-center text-inherit sm:text-sm",
           address && "font-semibold text-grey-700",
-          !isOpenSearchAddr && "text-[10px]",
+          isOpenSearchAddr ? "max-sm:px-9" : "text-[10px] max-sm:px-8",
         )}
       >
-        <p>{address ? address : "주소를 검색하세요"}</p>
+        <p className="truncate">{address ? address : "주소를 검색하세요"}</p>
       </div>
       <div
         className={clsx(
-          "absolute left-3 top-[10px] h-3 w-3 sm:top-[14px]",
-          isOpenSearchAddr && "max-sm:top-3 max-sm:h-4 max-sm:w-4",
+          "absolute left-3 top-[10px] h-4 w-5 sm:top-[14px]",
+          isOpenSearchAddr
+            ? "max-sm:top-3 max-sm:h-4 max-sm:w-4"
+            : "max-sm:h-3 max-sm:w-3",
         )}
       >
         <Image

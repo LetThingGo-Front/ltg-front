@@ -15,6 +15,27 @@ export default function FullScreenButton({ id = "map" }: Props) {
       }
     }
   };
+  const ButtonIcon = () => {
+    if (document.fullscreenElement) {
+      return (
+        <Image
+          src="/assets/images/button/minimisescreen.svg"
+          width={25}
+          height={25}
+          alt="Minimisescreen"
+        />
+      );
+    } else {
+      return (
+        <Image
+          src="/assets/images/button/fullscreen.svg"
+          width={25}
+          height={25}
+          alt="fullscreen"
+        />
+      );
+    }
+  };
 
   return (
     <button
@@ -22,12 +43,7 @@ export default function FullScreenButton({ id = "map" }: Props) {
       onClick={fullScreen}
       type="button"
     >
-      <Image
-        src="/assets/images/button/fullscreen.svg"
-        width={25}
-        height={25}
-        alt="fullscreen"
-      />
+      <ButtonIcon />
     </button>
   );
 }

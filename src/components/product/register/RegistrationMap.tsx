@@ -101,6 +101,17 @@ export default memo(function RegisterMap({
         }
       });
     }
+
+    // iOS mobile 환경 fullscreenElement 미지원
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (
+      userAgent.indexOf("iphone") > -1 ||
+      userAgent.indexOf("ipad") > -1 ||
+      userAgent.indexOf("ipod") > -1
+    ) {
+      setIsDisabled(true);
+    }
+
     return () => {
       if (mapElement) {
         mapElement.removeEventListener("fullscreenchange", () => {
@@ -133,9 +144,9 @@ export default memo(function RegisterMap({
       <NaverMap
         defaultCenter={coordinate}
         defaultZoom={18}
-        disableDoubleClickZoom={isDisabled}
-        disableDoubleTapZoom={isDisabled}
-        disableTwoFingerTapZoom={isDisabled}
+        disableDoubleClickZoom={!isDisabled}
+        disableDoubleTapZoom={!isDisabled}
+        disableTwoFingerTapZoom={!isDisabled}
         draggable={isDisabled}
         scrollWheel={isDisabled}
       >

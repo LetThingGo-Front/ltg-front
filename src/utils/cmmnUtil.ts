@@ -3,7 +3,7 @@ const setStorage = (key: string, value: any) => {
 };
 
 const getStorage = (key: string) => {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return null;
   }
   const value = localStorage.getItem(key);
@@ -18,11 +18,16 @@ const removeStorageAll = () => {
   localStorage.clear();
 };
 
+const isEmpty = (obj: Object) => {
+  return Object.keys(obj).length === 0;
+};
+
 const utils = {
   setStorage,
   getStorage,
   removeStorage,
   removeStorageAll,
+  isEmpty,
 };
 
 export default utils;
