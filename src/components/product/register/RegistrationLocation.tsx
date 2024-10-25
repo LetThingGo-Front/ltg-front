@@ -22,6 +22,8 @@ type Props = {
   setSaved: (isSaved: boolean) => void;
   isSaved: boolean;
   onSave: (location: ItemLocationDto[]) => void;
+  locationInfo: ItemLocationDto;
+  locationList: ItemLocationDto[];
 };
 
 const locationVariants = {
@@ -43,7 +45,11 @@ export default function RegistrationLocation({
   isSaved,
   setSaved,
   onSave,
+  locationInfo,
+  locationList,
 }: Props) {
+  console.log(`{RegistrationLocation}`);
+  console.log(locationInfo);
   const [isTodayShare, setIsTodayShare] = useState(false); // 오늘 번개 나눔 여부
   const [isDayShare, setIsDayShare] = useState(false); // 나눔 가능 요일 및 시간대 선택 여부
   const [selectDay, setSelectDay] = useState<Array<string>>([]); // 선택된 요일
@@ -54,10 +60,11 @@ export default function RegistrationLocation({
   const [address, setAddress] = useState(""); // 주소
   const [addExplain, setAddExplain] = useState(""); // 장소 세부 설명
   const [coordinate, setCoordinate] = useState<{ lat: number; lng: number }>({
-    lat: 37.5666103,
-    lng: 126.9783882,
+    lat: locationInfo?.latitude ?? 37.5666103,
+    lng: locationInfo?.longitude ?? 126.9783882,
   });
   const [simpleAddr, setSimpleAddr] = useState(""); // 간단한 주소
+  const [openLocationForm, setOpenLocationForm] = useState(false);
 
   const toggleSelectDay = () => {
     if (isDayShare) {
@@ -136,6 +143,10 @@ export default function RegistrationLocation({
   }, []);
 
   const saveLocationInfo = () => {
+    if (locationInfo?.address === address) {
+      setOpenLocationForm(false);
+      return;
+    }
     const location: ItemLocationDto[] = [
       {
         address: address,
@@ -148,8 +159,16 @@ export default function RegistrationLocation({
         itemAvailabilities: [],
       },
     ];
-    onSave(location);
-    setSaved(true);
+    onSave([...locationList, ...location]);
+    setOpenLocationForm(false);
+  };
+
+  const deleteLocationInfo = () => {
+    const newLocationList = locationList.filter(
+      (location) => location.address !== address,
+    );
+    onSave(newLocationList);
+    setOpenLocationForm(false);
   };
 
   useEffect(() => {
@@ -158,19 +177,41 @@ export default function RegistrationLocation({
     }
   }, [address, getGeoCode]);
 
+  if (!openLocationForm && !locationInfo?.address) {
+    return (
+      <button
+        className="flex h-[6.875rem] w-full items-center justify-center rounded-lg bg-grey-50 hover:bg-grey-100 active:bg-grey-50/70 sm:h-[11.25rem]"
+        onClick={() => setOpenLocationForm(true)}
+        type="button"
+      >
+        <Image
+          src="/assets/images/button/square_plus.svg"
+          width={32}
+          height={32}
+          alt="add"
+        />
+      </button>
+    );
+  }
+
   return (
     <div>
-      {isSaved && (
-        <div className="flex h-[110px] flex-col gap-2 rounded-[10px] sm:h-[220px] sm:gap-5">
-          <div className="h-[90px] sm:h-[180px]">
+      {!openLocationForm && locationInfo?.address && (
+        <div
+          className={clsx(
+            "flex h-[6.875rem] flex-col gap-2 rounded-lg sm:h-[13.75rem] sm:gap-5",
+          )}
+        >
+          <div className="h-[5.625rem] sm:h-[11.25rem]">
             <RegistrationMap
               coordinate={coordinate}
               locationId={locationId}
               setSimpleAddr={setSimpleAddr}
+              disableFullscreen
             />
           </div>
           <div className="flex justify-between">
-            <div className="flex gap-3 text-[10px] font-bold text-grey-500 sm:text-sm">
+            <div className="text-xxs flex gap-3 font-bold text-grey-500 sm:text-sm">
               <div className="flex gap-1">
                 <div className="h-4 w-4 sm:h-5 sm:w-5">
                   <Image
@@ -196,185 +237,187 @@ export default function RegistrationLocation({
             </div>
             <button
               type="button"
-              className="text-[10px] font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
-              onClick={() => setSaved(false)}
+              className="text-xxs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
+              onClick={() => setOpenLocationForm(true)}
             >
               수정하기
             </button>
           </div>
         </div>
       )}
-      <motion.div
-        className={clsx(
-          "flex h-full flex-col items-center gap-[25px] rounded-[10px] bg-ltg-gradient-b px-[30px] py-[26px] sm:gap-[45px]",
-          isSaved && "hidden",
-        )}
-        variants={locationVariants}
-        initial="start"
-        animate="end"
-        exit="exit"
-      >
-        <div className="rounded-[4px] bg-green-400 px-2">
-          <p className="text-center font-bold text-grey-900 max-sm:text-[10px]">
-            {locationId}
-          </p>
-        </div>
-        <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <MinSemiTitle title="나눔 장소 설정" required />
+      {openLocationForm && (
+        <motion.div
+          className={clsx(
+            "flex h-full flex-col items-center gap-6 rounded-xl bg-ltg-gradient-b px-[1.875rem] py-[1.625rem] sm:gap-11",
+          )}
+          variants={locationVariants}
+          initial="start"
+          animate="end"
+          exit="exit"
+        >
+          <div className="rounded bg-green-400 px-2">
+            <p className="max-sm:text-xxs text-center font-bold text-grey-900">
+              {locationId}
+            </p>
+          </div>
+          <div className="flex w-full flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <MinSemiTitle title="나눔 장소 설정" required />
+              <Line />
+            </div>
+            <div className="flex gap-1">
+              <div className="flex items-center p-1">
+                <div className="h-[0.625rem] w-[0.625rem] sm:h-4 sm:w-4">
+                  <Image
+                    src="/assets/images/home.svg"
+                    width={16}
+                    height={16}
+                    alt="home"
+                  />
+                </div>
+                <p className="text-xxxs font-bold text-grey-400 sm:text-xs">
+                  집근처
+                </p>
+              </div>
+              <div className="flex items-center p-1">
+                <div className="h-[0.625rem] w-[0.625rem] sm:h-4 sm:w-4">
+                  <Image
+                    src="/assets/images/building.svg"
+                    width={16}
+                    height={16}
+                    alt="company"
+                  />
+                </div>
+                <p className="text-xxxs font-bold text-grey-400 sm:text-xs">
+                  회사 근처
+                </p>
+              </div>
+              <div className="flex items-center p-1">
+                <div className="h-[0.625rem] w-[0.625rem] sm:h-4 sm:w-4">
+                  <Image
+                    src="/assets/images/location_marker.svg"
+                    width={16}
+                    height={16}
+                    alt="etc"
+                  />
+                </div>
+                <p className="text-xxxs font-bold text-grey-400 sm:text-xs">
+                  기타
+                </p>
+              </div>
+            </div>
+            <Postcode
+              addr={address}
+              setAddress={setAddress}
+              isOpen={isOpenSearchAddr}
+              openPostcode={setIsOpenSearchAddr}
+              setSimpleAddr={setSimpleAddr}
+            />
+            <TextInput
+              placeholder="길안내(예: 지상 강남역 12번 출구 앞)"
+              clearField={() => setAddExplain("")}
+              value={addExplain}
+              onChange={(e) => setAddExplain(e.target.value)}
+            />
+          </div>
+          <div className="h-[7.5rem] w-full sm:h-[12.5rem]">
+            <RegistrationMap
+              address={address}
+              coordinate={coordinate}
+              setCoordinate={setCoordinate}
+              setAddress={setAddress}
+              setSimpleAddr={setSimpleAddr}
+              locationId={locationId}
+            />
+          </div>
+          <div className="flex w-full flex-col gap-2">
+            <MinSemiTitle title="나눔 가능 일정 선택" />
             <Line />
           </div>
-          <div className="flex gap-1">
-            <div className="flex items-center p-1">
-              <div className="h-[10px] w-[10px] sm:h-4 sm:w-4">
-                <Image
-                  src="/assets/images/home.svg"
-                  width={16}
-                  height={16}
-                  alt="home"
-                />
-              </div>
-              <p className="text-[8px] font-bold text-grey-400 sm:text-xs">
-                집근처
+          <div className="flex w-full flex-col gap-3 sm:gap-9">
+            <div className="flex items-center justify-between">
+              <p className="max-sm:text-xxs font-semibold text-grey-800">
+                오늘 번개 나눔
               </p>
+              <ToggleButton
+                toggle={() => setIsTodayShare(!isTodayShare)}
+                on={isTodayShare}
+              />
             </div>
-            <div className="flex items-center p-1">
-              <div className="h-[10px] w-[10px] sm:h-4 sm:w-4">
-                <Image
-                  src="/assets/images/building.svg"
-                  width={16}
-                  height={16}
-                  alt="company"
-                />
-              </div>
-              <p className="text-[8px] font-bold text-grey-400 sm:text-xs">
-                회사 근처
-              </p>
-            </div>
-            <div className="flex items-center p-1">
-              <div className="h-[10px] w-[10px] sm:h-4 sm:w-4">
-                <Image
-                  src="/assets/images/location_marker.svg"
-                  width={16}
-                  height={16}
-                  alt="etc"
-                />
-              </div>
-              <p className="text-[8px] font-bold text-grey-400 sm:text-xs">
-                기타
-              </p>
-            </div>
-          </div>
-          <Postcode
-            addr={address}
-            setAddress={setAddress}
-            isOpen={isOpenSearchAddr}
-            openPostcode={setIsOpenSearchAddr}
-            setSimpleAddr={setSimpleAddr}
-          />
-          <TextInput
-            placeholder="길안내(예: 지상 강남역 12번 출구 앞)"
-            clearField={() => setAddExplain("")}
-            value={addExplain}
-            onChange={(e) => setAddExplain(e.target.value)}
-          />
-        </div>
-        <div className="h-[120px] w-full sm:h-[200px]">
-          <RegistrationMap
-            address={address}
-            coordinate={coordinate}
-            setCoordinate={setCoordinate}
-            setAddress={setAddress}
-            setSimpleAddr={setSimpleAddr}
-            locationId={locationId}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-2">
-          <MinSemiTitle title="나눔 가능 일정 선택" />
-          <Line />
-        </div>
-        <div className="flex w-full flex-col gap-3 sm:gap-9">
-          <div className="flex items-center justify-between">
-            <p className="font-semibold text-grey-800 max-sm:text-[10px]">
-              오늘 번개 나눔
-            </p>
-            <ToggleButton
-              toggle={() => setIsTodayShare(!isTodayShare)}
-              on={isTodayShare}
-            />
-          </div>
-          {isTodayShare && (
-            <TimeList
-              selectTime={selectTodayTime}
-              addSelectTime={addSelectTodayTime}
-            />
-          )}
-          <div className="flex items-center justify-between">
-            <p className="font-semibold text-grey-800 max-sm:text-[10px]">
-              나눔 가능 요일 및 시간대 선택
-            </p>
-            <ToggleButton
-              toggle={() => toggleSelectDay()}
-              on={isDayShare}
-              onText="나눔자"
-              offText="신청자"
-              isShort={false}
-            />
-          </div>
-          <div className="flex justify-between">
-            {days.map((day, i) => (
-              <button
-                key={day}
-                className={clsx(
-                  "px-1.5 py-0.5 font-semibold max-sm:text-[10px] sm:px-4 sm:py-1",
-                  isDayShare ? "rounded" : "text-grey-300",
-                  selectDay.includes(day)
-                    ? "bg-black text-white"
-                    : isDayShare && "bg-black/5 text-black",
-                )}
-                onClick={() => addSelectDay(day)}
-                type="button"
-                disabled={!isDayShare}
-              >
-                {day}
-              </button>
-            ))}
-          </div>
-          <button
-            className={clsx(
-              "rounded-full bg-black/5 py-1 text-center font-semibold max-sm:text-[8px]",
-              selectDay.length === 0 ? "text-grey-300" : "text-black",
-              openTime && "hidden",
+            {isTodayShare && (
+              <TimeList
+                selectTime={selectTodayTime}
+                addSelectTime={addSelectTodayTime}
+              />
             )}
-            disabled={selectDay.length === 0}
-            onClick={() => setOpenTime(true)}
-          >
-            시간 선택 하기
-          </button>
-          {openTime && (
-            <TimeList
-              selectTime={selectDayTime}
-              addSelectTime={addSelectDayTime}
-            />
-          )}
-        </div>
-        <div className="flex flex-col gap-3">
-          <button
-            className="rounded-full bg-black px-4 py-2 text-[10px] font-semibold text-white sm:text-xs"
-            type="button"
-            onClick={saveLocationInfo}
-          >
-            장소 및 일정 저장
-          </button>
-          <button
-            className="px-4 py-2 text-[10px] font-semibold text-grey-700 sm:text-xs"
-            onClick={close}
-            type="button"
-          >
-            닫기
-          </button>
-        </div>
-      </motion.div>
+            <div className="flex items-center justify-between">
+              <p className="max-sm:text-xxs font-semibold text-grey-800">
+                나눔 가능 요일 및 시간대 선택
+              </p>
+              <ToggleButton
+                toggle={() => toggleSelectDay()}
+                on={isDayShare}
+                onText="나눔자"
+                offText="신청자"
+                isShort={false}
+              />
+            </div>
+            <div className="flex justify-between">
+              {days.map((day, i) => (
+                <button
+                  key={day}
+                  className={clsx(
+                    "max-sm:text-xxs px-1.5 py-0.5 font-semibold sm:px-4 sm:py-1",
+                    isDayShare ? "rounded" : "text-grey-300",
+                    selectDay.includes(day)
+                      ? "bg-black text-white"
+                      : isDayShare && "bg-black/5 text-black",
+                  )}
+                  onClick={() => addSelectDay(day)}
+                  type="button"
+                  disabled={!isDayShare}
+                >
+                  {day}
+                </button>
+              ))}
+            </div>
+            <button
+              className={clsx(
+                "max-sm:text-xxxs rounded-full bg-black/5 py-1 text-center font-semibold",
+                selectDay.length === 0 ? "text-grey-300" : "text-black",
+                openTime && "hidden",
+              )}
+              disabled={selectDay.length === 0}
+              onClick={() => setOpenTime(true)}
+              type="button"
+            >
+              시간 선택 하기
+            </button>
+            {openTime && (
+              <TimeList
+                selectTime={selectDayTime}
+                addSelectTime={addSelectDayTime}
+              />
+            )}
+          </div>
+          <div className="flex flex-col gap-3">
+            <button
+              className="text-xxs rounded-full bg-black px-4 py-2 font-semibold text-white sm:text-xs"
+              type="button"
+              onClick={saveLocationInfo}
+            >
+              장소 및 일정 저장
+            </button>
+            <button
+              className="text-xxs px-4 py-2 font-semibold text-grey-700 sm:text-xs"
+              onClick={deleteLocationInfo}
+              type="button"
+            >
+              닫기
+            </button>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }

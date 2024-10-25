@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Line from "@/components/product/register/Line";
 import Image from "next/image";
 import SemiTitle from "@/components/product/register/SemiTitle";
@@ -10,20 +10,23 @@ import RegistrationLocation from "./RegistrationLocation";
 import ImageUpload from "./ImageUpload";
 import TextInput from "./TextInput";
 import GradationButton from "@/components/common/ui/button/GradationButton";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { CreateItemPayload } from "@/models/data-contracts";
+import { Controller, set, SubmitHandler, useForm } from "react-hook-form";
+import { CreateItemPayload, ItemLocationDto } from "@/models/data-contracts";
 import utils from "@/utils/cmmnUtil";
 
 export default function RegistrationForm() {
   const {
     control,
-    formState: { errors }, // isDirty -> 변경됨, isValid -> 유효함, errors -> 에러
+    formState: { errors }, // isDirty: 변경됨, isValid: 유효함, errors: 에러
     handleSubmit,
     resetField,
   } = useForm<CreateItemPayload>();
 
-  const [isSaved, setSaved] = useState(false);
-  const [openLocation, setOpenLocation] = useState(false);
+  const sharingLocation = ["나눔 장소 A", "나눔 장소 B"];
+  const [isFirstLocationSaved, setIsFirstLocationSaved] = useState(false);
+  const [isSecondLocationSaved, setIsSecondLocationSaved] = useState(false);
+  const [openFirstLocation, setOpenFirstLocation] = useState(false);
+  const [openSecondLocation, setOpenSecondLocation] = useState(false);
 
   const createItem: SubmitHandler<CreateItemPayload> = (data: unknown) => {
     const formData = new FormData();
@@ -32,7 +35,7 @@ export default function RegistrationForm() {
 
   return (
     <form
-      className="flex flex-col gap-[72px] sm:gap-10"
+      className="flex flex-col gap-[4.5rem] sm:gap-10"
       onSubmit={handleSubmit(createItem)}
     >
       {/* 물품명 */}
@@ -73,7 +76,7 @@ export default function RegistrationForm() {
               <SemiTitle title="카테고리" required subText="(택1)" />
               <Line />
             </div>
-            <div className="flex flex-wrap gap-x-2 gap-y-2 sm:gap-x-[18px] sm:gap-y-3">
+            <div className="flex flex-wrap gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
               {category.map((v) => (
                 <ItemBox
                   key={v.id}
@@ -128,7 +131,7 @@ export default function RegistrationForm() {
               <SemiTitle title="물품상태" required subText="(택1)" />
               <Line />
             </div>
-            <div className="flex flex-col gap-x-2 gap-y-2 sm:gap-x-[18px] sm:gap-y-3">
+            <div className="flex flex-col gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
               {itemStatus.map((status, i) => (
                 <ItemBox
                   key={status}
@@ -152,47 +155,53 @@ export default function RegistrationForm() {
         name="itemCreateRequest.itemLocations"
         defaultValue={[]}
         rules={{ required: "나눔 장소 및 일정은 필수입니다." }}
-        render={({ field: { onChange } }) => (
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-2">
-              <SemiTitle
-                title="나눔 장소 및 일정"
-                required
-                subText="최대 2개 등록 가능"
-              />
-              <Line />
-            </div>
-            <div className="mt-3 flex flex-col gap-[18px] sm:gap-10">
-              {openLocation ? (
-                <RegistrationLocation
-                  close={() => setOpenLocation(false)}
-                  locationId="나눔 장소 A"
-                  isSaved={isSaved}
-                  setSaved={setSaved}
-                  onSave={onChange}
+        render={({ field: { onChange, value } }) => {
+          const [container, setContainer] = useState<ItemLocationDto[]>([]);
+          const containerCount =
+            value.length + 1 > sharingLocation.length
+              ? sharingLocation.length
+              : value.length + 1;
+          console.log(value);
+          const addValueContainer = Array(containerCount)
+            .fill(null)
+            .map((_, i) => value[i] || {});
+          console.log(container);
+          useEffect(() => {
+            setContainer(addValueContainer);
+          }, [value]);
+
+          return (
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2">
+                <SemiTitle
+                  title="나눔 장소 및 일정"
+                  required
+                  subText={`최대 ${sharingLocation.length}개 등록 가능`}
                 />
-              ) : (
-                <button
-                  className="flex h-[110px] items-center justify-center rounded-[10px] bg-grey-50 hover:bg-grey-100 active:bg-grey-50/70 sm:h-[180px]"
-                  onClick={() => setOpenLocation(true)}
-                  type="button"
-                >
-                  <Image
-                    src="/assets/images/button/square_plus.svg"
-                    width={32}
-                    height={32}
-                    alt="add"
+                <Line />
+              </div>
+              <div className="mt-3 flex flex-col gap-[1.125rem] sm:gap-10">
+                {container?.map((v, i) => (
+                  <RegistrationLocation
+                    key={sharingLocation[i]}
+                    close={() => setOpenFirstLocation(false)}
+                    locationId={sharingLocation[i]}
+                    isSaved={isFirstLocationSaved}
+                    setSaved={setIsFirstLocationSaved}
+                    onSave={onChange}
+                    locationInfo={v}
+                    locationList={value}
                   />
-                </button>
+                ))}
+              </div>
+              {errors.itemCreateRequest?.itemLocations && (
+                <p className="font-semibold text-red-500 max-sm:text-xs">
+                  {errors.itemCreateRequest.itemLocations.message}
+                </p>
               )}
             </div>
-            {errors.itemCreateRequest?.itemLocations && (
-              <p className="font-semibold text-red-500 max-sm:text-xs">
-                {errors.itemCreateRequest.itemLocations.message}
-              </p>
-            )}
-          </div>
-        )}
+          );
+        }}
       />
       {/* 상세설명 */}
       <Controller
@@ -216,12 +225,12 @@ export default function RegistrationForm() {
           </div>
         )}
       />
-      {!utils.isEmpty(errors) && (
-        <p className="font-semibold text-red-500 max-sm:text-xs">
-          필수 항목이 비어 있습니다. 확인 후 완료해주세요.
-        </p>
-      )}
-      <div className="mb-[130px] flex flex-col items-center justify-center gap-3 sm:mt-[60px]">
+      <div className="mb-[8.125rem] flex flex-col items-center justify-center gap-3 sm:mt-[3.75rem]">
+        {!utils.isEmpty(errors) && (
+          <p className="font-semibold text-red-500 max-sm:text-xs">
+            필수 항목이 비어 있습니다. 확인 후 완료해주세요.
+          </p>
+        )}
         <GradationButton buttonText="나눔 등록 완료" type="submit" />
       </div>
     </form>

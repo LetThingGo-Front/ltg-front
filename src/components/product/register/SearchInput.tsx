@@ -19,7 +19,7 @@ export default function SearchInput({
     <motion.div
       className={clsx(
         "relative flex h-11 bg-grey-50 text-grey-500 backdrop-blur-[50px]",
-        isOpenSearchAddr ? "sm:rounded-t-[10px]" : "rounded-[10px] max-sm:h-8",
+        isOpenSearchAddr ? "sm:rounded-t-lg" : "rounded-lg max-sm:h-8",
       )}
       whileHover={commonHover}
       whileTap={commonTap}
@@ -30,14 +30,14 @@ export default function SearchInput({
         className={clsx(
           "flex w-full cursor-pointer items-center justify-center bg-transparent text-center text-inherit sm:text-sm",
           address && "font-semibold text-grey-700",
-          isOpenSearchAddr ? "max-sm:px-9" : "text-[10px] max-sm:px-8",
+          isOpenSearchAddr ? "max-sm:px-9" : "text-xxs max-sm:px-8",
         )}
       >
         <p className="truncate">{address ? address : "주소를 검색하세요"}</p>
       </div>
       <div
         className={clsx(
-          "absolute left-3 top-[10px] h-4 w-5 sm:top-[14px]",
+          "absolute left-3 top-[0.625rem] h-4 w-5 sm:top-[0.875rem]",
           isOpenSearchAddr
             ? "max-sm:top-3 max-sm:h-4 max-sm:w-4"
             : "max-sm:h-3 max-sm:w-3",

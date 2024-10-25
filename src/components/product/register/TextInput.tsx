@@ -22,9 +22,9 @@ export default function TextInput({
   inputRef,
 }: TextInputProps) {
   return (
-    <div className="flex h-8 items-center justify-center gap-2 rounded-[10px] bg-grey-50 p-3 backdrop-blur-[10px] sm:h-11">
+    <div className="flex h-8 items-center justify-center gap-2 rounded-lg bg-grey-50 p-3 backdrop-blur-[10px] sm:h-11">
       <input
-        className="shrink grow basis-0 bg-transparent text-sm font-semibold text-grey-700 outline-none placeholder:text-grey-400 max-sm:text-[10px]"
+        className="shrink grow basis-0 bg-transparent text-sm font-semibold text-grey-700 outline-none placeholder:text-grey-400 max-sm:text-[0.625rem]"
         placeholder={placeholder}
         onChange={onChange}
         value={value}

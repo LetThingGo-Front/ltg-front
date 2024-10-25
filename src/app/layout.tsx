@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import SignIn from "@/components/signin/Signin";
 import Header from "@/components/Header";
@@ -19,6 +19,12 @@ export const metadata: Metadata = {
   description: "Let your things go 묵혀두지 말고 보내주세요. 무료 나눔 서비스",
 };
 
+export const viewport: Viewport = {
+  width: "device-width", // 문자열로 설정
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: false,
+};
 const clientId = process.env.NAVER_MAPS_CLIENT_ID!;
 
 export default function RootLayout({

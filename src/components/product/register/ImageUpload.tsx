@@ -59,7 +59,7 @@ export default function ImageUpload({ onChange }: Props) {
 
   const thumbs = files.map((file, idx) => (
     <div
-      className="relative box-border inline-flex h-[92px] w-[92px]"
+      className="relative box-border inline-flex h-[5.75rem] w-[5.75rem]"
       key={file.name}
     >
       <div className="flex min-w-0 overflow-hidden">
@@ -94,7 +94,7 @@ export default function ImageUpload({ onChange }: Props) {
     length: MAX_FILE_COUNT - files.length,
   }).map((_, idx) => (
     <div
-      className="h-[92px] w-[92px] rounded-[10px] border border-dashed border-grey-200"
+      className="h-[5.75rem] w-[5.75rem] rounded-lg border border-dashed border-grey-200"
       key={idx}
     ></div>
   ));
@@ -108,7 +108,7 @@ export default function ImageUpload({ onChange }: Props) {
     <div className="mt-3 flex flex-wrap gap-2">
       <div
         {...getRootProps({ className: "dropzone" })}
-        className="relative flex h-[92px] w-[92px] cursor-pointer items-center justify-center rounded-[10px] bg-grey-50 hover:bg-grey-100 active:bg-grey-50/70"
+        className="relative flex h-[5.75rem] w-[5.75rem] cursor-pointer items-center justify-center rounded-lg bg-grey-50 hover:bg-grey-100 active:bg-grey-50/70"
       >
         <input {...getInputProps()} />
         <Image
@@ -117,7 +117,7 @@ export default function ImageUpload({ onChange }: Props) {
           height={20}
           alt="add"
         />
-        <p className="absolute bottom-4 text-[8px] font-semibold text-grey-400">
+        <p className="text-xxxs absolute bottom-4 font-semibold text-grey-400">
           jpg,png,heic
         </p>
       </div>

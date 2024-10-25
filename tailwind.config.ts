@@ -20,6 +20,10 @@ const config: Config = {
       boxShadow: {
         ltg: "0px 0px 10px 0px rgba(0, 0, 0, 0.1)",
       },
+      fontSize: {
+        xxxs: ["0.5rem", { lineHeight: "0.75rem" }],
+        xxs: ["0.625rem", { lineHeight: "0.875rem" }],
+      },
       colors: {
         green: {
           50: "#FBFDE7",

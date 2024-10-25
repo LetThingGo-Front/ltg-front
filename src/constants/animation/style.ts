@@ -32,6 +32,10 @@ const scale = {
 };
 
 const commonHover = { backgroundColor: "#474747", color: "#ffffff" };
-const commonTap = { backgroundColor: "#474747", color: "#ffffff" };
+const commonTap = {
+  backgroundColor: "#474747",
+  color: "#ffffff",
+  transition: { duration: 0 },
+};
 
 export { delay, duration, scale, commonHover, commonTap };

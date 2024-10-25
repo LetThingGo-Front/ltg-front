@@ -17,10 +17,10 @@ export default function GradationButton({
   return (
     <motion.div
       className={clsx(
-        "flex h-10 w-[140px] items-start justify-center rounded-full border border-white", // 레이아웃, 크기, 모양, 테두리
+        "flex h-10 w-[8.75rem] items-start justify-center rounded-full border border-white", // 레이아웃, 크기, 모양, 테두리
         "bg-ltg-gradient-r font-semibold text-grey-800", // 배경, 색상, 폰트, 텍스트
         "shadow-ltg backdrop-blur-[70px]", // 효과
-        "max-sm:text-xs sm:h-[70px] sm:w-[200px] sm:p-2", // 반응형
+        "max-sm:text-xs sm:h-[4.375rem] sm:w-[12.5rem] sm:p-2", // 반응형
       )}
     >
       <motion.button
@@ -29,7 +29,7 @@ export default function GradationButton({
         )}
         whileHover={commonHover}
         whileTap={commonTap}
-        transition={{ ease: "easeInOut", ...duration.short }}
+        // transition={{ ease: "easeInOut", ...duration.medium }}
         onClick={onClick}
         type={type}
       >

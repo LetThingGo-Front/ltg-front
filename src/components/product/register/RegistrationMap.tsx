@@ -15,6 +15,7 @@ type Props = {
   setCoordinate?: (coord: { lat: number; lng: number }) => void;
   locationId: string;
   setSimpleAddr?: (address: string) => void;
+  disableFullscreen?: boolean;
 };
 
 export default memo(function RegisterMap({
@@ -24,6 +25,7 @@ export default memo(function RegisterMap({
   setCoordinate,
   locationId,
   setSimpleAddr,
+  disableFullscreen = false,
 }: Props) {
   const [isMovingMarker, setIsMovingMarker] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -75,20 +77,24 @@ export default memo(function RegisterMap({
   );
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        if (setCoordinate) {
-          setCoordinate({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        }
-      },
-      (error) => {
-        console.error("위치 정보를 가져오는데 실패했습니다: ", error);
-      },
-    );
-  }, [setCoordinate]);
+    // 주소가 없는 최초의 상태에서만 현위치로 이동
+    if (!address) {
+      console.log("navigator.geolocation.getCurrentPosition 호출!!");
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          if (setCoordinate) {
+            setCoordinate({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            });
+          }
+        },
+        (error) => {
+          console.error("위치 정보를 가져오는데 실패했습니다: ", error);
+        },
+      );
+    }
+  }, []);
 
   useEffect(() => {
     const mapElement = document.getElementById(locationId);
@@ -129,18 +135,16 @@ export default memo(function RegisterMap({
     <MapDiv
       style={{
         height: "100%",
-        borderRadius: "10px",
+        borderRadius: "0.625rem",
         overflow: "hidden",
         position: "relative",
         border: "0.5px solid #E8E8E8",
       }}
       id={locationId}
     >
-      {locationId && (
-        <div className="absolute m-3 h-[25px] w-[74px] rounded bg-[#303030]/50 p-1 text-center text-xs font-bold text-white backdrop-blur-sm">
-          {locationId}
-        </div>
-      )}
+      <div className="absolute m-3 h-[1.5625rem] w-[4.625rem] rounded bg-[#303030]/50 p-1 text-center text-xs font-bold text-white backdrop-blur-sm">
+        {locationId}
+      </div>
       <NaverMap
         defaultCenter={coordinate}
         defaultZoom={18}
@@ -150,7 +154,7 @@ export default memo(function RegisterMap({
         draggable={isDisabled}
         scrollWheel={isDisabled}
       >
-        <FullScreenButton id={locationId} />
+        {!disableFullscreen && <FullScreenButton id={locationId} />}
         <Marker
           position={coordinate}
           draggable={isDisabled}
@@ -165,11 +169,7 @@ export default memo(function RegisterMap({
             getReverseGeoCode(e.coord.y, e.coord.x);
           }}
         />
-        <MoveCenter
-          lat={coordinate.lat}
-          lng={coordinate.lng}
-          isDisabled={isDisabled}
-        />
+        <MoveCenter lat={coordinate.lat} lng={coordinate.lng} />
         <ZoomControl address={address} zoom={18} />
       </NaverMap>
       {isMovingMarker && <LoadingSpinner />}

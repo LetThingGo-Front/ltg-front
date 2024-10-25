@@ -16,7 +16,7 @@ const timeVariants = {
     ...duration.short,
   },
   end: {
-    height: "250px",
+    height: "15.625rem",
     ease: "easeInOut",
     ...duration.short,
   },
@@ -26,7 +26,7 @@ const timeVariants = {
 export default function TimeList({ selectTime, addSelectTime }: Props) {
   return (
     <motion.div
-      className="relative h-[88px] w-full rounded-[10px] bg-black/5"
+      className="relative h-[5.5rem] w-full rounded-lg bg-black/5"
       variants={timeVariants}
       initial="start"
       animate="end"
@@ -35,13 +35,13 @@ export default function TimeList({ selectTime, addSelectTime }: Props) {
       <div className="absolute top-0 h-full w-full p-5">
         <div className="flex h-full w-full flex-col items-center overflow-y-scroll">
           {timeList.map((hour) => (
-            <div key={hour} className="flex w-full gap-[2px] pr-4">
-              <div className="mr-2 h-[13px] w-6 text-center text-[8px] font-semibold tracking-tight text-grey-800 sm:text-xs">
+            <div key={hour} className="flex w-full gap-[0.125rem] pr-4">
+              <div className="text-xxxs mr-2 h-3 w-6 text-center font-semibold tracking-tight text-grey-800 sm:text-xs">
                 {hour}
               </div>
               <div
                 className={clsx(
-                  "h-10 w-full cursor-pointer rounded-[4px] border border-grey-100",
+                  "h-10 w-full cursor-pointer rounded border border-grey-100",
                   selectTime.includes(hour)
                     ? "bg-green-400 hover:bg-green-400"
                     : "bg-white/70 hover:bg-grey-50",

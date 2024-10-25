@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 type Props = {
   title: string;
@@ -13,7 +13,11 @@ export default function SemiTitle({ title, required, subText }: Props) {
         <p className="text-xs font-bold text-grey-800 sm:text-xl">{title}</p>
         {required && <p className="text-xs font-bold text-rose-600">*</p>}
       </div>
-      {subText && <p className="text-[8px] font-medium text-grey-400 sm:text-[13px]">{subText}</p>}
+      {subText && (
+        <p className="text-xxxs font-medium text-grey-400 sm:text-sm">
+          {subText}
+        </p>
+      )}
     </div>
   );
 }
