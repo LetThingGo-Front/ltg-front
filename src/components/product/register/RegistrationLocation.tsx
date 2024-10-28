@@ -17,6 +17,7 @@ import { duration } from "@/constants/animation/style";
 import { ItemLocationDto } from "@/models/data-contracts";
 
 type Props = {
+  idx: number;
   close: () => void;
   locationId: string;
   setSaved: (isSaved: boolean) => void;
@@ -40,6 +41,7 @@ const locationVariants = {
   exit: { opacity: 0, ease: "easeInOut", ...duration.medium },
 };
 export default function RegistrationLocation({
+  idx,
   close,
   locationId,
   isSaved,
@@ -48,8 +50,6 @@ export default function RegistrationLocation({
   locationInfo,
   locationList,
 }: Props) {
-  console.log(`{RegistrationLocation}`);
-  console.log(locationInfo);
   const [isTodayShare, setIsTodayShare] = useState(false); // 오늘 번개 나눔 여부
   const [isDayShare, setIsDayShare] = useState(false); // 나눔 가능 요일 및 시간대 선택 여부
   const [selectDay, setSelectDay] = useState<Array<string>>([]); // 선택된 요일
@@ -60,8 +60,8 @@ export default function RegistrationLocation({
   const [address, setAddress] = useState(""); // 주소
   const [addExplain, setAddExplain] = useState(""); // 장소 세부 설명
   const [coordinate, setCoordinate] = useState<{ lat: number; lng: number }>({
-    lat: locationInfo?.latitude ?? 37.5666103,
-    lng: locationInfo?.longitude ?? 126.9783882,
+    lat: 37.5666103,
+    lng: 126.9783882,
   });
   const [simpleAddr, setSimpleAddr] = useState(""); // 간단한 주소
   const [openLocationForm, setOpenLocationForm] = useState(false);
@@ -143,31 +143,36 @@ export default function RegistrationLocation({
   }, []);
 
   const saveLocationInfo = () => {
-    if (locationInfo?.address === address) {
-      setOpenLocationForm(false);
-      return;
+    const newLocation: ItemLocationDto = {
+      address: address,
+      addressDescription: addExplain,
+      district: simpleAddr.split(" ")[0],
+      dong: simpleAddr.split(" ")[1],
+      latitude: coordinate.lat,
+      longitude: coordinate.lng,
+      lightningYn: isTodayShare ? "Y" : "N",
+      itemAvailabilities: [],
+    };
+
+    // locationList length가 idx이하일 경우 신규 추가
+    if (locationList.length <= idx) {
+      onSave([...locationList, newLocation]);
+    } else {
+      // 그 외 수정단계
+      const insertAndModifyList = locationList.map((loc, i) => {
+        if (i === idx) {
+          return newLocation;
+        }
+        return loc;
+      });
+      onSave(insertAndModifyList);
     }
-    const location: ItemLocationDto[] = [
-      {
-        address: address,
-        addressDescription: addExplain,
-        district: address.split(" ")[0],
-        dong: address.split(" ")[1],
-        latitude: coordinate.lat,
-        longitude: coordinate.lng,
-        lightningYn: isTodayShare ? "Y" : "N",
-        itemAvailabilities: [],
-      },
-    ];
-    onSave([...locationList, ...location]);
     setOpenLocationForm(false);
   };
 
   const deleteLocationInfo = () => {
-    const newLocationList = locationList.filter(
-      (location) => location.address !== address,
-    );
-    onSave(newLocationList);
+    const filterLocationList = locationList.filter((_, i) => i !== idx);
+    onSave(filterLocationList);
     setOpenLocationForm(false);
   };
 
@@ -176,6 +181,27 @@ export default function RegistrationLocation({
       getGeoCode(address);
     }
   }, [address, getGeoCode]);
+
+  const initLocationInfo = useCallback(() => {
+    if (locationInfo) {
+      setAddress(locationInfo.address);
+      setAddExplain(locationInfo.addressDescription ?? "");
+      setSimpleAddr(`${locationInfo.district} ${locationInfo.dong}`);
+      setCoordinate({
+        lat: locationInfo.latitude,
+        lng: locationInfo.longitude,
+      });
+      setIsTodayShare(locationInfo.lightningYn === "Y");
+      setIsDayShare(locationInfo.itemAvailabilities?.length ? true : false);
+      setSelectDay([]);
+      setSelectDayTime([]);
+    }
+  }, [locationInfo]);
+
+  useEffect(() => {
+    // TODO 위치 정보 등록된 값이 있을 경우 해당 값으로 초기화
+    initLocationInfo();
+  }, [initLocationInfo, locationInfo]);
 
   if (!openLocationForm && !locationInfo?.address) {
     return (
@@ -211,7 +237,7 @@ export default function RegistrationLocation({
             />
           </div>
           <div className="flex justify-between">
-            <div className="text-xxs flex gap-3 font-bold text-grey-500 sm:text-sm">
+            <div className="flex gap-3 text-xxs font-bold text-grey-500 sm:text-sm">
               <div className="flex gap-1">
                 <div className="h-4 w-4 sm:h-5 sm:w-5">
                   <Image
@@ -256,7 +282,7 @@ export default function RegistrationLocation({
           exit="exit"
         >
           <div className="rounded bg-green-400 px-2">
-            <p className="max-sm:text-xxs text-center font-bold text-grey-900">
+            <p className="text-center font-bold text-grey-900 max-sm:text-xxs">
               {locationId}
             </p>
           </div>
@@ -336,7 +362,7 @@ export default function RegistrationLocation({
           </div>
           <div className="flex w-full flex-col gap-3 sm:gap-9">
             <div className="flex items-center justify-between">
-              <p className="max-sm:text-xxs font-semibold text-grey-800">
+              <p className="font-semibold text-grey-800 max-sm:text-xxs">
                 오늘 번개 나눔
               </p>
               <ToggleButton
@@ -351,7 +377,7 @@ export default function RegistrationLocation({
               />
             )}
             <div className="flex items-center justify-between">
-              <p className="max-sm:text-xxs font-semibold text-grey-800">
+              <p className="font-semibold text-grey-800 max-sm:text-xxs">
                 나눔 가능 요일 및 시간대 선택
               </p>
               <ToggleButton
@@ -367,7 +393,7 @@ export default function RegistrationLocation({
                 <button
                   key={day}
                   className={clsx(
-                    "max-sm:text-xxs px-1.5 py-0.5 font-semibold sm:px-4 sm:py-1",
+                    "px-1.5 py-0.5 font-semibold max-sm:text-xxs sm:px-4 sm:py-1",
                     isDayShare ? "rounded" : "text-grey-300",
                     selectDay.includes(day)
                       ? "bg-black text-white"
@@ -383,7 +409,7 @@ export default function RegistrationLocation({
             </div>
             <button
               className={clsx(
-                "max-sm:text-xxxs rounded-full bg-black/5 py-1 text-center font-semibold",
+                "rounded-full bg-black/5 py-1 text-center font-semibold max-sm:text-xxxs",
                 selectDay.length === 0 ? "text-grey-300" : "text-black",
                 openTime && "hidden",
               )}
@@ -402,18 +428,18 @@ export default function RegistrationLocation({
           </div>
           <div className="flex flex-col gap-3">
             <button
-              className="text-xxs rounded-full bg-black px-4 py-2 font-semibold text-white sm:text-xs"
+              className="rounded-full bg-black px-4 py-2 text-xxs font-semibold text-white sm:text-xs"
               type="button"
               onClick={saveLocationInfo}
             >
               장소 및 일정 저장
             </button>
             <button
-              className="text-xxs px-4 py-2 font-semibold text-grey-700 sm:text-xs"
+              className="px-4 py-2 text-xxs font-semibold text-grey-700 sm:text-xs"
               onClick={deleteLocationInfo}
               type="button"
             >
-              닫기
+              삭제
             </button>
           </div>
         </motion.div>

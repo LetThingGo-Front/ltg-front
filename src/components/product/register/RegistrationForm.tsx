@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Line from "@/components/product/register/Line";
-import Image from "next/image";
 import SemiTitle from "@/components/product/register/SemiTitle";
 import ItemBox from "@/components/product/register/ItemBox";
 import { category, itemStatus } from "./constants/constants";
@@ -10,8 +9,8 @@ import RegistrationLocation from "./RegistrationLocation";
 import ImageUpload from "./ImageUpload";
 import TextInput from "./TextInput";
 import GradationButton from "@/components/common/ui/button/GradationButton";
-import { Controller, set, SubmitHandler, useForm } from "react-hook-form";
-import { CreateItemPayload, ItemLocationDto } from "@/models/data-contracts";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { CreateItemPayload } from "@/models/data-contracts";
 import utils from "@/utils/cmmnUtil";
 
 export default function RegistrationForm() {
@@ -156,20 +155,14 @@ export default function RegistrationForm() {
         defaultValue={[]}
         rules={{ required: "나눔 장소 및 일정은 필수입니다." }}
         render={({ field: { onChange, value } }) => {
-          const [container, setContainer] = useState<ItemLocationDto[]>([]);
           const containerCount =
             value.length + 1 > sharingLocation.length
               ? sharingLocation.length
               : value.length + 1;
-          console.log(value);
-          const addValueContainer = Array(containerCount)
+          const container = Array(containerCount)
             .fill(null)
             .map((_, i) => value[i] || {});
-          console.log(container);
-          useEffect(() => {
-            setContainer(addValueContainer);
-          }, [value]);
-
+          console.log(value);
           return (
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
@@ -183,6 +176,7 @@ export default function RegistrationForm() {
               <div className="mt-3 flex flex-col gap-[1.125rem] sm:gap-10">
                 {container?.map((v, i) => (
                   <RegistrationLocation
+                    idx={i}
                     key={sharingLocation[i]}
                     close={() => setOpenFirstLocation(false)}
                     locationId={sharingLocation[i]}
