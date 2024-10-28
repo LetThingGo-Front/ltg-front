@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import setupInterceptor from '@/lib/setupInterceptor';
-import useLoginPopupStore from '@/store/LoginStore';
-import utils from '@/utils/cmmnUtil';
-import React, { useEffect } from 'react';
+import setupInterceptor from "@/lib/setupInterceptor";
+import useLoginPopupStore from "@/store/LoginStore";
+import utils from "@/utils/cmmnUtil";
+import React, { useEffect } from "react";
 
 type Props = {
-  token: string | null;
+  token?: string;
 };
 
 export default function InitToken({ token }: Props) {
   useEffect(() => {
     setupInterceptor();
     if (token) {
-      utils.setStorage('accessToken', token);
+      utils.setStorage("accessToken", token);
     }
   }, []);
 

@@ -18,10 +18,7 @@ import { ItemLocationDto } from "@/models/data-contracts";
 
 type Props = {
   idx: number;
-  close: () => void;
   locationId: string;
-  setSaved: (isSaved: boolean) => void;
-  isSaved: boolean;
   onSave: (location: ItemLocationDto[]) => void;
   locationInfo: ItemLocationDto;
   locationList: ItemLocationDto[];
@@ -42,10 +39,7 @@ const locationVariants = {
 };
 export default function RegistrationLocation({
   idx,
-  close,
   locationId,
-  isSaved,
-  setSaved,
   onSave,
   locationInfo,
   locationList,
@@ -128,6 +122,7 @@ export default function RegistrationLocation({
           query: address,
         },
       });
+      console.log(response);
       if (response.status === 200 && response.data.addresses.length > 0) {
         const { x, y } = response.data.addresses[0];
         if (setCoordinate) {
@@ -154,7 +149,7 @@ export default function RegistrationLocation({
       itemAvailabilities: [],
     };
 
-    // locationList length가 idx이하일 경우 신규 추가
+    // locationList length가 idx 이하일 경우 신규 추가
     if (locationList.length <= idx) {
       onSave([...locationList, newLocation]);
     } else {
@@ -173,7 +168,6 @@ export default function RegistrationLocation({
   const deleteLocationInfo = () => {
     const filterLocationList = locationList.filter((_, i) => i !== idx);
     onSave(filterLocationList);
-    setOpenLocationForm(false);
   };
 
   useEffect(() => {
@@ -199,7 +193,6 @@ export default function RegistrationLocation({
   }, [locationInfo]);
 
   useEffect(() => {
-    // TODO 위치 정보 등록된 값이 있을 경우 해당 값으로 초기화
     initLocationInfo();
   }, [initLocationInfo, locationInfo]);
 
@@ -222,56 +215,7 @@ export default function RegistrationLocation({
 
   return (
     <div>
-      {!openLocationForm && locationInfo?.address && (
-        <div
-          className={clsx(
-            "flex h-[6.875rem] flex-col gap-2 rounded-lg sm:h-[13.75rem] sm:gap-5",
-          )}
-        >
-          <div className="h-[5.625rem] sm:h-[11.25rem]">
-            <RegistrationMap
-              coordinate={coordinate}
-              locationId={locationId}
-              setSimpleAddr={setSimpleAddr}
-              disableFullscreen
-            />
-          </div>
-          <div className="flex justify-between">
-            <div className="flex gap-3 text-xxs font-bold text-grey-500 sm:text-sm">
-              <div className="flex gap-1">
-                <div className="h-4 w-4 sm:h-5 sm:w-5">
-                  <Image
-                    src="/assets/images/location_marker.svg"
-                    alt="location"
-                    width={20}
-                    height={20}
-                  />
-                </div>
-                <p>{simpleAddr}</p>
-              </div>
-              <div className="flex gap-1">
-                <div className="h-4 w-4 sm:h-5 sm:w-5">
-                  <Image
-                    src="/assets/images/calendar.svg"
-                    width={20}
-                    height={20}
-                    alt="calendar"
-                  />
-                </div>
-                <p>주중 나눔 가능</p>
-              </div>
-            </div>
-            <button
-              type="button"
-              className="text-xxs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
-              onClick={() => setOpenLocationForm(true)}
-            >
-              수정하기
-            </button>
-          </div>
-        </div>
-      )}
-      {openLocationForm && (
+      {openLocationForm ? (
         <motion.div
           className={clsx(
             "flex h-full flex-col items-center gap-6 rounded-xl bg-ltg-gradient-b px-[1.875rem] py-[1.625rem] sm:gap-11",
@@ -436,13 +380,66 @@ export default function RegistrationLocation({
             </button>
             <button
               className="px-4 py-2 text-xxs font-semibold text-grey-700 sm:text-xs"
-              onClick={deleteLocationInfo}
+              onClick={() => setOpenLocationForm(false)}
               type="button"
             >
-              삭제
+              닫기
             </button>
           </div>
         </motion.div>
+      ) : (
+        <div className="flex h-[6.875rem] flex-col gap-2 rounded-lg sm:h-[13.75rem] sm:gap-5">
+          <div className="h-[5.625rem] sm:h-[11.25rem]">
+            <RegistrationMap
+              coordinate={coordinate}
+              locationId={locationId}
+              setSimpleAddr={setSimpleAddr}
+              disableFullscreen
+            />
+          </div>
+          <div className="flex justify-between">
+            <div className="flex gap-3 text-xxs font-bold text-grey-500 sm:text-sm">
+              <div className="flex gap-1">
+                <div className="h-4 w-4 sm:h-5 sm:w-5">
+                  <Image
+                    src="/assets/images/location_marker.svg"
+                    alt="location"
+                    width={20}
+                    height={20}
+                  />
+                </div>
+                <p>{simpleAddr}</p>
+              </div>
+              <div className="flex gap-1">
+                <div className="h-4 w-4 sm:h-5 sm:w-5">
+                  <Image
+                    src="/assets/images/calendar.svg"
+                    width={20}
+                    height={20}
+                    alt="calendar"
+                  />
+                </div>
+                <p>주중 나눔 가능</p>
+              </div>
+            </div>
+            <div className="flex gap-2 sm:gap-6">
+              <button
+                type="button"
+                className="text-xxs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
+                onClick={() => setOpenLocationForm(true)}
+              >
+                수정하기
+              </button>
+              <button
+                type="button"
+                className="text-xxs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
+                onClick={deleteLocationInfo}
+              >
+                삭제하기
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

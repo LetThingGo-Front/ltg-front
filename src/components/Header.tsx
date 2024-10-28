@@ -1,33 +1,43 @@
-'use client';
+"use client";
 
-import useLoginPopupStore from '@/store/LoginStore';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { axiosAuth } from '@/lib/axios';
-import utils from '@/utils/cmmnUtil';
-import Link from 'next/link';
-import { useEffect } from 'react';
+import useLoginPopupStore from "@/store/LoginStore";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { axiosAuth } from "@/lib/axios";
+import utils from "@/utils/cmmnUtil";
+import Link from "next/link";
+import { useEffect } from "react";
+import useSideNavStore from "@/store/sideNavStore";
 
 type Props = {
-  token: string | null;
+  token?: string;
 };
 
 export default function Header({ token }: Props) {
   const pathname = usePathname();
   const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup; // 로그인 팝업 오픈
+  const resetSideNav = useSideNavStore.use.actions().resetSideNav;
+  const toggleSideNav = useSideNavStore.use.actions().toggleSideNav;
 
   const logout = async () => {
     try {
-      await axiosAuth.post('/v1/logout');
+      await axiosAuth.post("/v1/logout");
       utils.removeStorageAll();
-      window.location.href = '/';
+      window.location.href = "/";
     } catch (error) {
       console.error(`로그아웃 에러: ${error}`);
     }
   };
 
-  const COLOR = {
-    BUTTON_COLOR: '#E1F452', // Green-400
+  const pageTitle = () => {
+    switch (pathname) {
+      case "/product/register":
+        return "나눔 등록";
+      case "/manage/product":
+        return "나눔 탐색";
+      default:
+        return null;
+    }
   };
 
   useEffect(() => {
@@ -36,73 +46,79 @@ export default function Header({ token }: Props) {
     }
   }, []);
 
+  useEffect(() => {
+    if (pathname) resetSideNav();
+  }, [pathname, resetSideNav]);
+
   return (
     <>
-      <div className="hidden md:flex px-10 py-8 bg-white">
-        <Image
-          src="/images/logo_black.png"
-          alt="logo"
-          className="w-[65px] h-[21px] h-[20px] mt-[2px] cursor-pointer"
-          width={65}
-          height={20}
-        />
-        <ul className="flex justify-between min-w-72 w-[312px] ms-10">
-          <li className="text-[16px] hover:font-bold cursor-pointer">
-            <Link href="/product/1">나눔 탐색</Link>
+      <div className="hidden bg-white px-10 py-8 md:flex">
+        <Link href="/">
+          <Image
+            src="/images/logo_black.png"
+            alt="logo"
+            className="mt-[2px] h-5 w-[65px] cursor-pointer"
+            width={65}
+            height={20}
+          />
+        </Link>
+        <ul className="ms-10 flex w-[312px] min-w-72 justify-between">
+          <li className="cursor-pointer text-[16px] hover:font-bold">
+            <Link href="/product/register">나눔 탐색</Link>
           </li>
-          <li className="text-[16px] hover:font-bold cursor-pointer">띵즈</li>
-          <li className="text-[16px] hover:font-bold cursor-pointer">캘린더</li>
-          <li className="text-[16px] hover:font-bold cursor-pointer">문의</li>
+          <li className="cursor-pointer text-[16px] hover:font-bold">띵즈</li>
+          <li className="cursor-pointer text-[16px] hover:font-bold">캘린더</li>
+          <li className="cursor-pointer text-[16px] hover:font-bold">문의</li>
         </ul>
-        <div className="ms-auto me-auto">
+        {/* <div className="me-auto ms-auto">
           <input
             type="text"
             placeholder="필요한 물품을 검색하세요."
-            className="w-[444px] h-[40px] mb-[16px] py-[12px] bg-[#f0f0f0] text-[#969696] rounded-[10px] text-center"
+            className="mb-[16px] h-[40px] w-[444px] rounded-[10px] bg-[#f0f0f0] py-[12px] text-center text-[#969696]"
           />
           <div className="flex w-[444px] gap-[28px]">
-            <div className="flex w-[93px] ps-[13px] pe-[8px] py-[4px] cursor-pointer">
+            <div className="flex w-[93px] cursor-pointer py-[4px] pe-[8px] ps-[13px]">
               <p className="me-[8px] w-[23px] text-[12px]">지역</p>
               <Image
                 src="/assets/images/dropdown_category.png"
                 alt="dropdown"
                 width={6.7}
                 height={3.3}
-                className="w-[6.7px] h-[3.3px] mt-[9px]"
+                className="mt-[9px] h-[3.3px] w-[6.7px]"
               />
             </div>
-            <div className="flex w-[93px] ps-[13px] pe-[8px] py-[4px] cursor-pointer">
+            <div className="flex w-[93px] cursor-pointer py-[4px] pe-[8px] ps-[13px]">
               <p className="me-[8px] w-[45px] text-[12px]">카테고리</p>
               <Image
                 src="/assets/images/dropdown_category.png"
                 alt="dropdown"
                 width={6.7}
                 height={3.3}
-                className="w-[6.7px] h-[3.3px] mt-[9px]"
+                className="mt-[9px] h-[3.3px] w-[6.7px]"
               />
             </div>
-            <div className="flex w-[93px] ps-[13px] pe-[8px] py-[4px] cursor-pointer">
+            <div className="flex w-[93px] cursor-pointer py-[4px] pe-[8px] ps-[13px]">
               <p className="me-[8px] w-[45px] text-[12px]">물품선택</p>
               <Image
                 src="/assets/images/dropdown_category.png"
                 alt="dropdown"
                 width={6.7}
                 height={3.3}
-                className="w-[6.7px] h-[3.3px] mt-[9px]"
+                className="mt-[9px] h-[3.3px] w-[6.7px]"
               />
             </div>
-            <div className="flex w-[93px] ps-[13px] pe-[8px] py-[4px] cursor-pointer">
+            <div className="flex w-[93px] cursor-pointer py-[4px] pe-[8px] ps-[13px]">
               <p className="me-[8px] w-[45px] text-[12px]">나눔요일</p>
               <Image
                 src="/assets/images/dropdown_category.png"
                 alt="dropdown"
                 width={6.7}
                 height={3.3}
-                className="w-[6.7px] h-[3.3px] mt-[9px]"
+                className="mt-[9px] h-[3.3px] w-[6.7px]"
               />
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="ms-auto flex">
           {/* <div className="h-[30.4px] mt-[3px] me-[30px] flex items-center justify-center">
             <Image src="/images/appstore.png" alt="appstore" width={86} height={26} className="me-[20px]" />
@@ -110,8 +126,7 @@ export default function Header({ token }: Props) {
           </div> */}
           {!token ? (
             <button
-              className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
-              style={{ backgroundColor: COLOR.BUTTON_COLOR }}
+              className="h-[38px] w-[303px] rounded-[10px] bg-green-400 px-[20px] py-[8px] text-[16px] font-bold"
               onClick={openLoginPopup}
               disabled={false}
             >
@@ -124,65 +139,85 @@ export default function Header({ token }: Props) {
         </div>
       </div>
       {/* 모바일 화면 */}
-      <div className="md:hidden text-center">
-        <div className="h-[44px] bg-white" />
-        <div className="flex h-[64px] justify-between px-[20px] py-[14px] bg-white items-center">
-          <Image src="/images/icons/Hamburger.png" alt="hamberger" width={30} height={30} />
-          {pathname === '/' && <Image src="/images/logo_black.png" alt="logo" width={65} height={20} />}
-          {pathname === '/manage/product' && <p className="text-[16px] font-bold">나눔 탐색</p>}
-          <Image src="/images/icons/img.png" alt="profile" width={28} height={28} />
+      <div className="text-center md:hidden">
+        <div className="h-[2.75rem] bg-white" />
+        <div className="flex h-[4rem] items-center justify-between bg-white px-[1.25rem] py-[0.875rem]">
+          <button onClick={toggleSideNav}>
+            <Image
+              src="/assets/images/button/hamburger.svg"
+              alt="hamberger"
+              width={32}
+              height={32}
+            />
+          </button>
+          {pageTitle() ? (
+            <p className="font-bold">{pageTitle()}</p>
+          ) : (
+            <Image
+              src="/images/logo_black.png"
+              alt="logo"
+              width={65}
+              height={20}
+            />
+          )}
+          <Image
+            src="/images/icons/img.png"
+            alt="profile"
+            width={28}
+            height={28}
+          />
         </div>
-        <div className="h-[74px] mx-[10px] px-[20px] pb-[8px] bg-white/70">
+        {/* <div className="mx-[10px] h-[74px] bg-white/70 px-[20px] pb-[8px]">
           <input
             type="text"
             name=""
             id=""
-            className="w-[320px] h-[34px] mb-[13px] py-[8px] bg-grey-500/5 text-grey-500 text-[12px] rounded-[10px] text-center"
+            className="mb-[13px] h-[34px] w-[320px] rounded-[10px] bg-grey-500/5 py-[8px] text-center text-[12px] text-grey-500"
             placeholder="필요한 물품을 검색하세요."
           />
-          <div className="flex justify-between w-[320px] h-[24px] mx-auto items-start">
-            <div className="flex h-[26px] py-[5px] ps-[10px] pe-[5px] items-center rounded-[9999px] bg-green-100">
-              <p className="text-grey-800 text-[9px]">지역</p>
+          <div className="mx-auto flex h-[24px] w-[320px] items-start justify-between">
+            <div className="flex h-[26px] items-center rounded-[9999px] bg-green-100 py-[5px] pe-[5px] ps-[10px]">
+              <p className="text-[9px] text-grey-800">지역</p>
               <Image
                 src="/assets/images/dropdown_category.png"
                 width={6.67}
                 height={3.33}
                 alt="dropdown"
-                className="w-[6.67px] h-[3.33px] mx-[4.67px]"
+                className="mx-[4.67px] h-[3.33px] w-[6.67px]"
               />
             </div>
-            <div className="flex h-[26px] py-[5px] ps-[10px] pe-[5px] items-center rounded-[9999px] bg-green-100">
-              <p className="text-grey-800 text-[9px]">카테고리</p>
+            <div className="flex h-[26px] items-center rounded-[9999px] bg-green-100 py-[5px] pe-[5px] ps-[10px]">
+              <p className="text-[9px] text-grey-800">카테고리</p>
               <Image
                 src="/assets/images/dropdown_category.png"
                 width={6.67}
                 height={3.33}
                 alt="dropdown"
-                className="w-[6.67px] h-[3.33px] mx-[4.67px]"
+                className="mx-[4.67px] h-[3.33px] w-[6.67px]"
               />
             </div>
-            <div className="flex h-[26px] py-[5px] ps-[10px] pe-[5px] items-center rounded-[9999px] bg-green-100">
-              <p className="text-grey-800 text-[9px]">물품상태</p>
+            <div className="flex h-[26px] items-center rounded-[9999px] bg-green-100 py-[5px] pe-[5px] ps-[10px]">
+              <p className="text-[9px] text-grey-800">물품상태</p>
               <Image
                 src="/assets/images/dropdown_category.png"
                 width={6.67}
                 height={3.33}
                 alt="dropdown"
-                className="w-[6.67px] h-[3.33px] mx-[4.67px]"
+                className="mx-[4.67px] h-[3.33px] w-[6.67px]"
               />
             </div>
-            <div className="flex h-[26px] py-[5px] ps-[10px] pe-[5px] items-center rounded-[9999px] bg-green-100">
-              <p className="text-grey-800 text-[9px]">나눔요일</p>
+            <div className="flex h-[26px] items-center rounded-[9999px] bg-green-100 py-[5px] pe-[5px] ps-[10px]">
+              <p className="text-[9px] text-grey-800">나눔요일</p>
               <Image
                 src="/assets/images/dropdown_category.png"
                 width={6.67}
                 height={3.33}
                 alt="dropdown"
-                className="w-[6.67px] h-[3.33px] mx-[4.67px]"
+                className="mx-[4.67px] h-[3.33px] w-[6.67px]"
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

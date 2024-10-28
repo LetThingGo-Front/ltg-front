@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Line from "@/components/product/register/Line";
 import SemiTitle from "@/components/product/register/SemiTitle";
 import ItemBox from "@/components/product/register/ItemBox";
@@ -22,10 +22,6 @@ export default function RegistrationForm() {
   } = useForm<CreateItemPayload>();
 
   const sharingLocation = ["나눔 장소 A", "나눔 장소 B"];
-  const [isFirstLocationSaved, setIsFirstLocationSaved] = useState(false);
-  const [isSecondLocationSaved, setIsSecondLocationSaved] = useState(false);
-  const [openFirstLocation, setOpenFirstLocation] = useState(false);
-  const [openSecondLocation, setOpenSecondLocation] = useState(false);
 
   const createItem: SubmitHandler<CreateItemPayload> = (data: unknown) => {
     const formData = new FormData();
@@ -178,10 +174,7 @@ export default function RegistrationForm() {
                   <RegistrationLocation
                     idx={i}
                     key={sharingLocation[i]}
-                    close={() => setOpenFirstLocation(false)}
                     locationId={sharingLocation[i]}
-                    isSaved={isFirstLocationSaved}
-                    setSaved={setIsFirstLocationSaved}
                     onSave={onChange}
                     locationInfo={v}
                     locationList={value}

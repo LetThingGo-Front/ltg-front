@@ -77,7 +77,7 @@ export default memo(function RegisterMap({
   );
 
   useEffect(() => {
-    // 주소가 없는 최초의 상태에서만 현위치로 이동
+    // 주소가 없는 최초의 상태에서만 현위치로 이동(위치 권한 허용시)
     if (!address) {
       console.log("navigator.geolocation.getCurrentPosition 호출!!");
       navigator.geolocation.getCurrentPosition(

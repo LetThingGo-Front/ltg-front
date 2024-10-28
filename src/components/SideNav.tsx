@@ -1,36 +1,89 @@
-import Image from 'next/image';
+"use client";
+
+import { duration } from "@/constants/animation/style";
+import useSideNavStore from "@/store/sideNavStore";
+import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+
+const navVariants = {
+  start: {
+    opacity: 0,
+    ease: "easeInOut",
+    ...duration.medium,
+  },
+  end: {
+    opacity: 1,
+    ease: "easeInOut",
+    ...duration.medium,
+  },
+  exit: { opacity: 0, ease: "easeInOut", ...duration.medium },
+};
 
 export default function SideNav() {
+  const sideNav = useSideNavStore.use.sideNav();
+  const resetSideNav = useSideNavStore.use.actions().resetSideNav;
+
+  const closeSideNav = (e: any) => {
+    e.target === e.currentTarget && resetSideNav();
+  };
   return (
-    <div className="hidden fixed top-0 left-0 bg-white p-20 rounded-tr-lg h-dvh mt-10 md:hidden">
-      <div className="h-3/5 pb-10">
-        <li className="list-none space-y-14 text-center font-bold">
-          <ul>홈</ul>
-          <ul>나눔 탐색</ul>
-          <ul>띵즈</ul>
-          <ul>캘린더</ul>
-          <ul>내 프로필</ul>
-          <ul>내 계정</ul>
-        </li>
-      </div>
-      <div className="h-2/5">
-        <div>
-          <button className="px-4 py-2 rounded-lg" style={{ backgroundColor: `rgb(225, 244, 82)` }}>
-            소셜 미디어 로그인
-          </button>
-        </div>
-        <div className="mt-16 space-y-6">
-          <div className="flex justify-center">
-            <Image src="/images/appstore.png" alt="appstore" width={104} height={30} />
+    <AnimatePresence>
+      {sideNav && (
+        <motion.div
+          className={clsx("fixed left-0 top-0 h-dvh w-dvw bg-black/70")}
+          variants={navVariants}
+          initial="start"
+          animate="end"
+          exit="exit"
+          onClick={closeSideNav}
+          onTouchEnd={closeSideNav}
+        >
+          <div className="z-10 mr-[4.25rem] mt-11 flex h-[calc(100%-2.75rem)] flex-col items-center justify-evenly rounded-tr-[1.875rem] bg-white">
+            <ul className="flex h-1/2 flex-col justify-between text-center text-sm font-bold">
+              <li>
+                <Link href="/">홈</Link>
+              </li>
+              <li>
+                <Link href="/product/register">나눔 탐색</Link>
+              </li>
+              <li>띵즈</li>
+              <li>캘린더</li>
+              <li>내 프로필</li>
+              <li>내 계정</li>
+            </ul>
+            <div className="text-center">
+              <button
+                className="rounded-md bg-green-400 px-4 py-2 text-xxs font-bold"
+                type="button"
+              >
+                소셜 미디어 로그인
+              </button>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Image
+                src="/images/appstore.png"
+                alt="appstore"
+                width={100}
+                height={30}
+              />
+              <Image
+                src="/images/googleplay.png"
+                alt="googleplay"
+                width={100}
+                height={30}
+              />
+            </div>
+            <Image
+              src="/images/Arrow_Left.png"
+              alt="arrow-left"
+              width={40}
+              height={40}
+            />
           </div>
-          <div className="flex justify-center">
-            <Image src="/images/googleplay.png" alt="googleplay" width={104} height={30} />
-          </div>
-        </div>
-        <div className="mt-20 flex justify-center">
-          <Image src="/images/Arrow_Left.png" alt="arrow-left" width={24} height={7} />
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
