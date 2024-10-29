@@ -1,5 +1,6 @@
 "use client";
 
+import { duration } from "@/constants/animation/style";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import React from "react";
@@ -10,6 +11,12 @@ type Props = {
   onText?: string;
   offText?: string;
   isShort?: boolean;
+};
+
+const spring = {
+  type: "spring",
+  stiffness: 700,
+  damping: 30,
 };
 
 export default function ToggleButton({
@@ -30,18 +37,22 @@ export default function ToggleButton({
       {on && (
         <p
           className={clsx(
-            "text-xxxs sm:text-xxs font-semibold",
+            "text-xxxs font-semibold sm:text-xxs",
             isShort && "w-7 pl-2",
           )}
         >
           {onText}
         </p>
       )}
-      <motion.div className="flex h-4 w-4 items-center justify-center rounded-full bg-white sm:h-5 sm:w-5"></motion.div>
+      <motion.div
+        className="flex h-4 w-4 items-center justify-center rounded-full bg-white sm:h-5 sm:w-5"
+        layout
+        transition={duration.short}
+      ></motion.div>
       {!on && (
         <p
           className={clsx(
-            "text-xxxs sm:text-xxs font-semibold",
+            "text-xxxs font-semibold sm:text-xxs",
             isShort && "w-7 pl-1",
           )}
         >

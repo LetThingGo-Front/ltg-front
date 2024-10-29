@@ -72,11 +72,10 @@ export interface ItemCreateRequest {
    */
   itemName: string;
   /**
-   * 카테고리ID
-   * @format int64
-   * @example 1
+   * 카테고리 코드
+   * @example "1"
    */
-  categoryId: number;
+  categoryCode: string;
   /**
    * 물품상태코드
    * @example "11"
@@ -348,15 +347,65 @@ export interface GroupCodeCreateRequest {
   useYn: string;
 }
 
-export interface CodeCreateRequest {
+export interface CodeSearchRequest2 {
   /**
-   * 그룹코드
+   * 그룹코드값
    * @minLength 0
    * @maxLength 6
-   * @example "TEST01"
+   * @example "IT001"
    */
   groupCode: string;
-  codes?: CodeDto[];
+  /**
+   * 공통코드값
+   * @minLength 0
+   * @maxLength 20
+   * @example "1"
+   */
+  code?: string;
+  /**
+   * 사용여부
+   * @pattern ^[YN]$
+   * @example "Y"
+   */
+  useYn?: string;
+  /**
+   * 코드한글명
+   * @minLength 0
+   * @maxLength 150
+   * @example "렛띵고"
+   */
+  codeKorName?: string;
+  /**
+   * 코드영문명
+   * @minLength 0
+   * @maxLength 150
+   * @example "letthinggo"
+   */
+  codeEngName?: string;
+  /**
+   * 관리항목1
+   * @minLength 0
+   * @maxLength 150
+   */
+  mngItem1?: string;
+  /**
+   * 관리항목2
+   * @minLength 0
+   * @maxLength 150
+   */
+  mngItem2?: string;
+  /**
+   * 관리항목3
+   * @minLength 0
+   * @maxLength 150
+   */
+  mngItem3?: string;
+  /**
+   * 관리항목4
+   * @minLength 0
+   * @maxLength 150
+   */
+  mngItem4?: string;
 }
 
 export interface CodeDto {
@@ -427,6 +476,29 @@ export interface CodeDto {
   codeSeq: number;
 }
 
+export interface CodeSearchResponse {
+  groupCode?: string;
+  groupCodeName?: string;
+  mngDes1?: string;
+  mngDes2?: string;
+  mngDes3?: string;
+  mngDes4?: string;
+  description?: string;
+  useYn?: string;
+  codes?: CodeDto[];
+}
+
+export interface CodeCreateRequest {
+  /**
+   * 그룹코드
+   * @minLength 0
+   * @maxLength 6
+   * @example "TEST01"
+   */
+  groupCode: string;
+  codes?: CodeDto[];
+}
+
 export interface Pageable {
   /**
    * @format int32
@@ -445,12 +517,12 @@ export interface PageableObject {
   /** @format int64 */
   offset?: number;
   sort?: SortObject;
-  /** @format int32 */
-  pageNumber?: number;
   unpaged?: boolean;
   /** @format int32 */
-  pageSize?: number;
+  pageNumber?: number;
   paged?: boolean;
+  /** @format int32 */
+  pageSize?: number;
 }
 
 /** 나눔 신청 믈픔 DTO */
@@ -681,6 +753,10 @@ export type CreateGroupCodeData = string;
 
 export type CreateGroupCodeError = string;
 
+export type RetrieveCodesByGroupCodesPayload = CodeSearchRequest2[];
+
+export type RetrieveCodesByGroupCodesData = CodeSearchResponse[];
+
 export type CreateCodeData = any;
 
 export type CreateCodeError = string;
@@ -707,3 +783,6 @@ export type RetrieveGroupCodesError = string;
 export type RetrieveAllUsersData = string;
 
 export type RetrieveUserTestData = string;
+
+/** @example {"status":"success","data":{}} */
+export type DeleteCookieData = string;

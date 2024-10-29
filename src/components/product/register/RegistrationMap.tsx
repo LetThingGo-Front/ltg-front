@@ -79,7 +79,6 @@ export default memo(function RegisterMap({
   useEffect(() => {
     // 주소가 없는 최초의 상태에서만 현위치로 이동(위치 권한 허용시)
     if (!address) {
-      console.log("navigator.geolocation.getCurrentPosition 호출!!");
       navigator.geolocation.getCurrentPosition(
         (position) => {
           if (setCoordinate) {
@@ -109,14 +108,15 @@ export default memo(function RegisterMap({
     }
 
     // iOS mobile 환경 fullscreenElement 미지원
-    const userAgent = navigator.userAgent.toLowerCase();
-    if (
-      userAgent.indexOf("iphone") > -1 ||
-      userAgent.indexOf("ipad") > -1 ||
-      userAgent.indexOf("ipod") > -1
-    ) {
-      setIsDisabled(true);
-    }
+    // iOS 크롬에서 마커 이동 안됨(사파리는 동작) 일단 iOS에서는 주소 검색으로만 선택이 가능하도록
+    // const userAgent = navigator.userAgent.toLowerCase();
+    // if (
+    //   userAgent.indexOf("iphone") > -1 ||
+    //   userAgent.indexOf("ipad") > -1 ||
+    //   userAgent.indexOf("ipod") > -1
+    // ) {
+    //   setIsDisabled(true);
+    // }
 
     return () => {
       if (mapElement) {

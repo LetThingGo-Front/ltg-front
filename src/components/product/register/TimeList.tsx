@@ -33,10 +33,10 @@ export default function TimeList({ selectTime, addSelectTime }: Props) {
       exit="exit"
     >
       <div className="absolute top-0 h-full w-full p-5">
-        <div className="flex h-full w-full flex-col items-center overflow-y-scroll">
+        <div className="flex h-full w-full flex-col items-center overflow-y-scroll sm:px-10">
           {timeList.map((hour) => (
             <div key={hour} className="flex w-full gap-[0.125rem] pr-4">
-              <div className="text-xxxs mr-2 h-3 w-6 text-center font-semibold tracking-tight text-grey-800 sm:text-xs">
+              <div className="mr-2 h-3 w-6 text-center text-xxxs font-semibold tracking-tight text-grey-800 sm:text-xs">
                 {hour}
               </div>
               <div

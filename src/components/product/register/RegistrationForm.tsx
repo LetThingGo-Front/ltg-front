@@ -1,10 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Line from "@/components/product/register/Line";
 import SemiTitle from "@/components/product/register/SemiTitle";
 import ItemBox from "@/components/product/register/ItemBox";
-import { category, itemStatus } from "./constants/constants";
 import RegistrationLocation from "./RegistrationLocation";
 import ImageUpload from "./ImageUpload";
 import TextInput from "./TextInput";
@@ -12,6 +11,11 @@ import GradationButton from "@/components/common/ui/button/GradationButton";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { CreateItemPayload } from "@/models/data-contracts";
 import utils from "@/utils/cmmnUtil";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCategoryList, fetchItemStatusList } from "@/data/commonData";
+import { Codes } from "@/types/common";
+
+const sharingLocation = ["나눔 장소 A", "나눔 장소 B"];
 
 export default function RegistrationForm() {
   const {
@@ -20,14 +24,21 @@ export default function RegistrationForm() {
     handleSubmit,
     resetField,
   } = useForm<CreateItemPayload>();
-
-  const sharingLocation = ["나눔 장소 A", "나눔 장소 B"];
-
   const createItem: SubmitHandler<CreateItemPayload> = (data: unknown) => {
     const formData = new FormData();
     console.log(data);
   };
+  const [isItemStatusType, setIsItemStatusType] = useState("N");
 
+  const category = useQuery({
+    queryKey: ["category"],
+    queryFn: () => fetchCategoryList(),
+  });
+
+  const itemStatus = useQuery({
+    queryKey: ["itemStatus", isItemStatusType],
+    queryFn: ({ queryKey }) => fetchItemStatusList(queryKey[1]),
+  });
   return (
     <form
       className="flex flex-col gap-[4.5rem] sm:gap-10"
@@ -62,32 +73,39 @@ export default function RegistrationForm() {
       {/* 카테고리 */}
       <Controller
         control={control}
-        name="itemCreateRequest.categoryId"
-        defaultValue={undefined}
+        name="itemCreateRequest.categoryCode"
+        defaultValue=""
         rules={{ required: "카테고리는 필수입니다." }}
-        render={({ field: { onChange, value } }) => (
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-2">
-              <SemiTitle title="카테고리" required subText="(택1)" />
-              <Line />
+        render={({ field: { onChange, value } }) => {
+          useEffect(() => {
+            // 식음료
+            value === "4" ? setIsItemStatusType("Y") : setIsItemStatusType("N");
+          }, [value]);
+
+          return (
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2">
+                <SemiTitle title="카테고리" required subText="(택1)" />
+                <Line />
+              </div>
+              <div className="flex flex-wrap gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
+                {category.data?.data.codes.map((c: Codes) => (
+                  <ItemBox
+                    key={c.codeSeq}
+                    name={c.codeKorName}
+                    select={c.code === value}
+                    onClick={() => onChange(c.code)}
+                  />
+                ))}
+              </div>
+              {errors.itemCreateRequest?.categoryCode && (
+                <p className="font-semibold text-red-500 max-sm:text-xs">
+                  {errors.itemCreateRequest.categoryCode.message}
+                </p>
+              )}
             </div>
-            <div className="flex flex-wrap gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
-              {category.map((v) => (
-                <ItemBox
-                  key={v.id}
-                  name={v.name}
-                  select={v.id === value}
-                  onClick={() => onChange(v.id)}
-                />
-              ))}
-            </div>
-            {errors.itemCreateRequest?.categoryId && (
-              <p className="font-semibold text-red-500 max-sm:text-xs">
-                {errors.itemCreateRequest.categoryId.message}
-              </p>
-            )}
-          </div>
-        )}
+          );
+        }}
       />
       {/* 이미지 */}
       <Controller
@@ -127,12 +145,12 @@ export default function RegistrationForm() {
               <Line />
             </div>
             <div className="flex flex-col gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
-              {itemStatus.map((status, i) => (
+              {itemStatus.data?.data.codes.map((s: Codes) => (
                 <ItemBox
-                  key={status}
-                  name={status}
-                  select={status === value}
-                  onClick={() => onChange(status)}
+                  key={s.codeSeq}
+                  name={s.codeKorName}
+                  select={s.code === value}
+                  onClick={() => onChange(s.code)}
                 />
               ))}
             </div>
@@ -158,7 +176,6 @@ export default function RegistrationForm() {
           const container = Array(containerCount)
             .fill(null)
             .map((_, i) => value[i] || {});
-          console.log(value);
           return (
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">

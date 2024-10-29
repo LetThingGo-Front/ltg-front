@@ -22,12 +22,24 @@ const isEmpty = (obj: Object) => {
   return Object.keys(obj).length === 0;
 };
 
+const objectToQueryString = (params: Record<string, any>) => {
+  const queryString = Object.entries(params)
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+    )
+    .join("&");
+
+  return queryString ? `?${queryString}` : "";
+};
+
 const utils = {
   setStorage,
   getStorage,
   removeStorage,
   removeStorageAll,
   isEmpty,
+  objectToQueryString,
 };
 
 export default utils;

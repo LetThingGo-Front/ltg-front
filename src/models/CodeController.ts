@@ -19,6 +19,8 @@ import {
   GroupCodeCreateRequest,
   GroupCodeSearchRequest,
   RetrieveCodes1Data,
+  RetrieveCodesByGroupCodesData,
+  RetrieveCodesByGroupCodesPayload,
   RetrieveCodesData,
   RetrieveGroupCodes1Data,
   RetrieveGroupCodes1Error,
@@ -71,6 +73,29 @@ export class CodeController<
   ) =>
     this.request<CreateGroupCodeData, CreateGroupCodeError>({
       path: `/v1/group-codes`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * @description 특정 그룹코드의 공통코드 정보를 조회합니다.
+   *
+   * @tags code-controller
+   * @name RetrieveCodesByGroupCodes
+   * @summary 공통코드 조회 API
+   * @request POST:/v1/group-codes/codes
+   * @secure
+   * @response `200` `RetrieveCodesByGroupCodesData` OK
+   * @response `404` `void` Not Found Entity
+   */
+  retrieveCodesByGroupCodes = (
+    data: RetrieveCodesByGroupCodesPayload,
+    params: RequestParams = {},
+  ) =>
+    this.request<RetrieveCodesByGroupCodesData, void>({
+      path: `/v1/group-codes/codes`,
       method: "POST",
       body: data,
       secure: true,

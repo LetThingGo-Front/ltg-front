@@ -10,6 +10,7 @@
  */
 
 import {
+  DeleteCookieData,
   LoginData,
   LoginError,
   LogoutData,
@@ -77,6 +78,23 @@ export class AuthController<
     this.request<LogoutData, any>({
       path: `/v1/logout`,
       method: "POST",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags auth-controller
+   * @name DeleteCookie
+   * @summary Access Token 쿠키 삭제 API
+   * @request DELETE:/v1/cookie/access-token
+   * @secure
+   * @response `200` `DeleteCookieData` OK
+   */
+  deleteCookie = (params: RequestParams = {}) =>
+    this.request<DeleteCookieData, any>({
+      path: `/v1/cookie/access-token`,
+      method: "DELETE",
       secure: true,
       ...params,
     });

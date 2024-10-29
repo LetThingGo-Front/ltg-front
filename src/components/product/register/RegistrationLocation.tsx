@@ -6,7 +6,7 @@ import MinSemiTitle from "./MinSemiTitle";
 import Image from "next/image";
 import RegistrationMap from "./RegistrationMap";
 import ToggleButton from "./ToggleButton";
-import { days } from "./constants/constants";
+import { daysList, timeList } from "./constants/constants";
 import TextInput from "./TextInput";
 import clsx from "clsx";
 import TimeList from "./TimeList";
@@ -15,6 +15,9 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { duration } from "@/constants/animation/style";
 import { ItemLocationDto } from "@/models/data-contracts";
+import { useQuery } from "@tanstack/react-query";
+import { fetchDaysList } from "@/data/commonData";
+import { Codes } from "@/types/common";
 
 type Props = {
   idx: number;
@@ -48,7 +51,6 @@ export default function RegistrationLocation({
   const [isDayShare, setIsDayShare] = useState(false); // 나눔 가능 요일 및 시간대 선택 여부
   const [selectDay, setSelectDay] = useState<Array<string>>([]); // 선택된 요일
   const [openTime, setOpenTime] = useState(false); // 시간대 선택 여부
-  const [selectTodayTime, setSelectTodayTime] = useState<Array<string>>([]); // 오늘 번개 나눔 시간대
   const [selectDayTime, setSelectDayTime] = useState<Array<string>>([]); // 나눔 가능 요일 시간대
   const [isOpenSearchAddr, setIsOpenSearchAddr] = useState(false); // 주소 검색창 오픈 여부
   const [address, setAddress] = useState(""); // 주소
@@ -59,6 +61,11 @@ export default function RegistrationLocation({
   });
   const [simpleAddr, setSimpleAddr] = useState(""); // 간단한 주소
   const [openLocationForm, setOpenLocationForm] = useState(false);
+
+  const days = useQuery({
+    queryKey: ["days"],
+    queryFn: () => fetchDaysList(),
+  });
 
   const toggleSelectDay = () => {
     if (isDayShare) {
@@ -93,22 +100,56 @@ export default function RegistrationLocation({
     });
   };
 
-  const addSelectTodayTime = (time: string) => {
-    setSelectTodayTime((prev) => {
-      if (prev.includes(time)) {
-        return prev.filter((t) => t !== time);
-      }
-      return [...prev, time];
-    });
-  };
-
   const addSelectDayTime = (time: string) => {
-    setSelectDayTime((prev) => {
-      if (prev.includes(time)) {
-        return prev.filter((t) => t !== time);
-      }
-      return [...prev, time];
-    });
+    /**
+     * 시간 선택 정책
+     * 1. 선택한 시간이 선택한 시간 목록 중 최소값과 최대값 사이에 있을 경우 스킵
+     * 2. 선택한 시간 목록이 없을 경우 선택한 시간으로 설정
+     * 3. 최소값과 선택한 시간이 같을 경우 최소값 삭제
+     * 4. 최대값과 선택한 시간이 같을 경우 최대값 삭제
+     * 5. 최소값보다 작은 시간을 선택할 경우 선택한 시간값과 최대값 사이의 시간 선택
+     * 6. 최대값보다 큰 시간을 선택할 경우 선택한 시간값과 최소값 사이의 시간 선택
+     */
+    const selectTime = parseInt(time.split(":")[0]); // 선택한 시간의 숫자 값
+    const numList = selectDayTime.map((t) => parseInt(t.split(":")[0])); // 선택한 시간 목록 숫자 값
+    const min = numList.length > 0 ? Math.min(...numList) : 0; // 선택한 시간 목록 중 최소값
+    const max = numList.length > 0 ? Math.max(...numList) : 0; // 선택한 시간 목록 중 최대값
+    let selectTimeList: string[] = [];
+
+    if (selectTime > min && selectTime < max) return;
+    if (!numList.length) {
+      selectTimeList = timeList.filter(
+        (t) => parseInt(t.split(":")[0]) === selectTime,
+      );
+    }
+
+    if (min === selectTime) {
+      selectTimeList = timeList.filter(
+        (t) =>
+          parseInt(t.split(":")[0]) <= max && parseInt(t.split(":")[0]) > min,
+      );
+    }
+    if (max === selectTime) {
+      selectTimeList = timeList.filter(
+        (t) =>
+          parseInt(t.split(":")[0]) >= min && parseInt(t.split(":")[0]) < max,
+      );
+    }
+    if (min && selectTime < min) {
+      selectTimeList = timeList.filter(
+        (t) =>
+          parseInt(t.split(":")[0]) >= selectTime &&
+          parseInt(t.split(":")[0]) <= max,
+      );
+    }
+    if (max && selectTime > max) {
+      selectTimeList = timeList.filter(
+        (t) =>
+          parseInt(t.split(":")[0]) <= selectTime &&
+          parseInt(t.split(":")[0]) >= min,
+      );
+    }
+    setSelectDayTime(selectTimeList);
   };
 
   const getGeoCode = useCallback(async (address: string) => {
@@ -122,7 +163,6 @@ export default function RegistrationLocation({
           query: address,
         },
       });
-      console.log(response);
       if (response.status === 200 && response.data.addresses.length > 0) {
         const { x, y } = response.data.addresses[0];
         if (setCoordinate) {
@@ -137,6 +177,35 @@ export default function RegistrationLocation({
     }
   }, []);
 
+  const processItemAvailabilities = () => {
+    const numberTimeList = selectDayTime.map((time) =>
+      Number(time.split(":")[0]),
+    );
+    const min = Math.min(...numberTimeList);
+    const max = Math.max(...numberTimeList);
+    let newSelectDay: string[] = [];
+    if (selectDay.includes("주중")) {
+      newSelectDay.push("월", "화", "수", "목", "금");
+    }
+    if (selectDay.includes("주말")) {
+      newSelectDay.push("토", "일");
+    }
+    const filteredDay = [
+      ...newSelectDay,
+      ...selectDay.filter((day) => !["주중", "주말"].includes(day)),
+    ];
+
+    const itemAvailabilities = filteredDay.map((day) => {
+      return {
+        dayOfWeek: days.data?.data.codes.find(
+          (d: Codes) => d.codeKorName === day,
+        )?.code,
+        startTime: min < 10 ? `0${min}00` : `${min}00`,
+        endTime: max < 10 ? `0${max}59` : `${max}59`,
+      };
+    });
+    return itemAvailabilities;
+  };
   const saveLocationInfo = () => {
     const newLocation: ItemLocationDto = {
       address: address,
@@ -146,10 +215,10 @@ export default function RegistrationLocation({
       latitude: coordinate.lat,
       longitude: coordinate.lng,
       lightningYn: isTodayShare ? "Y" : "N",
-      itemAvailabilities: [],
+      itemAvailabilities: processItemAvailabilities(),
     };
-
-    // locationList length가 idx 이하일 경우 신규 추가
+    console.log(newLocation);
+    // 인덱스 번호가 저장한 장소 정보 개수 이상일 경우 신규등록
     if (locationList.length <= idx) {
       onSave([...locationList, newLocation]);
     } else {
@@ -170,12 +239,6 @@ export default function RegistrationLocation({
     onSave(filterLocationList);
   };
 
-  useEffect(() => {
-    if (address) {
-      getGeoCode(address);
-    }
-  }, [address, getGeoCode]);
-
   const initLocationInfo = useCallback(() => {
     if (locationInfo) {
       setAddress(locationInfo.address);
@@ -186,15 +249,58 @@ export default function RegistrationLocation({
         lng: locationInfo.longitude,
       });
       setIsTodayShare(locationInfo.lightningYn === "Y");
-      setIsDayShare(locationInfo.itemAvailabilities?.length ? true : false);
-      setSelectDay([]);
-      setSelectDayTime([]);
+      if (locationInfo.itemAvailabilities?.length) {
+        setIsDayShare(true);
+        const selectDayList = locationInfo.itemAvailabilities.map((item) => {
+          return (
+            daysList.find((d: Codes) => d.code === item.dayOfWeek)
+              ?.codeKorName ?? ""
+          );
+        });
+        setSelectDay(selectDayList);
+        const selectTimelist = timeList.filter((time) => {
+          if (
+            Number(time.split(":")[0]) >=
+              Number(
+                locationInfo.itemAvailabilities?.[0].startTime?.slice(0, 2),
+              ) &&
+            Number(time.split(":")[0]) <=
+              Number(locationInfo.itemAvailabilities?.[0].endTime?.slice(0, 2))
+          ) {
+            return time;
+          }
+        });
+        setSelectDayTime(selectTimelist);
+      } else {
+        setIsDayShare(false);
+        setSelectDay([]);
+        setSelectDayTime([]);
+      }
     }
   }, [locationInfo]);
 
   useEffect(() => {
+    if (address) {
+      getGeoCode(address);
+    }
+  }, [address, getGeoCode]);
+
+  useEffect(() => {
     initLocationInfo();
   }, [initLocationInfo, locationInfo]);
+
+  useEffect(() => {
+    const weekly = ["월", "화", "수", "목", "금"];
+    const weekend = ["토", "일"];
+    if (weekly.every((day) => selectDay.includes(day))) {
+      // 월 ~ 금 빼고 주중 추가
+      setSelectDay([...selectDay.filter((d) => !weekly.includes(d)), "주중"]);
+    }
+    if (weekend.every((day) => selectDay.includes(day))) {
+      // 토, 일 빼고 주말 추가
+      setSelectDay([...selectDay.filter((d) => !weekend.includes(d)), "주말"]);
+    }
+  }, [selectDay]);
 
   if (!openLocationForm && !locationInfo?.address) {
     return (
@@ -225,7 +331,7 @@ export default function RegistrationLocation({
           animate="end"
           exit="exit"
         >
-          <div className="rounded bg-green-400 px-2">
+          <div className="rounded bg-blue-500 px-2">
             <p className="text-center font-bold text-grey-900 max-sm:text-xxs">
               {locationId}
             </p>
@@ -314,12 +420,6 @@ export default function RegistrationLocation({
                 on={isTodayShare}
               />
             </div>
-            {isTodayShare && (
-              <TimeList
-                selectTime={selectTodayTime}
-                addSelectTime={addSelectTodayTime}
-              />
-            )}
             <div className="flex items-center justify-between">
               <p className="font-semibold text-grey-800 max-sm:text-xxs">
                 나눔 가능 요일 및 시간대 선택
@@ -333,21 +433,33 @@ export default function RegistrationLocation({
               />
             </div>
             <div className="flex justify-between">
-              {days.map((day, i) => (
+              {daysList.map((d: Codes) => (
                 <button
-                  key={day}
+                  key={d.codeSeq}
                   className={clsx(
-                    "px-1.5 py-0.5 font-semibold max-sm:text-xxs sm:px-4 sm:py-1",
-                    isDayShare ? "rounded" : "text-grey-300",
-                    selectDay.includes(day)
-                      ? "bg-black text-white"
-                      : isDayShare && "bg-black/5 text-black",
+                    "rounded-md px-1.5 py-0.5 font-semibold max-sm:text-xxs sm:px-4 sm:py-1",
+                    isDayShare
+                      ? selectDay.includes(d.codeKorName)
+                        ? "bg-black text-white"
+                        : "bg-black/5 text-black"
+                      : "text-grey-300",
+                    ((selectDay.includes("주중") &&
+                      /^(월|화|수|목|금)$/.test(d.codeKorName)) ||
+                      (selectDay.includes("주말") &&
+                        /^(토|일)$/.test(d.codeKorName))) &&
+                      "bg-transparent text-grey-300",
                   )}
-                  onClick={() => addSelectDay(day)}
+                  onClick={() => addSelectDay(d.codeKorName)}
                   type="button"
-                  disabled={!isDayShare}
+                  disabled={
+                    !isDayShare ||
+                    (selectDay.includes("주중") &&
+                      /^(월|화|수|목|금)$/.test(d.codeKorName)) ||
+                    (selectDay.includes("주말") &&
+                      /^(토|일)$/.test(d.codeKorName))
+                  }
                 >
-                  {day}
+                  {d.codeKorName}
                 </button>
               ))}
             </div>

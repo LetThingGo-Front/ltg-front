@@ -7,6 +7,7 @@ import localFont from "next/font/local";
 import MapsProvider from "@/provider/MapsProvider";
 import InitToken from "@/components/common/InitToken";
 import { cookies } from "next/headers";
+import ReactQueryProviders from "@/provider/ReactQueryProviders";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -38,15 +39,17 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <MapsProvider clientId={clientId}>
-        <body className={pretendard.className}>
-          <SignIn />
-          <Header token={refreshToken} />
-          <main className="">{children}</main>
-          <SideNav />
-          <InitToken token={accessToken} />
-        </body>
-      </MapsProvider>
+      <body className={pretendard.className}>
+        <ReactQueryProviders>
+          <MapsProvider clientId={clientId}>
+            <SignIn />
+            <Header token={refreshToken} />
+            <main className="">{children}</main>
+            <SideNav />
+            <InitToken token={accessToken} />
+          </MapsProvider>
+        </ReactQueryProviders>
+      </body>
     </html>
   );
 }
