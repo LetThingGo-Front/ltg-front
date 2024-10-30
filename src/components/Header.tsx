@@ -140,7 +140,6 @@ export default function Header({ token }: Props) {
       </div>
       {/* 모바일 화면 */}
       <div className="text-center md:hidden">
-        <div className="h-[2.75rem] bg-white" />
         <div className="flex h-[4rem] items-center justify-between bg-white px-[1.25rem] py-[0.875rem]">
           <button onClick={toggleSideNav}>
             <Image
