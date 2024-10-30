@@ -23,12 +23,14 @@ export default function RegistrationForm() {
     formState: { errors }, // isDirty: 변경됨, isValid: 유효함, errors: 에러
     handleSubmit,
     resetField,
+    watch,
   } = useForm<CreateItemPayload>();
   const createItem: SubmitHandler<CreateItemPayload> = (data: unknown) => {
     const formData = new FormData();
     console.log(data);
   };
   const [isItemStatusType, setIsItemStatusType] = useState("N");
+  const watchCategory = watch("itemCreateRequest.categoryCode");
 
   const category = useQuery({
     queryKey: ["category"],
@@ -39,6 +41,15 @@ export default function RegistrationForm() {
     queryKey: ["itemStatus", isItemStatusType],
     queryFn: ({ queryKey }) => fetchItemStatusList(queryKey[1]),
   });
+
+  useEffect(() => {
+    if (watchCategory) {
+      watchCategory === "4"
+        ? setIsItemStatusType("Y")
+        : setIsItemStatusType("N");
+    }
+  }, [watchCategory]);
+
   return (
     <form
       className="flex flex-col gap-[4.5rem] sm:gap-10"
@@ -76,36 +87,29 @@ export default function RegistrationForm() {
         name="itemCreateRequest.categoryCode"
         defaultValue=""
         rules={{ required: "카테고리는 필수입니다." }}
-        render={({ field: { onChange, value } }) => {
-          useEffect(() => {
-            // 식음료
-            value === "4" ? setIsItemStatusType("Y") : setIsItemStatusType("N");
-          }, [value]);
-
-          return (
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-col gap-2">
-                <SemiTitle title="카테고리" required subText="(택1)" />
-                <Line />
-              </div>
-              <div className="flex flex-wrap gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
-                {category.data?.data.codes.map((c: Codes) => (
-                  <ItemBox
-                    key={c.codeSeq}
-                    name={c.codeKorName}
-                    select={c.code === value}
-                    onClick={() => onChange(c.code)}
-                  />
-                ))}
-              </div>
-              {errors.itemCreateRequest?.categoryCode && (
-                <p className="font-semibold text-red-500 max-sm:text-xs">
-                  {errors.itemCreateRequest.categoryCode.message}
-                </p>
-              )}
+        render={({ field: { onChange, value } }) => (
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
+              <SemiTitle title="카테고리" required subText="(택1)" />
+              <Line />
             </div>
-          );
-        }}
+            <div className="flex flex-wrap gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
+              {category.data?.data.codes.map((c: Codes) => (
+                <ItemBox
+                  key={c.codeSeq}
+                  name={c.codeKorName}
+                  select={c.code === value}
+                  onClick={() => onChange(c.code)}
+                />
+              ))}
+            </div>
+            {errors.itemCreateRequest?.categoryCode && (
+              <p className="font-semibold text-red-500 max-sm:text-xs">
+                {errors.itemCreateRequest.categoryCode.message}
+              </p>
+            )}
+          </div>
+        )}
       />
       {/* 이미지 */}
       <Controller

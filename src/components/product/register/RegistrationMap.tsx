@@ -93,9 +93,7 @@ export default memo(function RegisterMap({
         },
       );
     }
-  }, []);
 
-  useEffect(() => {
     const mapElement = document.getElementById(locationId);
     if (mapElement) {
       mapElement.addEventListener("fullscreenchange", () => {
@@ -106,7 +104,6 @@ export default memo(function RegisterMap({
         }
       });
     }
-
     // iOS mobile 환경 fullscreenElement 미지원
     // iOS 크롬에서 마커 이동 안됨(사파리는 동작) 일단 iOS에서는 주소 검색으로만 선택이 가능하도록
     // const userAgent = navigator.userAgent.toLowerCase();
@@ -117,7 +114,6 @@ export default memo(function RegisterMap({
     // ) {
     //   setIsDisabled(true);
     // }
-
     return () => {
       if (mapElement) {
         mapElement.removeEventListener("fullscreenchange", () => {
@@ -129,7 +125,7 @@ export default memo(function RegisterMap({
         });
       }
     };
-  }, [locationId]);
+  }, []);
 
   return (
     <MapDiv
