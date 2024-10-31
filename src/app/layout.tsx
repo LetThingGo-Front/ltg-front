@@ -21,10 +21,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  width: "device-width", // 문자열로 설정
+  width: "device-width",
   initialScale: 1.0,
   maximumScale: 1.0,
   userScalable: false,
+  viewportFit: "cover",
 };
 const clientId = process.env.NAVER_MAPS_CLIENT_ID!;
 
