@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 type Props = {
   title: string;
@@ -7,9 +7,9 @@ type Props = {
 
 export default function MinSemiTitle({ title, required }: Props) {
   return (
-    <div className="flex justify-start items-start">
-      <p className="max-sm:text-xs font-bold text-grey-800">{title}</p>
-      {required && <p className="text-rose-600 text-xs font-bold">*</p>}
+    <div className="flex items-start justify-start">
+      <p className="font-bold text-grey-800 max-sm:text-sm">{title}</p>
+      {required && <p className="text-sm font-bold text-rose-600">*</p>}
     </div>
   );
 }

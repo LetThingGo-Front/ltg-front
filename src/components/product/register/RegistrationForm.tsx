@@ -15,7 +15,10 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCategoryList, fetchItemStatusList } from "@/data/commonData";
 import { Codes } from "@/types/common";
 
-const sharingLocation = ["나눔 장소 A", "나눔 장소 B"];
+const sharingLocation = [
+  { locationId: "나눔 장소 A", color: "bg-green-400" },
+  { locationId: "나눔 장소 B", color: "bg-blue-300" },
+];
 
 export default function RegistrationForm() {
   const {
@@ -194,8 +197,8 @@ export default function RegistrationForm() {
                 {container?.map((v, i) => (
                   <RegistrationLocation
                     idx={i}
-                    key={sharingLocation[i]}
-                    locationId={sharingLocation[i]}
+                    key={sharingLocation[i].locationId}
+                    locationCase={sharingLocation[i]}
                     onSave={onChange}
                     locationInfo={v}
                     locationList={value}

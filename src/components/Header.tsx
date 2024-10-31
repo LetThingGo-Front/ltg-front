@@ -57,13 +57,13 @@ export default function Header({ token }: Props) {
           <Image
             src="/images/logo_black.png"
             alt="logo"
-            className="mt-[2px] h-5 w-[65px] cursor-pointer"
+            className="mt-0.5 h-5 w-16 cursor-pointer"
             width={65}
             height={20}
           />
         </Link>
-        <ul className="ms-10 flex w-[312px] min-w-72 justify-between">
-          <li className="cursor-pointer text-[16px] hover:font-bold">
+        <ul className="ms-10 flex w-[19.5rem] min-w-72 justify-between">
+          <li className="cursor-pointer hover:font-bold">
             <Link href="/product/register">나눔 탐색</Link>
           </li>
           <li className="cursor-pointer text-[16px] hover:font-bold">띵즈</li>
@@ -126,7 +126,7 @@ export default function Header({ token }: Props) {
           </div> */}
           {!token ? (
             <button
-              className="h-[38px] w-[303px] rounded-[10px] bg-green-400 px-[20px] py-[8px] text-[16px] font-bold"
+              className="h-[2.375rem] w-[18.9375rem] rounded-[10px] bg-green-400 px-5 py-2 font-bold"
               onClick={openLoginPopup}
               disabled={false}
             >
@@ -140,8 +140,8 @@ export default function Header({ token }: Props) {
       </div>
       {/* 모바일 화면 */}
       <div className="text-center md:hidden">
-        <div className="flex h-[4rem] items-center justify-between bg-white px-[1.25rem] py-[0.875rem]">
-          <button onClick={toggleSideNav}>
+        <div className="flex h-16 items-center justify-between bg-white px-5 py-[0.875rem]">
+          <button className="h-8 w-8" onClick={toggleSideNav}>
             <Image
               src="/assets/images/button/hamburger.svg"
               alt="hamberger"
@@ -150,7 +150,7 @@ export default function Header({ token }: Props) {
             />
           </button>
           {pageTitle() ? (
-            <p className="font-bold">{pageTitle()}</p>
+            <p className="text-xl font-bold">{pageTitle()}</p>
           ) : (
             <Image
               src="/images/logo_black.png"
@@ -162,8 +162,8 @@ export default function Header({ token }: Props) {
           <Image
             src="/images/icons/img.png"
             alt="profile"
-            width={28}
-            height={28}
+            width={32}
+            height={32}
           />
         </div>
         {/* <div className="mx-[10px] h-[74px] bg-white/70 px-[20px] pb-[8px]">

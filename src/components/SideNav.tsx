@@ -10,15 +10,22 @@ import Link from "next/link";
 const navVariants = {
   start: {
     opacity: 0,
+    x: "-100%",
     ease: "easeInOut",
-    ...duration.medium,
+    transition: { type: "tween", ...duration.short },
   },
   end: {
     opacity: 1,
+    x: "0%",
     ease: "easeInOut",
-    ...duration.medium,
+    transition: { type: "tween", ...duration.short },
   },
-  exit: { opacity: 0, ease: "easeInOut", ...duration.medium },
+  exit: {
+    opacity: 0,
+    x: "-100%",
+    ease: "easeInOut",
+    transition: { type: "tween", ...duration.short },
+  },
 };
 
 export default function SideNav() {
@@ -31,16 +38,18 @@ export default function SideNav() {
   return (
     <AnimatePresence>
       {sideNav && (
-        <motion.div
+        <div
           className={clsx("fixed left-0 top-0 h-dvh w-dvw bg-black/70")}
-          variants={navVariants}
-          initial="start"
-          animate="end"
-          exit="exit"
           onClick={closeSideNav}
           onTouchEnd={closeSideNav}
         >
-          <div className="z-10 mr-[4.25rem] mt-11 flex h-[calc(100%-2.75rem)] flex-col items-center justify-evenly rounded-tr-[1.875rem] bg-white">
+          <motion.div
+            className="z-10 mr-[4.25rem] mt-11 flex h-[calc(100%-2.75rem)] flex-col items-center justify-evenly rounded-tr-[1.875rem] bg-white"
+            variants={navVariants}
+            initial="start"
+            animate="end"
+            exit="exit"
+          >
             <ul className="flex h-1/2 flex-col justify-between text-center text-sm font-bold">
               <li>
                 <Link href="/">홈</Link>
@@ -81,8 +90,8 @@ export default function SideNav() {
               width={40}
               height={40}
             />
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );

@@ -21,7 +21,7 @@ import { Codes } from "@/types/common";
 
 type Props = {
   idx: number;
-  locationId: string;
+  locationCase: { locationId: string; color: string };
   onSave: (location: ItemLocationDto[]) => void;
   locationInfo: ItemLocationDto;
   locationList: ItemLocationDto[];
@@ -42,7 +42,7 @@ const locationVariants = {
 };
 export default function RegistrationLocation({
   idx,
-  locationId,
+  locationCase,
   onSave,
   locationInfo,
   locationList,
@@ -331,53 +331,53 @@ export default function RegistrationLocation({
           animate="end"
           exit="exit"
         >
-          <div className="rounded bg-blue-500 px-2">
-            <p className="text-center font-bold text-grey-900 max-sm:text-xxs">
-              {locationId}
+          <div className={`rounded px-2 py-1 ${locationCase.color}`}>
+            <p className="text-center font-bold text-grey-900 max-sm:text-xs">
+              {locationCase.locationId}
             </p>
           </div>
-          <div className="flex w-full flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <MinSemiTitle title="나눔 장소 설정" required />
-              <Line />
-            </div>
-            <div className="flex gap-1">
-              <div className="flex items-center p-1">
-                <div className="h-[0.625rem] w-[0.625rem] sm:h-4 sm:w-4">
+          <div className="flex w-full flex-col gap-2 sm:gap-4">
+            {/* <div className="flex flex-col gap-2">
+            </div> */}
+            <MinSemiTitle title="나눔 장소 설정" required />
+            <Line />
+            <div className="flex gap-2">
+              <div className="flex items-center gap-1">
+                <div className="h-3 w-3 sm:h-5 sm:w-5">
                   <Image
                     src="/assets/images/home.svg"
-                    width={16}
-                    height={16}
+                    width={20}
+                    height={20}
                     alt="home"
                   />
                 </div>
-                <p className="text-xxxs font-bold text-grey-400 sm:text-xs">
+                <p className="text-xs font-bold text-grey-400 sm:text-sm">
                   집근처
                 </p>
               </div>
-              <div className="flex items-center p-1">
-                <div className="h-[0.625rem] w-[0.625rem] sm:h-4 sm:w-4">
+              <div className="flex items-center gap-1">
+                <div className="h-3 w-3 sm:h-5 sm:w-5">
                   <Image
                     src="/assets/images/building.svg"
-                    width={16}
-                    height={16}
+                    width={20}
+                    height={20}
                     alt="company"
                   />
                 </div>
-                <p className="text-xxxs font-bold text-grey-400 sm:text-xs">
+                <p className="text-xs font-bold text-grey-400 sm:text-sm">
                   회사 근처
                 </p>
               </div>
-              <div className="flex items-center p-1">
-                <div className="h-[0.625rem] w-[0.625rem] sm:h-4 sm:w-4">
+              <div className="flex items-center gap-1">
+                <div className="mt-[1px] h-4 w-4 sm:h-5 sm:w-5">
                   <Image
                     src="/assets/images/location_marker.svg"
-                    width={16}
-                    height={16}
+                    width={20}
+                    height={20}
                     alt="etc"
                   />
                 </div>
-                <p className="text-xxxs font-bold text-grey-400 sm:text-xs">
+                <p className="text-xs font-bold text-grey-400 sm:text-sm">
                   기타
                 </p>
               </div>
@@ -403,7 +403,7 @@ export default function RegistrationLocation({
               setCoordinate={setCoordinate}
               setAddress={setAddress}
               setSimpleAddr={setSimpleAddr}
-              locationId={locationId}
+              locationId={locationCase.locationId}
             />
           </div>
           <div className="flex w-full flex-col gap-2">
@@ -412,7 +412,7 @@ export default function RegistrationLocation({
           </div>
           <div className="flex w-full flex-col gap-3 sm:gap-9">
             <div className="flex items-center justify-between">
-              <p className="font-semibold text-grey-800 max-sm:text-xxs">
+              <p className="font-semibold text-grey-800 max-sm:text-xs">
                 오늘 번개 나눔
               </p>
               <ToggleButton
@@ -421,7 +421,7 @@ export default function RegistrationLocation({
               />
             </div>
             <div className="flex items-center justify-between">
-              <p className="font-semibold text-grey-800 max-sm:text-xxs">
+              <p className="font-semibold text-grey-800 max-sm:text-xs">
                 나눔 가능 요일 및 시간대 선택
               </p>
               <ToggleButton
@@ -437,7 +437,7 @@ export default function RegistrationLocation({
                 <button
                   key={d.codeSeq}
                   className={clsx(
-                    "rounded-md px-1.5 py-0.5 font-semibold max-sm:text-xxs sm:px-4 sm:py-1",
+                    "rounded-md px-1.5 py-0.5 font-semibold max-sm:text-xs sm:px-4 sm:py-1",
                     isDayShare
                       ? selectDay.includes(d.codeKorName)
                         ? "bg-black text-white"
@@ -465,7 +465,7 @@ export default function RegistrationLocation({
             </div>
             <button
               className={clsx(
-                "rounded-full bg-black/5 py-1 text-center font-semibold max-sm:text-xxxs",
+                "rounded-full bg-black/5 py-1 text-center font-semibold max-sm:text-xs",
                 selectDay.length === 0 ? "text-grey-300" : "text-black",
                 openTime && "hidden",
               )}
@@ -484,14 +484,19 @@ export default function RegistrationLocation({
           </div>
           <div className="flex flex-col gap-3">
             <button
-              className="rounded-full bg-black px-4 py-2 text-xxs font-semibold text-white sm:text-xs"
+              className="rounded-full bg-black px-4 py-2 text-xs font-semibold text-white disabled:opacity-50 sm:text-sm"
               type="button"
               onClick={saveLocationInfo}
+              disabled={
+                !address ||
+                (isDayShare &&
+                  (selectDay.length === 0 || selectDayTime.length === 0))
+              }
             >
               장소 및 일정 저장
             </button>
             <button
-              className="px-4 py-2 text-xxs font-semibold text-grey-700 sm:text-xs"
+              className="px-4 py-2 text-xs font-semibold text-grey-700 active:text-grey-300 sm:text-sm"
               onClick={() => setOpenLocationForm(false)}
               type="button"
             >
@@ -504,13 +509,13 @@ export default function RegistrationLocation({
           <div className="h-[5.625rem] sm:h-[11.25rem]">
             <RegistrationMap
               coordinate={coordinate}
-              locationId={locationId}
+              locationId={locationCase.locationId}
               setSimpleAddr={setSimpleAddr}
               disableFullscreen
             />
           </div>
           <div className="flex justify-between">
-            <div className="flex gap-3 text-xxs font-bold text-grey-500 sm:text-sm">
+            <div className="flex gap-3 text-xs font-bold text-grey-500 sm:text-sm">
               <div className="flex gap-1">
                 <div className="h-4 w-4 sm:h-5 sm:w-5">
                   <Image
@@ -537,14 +542,14 @@ export default function RegistrationLocation({
             <div className="flex gap-2 sm:gap-6">
               <button
                 type="button"
-                className="text-xxs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
+                className="text-xs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
                 onClick={() => setOpenLocationForm(true)}
               >
                 수정하기
               </button>
               <button
                 type="button"
-                className="text-xxs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
+                className="text-xs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
                 onClick={deleteLocationInfo}
               >
                 삭제하기

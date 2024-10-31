@@ -36,15 +36,13 @@ export default function TimeList({ selectTime, addSelectTime }: Props) {
         <div className="flex h-full w-full flex-col items-center overflow-y-scroll sm:px-10">
           {timeList.map((hour) => (
             <div key={hour} className="flex w-full gap-[0.125rem] pr-4">
-              <div className="mr-2 h-3 w-6 text-center text-xxxs font-semibold tracking-tight text-grey-800 sm:text-xs">
+              <div className="mr-2 mt-0.5 h-3 w-6 text-center text-xxs font-semibold text-grey-800 sm:text-xs">
                 {hour}
               </div>
               <div
                 className={clsx(
                   "h-10 w-full cursor-pointer rounded border border-grey-100",
-                  selectTime.includes(hour)
-                    ? "bg-green-400 hover:bg-green-400"
-                    : "bg-white/70 hover:bg-grey-50",
+                  selectTime.includes(hour) ? "bg-green-400" : "bg-white/70",
                 )}
                 onClick={() => addSelectTime(hour)}
               ></div>

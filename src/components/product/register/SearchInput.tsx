@@ -28,12 +28,14 @@ export default function SearchInput({
     >
       <div
         className={clsx(
-          "flex w-full cursor-pointer items-center justify-center bg-transparent text-center text-inherit sm:text-sm",
+          "flex w-full cursor-pointer items-center justify-center bg-transparent text-center text-inherit",
           address && "font-semibold text-grey-700",
-          isOpenSearchAddr ? "max-sm:px-9" : "text-xxs max-sm:px-8",
+          isOpenSearchAddr ? "max-sm:px-9" : "max-sm:px-8 max-sm:text-xs",
         )}
       >
-        <p className="truncate">{address ? address : "주소를 검색하세요"}</p>
+        <p className="truncate font-semibold">
+          {address ? address : "주소를 검색하세요"}
+        </p>
       </div>
       <div
         className={clsx(
