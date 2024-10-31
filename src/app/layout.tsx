@@ -18,10 +18,6 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: "렛띵고",
   description: "Let your things go 묵혀두지 말고 보내주세요. 무료 나눔 서비스",
-  icons: [
-    { rel: 'apple-touch-icon', url: '/icons/192.png' },
-    { rel: 'icon', url: '/icons/192.png' },
-  ],
 };
 
 export const viewport: Viewport = {
