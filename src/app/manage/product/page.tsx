@@ -5,7 +5,7 @@ import ListItem from '@/components/ListItem';
 import MainMap from '@/components/MainMap';
 import React, { useRef, useState } from 'react';
 
-export default function page() {
+export default function Page() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
