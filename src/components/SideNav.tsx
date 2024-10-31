@@ -1,7 +1,11 @@
 "use client";
 
 import { duration } from "@/constants/animation/style";
+import { axiosAuth } from "@/lib/axios";
+import useLoginPopupStore from "@/store/LoginStore";
 import useSideNavStore from "@/store/sideNavStore";
+import { CommonProps } from "@/types/common";
+import utils from "@/utils/cmmnUtil";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
@@ -28,9 +32,20 @@ const navVariants = {
   },
 };
 
-export default function SideNav() {
+export default function SideNav({ token }: CommonProps) {
   const sideNav = useSideNavStore.use.sideNav();
+  const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup;
   const resetSideNav = useSideNavStore.use.actions().resetSideNav;
+
+  const logout = async () => {
+    try {
+      await axiosAuth.post("/v1/logout");
+      utils.removeStorageAll();
+      window.location.href = "/";
+    } catch (error) {
+      console.error(`로그아웃 에러: ${error}`);
+    }
+  };
 
   const closeSideNav = (e: any) => {
     e.target === e.currentTarget && resetSideNav();
@@ -44,7 +59,7 @@ export default function SideNav() {
           onTouchEnd={closeSideNav}
         >
           <motion.div
-            className="z-10 mr-[4.25rem] mt-11 flex h-[calc(100%-2.75rem)] flex-col items-center justify-evenly rounded-tr-[1.875rem] bg-white"
+            className="z-10 mr-[4.25rem] mt-16 flex h-[calc(100dvh-4rem)] flex-col items-center justify-evenly rounded-tr-[1.875rem] bg-white"
             variants={navVariants}
             initial="start"
             animate="end"
@@ -63,12 +78,23 @@ export default function SideNav() {
               <li>내 계정</li>
             </ul>
             <div className="text-center">
-              <button
-                className="rounded-md bg-green-400 px-4 py-2 text-xxs font-bold"
-                type="button"
-              >
-                소셜 미디어 로그인
-              </button>
+              {token ? (
+                <button
+                  className="rounded-md bg-green-400 px-4 py-2 text-xxs font-bold"
+                  type="button"
+                  onClick={logout}
+                >
+                  로그아웃
+                </button>
+              ) : (
+                <button
+                  className="rounded-md bg-green-400 px-4 py-2 text-xxs font-bold"
+                  type="button"
+                  onClick={openLoginPopup}
+                >
+                  소셜 미디어 로그인
+                </button>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <Image

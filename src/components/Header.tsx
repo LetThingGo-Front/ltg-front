@@ -8,14 +8,11 @@ import utils from "@/utils/cmmnUtil";
 import Link from "next/link";
 import { useEffect } from "react";
 import useSideNavStore from "@/store/sideNavStore";
+import { CommonProps } from "@/types/common";
 
-type Props = {
-  token?: string;
-};
-
-export default function Header({ token }: Props) {
+export default function Header({ token }: CommonProps) {
   const pathname = usePathname();
-  const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup; // 로그인 팝업 오픈
+  const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup;
   const resetSideNav = useSideNavStore.use.actions().resetSideNav;
   const toggleSideNav = useSideNavStore.use.actions().toggleSideNav;
 
@@ -52,7 +49,7 @@ export default function Header({ token }: Props) {
 
   return (
     <>
-      <div className="hidden bg-white px-10 py-8 md:flex">
+      <div className="hidden h-[5.625rem] bg-white px-10 py-8 sm:flex">
         <Link href="/">
           <Image
             src="/images/logo_black.png"
@@ -128,45 +125,48 @@ export default function Header({ token }: Props) {
             <button
               className="h-[2.375rem] w-[18.9375rem] rounded-[10px] bg-green-400 px-5 py-2 font-bold"
               onClick={openLoginPopup}
-              disabled={false}
             >
               로그인 후 새 나눔 등록, Let things go!
             </button>
           ) : (
-            <button onClick={logout}>로그아웃</button>
+            <button
+              className="h-[2.375rem] w-[18.9375rem] rounded-[10px] bg-green-400 px-5 py-2 font-bold"
+              onClick={logout}
+            >
+              새 나눔 등록, Let things go!
+            </button>
           )}
           {/* <Image/> */}
         </div>
       </div>
       {/* 모바일 화면 */}
-      <div className="text-center md:hidden">
-        <div className="flex h-16 items-center justify-between bg-white px-5 py-[0.875rem]">
-          <button className="h-8 w-8" onClick={toggleSideNav}>
-            <Image
-              src="/assets/images/button/hamburger.svg"
-              alt="hamberger"
-              width={32}
-              height={32}
-            />
-          </button>
-          {pageTitle() ? (
-            <p className="text-xl font-bold">{pageTitle()}</p>
-          ) : (
-            <Image
-              src="/images/logo_black.png"
-              alt="logo"
-              width={65}
-              height={20}
-            />
-          )}
+      <div className="flex h-16 items-center justify-between bg-white px-5 py-[0.875rem] text-center sm:hidden">
+        <button className="h-8 w-8" onClick={toggleSideNav}>
           <Image
-            src="/images/icons/img.png"
-            alt="profile"
+            src="/assets/images/button/hamburger.svg"
+            alt="hamberger"
             width={32}
             height={32}
           />
-        </div>
-        {/* <div className="mx-[10px] h-[74px] bg-white/70 px-[20px] pb-[8px]">
+        </button>
+        {pageTitle() ? (
+          <p className="font-bold">{pageTitle()}</p>
+        ) : (
+          <Image
+            src="/images/logo_black.png"
+            alt="logo"
+            width={65}
+            height={20}
+          />
+        )}
+        <Image
+          src="/images/icons/img.png"
+          alt="profile"
+          width={32}
+          height={32}
+        />
+      </div>
+      {/* <div className="mx-[10px] h-[74px] bg-white/70 px-[20px] pb-[8px]">
           <input
             type="text"
             name=""
@@ -217,7 +217,6 @@ export default function Header({ token }: Props) {
             </div>
           </div>
         </div> */}
-      </div>
     </>
   );
 }

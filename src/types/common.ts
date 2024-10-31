@@ -11,4 +11,8 @@ interface Codes {
   useYn: string;
 }
 
-export type { Codes };
+interface CommonProps {
+  token?: string;
+}
+
+export type { Codes, CommonProps };

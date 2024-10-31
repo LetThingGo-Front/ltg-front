@@ -25,7 +25,7 @@ export default function GradationButton({
     >
       <motion.button
         className={clsx(
-          "h-full w-full rounded-full border border-white", // 레이아웃, 크기, 모양, 테두리
+          "h-full w-full rounded-full", // 레이아웃, 크기, 모양, 테두리
         )}
         whileHover={commonHover}
         whileTap={commonTap}

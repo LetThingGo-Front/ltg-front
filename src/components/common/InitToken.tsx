@@ -1,15 +1,11 @@
 "use client";
 
 import setupInterceptor from "@/lib/setupInterceptor";
-import useLoginPopupStore from "@/store/LoginStore";
+import { CommonProps } from "@/types/common";
 import utils from "@/utils/cmmnUtil";
 import React, { useEffect } from "react";
 
-type Props = {
-  token?: string;
-};
-
-export default function InitToken({ token }: Props) {
+export default function InitToken({ token }: CommonProps) {
   useEffect(() => {
     setupInterceptor();
     if (token) {

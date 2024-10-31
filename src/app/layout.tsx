@@ -45,7 +45,7 @@ export default function RootLayout({
             <SignIn />
             <Header token={refreshToken} />
             <main className="">{children}</main>
-            <SideNav />
+            <SideNav token={refreshToken} />
             <InitToken token={accessToken} />
           </MapsProvider>
         </ReactQueryProviders>
