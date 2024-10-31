@@ -9,12 +9,12 @@
  * ---------------------------------------------------------------
  */
 
-import { LoginData, LoginError, LogoutData, ReissueData, ReissueError, TokenRequestDto } from './data-contracts';
+import { LoginData, LoginError, LogoutData, ReissueData, TokenRequestDto } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
 export class AuthController<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
-   * @description access토큰 만료되면 refresh 토큰을 이용하여 토큰을 재발급합니다.
+   * @description access토큰 만료 시 refresh 토큰으로 재발급
    *
    * @tags auth-controller
    * @name Reissue
@@ -22,13 +22,10 @@ export class AuthController<SecurityDataType = unknown> extends HttpClient<Secur
    * @request POST:/v1/reissue
    * @secure
    * @response `200` `ReissueData` OK
-   * @response `10103` `string` Refresh Token Not Found
-   * @response `10104` `string` Refresh Token Expired
-   * @response `10105` `string` Invalid Refresh Token
-   * @response `10106` `string` Refresh Token Is Null
+   * @response `498` `void` Invalid Token
    */
   reissue = (params: RequestParams = {}) =>
-    this.request<ReissueData, ReissueError>({
+    this.request<ReissueData, void>({
       path: `/v1/reissue`,
       method: 'POST',
       secure: true,
@@ -43,9 +40,7 @@ export class AuthController<SecurityDataType = unknown> extends HttpClient<Secur
    * @request POST:/v1/oauth/{provider}
    * @secure
    * @response `200` `LoginData` OK
-   * @response `10110` `string` 잘못된 provider입니다.
-   * @response `10111` `string` Invalid External Token
-   * @response `10112` `string` Access Token Not Found
+   * @response `404` `string` Invalid Provider Name
    */
   login = (provider: string, data: TokenRequestDto, params: RequestParams = {}) =>
     this.request<LoginData, LoginError>({

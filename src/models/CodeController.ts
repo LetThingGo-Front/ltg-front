@@ -19,11 +19,11 @@ import {
   GroupCodeCreateRequest,
   GroupCodeSearchRequest,
   RetrieveCodes1Data,
-  RetrieveCodes1Error,
   RetrieveCodesData,
-  RetrieveCodesError,
   RetrieveGroupCodes1Data,
+  RetrieveGroupCodes1Error,
   RetrieveGroupCodesData,
+  RetrieveGroupCodesError,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
@@ -37,6 +37,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
    * @request GET:/v1/group-codes
    * @secure
    * @response `200` `RetrieveGroupCodes1Data` OK
+   * @response `404` `string` Not Found Group Code
    */
   retrieveGroupCodes1 = (
     query?: {
@@ -44,7 +45,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
     },
     params: RequestParams = {},
   ) =>
-    this.request<RetrieveGroupCodes1Data, any>({
+    this.request<RetrieveGroupCodes1Data, RetrieveGroupCodes1Error>({
       path: `/v1/group-codes`,
       method: 'GET',
       query: query,
@@ -60,7 +61,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
    * @request POST:/v1/group-codes
    * @secure
    * @response `200` `CreateGroupCodeData` OK
-   * @response `40101` `string` 이미 등록된 그룹코드입니다.
+   * @response `409` `string` Duplicate Code
    */
   createGroupCode = (data: GroupCodeCreateRequest, params: RequestParams = {}) =>
     this.request<CreateGroupCodeData, CreateGroupCodeError>({
@@ -80,9 +81,8 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
    * @request POST:/v1/codes
    * @secure
    * @response `200` `CreateCodeData` OK
-   * @response `40102` `string` 동일한 그룹코드에 공통코드는 중복될 수 없습니다.
-   * @response `40103` `string` 그룹코드가 존재하지 않습니다.
-   * @response `40104` `string` 이미 등록된 공통코드입니다.
+   * @response `404` `string` Not Found Group Code
+   * @response `409` `string` Duplicate Code
    */
   createCode = (data: CodeCreateRequest, params: RequestParams = {}) =>
     this.request<CreateCodeData, CreateCodeError>({
@@ -102,7 +102,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
    * @request GET:/v1/group-codes/{groupCode}/codes/{code}
    * @secure
    * @response `200` `RetrieveCodesData` OK
-   * @response `40103` `string` 그룹코드가 존재하지 않습니다.
+   * @response `404` `void` Not Found Entity
    */
   retrieveCodes = (
     groupCode: string,
@@ -112,7 +112,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
     },
     params: RequestParams = {},
   ) =>
-    this.request<RetrieveCodesData, RetrieveCodesError>({
+    this.request<RetrieveCodesData, void>({
       path: `/v1/group-codes/${groupCode}/codes/${code}`,
       method: 'GET',
       query: query,
@@ -128,7 +128,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
    * @request GET:/v1/group-codes/{groupCode}/codes
    * @secure
    * @response `200` `RetrieveCodes1Data` OK
-   * @response `40103` `string` 그룹코드가 존재하지 않습니다.
+   * @response `404` `void` Not Found Entity
    */
   retrieveCodes1 = (
     groupCode: string,
@@ -137,7 +137,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
     },
     params: RequestParams = {},
   ) =>
-    this.request<RetrieveCodes1Data, RetrieveCodes1Error>({
+    this.request<RetrieveCodes1Data, void>({
       path: `/v1/group-codes/${groupCode}/codes`,
       method: 'GET',
       query: query,
@@ -153,6 +153,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
    * @request GET:/v1/group-codes/{groupCode}
    * @secure
    * @response `200` `RetrieveGroupCodesData` OK
+   * @response `404` `string` Not Found Group Code
    */
   retrieveGroupCodes = (
     groupCode: string,
@@ -161,7 +162,7 @@ export class CodeController<SecurityDataType = unknown> extends HttpClient<Secur
     },
     params: RequestParams = {},
   ) =>
-    this.request<RetrieveGroupCodesData, any>({
+    this.request<RetrieveGroupCodesData, RetrieveGroupCodesError>({
       path: `/v1/group-codes/${groupCode}`,
       method: 'GET',
       query: query,

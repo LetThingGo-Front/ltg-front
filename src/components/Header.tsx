@@ -1,11 +1,24 @@
 'use client';
 
+<<<<<<< HEAD
 import axios from 'axios';
+=======
+import useLoginPopupStore from '@/store/LoginStore';
+>>>>>>> fba918b748fadc049863bf6b001c36ac040db3de
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { axiosAuth } from '@/lib/axios';
+import utils from '@/utils/cmmnUtil';
+import Link from 'next/link';
+import { useEffect } from 'react';
 
-export default function Header() {
+type Props = {
+  token: string | null;
+};
+
+export default function Header({ token }: Props) {
   const pathname = usePathname();
+<<<<<<< HEAD
   const goNaverLogin = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/naver`;
   };
@@ -30,12 +43,30 @@ export default function Header() {
       console.log(res.data);
     } catch (error) {
       console.log(error);
+=======
+  const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup; // 로그인 팝업 오픈
+
+  const logout = async () => {
+    try {
+      await axiosAuth.post('/v1/logout');
+      utils.removeStorageAll();
+      window.location.href = '/';
+    } catch (error) {
+      console.error(`로그아웃 에러: ${error}`);
+>>>>>>> fba918b748fadc049863bf6b001c36ac040db3de
     }
   };
 
   const COLOR = {
     BUTTON_COLOR: '#E1F452', // Green-400
   };
+
+  useEffect(() => {
+    if (!token) {
+      utils.removeStorageAll();
+    }
+  }, []);
+
   return (
     <>
       <div className="hidden md:flex px-10 py-8 bg-white">
@@ -47,7 +78,9 @@ export default function Header() {
           height={20}
         />
         <ul className="flex justify-between min-w-72 w-[312px] ms-10">
-          <li className="text-[16px] hover:font-bold cursor-pointer">나눔 탐색</li>
+          <li className="text-[16px] hover:font-bold cursor-pointer">
+            <Link href="/product/1">나눔 탐색</Link>
+          </li>
           <li className="text-[16px] hover:font-bold cursor-pointer">띵즈</li>
           <li className="text-[16px] hover:font-bold cursor-pointer">캘린더</li>
           <li className="text-[16px] hover:font-bold cursor-pointer">문의</li>
@@ -106,6 +139,7 @@ export default function Header() {
             <Image src="/images/appstore.png" alt="appstore" width={86} height={26} className="me-[20px]" />
             <Image src="/images/googleplay.png" alt="google-play" width={86} height={26} />
           </div> */}
+<<<<<<< HEAD
           <button
             className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
             style={{ backgroundColor: COLOR.BUTTON_COLOR }}
@@ -115,6 +149,20 @@ export default function Header() {
           </button>
           <button onClick={() => getUserInfo()}>유저정보 조회</button>
           <button onClick={() => getRenewalToken()}>토큰 재발급</button>
+=======
+          {!token ? (
+            <button
+              className="w-[303px] h-[38px] py-[8px] px-[20px] rounded-[10px] font-bold text-[16px]"
+              style={{ backgroundColor: COLOR.BUTTON_COLOR }}
+              onClick={openLoginPopup}
+              disabled={false}
+            >
+              로그인 후 새 나눔 등록, Let things go!
+            </button>
+          ) : (
+            <button onClick={logout}>로그아웃</button>
+          )}
+>>>>>>> fba918b748fadc049863bf6b001c36ac040db3de
           {/* <Image/> */}
         </div>
       </div>
