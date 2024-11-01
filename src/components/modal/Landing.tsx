@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function LandingModal() {
   return (
-    <div className="my-12 h-full max-w-[39rem] rounded-xl bg-white/40 px-[8.8125rem] py-[3.5rem] backdrop-blur-lg sm:mx-10 sm:w-full">
+    <div className="h-full max-w-[39rem] rounded-xl bg-white/40 px-[8.8125rem] backdrop-blur-lg sm:mx-10 sm:my-12 sm:w-full sm:py-[3.5rem]">
       <div className="text-center">
         <div className="flex justify-center">
           <Image

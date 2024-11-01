@@ -55,7 +55,7 @@ export default function SideNav({ token }: CommonProps) {
       {sideNav && (
         <div
           className={clsx(
-            "fixed bottom-[env(safe-area-inset-bottom)] left-0 top-[env(safe-area-inset-top)] z-20 h-full w-full bg-black/70",
+            "fixed left-0 top-[env(safe-area-inset-top)] z-20 h-[calc(100%-env(safe-area-inset-top))] w-full bg-black/70",
           )}
           onClick={closeSideNav}
           onTouchEnd={closeSideNav}
