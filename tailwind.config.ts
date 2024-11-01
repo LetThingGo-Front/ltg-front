@@ -74,6 +74,9 @@ const config: Config = {
           900: "#61001B",
         },
       },
+      padding: {
+        "safe-top": "env(safe-area-inset-top)",
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],
