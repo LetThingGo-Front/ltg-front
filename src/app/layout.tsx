@@ -9,7 +9,6 @@ import InitToken from "@/components/common/InitToken";
 import { cookies } from "next/headers";
 import ReactQueryProviders from "@/provider/ReactQueryProviders";
 import splashScreens from "./splashScreens";
-import HeadConfig from "./HeadConfig";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -20,6 +19,12 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: "렛띵고",
   description: "Let your things go 묵혀두지 말고 보내주세요. 무료 나눔 서비스",
+  appleWebApp: {
+    capable: true,
+    title: "렛띵고",
+    statusBarStyle: "black-translucent",
+    startupImage: splashScreens,
+  },
 };
 
 export const viewport: Viewport = {
@@ -42,7 +47,6 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <HeadConfig />
       <body className={pretendard.className}>
         <ReactQueryProviders>
           <MapsProvider clientId={clientId}>
