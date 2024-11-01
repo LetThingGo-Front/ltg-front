@@ -49,7 +49,7 @@ export default function Header({ token }: CommonProps) {
 
   return (
     <>
-      <div className="pt-safe-top hidden h-[5.625rem] bg-white px-10 py-8 sm:flex">
+      <div className="hidden h-[5.625rem] bg-white px-10 py-8 sm:flex">
         <Link href="/">
           <Image
             src="/images/logo_black.png"
@@ -140,7 +140,7 @@ export default function Header({ token }: CommonProps) {
         </div>
       </div>
       {/* 모바일 화면 */}
-      <div className="pt-safe-top flex h-16 items-center justify-between bg-white px-5 py-[0.875rem] text-center sm:hidden">
+      <div className="flex h-16 items-center justify-between bg-white px-5 py-[0.875rem] text-center sm:hidden">
         <button className="h-8 w-8" onClick={toggleSideNav}>
           <Image
             src="/assets/images/button/hamburger.svg"
