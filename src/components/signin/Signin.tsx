@@ -17,7 +17,7 @@ export default function SignIn() {
   };
   return (
     <div
-      className={`${!isOpen && "hidden"} pt-safe-top fixed left-0 top-0 z-10 flex h-full w-full items-center justify-center backdrop-blur-xl`}
+      className={`${!isOpen && "hidden"} fixed left-0 top-0 z-10 flex h-full w-full items-center justify-center backdrop-blur-xl`}
     >
       <div className="min-h-[34.75rem] min-w-[19rem] rounded-[1.25rem] bg-grey-800 sm:min-h-[39.375rem] sm:min-w-[29.625rem]">
         <div className="flex justify-end">

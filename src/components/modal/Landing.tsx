@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function LandingModal() {
   return (
     <div
-      className="b-[20px] absolute left-1/2 mt-[30px] -translate-x-1/2 transform rounded-xl bg-white/40 px-[141px] pb-[44px] pt-[56px] backdrop-blur-lg md:mx-[40px] md:w-[100%]"
+      className="b-[20px] fixed left-1/2 mt-[30px] -translate-x-1/2 transform rounded-xl bg-white/40 px-[141px] pb-[44px] pt-[56px] backdrop-blur-lg md:mx-[40px] md:w-[100%]"
       style={{ top: "150px", width: "624px", height: "746px" }}
     >
       <div className="text-center">

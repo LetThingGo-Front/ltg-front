@@ -54,14 +54,12 @@ export default function SideNav({ token }: CommonProps) {
     <AnimatePresence>
       {sideNav && (
         <div
-          className={clsx(
-            "pt-safe-top fixed left-0 top-0 h-dvh w-dvw bg-black/70",
-          )}
+          className={clsx("fixed left-0 top-0 h-full w-full bg-black/70")}
           onClick={closeSideNav}
           onTouchEnd={closeSideNav}
         >
           <motion.div
-            className="z-10 mr-[4.25rem] mt-16 flex h-[calc(100dvh-4rem)] flex-col items-center justify-evenly rounded-tr-[1.875rem] bg-white"
+            className="z-10 mr-[4.25rem] mt-16 flex h-[calc(100%-4rem)] flex-col items-center justify-evenly rounded-tr-[1.875rem] bg-white"
             variants={navVariants}
             initial="start"
             animate="end"
