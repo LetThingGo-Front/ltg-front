@@ -52,9 +52,7 @@ export default function RootLayout({
           <MapsProvider clientId={clientId}>
             <SignIn />
             <Header token={refreshToken} />
-            <main className="mt-[calc(4rem+env(safe-area-inset-top))] h-[calc(100%-4rem-env(safe-area-inset-top))] sm:mt-[calc(5.625rem+env(safe-area-inset-top))] sm:h-[calc(100%-5.625rem-env(safe-area-inset-top))]">
-              {children}
-            </main>
+            <main className="mt-16 sm:mt-[5.625rem]">{children}</main>
             <SideNav token={refreshToken} />
             <InitToken token={accessToken} />
           </MapsProvider>

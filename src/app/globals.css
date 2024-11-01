@@ -2,24 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .w-mainlist-responsive {
-    width: calc(100vw - 40px);
-  }
-
-  .h-dvh-minus-header {
-    height: calc(100lvh - 780px);
-  }
-
-  .h-dvh-minus-header-mobile {
-    height: calc(100dvh - 190px);
-  }
-
-  .h-mainmap-responsive {
-    height: calc(100dvh - 266px);
-  }
-}
-
 body {
   overflow-y: hidden;
   position: fixed;
@@ -28,9 +10,6 @@ body {
   width: 100dvw;
   height: 100dvh;
   padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
 }
 
 @layer utilities {
