@@ -3,7 +3,12 @@ import Head from "next/head";
 
 export default function HeadConfig() {
   return (
-    <Head>
+    <head>
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+      />
       <link
         rel="apple-touch-startup-image"
         media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
@@ -59,6 +64,6 @@ export default function HeadConfig() {
         media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
         href="/splashscreens/iPhone_8__iPhone_7__iPhone_6s__iPhone_6__4.7__iPhone_SE_portrait.png"
       />
-    </Head>
+    </head>
   );
 }
