@@ -52,7 +52,7 @@ export default function RootLayout({
           <MapsProvider clientId={clientId}>
             <SignIn />
             <Header token={refreshToken} />
-            <main className="h-[calc(100%-4rem)] sm:h-[calc(100%-5.625rem)]">
+            <main className="mt-16 h-[calc(100dvh-4rem)] sm:mt-[5.625rem] sm:h-[calc(100dvh-5.625rem)]">
               {children}
             </main>
             <SideNav token={refreshToken} />

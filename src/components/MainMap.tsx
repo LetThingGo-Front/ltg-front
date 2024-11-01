@@ -1,11 +1,11 @@
 export default function MainMap() {
   return (
-    <div className="flex justify-center mt-10 relative">
+    <div className="relative flex justify-center">
       <div
-        className="hidden md:flex w-[1840px] h-mainmap-responsive md:w-[100%] md:mx-[40px] md:mb-[80px] bg-[url('/images/map_mock.PNG')] rounded-[30px] mx-8"
+        className="h-mainmap-responsive mx-8 hidden w-[1840px] rounded-[30px] bg-[url('/images/map_mock.PNG')] md:mx-[40px] md:mb-[80px] md:flex md:w-[100%]"
         id="browser-main-map"
       ></div>
-      <div className="md:hidden w-full h-dvh-minus-header-mobile bg-[url('/images/map_mock.PNG')]"></div>
+      <div className="h-dvh-minus-header-mobile w-full bg-[url('/images/map_mock.PNG')] md:hidden"></div>
     </div>
   );
 }
