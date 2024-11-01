@@ -49,7 +49,7 @@ export default function Header({ token }: CommonProps) {
 
   return (
     <>
-      <div className="fixed left-0 top-0 hidden h-[5.625rem] w-full bg-white px-10 pb-8 pt-[calc(env(safe-area-inset-top)+2rem)] sm:flex">
+      <div className="fixed left-0 top-0 z-10 hidden h-[5.625rem] w-full bg-white px-10 pb-8 pt-[calc(env(safe-area-inset-top)+2rem)] sm:flex">
         <Link href="/">
           <Image
             src="/images/logo_black.png"
