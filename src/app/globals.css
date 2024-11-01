@@ -28,7 +28,7 @@ body {
   width: 100dvw;
   height: 100dvh;
   padding-top: env(safe-area-inset-top);
-  margin:0;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 @layer utilities {
