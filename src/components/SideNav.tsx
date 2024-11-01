@@ -54,7 +54,9 @@ export default function SideNav({ token }: CommonProps) {
     <AnimatePresence>
       {sideNav && (
         <div
-          className={clsx("absolute left-0 top-0 h-dvh w-dvw bg-black/70")}
+          className={clsx(
+            "pt-safe-top fixed left-0 top-0 h-dvh w-dvw bg-black/70",
+          )}
           onClick={closeSideNav}
           onTouchEnd={closeSideNav}
         >

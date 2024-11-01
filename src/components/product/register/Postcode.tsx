@@ -78,7 +78,7 @@ export default function Postcode({
       className={clsx(
         "h-full w-full",
         isOpen &&
-          "max-sm:absolute max-sm:left-0 max-sm:top-0 max-sm:z-10 max-sm:bg-black/70 sm:h-[31.25rem]",
+          "pt-safe-top max-sm:fixed max-sm:left-0 max-sm:top-0 max-sm:z-10 max-sm:bg-black/70 sm:h-[31.25rem]",
       )}
     >
       <SearchInput
