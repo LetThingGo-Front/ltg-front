@@ -8,6 +8,7 @@ export default function HeadConfig() {
         name="apple-mobile-web-app-status-bar-style"
         content="black-translucent"
       />
+      <link rel="manifest" href="/manifest.json" />
       <link
         rel="apple-touch-startup-image"
         media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
