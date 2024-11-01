@@ -21,6 +21,7 @@
 }
 
 body {
+  position: fixed;
   overflow-y: hidden;
   padding-top: env(safe-area-inset-top);
   padding-right: env(safe-area-inset-right);
