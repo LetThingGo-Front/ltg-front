@@ -13,7 +13,6 @@ import { CommonProps } from "@/types/common";
 export default function Header({ token }: CommonProps) {
   const pathname = usePathname();
   const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup;
-  const resetSideNav = useSideNavStore.use.actions().resetSideNav;
   const toggleSideNav = useSideNavStore.use.actions().toggleSideNav;
 
   const logout = async () => {
@@ -42,10 +41,6 @@ export default function Header({ token }: CommonProps) {
       utils.removeStorageAll();
     }
   }, []);
-
-  useEffect(() => {
-    if (pathname) resetSideNav();
-  }, [pathname, resetSideNav]);
 
   return (
     <>
@@ -140,7 +135,7 @@ export default function Header({ token }: CommonProps) {
         </div>
       </div>
       {/* 모바일 화면 */}
-      <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] text-center sm:hidden">
+      <div className="fixed left-0 top-[env(safe-area-inset-top)] flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] text-center sm:hidden">
         <button className="h-8 w-8" onClick={toggleSideNav}>
           <Image
             src="/assets/images/button/hamburger.svg"

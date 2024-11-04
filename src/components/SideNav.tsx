@@ -69,10 +69,14 @@ export default function SideNav({ token }: CommonProps) {
           >
             <ul className="flex h-1/2 flex-col justify-between text-center text-sm font-bold">
               <li>
-                <Link href="/">홈</Link>
+                <Link href="/" onClick={closeSideNav}>
+                  홈
+                </Link>
               </li>
               <li>
-                <Link href="/product/register">나눔 탐색</Link>
+                <Link href="/product/register" onClick={closeSideNav}>
+                  나눔 탐색
+                </Link>
               </li>
               <li>띵즈</li>
               <li>캘린더</li>

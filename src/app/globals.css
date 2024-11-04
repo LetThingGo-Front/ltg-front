@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+html, body {
   margin:0;
   overflow: hidden;
-  /* position: fixed; */
+  position: fixed;
   width:100vh;
   height: 100vh;
   width: 100dvw;
