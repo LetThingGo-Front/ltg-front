@@ -11,11 +11,21 @@ export default function InitApp({ token }: CommonProps) {
     await axiosAuth.delete("/v1/cookie/access-token");
   };
   useEffect(() => {
+    const handleResize = () => {
+      if (window.visualViewport) {
+        document.body.style.height = `${window.visualViewport.height}px`;
+      }
+    };
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", handleResize);
+    }
+
     setupInterceptor();
     if (token) {
       utils.setStorage("accessToken", token);
       deleteCookieAccessToken();
     }
+    handleResize();
   }, []);
 
   return null;

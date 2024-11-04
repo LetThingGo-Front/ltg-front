@@ -8,6 +8,7 @@ type Props = {
 
 export const KeyboardProvider = ({ children }: Props) => {
   useEffect(() => {
+    console.log(window);
     if (window.visualViewport)
       window.visualViewport.addEventListener("resize", handleResize, false);
 
