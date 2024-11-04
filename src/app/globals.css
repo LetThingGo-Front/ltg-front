@@ -2,11 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  margin:0;
-  overflow: hidden;
+
+html {
   position: fixed;
-  width:100vh;
+}
+
+body {
+  overflow: hidden;
+  width: 100vh;
   height: 100vh;
   width: 100dvw;
   height: 100dvh;
