@@ -140,7 +140,7 @@ export default function Header({ token }: CommonProps) {
         </div>
       </div>
       {/* 모바일 화면 */}
-      <div className="fixed left-0 top-[env(safe-area-inset-top)] flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] text-center sm:hidden">
+      <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] text-center sm:hidden">
         <button className="h-8 w-8" onClick={toggleSideNav}>
           <Image
             src="/assets/images/button/hamburger.svg"

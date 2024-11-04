@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 body {
-  overflow-y: hidden;
-  position: fixed;
+  margin:0;
+  overflow: hidden;
+  /* position: fixed; */
   width:100vh;
   height: 100vh;
   width: 100dvw;
