@@ -9,7 +9,6 @@ import InitApp from "@/components/common/InitApp";
 import { cookies } from "next/headers";
 import ReactQueryProviders from "@/provider/ReactQueryProviders";
 import splashScreens from "./splashScreens";
-import { KeyboardProvider } from "@/provider/KeyboardProvider";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -53,7 +52,7 @@ export default function RootLayout({
           <MapsProvider clientId={clientId}>
             <SignIn />
             <Header token={refreshToken} />
-            <main className="mt-16 h-full w-full sm:mt-[5.625rem]">
+            <main className="mt-16 h-[calc(100%-env(keyboard-inset-height))] w-full sm:mt-[5.625rem]">
               {children}
             </main>
             <SideNav token={refreshToken} />
