@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import SideNav from "@/components/SideNav";
 import localFont from "next/font/local";
 import MapsProvider from "@/provider/MapsProvider";
-import InitToken from "@/components/common/InitToken";
+import InitApp from "@/components/common/InitApp";
 import { cookies } from "next/headers";
 import ReactQueryProviders from "@/provider/ReactQueryProviders";
 import splashScreens from "./splashScreens";
@@ -56,7 +56,7 @@ export default function RootLayout({
               {children}
             </main>
             <SideNav token={refreshToken} />
-            <InitToken token={accessToken} />
+            <InitApp token={accessToken} />
           </MapsProvider>
         </ReactQueryProviders>
       </body>
