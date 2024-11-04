@@ -53,7 +53,7 @@ export default function RootLayout({
           <MapsProvider clientId={clientId}>
             <SignIn />
             <Header token={refreshToken} />
-            <main className="mt-16 h-[calc(100%-env(keyboard-inset-height))] w-full sm:mt-[5.625rem]">
+            <main className="mt-16 h-full w-full sm:mt-[5.625rem]">
               {children}
             </main>
             <SideNav token={refreshToken} />
