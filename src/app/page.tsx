@@ -7,20 +7,16 @@ import { useEffect, useRef } from "react";
 export default function Page() {
   const divRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const handleVisualViewPortResize = () => {
-      const currentVisualViewport = Number(window.visualViewport?.height);
-      if (divRef) {
-        divRef.current!.style.height = `${currentVisualViewport - 90}px`;
-        window.scrollTo(0, 90);
+    window.visualViewport?.addEventListener("resize", () => {
+      const viewportHeight = Number(window.visualViewport?.height);
+      if (viewportHeight < window.innerHeight) {
+        document.body.style.height = `${viewportHeight}px`;
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.height = "";
+        document.body.style.overflow = "";
       }
-      if (window.visualViewport) {
-        window.visualViewport.onresize = handleVisualViewPortResize;
-      }
-    };
-    window.visualViewport?.addEventListener(
-      "resize",
-      handleVisualViewPortResize,
-    );
+    });
   }, []);
 
   return (
