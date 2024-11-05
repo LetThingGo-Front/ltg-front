@@ -10,8 +10,8 @@ export default function Page() {
     const handleVisualViewPortResize = () => {
       const currentVisualViewport = Number(window.visualViewport?.height);
       if (divRef) {
-        divRef.current!.style.height = `${currentVisualViewport - 64}px`;
-        window.scrollTo(0, 32);
+        divRef.current!.style.height = `${currentVisualViewport - 90}px`;
+        window.scrollTo(0, 90);
       }
       if (window.visualViewport) {
         window.visualViewport.onresize = handleVisualViewPortResize;
