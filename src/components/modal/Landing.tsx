@@ -4,28 +4,8 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 export default function LandingModal() {
-  const divRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const handleVisualViewPortResize = () => {
-      const currentVisualViewport = Number(window.visualViewport?.height);
-      if (divRef) {
-        divRef.current!.style.height = `${currentVisualViewport - 64}px`;
-        window.scrollTo(0, 32);
-      }
-      if (window.visualViewport) {
-        window.visualViewport.onresize = handleVisualViewPortResize;
-      }
-    };
-    window.visualViewport?.addEventListener(
-      "resize",
-      handleVisualViewPortResize,
-    );
-  }, []);
   return (
-    <div
-      className="absolute h-[calc(100%-10.625rem)] w-[calc(100%-4.0625rem)] rounded-[1.25rem] bg-white/40 px-6 backdrop-blur-lg sm:h-[calc(100%-18.75rem)] sm:min-h-[27.5rem] sm:w-full sm:max-w-[39rem] sm:px-[8.75rem] sm:py-4"
-      ref={divRef}
-    >
+    <div className="absolute h-[calc(100%-10.625rem)] w-[calc(100%-4.0625rem)] rounded-[1.25rem] bg-white/40 px-6 backdrop-blur-lg sm:h-[calc(100%-18.75rem)] sm:min-h-[27.5rem] sm:w-full sm:max-w-[39rem] sm:px-[8.75rem] sm:py-4">
       <div className="flex flex-col gap-4 text-center">
         <div className="flex justify-center">
           <Image

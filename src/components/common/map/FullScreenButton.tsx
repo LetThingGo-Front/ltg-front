@@ -7,7 +7,6 @@ type Props = {
 export default function FullScreenButton({ id = "map" }: Props) {
   const mapElement = document.getElementById(id); // html element tag id
   const fullScreen = () => {
-    console.log(mapElement);
     if (mapElement) {
       if (document.fullscreenElement) {
         document.exitFullscreen();
