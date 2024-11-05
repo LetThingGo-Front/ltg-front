@@ -51,11 +51,11 @@ export default function RootLayout({
         <ReactQueryProviders>
           <MapsProvider clientId={clientId}>
             <SignIn />
+            <SideNav token={refreshToken} />
             <Header token={refreshToken} />
             <main className="mt-16 h-full w-full overscroll-none sm:mt-[5.625rem]">
               {children}
             </main>
-            <SideNav token={refreshToken} />
             <InitApp token={accessToken} />
           </MapsProvider>
         </ReactQueryProviders>

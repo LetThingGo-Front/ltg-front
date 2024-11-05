@@ -1,12 +1,18 @@
 "use client";
 
+import clsx from "clsx";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
 
 export default function LandingModal() {
   return (
-    <div className="absolute h-[calc(100%-10.625rem)] w-[calc(100%-4.0625rem)] rounded-[1.25rem] bg-white/40 px-6 backdrop-blur-lg sm:h-[calc(100%-18.75rem)] sm:min-h-[27.5rem] sm:w-full sm:max-w-[39rem] sm:px-[8.75rem] sm:py-4">
-      <div className="flex flex-col gap-4 text-center">
+    <div
+      className={clsx(
+        "absolute flex h-full w-full flex-col justify-center rounded-[1.25rem] bg-white/40 backdrop-blur-lg",
+        "sm:left-[calc(50%-19.5rem)] sm:top-[2.9375rem] sm:max-h-[41.1875rem] sm:max-w-[39rem] sm:px-[8.8125rem]",
+        "max-sm:left-[0.625rem] max-sm:top-[0.625rem] max-sm:h-[calc(100%-1.25rem)] max-sm:w-[calc(100%-1.25rem)] max-sm:px-6",
+      )}
+    >
+      <div className="flex flex-col gap-8 text-center">
         <div className="flex justify-center">
           <Image
             src="/images/landing.png"
@@ -15,22 +21,30 @@ export default function LandingModal() {
             height={110}
           />
         </div>
-        <div className="flex flex-col font-bold">
-          <p className="text-lg">Let your things go</p>
-          <p className="text-sm">묵혀두지 말고 보내주세요</p>
+        <div className="flex flex-col gap-1 font-bold">
+          <p className="text-2xl sm:text-3xl">Let your things go</p>
+          <p className="sm:text-lg">묵혀두지 말고 보내주세요</p>
         </div>
         <div className="">
           <p className="text-xs">서울에서 나눔 가능한 물품</p>
-          <p className="text-2xl font-bold text-stone-600">1000건</p>
+          <p className="text-3xl font-bold text-stone-600">1000건</p>
         </div>
-        <input
-          type="text"
-          placeholder="필요한 물품을 검색하세요."
-          className="w-full rounded-xl bg-[#ebe9e8] px-[0.375rem] py-2 text-center text-xs text-[#8c8c8c]"
-        />
+        <div className="flex gap-[0.625rem] rounded-xl bg-[#ebe9e8] px-[0.875rem]">
+          <Image
+            src="/assets/images/magnify.svg"
+            width={16}
+            height={16}
+            alt="search"
+          />
+          <input
+            type="text"
+            placeholder="필요한 물품을 검색하세요."
+            className="w-full bg-transparent px-[0.375rem] py-2 text-sm font-semibold text-[#8c8c8c] outline-none placeholder:text-center"
+          />
+        </div>
       </div>
-      <div className="mt-8 flex flex-col items-center justify-center gap-3 text-xs">
-        <button className="flex w-full items-center rounded-full bg-white py-1 shadow-lg">
+      <div className="mt-8 flex flex-col items-center justify-center gap-4 text-sm">
+        <button className="flex w-full items-center rounded-full bg-white px-3 py-1 shadow-lg sm:py-2">
           <Image
             src="/images/icons/Thunder.png"
             alt="thunder-icon"
@@ -39,7 +53,7 @@ export default function LandingModal() {
           />
           <p className="ml-auto mr-5 w-full text-center">오늘 번개 나눔 보기</p>
         </button>
-        <button className="flex w-full items-center rounded-full bg-white py-1 shadow-lg">
+        <button className="flex w-full items-center rounded-full bg-white px-3 py-1 shadow-lg sm:py-2">
           <Image
             src="/images/icons/Location.png"
             alt="location-icon"
@@ -48,7 +62,7 @@ export default function LandingModal() {
           />
           <p className="ml-auto mr-5 w-full text-center">내 주변 나눔 보기</p>
         </button>
-        <button className="flex w-full items-center rounded-full bg-white py-1 shadow-lg">
+        <button className="flex w-full items-center rounded-full bg-white px-3 py-1 shadow-lg sm:py-2">
           <Image
             src="/images/icons/Thing_Sm.png"
             alt="thing-icon"

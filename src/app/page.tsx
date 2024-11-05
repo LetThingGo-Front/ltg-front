@@ -1,33 +1,15 @@
-"use client";
-
 import MainMap from "@/components/MainMap";
 import LandingModal from "@/components/modal/Landing";
-import { useEffect, useRef } from "react";
 
-export default function Page() {
-  const divRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    window.visualViewport?.addEventListener("resize", () => {
-      const viewportHeight = Number(window.visualViewport?.height);
-      if (viewportHeight < window.innerHeight) {
-        document.body.style.height = `${viewportHeight}px`;
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.height = "";
-        document.body.style.overflow = "";
-      }
-    });
-  }, []);
-
+export default function page() {
   return (
-    <div
-      className="mx-5 flex h-[calc(100%-9.875rem)] items-center justify-center pt-[4.25rem] sm:mx-10"
-      ref={divRef}
-    >
-      <div className="h-full min-h-[32.5rem] w-full rounded-[1.875rem]">
-        <MainMap />
+    <div className="flex h-[calc(100%-6rem)] justify-center sm:h-[calc(100%-9.875rem)] sm:overflow-y-auto">
+      <div className="relative mx-5 h-full w-full sm:mx-10 sm:min-h-[47.0625rem] sm:pt-[4.25rem]">
+        <div className="absolute left-0 top-0 h-full w-full rounded-[1.875rem]">
+          <MainMap />
+        </div>
+        <LandingModal />
       </div>
-      <LandingModal />
     </div>
   );
 }
