@@ -16,6 +16,10 @@ export default function LandingModal() {
         window.visualViewport.onresize = handleVisualViewPortResize;
       }
     };
+    window.visualViewport?.addEventListener(
+      "resize",
+      handleVisualViewPortResize,
+    );
   }, []);
   return (
     <div
