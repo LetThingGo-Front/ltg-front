@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
       "Let your things go 묵혀두지 말고 보내주세요. 무료 나눔 서비스",
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
+    background_color: "#E1F452",
     theme_color: "#ffffff",
     orientation: "portrait",
     scope: "/",
