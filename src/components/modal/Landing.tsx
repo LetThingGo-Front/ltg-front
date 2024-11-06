@@ -2,14 +2,15 @@
 
 import clsx from "clsx";
 import Image from "next/image";
+import LandingButton from "./button/LandingButton";
 
 export default function LandingModal() {
   return (
     <div
       className={clsx(
-        "absolute flex h-full w-full flex-col justify-center rounded-[1.25rem] bg-white/40 backdrop-blur-lg",
-        "sm:left-[calc(50%-16.375rem)] sm:top-[2.9375rem] sm:max-h-[36.625rem] sm:max-w-[32.75rem] sm:px-[5.6875rem]",
-        "max-sm:left-[0.625rem] max-sm:top-[0.625rem] max-sm:h-[calc(100%-1.25rem)] max-sm:w-[calc(100%-1.25rem)] max-sm:px-6",
+        "absolute flex flex-col justify-center rounded-[1.25rem] bg-white/40 backdrop-blur-lg",
+        "left-[0.625rem] top-[0.625rem] h-[calc(100%-1.25rem)] w-[calc(100%-1.25rem)] px-6",
+        "sm:left-[calc(50%-16.375rem)] sm:top-[2.9375rem] sm:h-full sm:max-h-[36.625rem] sm:w-full sm:max-w-[32.75rem] sm:px-[5.6875rem]",
       )}
     >
       <div className="flex flex-col gap-8 text-center">
@@ -44,33 +45,21 @@ export default function LandingModal() {
         </div>
       </div>
       <div className="mt-8 flex flex-col items-center justify-center gap-4 text-sm">
-        <button className="flex w-full items-center rounded-full bg-white px-3 py-1 shadow-lg sm:py-2">
-          <Image
-            src="/images/icons/Thunder.png"
-            alt="thunder-icon"
-            width={30}
-            height={30}
-          />
-          <p className="ml-auto mr-5 w-full text-center">오늘 번개 나눔 보기</p>
-        </button>
-        <button className="flex w-full items-center rounded-full bg-white px-3 py-1 shadow-lg sm:py-2">
-          <Image
-            src="/images/icons/Location.png"
-            alt="location-icon"
-            width={30}
-            height={30}
-          />
-          <p className="ml-auto mr-5 w-full text-center">내 주변 나눔 보기</p>
-        </button>
-        <button className="flex w-full items-center rounded-full bg-white px-3 py-1 shadow-lg sm:py-2">
-          <Image
-            src="/images/icons/Thing_Sm.png"
-            alt="thing-icon"
-            width={30}
-            height={30}
-          />
-          <p className="ml-auto mr-5 w-full text-center">새 나눔 등록하기</p>
-        </button>
+        <LandingButton
+          imgSrc="/images/icons/Thunder.png"
+          label="오늘 번개 나눔 보기"
+          altText="thunder icon"
+        />
+        <LandingButton
+          imgSrc="/images/icons/Location.png"
+          label="내 주변 나눔 보기"
+          altText="location icon"
+        />
+        <LandingButton
+          imgSrc="/images/icons/Thing_Sm.png"
+          label="새 나눔 등록하기"
+          altText="thing icon"
+        />
       </div>
     </div>
   );
