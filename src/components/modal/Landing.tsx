@@ -8,7 +8,7 @@ export default function LandingModal() {
     <div
       className={clsx(
         "absolute flex h-full w-full flex-col justify-center rounded-[1.25rem] bg-white/40 backdrop-blur-lg",
-        "sm:left-[calc(50%-19.5rem)] sm:top-[2.9375rem] sm:max-h-[36.625rem] sm:max-w-[32.75rem] sm:px-[5.6875rem]",
+        "sm:left-[calc(50%-16.375rem)] sm:top-[2.9375rem] sm:max-h-[36.625rem] sm:max-w-[32.75rem] sm:px-[5.6875rem]",
         "max-sm:left-[0.625rem] max-sm:top-[0.625rem] max-sm:h-[calc(100%-1.25rem)] max-sm:w-[calc(100%-1.25rem)] max-sm:px-6",
       )}
     >
