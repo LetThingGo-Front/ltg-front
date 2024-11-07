@@ -44,8 +44,8 @@ export default function Header({ token }: CommonProps) {
 
   return (
     <>
-      <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 hidden h-[5.625rem] w-full items-center justify-between bg-white py-8 sm:flex">
-        <ul className="ms-10 flex w-[19.5rem] min-w-72 justify-between">
+      <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 hidden h-[5.625rem] w-full items-center justify-between bg-white px-10 py-8 sm:flex">
+        <ul className="flex gap-8">
           <li className="mr-4">
             <Link href="/">
               <Image
@@ -116,25 +116,23 @@ export default function Header({ token }: CommonProps) {
             <Image src="/images/appstore.png" alt="appstore" width={86} height={26} className="me-[20px]" />
             <Image src="/images/googleplay.png" alt="google-play" width={86} height={26} />
           </div> */}
-        <div className="me-10">
-          {!token ? (
-            <button
-              className="h-[2.375rem] rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
-              onClick={openLoginPopup}
-            >
-              로그인 후 새 나눔 등록
-              <span className="max-md:hidden">, Let things go!</span>
-            </button>
-          ) : (
-            <button
-              className="h-[2.375rem] rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
-              onClick={logout}
-            >
-              새 나눔 등록
-              <span className="max-md:hidden">, Let things go!</span>
-            </button>
-          )}
-        </div>
+        {!token ? (
+          <button
+            className="h-[2.375rem] rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
+            onClick={openLoginPopup}
+          >
+            로그인 후 새 나눔 등록
+            <span className="max-md:hidden">, Let things go!</span>
+          </button>
+        ) : (
+          <button
+            className="h-[2.375rem] rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
+            onClick={logout}
+          >
+            새 나눔 등록
+            <span className="max-md:hidden">, Let things go!</span>
+          </button>
+        )}
       </div>
       {/* 모바일 화면 */}
       <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] text-center sm:hidden">
