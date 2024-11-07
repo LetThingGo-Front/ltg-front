@@ -39,7 +39,7 @@ export default function manifest(): MetadataRoute.Manifest {
     related_applications: [
       {
         platform: "webapp",
-        url: "https://letthinggo.com",
+        url: "https://letthinggo.com/manifest.json",
       },
     ],
   };
