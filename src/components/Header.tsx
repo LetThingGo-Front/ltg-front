@@ -59,10 +59,10 @@ export default function Header({ token }: CommonProps) {
           <li className="cursor-pointer hover:font-bold">
             <Link href="/product/register">나눔 탐색</Link>
           </li>
-          <li className="cursor-pointer text-[16px] hover:font-bold">띵즈</li>
-          <li className="cursor-pointer text-[16px] hover:font-bold">캘린더</li>
-          <li className="cursor-pointer text-[16px] hover:font-bold">문의</li>
-          <li className="cursor-pointer text-[16px] hover:font-bold">
+          <li className="cursor-pointer hover:font-bold">띵즈</li>
+          <li className="cursor-pointer hover:font-bold">캘린더</li>
+          <li className="cursor-pointer hover:font-bold">문의</li>
+          <li className="cursor-pointer hover:font-bold">
             <InstallAppButton />
           </li>
         </ul>

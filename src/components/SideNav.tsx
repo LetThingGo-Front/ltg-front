@@ -83,9 +83,7 @@ export default function SideNav({ token }: CommonProps) {
               <li>캘린더</li>
               <li>내 프로필</li>
               <li>내 계정</li>
-              <li>
-                <InstallAppButton />
-              </li>
+              <InstallAppButton />
             </ul>
             <div className="text-center">
               {token ? (
