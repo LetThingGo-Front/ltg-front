@@ -44,17 +44,18 @@ export default function Header({ token }: CommonProps) {
 
   return (
     <>
-      <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 hidden h-[5.625rem] w-full bg-white px-10 py-8 sm:flex">
-        <Link href="/">
-          <Image
-            src="/images/logo_black.png"
-            alt="logo"
-            className="mt-0.5 h-5 w-16 cursor-pointer"
-            width={65}
-            height={20}
-          />
-        </Link>
+      <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 hidden h-[5.625rem] w-full items-center justify-between bg-white py-8 sm:flex">
         <ul className="ms-10 flex w-[19.5rem] min-w-72 justify-between">
+          <li className="mr-4">
+            <Link href="/">
+              <Image
+                src="/images/logo_black.png"
+                alt="logo"
+                width={65}
+                height={65}
+              />
+            </Link>
+          </li>
           <li className="cursor-pointer hover:font-bold">
             <Link href="/product/register">나눔 탐색</Link>
           </li>
@@ -111,27 +112,28 @@ export default function Header({ token }: CommonProps) {
             </div>
           </div>
         </div> */}
-        <div className="ms-auto flex">
-          {/* <div className="h-[30.4px] mt-[3px] me-[30px] flex items-center justify-center">
+        {/* <div className="h-[30.4px] mt-[3px] me-[30px] flex items-center justify-center">
             <Image src="/images/appstore.png" alt="appstore" width={86} height={26} className="me-[20px]" />
             <Image src="/images/googleplay.png" alt="google-play" width={86} height={26} />
           </div> */}
+        <div className="me-10">
           {!token ? (
             <button
-              className="h-[2.375rem] w-[18.9375rem] rounded-[10px] bg-green-400 px-5 py-2 font-bold"
+              className="h-[2.375rem] rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
               onClick={openLoginPopup}
             >
-              로그인 후 새 나눔 등록, Let things go!
+              로그인 후 새 나눔 등록
+              <span className="max-md:hidden">, Let things go!</span>
             </button>
           ) : (
             <button
-              className="h-[2.375rem] w-[18.9375rem] rounded-[10px] bg-green-400 px-5 py-2 font-bold"
+              className="h-[2.375rem] rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
               onClick={logout}
             >
-              새 나눔 등록, Let things go!
+              새 나눔 등록
+              <span className="max-md:hidden">, Let things go!</span>
             </button>
           )}
-          {/* <Image/> */}
         </div>
       </div>
       {/* 모바일 화면 */}
