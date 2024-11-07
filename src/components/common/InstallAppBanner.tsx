@@ -56,19 +56,14 @@ export default function InstallAppBanner() {
 
   const checkUnsupportedBrowser = () => {
     const userAgent = window.navigator.userAgent;
-    console.log(userAgent);
     // Safari와 Firefox를 포함하지 않는 조건
     const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
     const isFirefox = /Firefox/.test(userAgent);
-    console.log(isSafari, isFirefox);
+
     return !isSafari && !isFirefox;
   };
 
   const handleInstallAppPrompt = async () => {
-    const isSupported = checkUnsupportedBrowser();
-    console.log(isSupported);
-    if (!isSupported) return;
-
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
@@ -84,9 +79,9 @@ export default function InstallAppBanner() {
 
   const checkAppInstalled = async () => {
     try {
-      const relatedApps = await navigator.getInstalledRelatedApps();
+      const relatedApps = await window.navigator.getInstalledRelatedApps();
+      console.log(relatedApps);
       const isInstalled = relatedApps.length > 0;
-
       setAppInstalled(isInstalled);
     } catch (error) {
       setAppInstalled(false);
