@@ -10,6 +10,7 @@ type TextInputProps = {
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   name?: string;
   inputRef?: (el: HTMLInputElement) => void;
+  isError?: boolean;
 };
 
 export default function TextInput({
@@ -20,9 +21,15 @@ export default function TextInput({
   onBlur,
   name,
   inputRef,
+  isError,
 }: TextInputProps) {
   return (
-    <div className="flex h-8 items-center justify-center gap-2 rounded-lg bg-grey-50 p-3 backdrop-blur-[10px] sm:h-11">
+    <div
+      className={clsx(
+        "flex h-8 items-center justify-center gap-2 rounded-lg bg-grey-50 p-3 backdrop-blur-[10px] sm:h-11",
+        isError && "border-2 border-red-600",
+      )}
+    >
       <input
         className="normal shrink grow basis-0 bg-transparent font-semibold text-grey-700 outline-none placeholder:text-grey-400 max-sm:text-xs"
         placeholder={placeholder}

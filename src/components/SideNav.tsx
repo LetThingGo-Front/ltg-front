@@ -83,10 +83,10 @@ export default function SideNav({ token }: CommonProps) {
               <li>내 프로필</li>
               <li>내 계정</li>
             </ul>
-            <div className="text-center">
+            <div className="mt-4 text-center">
               {token ? (
                 <button
-                  className="rounded-md bg-green-400 px-4 py-2 text-xxs font-bold"
+                  className="text-xxs font-bold text-grey-400"
                   type="button"
                   onClick={logout}
                 >

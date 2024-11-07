@@ -390,7 +390,7 @@ export default function RegistrationLocation({
               setSimpleAddr={setSimpleAddr}
             />
             <TextInput
-              placeholder="길안내(예: 지상 강남역 12번 출구 앞)"
+              placeholder="길안내 (예: 지상 강남역 12번 출구 앞)"
               clearField={() => setAddExplain("")}
               value={addExplain}
               onChange={(e) => setAddExplain(e.target.value)}

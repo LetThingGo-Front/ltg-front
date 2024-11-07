@@ -137,7 +137,7 @@ export default function InstallAppBanner() {
             </button>
           </div>
           <button
-            className="w-full rounded-lg bg-grey-700 px-4 py-2 text-sm text-white active:bg-grey-900"
+            className="w-full rounded bg-grey-700 px-4 py-2 text-sm text-white active:bg-grey-900"
             onClick={handleInstallAppPrompt}
           >
             홈 화면에 추가
