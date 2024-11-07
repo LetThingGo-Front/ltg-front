@@ -10,7 +10,6 @@ import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import InstallAppButton from "./common/InstallAppButton";
 
 const navVariants = {
   start: {
@@ -83,7 +82,6 @@ export default function SideNav({ token }: CommonProps) {
               <li>캘린더</li>
               <li>내 프로필</li>
               <li>내 계정</li>
-              <InstallAppButton />
             </ul>
             <div className="text-center">
               {token ? (

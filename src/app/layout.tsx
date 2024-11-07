@@ -9,6 +9,7 @@ import InitApp from "@/components/common/InitApp";
 import { cookies } from "next/headers";
 import ReactQueryProviders from "@/provider/ReactQueryProviders";
 import splashScreens from "./splashScreens";
+import InstallAppBanner from "@/components/common/InstallAppBanner";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -50,6 +51,7 @@ export default function RootLayout({
       <body className={pretendard.className}>
         <ReactQueryProviders>
           <MapsProvider clientId={clientId}>
+            <InstallAppBanner />
             <SignIn />
             <SideNav token={refreshToken} />
             <Header token={refreshToken} />

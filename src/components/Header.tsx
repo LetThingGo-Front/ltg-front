@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useEffect } from "react";
 import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
-import InstallAppButton from "./common/InstallAppButton";
 
 export default function Header({ token }: CommonProps) {
   const pathname = usePathname();
@@ -62,9 +61,6 @@ export default function Header({ token }: CommonProps) {
           <li className="cursor-pointer hover:font-bold">띵즈</li>
           <li className="cursor-pointer hover:font-bold">캘린더</li>
           <li className="cursor-pointer hover:font-bold">문의</li>
-          <li className="cursor-pointer hover:font-bold">
-            <InstallAppButton />
-          </li>
         </ul>
         {/* <div className="me-auto ms-auto">
           <input
