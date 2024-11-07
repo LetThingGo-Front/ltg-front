@@ -36,11 +36,5 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/png",
       },
     ],
-    related_applications: [
-      {
-        platform: "webapp",
-        url: "https://letthinggo.com/manifest.json",
-      },
-    ],
   };
 }

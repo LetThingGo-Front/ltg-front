@@ -51,19 +51,18 @@ const bannerVariants = {
 export default function InstallAppBanner() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
-  const [appInstalled, setAppInstalled] = useState(false);
-  const [isOepn, setIsOpen] = useState(false);
-
-  const checkUnsupportedBrowser = () => {
-    const userAgent = window.navigator.userAgent;
-    // Safari와 Firefox를 포함하지 않는 조건
-    const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
-    const isFirefox = /Firefox/.test(userAgent);
-
-    return !isSafari && !isFirefox;
-  };
+  const [isOepn, setIsOpen] = useState(true);
+  const [isIOS, setIsIOS] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
 
   const handleInstallAppPrompt = async () => {
+    if (isIOS) {
+      alert(
+        'iOS에서 홈 화면에 추가하려면, 아래의 공유 아이콘을 누르고 "홈 화면에 추가"를 선택하세요.',
+      );
+      return;
+    }
+
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
@@ -73,23 +72,10 @@ export default function InstallAppBanner() {
         console.log("사용자가 설치를 거부했습니다.");
       }
       setDeferredPrompt(null);
-      setIsOpen(false);
-    }
-  };
-
-  const checkAppInstalled = async () => {
-    try {
-      const relatedApps = await window.navigator.getInstalledRelatedApps();
-      console.log(relatedApps);
-      const isInstalled = relatedApps.length > 0;
-      setAppInstalled(isInstalled);
-    } catch (error) {
-      setAppInstalled(false);
     }
   };
 
   useEffect(() => {
-    checkAppInstalled();
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
       if (isBeforeInstallPromptEvent(e)) {
         e.preventDefault();
@@ -102,22 +88,29 @@ export default function InstallAppBanner() {
       handleBeforeInstallPrompt as EventListener,
     );
 
-    const isSupported = checkUnsupportedBrowser();
-    if (!appInstalled && isSupported) setIsOpen(true);
+    setIsIOS(
+      /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream,
+    );
+    setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
+
     return () => {
       window.removeEventListener(
         "beforeinstallprompt",
         handleBeforeInstallPrompt as EventListener,
       );
     };
-  }, [appInstalled]);
+  }, []);
+
+  if (isStandalone) {
+    return null; // Don't show install button if already installed
+  }
 
   return (
     <AnimatePresence>
       <motion.div
         className={clsx(
           "fixed bottom-0 left-0 z-20 flex w-full flex-col items-center gap-4 border-t-[1px] bg-white p-4",
-          !isOepn && "hidden",
+          { hidden: !isOepn },
         )}
         variants={bannerVariants}
         initial="start"
@@ -126,8 +119,8 @@ export default function InstallAppBanner() {
       >
         <div className="flex items-start gap-2">
           <p className="whitespace-normal break-keep text-grey-700">
-            <span className="font-bold">렛띵고</span>를 쉽고 빠르게 이용하실 수
-            있습니다. 설치하시겠습니까?
+            <span className="font-bold">렛띵고</span>를 홈 화면에 추가하여 더
+            빠르게 접근할 수 있습니다. 설치하시겠습니까?
           </p>
           <button
             className="h-6 w-6 p-1"
