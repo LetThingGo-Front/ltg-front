@@ -109,7 +109,7 @@ export default function InstallAppBanner() {
     <AnimatePresence>
       <motion.div
         className={clsx(
-          "fixed bottom-0 left-0 z-20 flex w-full flex-col items-center gap-4 border-t-[1px] bg-white p-4",
+          "fixed bottom-0 left-0 z-20 flex w-full justify-center border-t-[1px] bg-white p-4",
           { hidden: !isOepn },
         )}
         variants={bannerVariants}
@@ -117,27 +117,27 @@ export default function InstallAppBanner() {
         animate="end"
         exit="exit"
       >
-        <div className="flex items-start gap-2">
-          <p className="whitespace-normal break-keep text-grey-700">
-            <span className="font-bold">렛띵고</span>를 홈 화면에 추가하여 더
-            빠르게 접근할 수 있습니다. 설치하시겠습니까?
-          </p>
+        <div className="flex max-w-[37.5rem] flex-col gap-4">
+          <div className="flex items-start gap-2">
+            <p className="whitespace-normal break-keep text-grey-700">
+              <span className="font-bold">렛띵고</span>를 홈 화면에 추가하여 더
+              빠르게 접근할 수 있습니다. 설치하시겠습니까?
+            </p>
+            <button
+              className="h-6 w-6 sm:p-1"
+              type="button"
+              onClick={() => setIsOpen(false)}
+            >
+              <Image
+                src="/assets/images/button/close_grey.svg"
+                width={24}
+                height={24}
+                alt="close"
+              />
+            </button>
+          </div>
           <button
-            className="h-6 w-6 p-1"
-            type="button"
-            onClick={() => setIsOpen(false)}
-          >
-            <Image
-              src="/assets/images/button/close_grey.svg"
-              width={20}
-              height={20}
-              alt="banner close"
-            />
-          </button>
-        </div>
-        <div className="flex w-full justify-end sm:justify-center">
-          <button
-            className={clsx("rounded bg-grey-800 px-4 py-2 text-xs text-white")}
+            className="w-full rounded-lg bg-grey-700 px-4 py-2 text-sm text-white active:bg-grey-900"
             onClick={handleInstallAppPrompt}
           >
             홈 화면에 추가
