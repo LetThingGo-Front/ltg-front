@@ -36,7 +36,7 @@ export default function Calendar() {
           <div className="flex items-center justify-start gap-px">
             <div className="flex h-[36px] w-[36px] items-center justify-center px-[6.50px] py-[5.42px]">
               <Image
-                src="/assets/images/location_marker.svg"
+                src="/assets/images/marker/md_marker.svg"
                 alt="location"
                 width={36}
                 height={36}

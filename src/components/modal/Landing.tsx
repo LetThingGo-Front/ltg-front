@@ -19,7 +19,7 @@ export default function LandingModal() {
             src="/images/landing.png"
             alt="langing-image"
             width={80}
-            height={110}
+            height={105}
           />
         </div>
         <div className="flex flex-col gap-1 font-bold">

@@ -30,7 +30,7 @@ export default function SignIn() {
             <div className="mb-[3.1875rem] sm:mb-[5.625rem]">
               <Image
                 className="h-[3.625rem] w-[11rem] sm:h-[4.3125rem] sm:w-[13.25rem]"
-                src="/assets/images/logo.svg"
+                src="/assets/images/logo/logo_white.svg"
                 width={212}
                 height={69}
                 alt="letthinggo logo"

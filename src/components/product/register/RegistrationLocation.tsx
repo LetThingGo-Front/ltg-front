@@ -369,7 +369,7 @@ export default function RegistrationLocation({
               <div className="flex items-center gap-1">
                 <div className="mt-[1px] h-4 w-4 sm:h-5 sm:w-5">
                   <Image
-                    src="/assets/images/location_marker.svg"
+                    src="/assets/images/marker/md_marker.svg"
                     width={20}
                     height={20}
                     alt="etc"
@@ -517,7 +517,7 @@ export default function RegistrationLocation({
               <div className="flex gap-1">
                 <div className="h-4 w-4 sm:h-5 sm:w-5">
                   <Image
-                    src="/assets/images/location_marker.svg"
+                    src="/assets/images/marker/md_marker.svg"
                     alt="location"
                     width={20}
                     height={20}

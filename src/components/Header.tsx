@@ -49,10 +49,10 @@ export default function Header({ token }: CommonProps) {
           <li className="mr-4">
             <Link href="/">
               <Image
-                src="/images/logo_black.png"
+                src="/assets/images/logo/logo_black.svg"
                 alt="logo"
                 width={65}
-                height={65}
+                height={20}
               />
             </Link>
           </li>
@@ -148,7 +148,8 @@ export default function Header({ token }: CommonProps) {
           <p className="font-bold">{pageTitle()}</p>
         ) : (
           <Image
-            src="/images/logo_black.png"
+            className="w-[4.0625rem]"
+            src="/assets/images/logo/logo_black.svg"
             alt="logo"
             width={65}
             height={20}

@@ -26,9 +26,6 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
     startupImage: splashScreens,
   },
-  icons: {
-    icon: "/icons/icon_16.png",
-  },
 };
 
 export const viewport: Viewport = {
