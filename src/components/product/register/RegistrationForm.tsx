@@ -36,13 +36,13 @@ export default function RegistrationForm() {
   const watchCategory = watch("itemCreateRequest.categoryCode");
 
   const category = useQuery({
-    queryKey: ["category"],
-    queryFn: () => fetchCategoryList(),
+    queryKey: ["category", "IT003"],
+    queryFn: ({ queryKey }) => fetchCategoryList(queryKey[1]),
   });
 
   const itemStatus = useQuery({
-    queryKey: ["itemStatus", isItemStatusType],
-    queryFn: ({ queryKey }) => fetchItemStatusList(queryKey[1]),
+    queryKey: ["itemStatus", "IT001", isItemStatusType],
+    queryFn: ({ queryKey }) => fetchItemStatusList(queryKey[1], queryKey[2]),
   });
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export default function RegistrationForm() {
               <Line />
             </div>
             <div className="flex flex-wrap gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
-              {category.data?.data.codes.map((c: Codes) => (
+              {category.data?.map((c: Codes) => (
                 <ItemBox
                   key={c.codeSeq}
                   name={c.codeKorName}
@@ -152,7 +152,7 @@ export default function RegistrationForm() {
               <Line />
             </div>
             <div className="flex flex-col gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
-              {itemStatus.data?.data.codes.map((s: Codes) => (
+              {itemStatus.data?.map((s: Codes) => (
                 <ItemBox
                   key={s.codeSeq}
                   name={s.codeKorName}

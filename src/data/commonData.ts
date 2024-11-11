@@ -1,35 +1,39 @@
 import axios from "axios";
 
-const fetchCategoryList = async (useYn?: string) => {
-  const { data } = await axios.get("/v1/group-codes/IT003/codes", {
+const fetchCategoryList = async (code: string, useYn?: string) => {
+  const { data } = await axios.get(`/v1/group-codes/${code}/codes`, {
     params: {
       useYn: useYn ?? "Y",
     },
   });
 
-  return data;
+  return data?.data?.[code];
 };
 
 // 카테고리가 식음료인 물품상태를 조회하려면 mngItem1 값을 'Y'로 설정
-const fetchItemStatusList = async (mngItem1: string, useYn?: string) => {
-  const { data } = await axios.get("/v1/group-codes/IT001/codes", {
+const fetchItemStatusList = async (
+  code: string,
+  mngItem1: string,
+  useYn?: string,
+) => {
+  const { data } = await axios.get(`/v1/group-codes/${code}/codes`, {
     params: {
       useYn: useYn ?? "Y",
       mngItem1,
     },
   });
 
-  return data;
+  return data?.data?.[code];
 };
 
-const fetchDaysList = async (useYn?: string) => {
-  const { data } = await axios.get("/v1/group-codes/IT002/codes", {
+const fetchDaysList = async (code: string, useYn?: string) => {
+  const { data } = await axios.get(`/v1/group-codes/${code}/codes`, {
     params: {
       useYn: useYn ?? "Y",
     },
   });
 
-  return data;
+  return data?.data?.[code];
 };
 
 export { fetchCategoryList, fetchItemStatusList, fetchDaysList };

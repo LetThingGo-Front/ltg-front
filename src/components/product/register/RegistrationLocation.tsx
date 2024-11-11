@@ -63,8 +63,8 @@ export default function RegistrationLocation({
   const [openLocationForm, setOpenLocationForm] = useState(false);
 
   const days = useQuery({
-    queryKey: ["days"],
-    queryFn: () => fetchDaysList(),
+    queryKey: ["days", "IT002"],
+    queryFn: ({ queryKey }) => fetchDaysList(queryKey[1]),
   });
 
   const toggleSelectDay = () => {
@@ -197,9 +197,7 @@ export default function RegistrationLocation({
 
     const itemAvailabilities = filteredDay.map((day) => {
       return {
-        dayOfWeek: days.data?.data.codes.find(
-          (d: Codes) => d.codeKorName === day,
-        )?.code,
+        dayOfWeek: days.data?.find((d: Codes) => d.codeKorName === day)?.code,
         startTime: min < 10 ? `0${min}00` : `${min}00`,
         endTime: max < 10 ? `0${max}59` : `${max}59`,
       };

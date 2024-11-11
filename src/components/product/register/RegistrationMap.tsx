@@ -1,6 +1,6 @@
 "use client";
 
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+import LoadingMapSpinner from "@/components/common/LoadingMapSpinner";
 import FullScreenButton from "@/components/common/map/FullScreenButton";
 import MoveCenter from "@/components/common/map/MoveCenter";
 import ZoomControl from "@/components/common/map/ZoomControl";
@@ -168,7 +168,7 @@ export default memo(function RegisterMap({
         <MoveCenter lat={coordinate.lat} lng={coordinate.lng} />
         <ZoomControl address={address} zoom={18} />
       </NaverMap>
-      {isMovingMarker && <LoadingSpinner />}
+      {isMovingMarker && <LoadingMapSpinner />}
     </MapDiv>
   );
 });
