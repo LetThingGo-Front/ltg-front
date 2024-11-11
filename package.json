@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev:mock": "concurrently --kill-others \"env NEXT_PUBLIC_API_MOCKING=enabled next dev\" \"npx tsx watch ./src/mocks/http.ts\"",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -34,17 +35,30 @@
     "zustand-persist": "^0.4.0"
   },
   "devDependencies": {
+    "@mswjs/http-middleware": "^0.10.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.0",
+    "cors": "^2.8.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
+    "express": "^4.21.1",
+    "msw": "^2.6.4",
     "postcss": "^8",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "swagger-typescript-api": "13.0.4",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   },
-  "type": "module"
+  "type": "module",
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }

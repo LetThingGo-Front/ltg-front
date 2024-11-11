@@ -3,8 +3,22 @@
 import clsx from "clsx";
 import Image from "next/image";
 import LandingButton from "./button/LandingButton";
+import axios from "@/lib/axios";
+import { useEffect } from "react";
 
 export default function LandingModal() {
+  const getUser = async () => {
+    try {
+      const response = await axios.get("/v1/group-codes/IT003/codes");
+      console.log(response.data.data["IT003"]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <div
       className={clsx(

@@ -142,6 +142,17 @@ export interface ItemLocationDto {
    * @example "N"
    */
   lightningYn?: string;
+  /**
+   * 즐겨찾는 장소 아이디(PK)
+   * @format int64
+   * @example 1
+   */
+  favoritePlaceId?: number;
+  /**
+   * 즐겨찾는 장소 유형 코드(H:집근처, W:회사근처, E:기타)
+   * @example "H"
+   */
+  placeType?: string;
   /** 나눔 가능 시간 DTO */
   itemAvailabilities?: ItemAvailabiltyDto[];
 }
@@ -408,6 +419,17 @@ export interface CodeSearchRequest2 {
   mngItem4?: string;
 }
 
+export interface CodeCreateRequest {
+  /**
+   * 그룹코드
+   * @minLength 0
+   * @maxLength 6
+   * @example "TEST01"
+   */
+  groupCode: string;
+  codes?: CodeDto[];
+}
+
 export interface CodeDto {
   /**
    * 공통코드
@@ -476,29 +498,6 @@ export interface CodeDto {
   codeSeq: number;
 }
 
-export interface CodeSearchResponse {
-  groupCode?: string;
-  groupCodeName?: string;
-  mngDes1?: string;
-  mngDes2?: string;
-  mngDes3?: string;
-  mngDes4?: string;
-  description?: string;
-  useYn?: string;
-  codes?: CodeDto[];
-}
-
-export interface CodeCreateRequest {
-  /**
-   * 그룹코드
-   * @minLength 0
-   * @maxLength 6
-   * @example "TEST01"
-   */
-  groupCode: string;
-  codes?: CodeDto[];
-}
-
 export interface Pageable {
   /**
    * @format int32
@@ -520,9 +519,9 @@ export interface PageableObject {
   unpaged?: boolean;
   /** @format int32 */
   pageNumber?: number;
-  paged?: boolean;
   /** @format int32 */
   pageSize?: number;
+  paged?: boolean;
 }
 
 /** 나눔 신청 믈픔 DTO */
@@ -755,7 +754,8 @@ export type CreateGroupCodeError = string;
 
 export type RetrieveCodesByGroupCodesPayload = CodeSearchRequest2[];
 
-export type RetrieveCodesByGroupCodesData = CodeSearchResponse[];
+/** @example {"status":"success","data":{"AP001":[{"code":"1","codeKorName":"수락 대기 중","codeEngName":"WAITING","mngItem1":"","mngItem2":"","mngItem3":"","mngItem4":"","description":"","useYn":"Y","codeSeq":1}]}} */
+export type RetrieveCodesByGroupCodesData = string;
 
 export type CreateCodeData = any;
 
@@ -769,10 +769,10 @@ export type RetrieveUserRequestsData = UserItemRequestSearchResponsePage;
 
 export type GenerateNicknameData = any;
 
-/** @example {"status":"success","data":{"groupCode":"AP001","groupCodeName":"나눔신청상태코드","mngDes1":"","mngDes2":"","mngDes3":"","mngDes4":"","description":"나눔 신청 상태 코드입니다.","useYn":"Y","codes":[{"code":"1","codeKorName":"수락 대기 중","codeEngName":"WAITING","mngItem1":"","mngItem2":"","mngItem3":"","mngItem4":"","description":"","useYn":"Y","codeSeq":1}]}} */
+/** @example {"status":"success","data":{"AP001":[{"code":"1","codeKorName":"수락 대기 중","codeEngName":"WAITING","mngItem1":"","mngItem2":"","mngItem3":"","mngItem4":"","description":"","useYn":"Y","codeSeq":1}]}} */
 export type RetrieveCodesData = string;
 
-/** @example {"status":"success","data":{"groupCode":"AP001","groupCodeName":"나눔신청상태코드","mngDes1":"","mngDes2":"","mngDes3":"","mngDes4":"","description":"나눔 신청 상태 코드입니다.","useYn":"Y","codes":[{"code":"1","codeKorName":"수락 대기 중","codeEngName":"WAITING","mngItem1":"","mngItem2":"","mngItem3":"","mngItem4":"","description":"","useYn":"Y","codeSeq":1}]}} */
+/** @example {"status":"success","data":{"AP001":[{"code":"1","codeKorName":"수락 대기 중","codeEngName":"WAITING","mngItem1":"","mngItem2":"","mngItem3":"","mngItem4":"","description":"","useYn":"Y","codeSeq":1}]}} */
 export type RetrieveCodes1Data = string;
 
 /** @example {"status":"success","data":[{"groupCode":"AP001","groupCodeName":"나눔신청상태코드","mngDes1":"","mngDes2":"","mngDes3":"","mngDes4":"","description":"나눔 신청 상태 코드입니다.","useYn":"Y"}]} */

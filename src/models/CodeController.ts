@@ -84,7 +84,7 @@ export class CodeController<
    *
    * @tags code-controller
    * @name RetrieveCodesByGroupCodes
-   * @summary 공통코드 조회 API
+   * @summary 그룹코드별 공통코드 목록 조회 API
    * @request POST:/v1/group-codes/codes
    * @secure
    * @response `200` `RetrieveCodesByGroupCodesData` OK
