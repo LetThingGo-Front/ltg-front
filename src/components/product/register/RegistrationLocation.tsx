@@ -215,7 +215,7 @@ export default function RegistrationLocation({
       lightningYn: isTodayShare ? "Y" : "N",
       itemAvailabilities: processItemAvailabilities(),
     };
-    console.log(newLocation);
+
     // 인덱스 번호가 저장한 장소 정보 개수 이상일 경우 신규등록
     if (locationList.length <= idx) {
       onSave([...locationList, newLocation]);
@@ -369,7 +369,7 @@ export default function RegistrationLocation({
               <div className="flex items-center gap-1">
                 <div className="mt-[1px] h-4 w-4 sm:h-5 sm:w-5">
                   <Image
-                    src="/assets/images/marker/md_marker.svg"
+                    src="/assets/images/marker/location_marked.svg"
                     width={20}
                     height={20}
                     alt="etc"
@@ -517,7 +517,7 @@ export default function RegistrationLocation({
               <div className="flex gap-1">
                 <div className="h-4 w-4 sm:h-5 sm:w-5">
                   <Image
-                    src="/assets/images/marker/md_marker.svg"
+                    src="/assets/images/marker/location_marked.svg"
                     alt="location"
                     width={20}
                     height={20}
