@@ -16,6 +16,7 @@ type Props = {
   locationId: string;
   setSimpleAddr?: (address: string) => void;
   disableFullscreen?: boolean;
+  isTodayShare?: boolean;
 };
 
 export default memo(function RegisterMap({
@@ -75,7 +76,6 @@ export default memo(function RegisterMap({
     },
     [setAddress, setSimpleAddr],
   );
-
   useEffect(() => {
     // 주소가 없는 최초의 상태에서만 현위치로 이동(위치 권한 허용시)
     if (!address) {
@@ -155,8 +155,8 @@ export default memo(function RegisterMap({
           position={coordinate}
           draggable={isDisabled}
           icon={{
-            url: "/assets/images/sample/marker.svg",
-            size: { width: 49, height: 36 },
+            url: "/assets/images/marker/md_marker.svg",
+            size: { width: 50, height: 50 },
             scaledSize: { width: 40, height: 40 },
             anchor: { x: 25, y: 25 },
           }}
