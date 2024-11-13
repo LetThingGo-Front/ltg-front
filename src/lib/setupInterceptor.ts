@@ -1,29 +1,34 @@
-import { axiosAuth } from '@/lib/axios';
-import refreshToken from './refreshToken';
-import { setRefreshing, getRefreshing, subscribeTokenRefresh, onTokenRefreshed } from './tokenService';
-import utils from '@/utils/cmmnUtil';
+import { axiosAuth } from "@/lib/axios";
+import refreshToken from "./refreshToken";
+import {
+  setRefreshing,
+  getRefreshing,
+  subscribeTokenRefresh,
+  onTokenRefreshed,
+} from "./tokenService";
+import utils from "@/utils/cmmnUtil";
 
 const setupInterceptor = () => {
   axiosAuth.interceptors.request.use(
-    config => {
+    (config) => {
       const updatedConfig = { ...config };
       if (!updatedConfig.headers.Authorization) {
-        const accessToken = utils.getStorage('accessToken');
+        const accessToken = utils.getStorage("accessToken");
         updatedConfig.headers.Authorization = `Bearer ${accessToken}`;
       }
 
       return updatedConfig;
     },
-    error => Promise.reject(error),
+    (error) => Promise.reject(error),
   );
 
   axiosAuth.interceptors.response.use(
-    response => response,
-    async error => {
+    (response) => response,
+    async (error) => {
       const prevRequest = error.config;
       if (error.response.status === 401 && !prevRequest.sent) {
         if (getRefreshing()) {
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             subscribeTokenRefresh((newAccessToken: any) => {
               prevRequest.headers.Authorization = `Bearer ${newAccessToken}`;
               resolve(axiosAuth(prevRequest));

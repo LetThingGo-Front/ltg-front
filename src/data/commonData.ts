@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/lib/axios";
 
 // 카테고리 코드 IT003
 const fetchCategoryList = async (code: string, useYn?: string) => {
