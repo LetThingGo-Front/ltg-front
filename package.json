@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:mock": "concurrently --kill-others \"env NEXT_PUBLIC_API_MOCKING=enabled next dev\" \"npx tsx watch ./src/mocks/http.ts\"",
+    "dev:mock": "concurrently --kill-others \"env NEXT_PUBLIC_BACKEND_URL=http://localhost:9090 next dev\" \"npx tsx watch ./src/mocks/http.ts\"",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

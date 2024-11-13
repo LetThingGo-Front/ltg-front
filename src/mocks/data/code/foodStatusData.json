@@ -1,0 +1,64 @@
+{
+    "IT001": [
+      {
+        "code": "21",
+        "codeKorName": "오늘 만듦",
+        "codeEngName": "freshlymade",
+        "mngItem1": "Y",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 21
+      },
+      {
+        "code": "22",
+        "codeKorName": "오늘 안에 소비해야 함",
+        "codeEngName": "preishable",
+        "mngItem1": "Y",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 22
+      },
+      {
+        "code": "23",
+        "codeKorName": "소비기한 2일 이상",
+        "codeEngName": "long lasting",
+        "mngItem1": "Y",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 23
+      },
+      {
+        "code": "24",
+        "codeKorName": "소비기한 1주일 이상 남음",
+        "codeEngName": "extended",
+        "mngItem1": "Y",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 24
+      },
+      {
+        "code": "25",
+        "codeKorName": "소비기한 1달 이상 남음",
+        "codeEngName": "sustained",
+        "mngItem1": "Y",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 25
+      }
+    ]
+  }

@@ -1,0 +1,64 @@
+{
+    "IT001": [
+      {
+        "code": "11",
+        "codeKorName": "포장도 뜯지 않은 새것",
+        "codeEngName": "unopend",
+        "mngItem1": "N",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 11
+      },
+      {
+        "code": "12",
+        "codeKorName": "거의 사용 안 해서 새것 같음",
+        "codeEngName": "unused",
+        "mngItem1": "N",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 12
+      },
+      {
+        "code": "13",
+        "codeKorName": "사용한지 좀 되었지만 관리가 잘됨",
+        "codeEngName": "used",
+        "mngItem1": "N",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 13
+      },
+      {
+        "code": "14",
+        "codeKorName": "중고처럼 보이나 사용하는데 문제없음",
+        "codeEngName": "no issue",
+        "mngItem1": "N",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 14
+      },
+      {
+        "code": "15",
+        "codeKorName": "버리기 애매함",
+        "codeEngName": "not trash",
+        "mngItem1": "N",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 15
+      }
+    ]
+  }

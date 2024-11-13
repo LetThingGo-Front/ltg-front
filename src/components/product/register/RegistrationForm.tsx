@@ -14,6 +14,7 @@ import utils from "@/utils/cmmnUtil";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCategoryList, fetchItemStatusList } from "@/data/commonData";
 import { Codes } from "@/types/common";
+import { axiosAuth } from "@/lib/axios";
 
 const sharingLocation = [
   { locationId: "나눔 장소 A", color: "bg-green-400" },
@@ -28,9 +29,16 @@ export default function RegistrationForm() {
     resetField,
     watch,
   } = useForm<CreateItemPayload>();
-  const createItem: SubmitHandler<CreateItemPayload> = (data: unknown) => {
-    const formData = new FormData();
+  const registerItem: SubmitHandler<CreateItemPayload> = async (
+    data: unknown,
+  ) => {
     console.log(data);
+    try {
+      // const response = await axiosAuth.post("/v1/items", data);
+      // console.log(response.data);
+    } catch (error) {
+      console.log(`register item error: ${error}`);
+    }
   };
   const [isItemStatusType, setIsItemStatusType] = useState("N");
   const watchCategory = watch("itemCreateRequest.categoryCode");
@@ -56,7 +64,7 @@ export default function RegistrationForm() {
   return (
     <form
       className="flex flex-col gap-[4.5rem] sm:gap-10"
-      onSubmit={handleSubmit(createItem)}
+      onSubmit={handleSubmit(registerItem)}
     >
       {/* 물품명 */}
       <Controller
