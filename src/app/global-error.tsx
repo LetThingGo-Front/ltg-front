@@ -22,7 +22,7 @@ export default function GlobalError({
             onClick={goHome}
             className="mt-4 rounded-lg bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700 active:bg-blue-700"
           >
-            확인
+            홈으로 이동
           </button>
         </div>
       </body>

@@ -1,4 +1,3 @@
-// app/error.tsx
 "use client";
 
 import ErrorPage from "@/components/common/ErrorPage";
