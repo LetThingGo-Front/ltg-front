@@ -29,7 +29,7 @@ export default memo(function RegisterMap({
   disableFullscreen = false,
 }: Props) {
   const [isMovingMarker, setIsMovingMarker] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
   const getReverseGeoCode = useCallback(
     async (lat: number, lng: number) => {
       if (!lat || !lng) {
@@ -98,9 +98,9 @@ export default memo(function RegisterMap({
     if (mapElement) {
       mapElement.addEventListener("fullscreenchange", () => {
         if (document.fullscreenElement) {
-          setIsDisabled(true);
+          setIsEnabled(true);
         } else {
-          setIsDisabled(false);
+          setIsEnabled(false);
         }
       });
     }
@@ -112,15 +112,15 @@ export default memo(function RegisterMap({
     //   userAgent.indexOf("ipad") > -1 ||
     //   userAgent.indexOf("ipod") > -1
     // ) {
-    //   setIsDisabled(true);
+    //   setIsEnabled(true);
     // }
     return () => {
       if (mapElement) {
         mapElement.removeEventListener("fullscreenchange", () => {
           if (document.fullscreenElement) {
-            setIsDisabled(true);
+            setIsEnabled(true);
           } else {
-            setIsDisabled(false);
+            setIsEnabled(false);
           }
         });
       }
@@ -144,16 +144,16 @@ export default memo(function RegisterMap({
       <NaverMap
         defaultCenter={coordinate}
         defaultZoom={18}
-        disableDoubleClickZoom={!isDisabled}
-        disableDoubleTapZoom={!isDisabled}
-        disableTwoFingerTapZoom={!isDisabled}
-        draggable={isDisabled}
-        scrollWheel={isDisabled}
+        disableDoubleClickZoom={!isEnabled}
+        disableDoubleTapZoom={!isEnabled}
+        disableTwoFingerTapZoom={!isEnabled}
+        draggable={isEnabled}
+        scrollWheel={isEnabled}
       >
         {!disableFullscreen && <FullScreenButton id={locationId} />}
         <Marker
           position={coordinate}
-          draggable={isDisabled}
+          draggable={isEnabled}
           icon={{
             url: "/assets/images/marker/md_marker.svg",
             size: { width: 50, height: 50 },

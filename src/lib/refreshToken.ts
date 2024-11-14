@@ -13,7 +13,7 @@ const refreshToken = async () => {
     return reissueAccessToken;
   } catch (error) {
     utils.removeStorageAll();
-    // window.location.href = '/';
+    window.location.href = "/";
   }
 };
 

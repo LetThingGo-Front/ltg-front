@@ -4,6 +4,7 @@ import { duration } from "@/constants/animation/style";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface RelatedApplication {
@@ -54,6 +55,7 @@ export default function InstallAppBanner() {
   const [isOepn, setIsOpen] = useState(true);
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
+  const pathname = usePathname();
 
   const handleInstallAppPrompt = async () => {
     if (isIOS) {
@@ -103,6 +105,9 @@ export default function InstallAppBanner() {
 
   if (isStandalone) {
     return null; // Don't show install button if already installed
+  }
+  if (pathname !== "/") {
+    return null; // Don't show install button if not on home page
   }
 
   return (

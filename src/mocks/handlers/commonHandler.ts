@@ -19,7 +19,9 @@ export const commonHandler = [
       data: daysData,
     });
   }),
-  http.get("/v1/group-codes/IT003/codes", () => {
+  http.get("/v1/group-codes/IT003/codes", ({ request }) => {
+    const url = new URL(request.url);
+    const mngItem1 = url.searchParams.get("mngItem1");
     return HttpResponse.json({
       status: "success",
       data: categoryData,

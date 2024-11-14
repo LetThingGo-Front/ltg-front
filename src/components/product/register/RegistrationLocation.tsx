@@ -18,6 +18,8 @@ import { ItemLocationDto } from "@/models/data-contracts";
 import { useQuery } from "@tanstack/react-query";
 import { fetchDaysList } from "@/data/commonData";
 import { Codes } from "@/types/common";
+import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
+import { REGISTER_ERROR_MESSAGE } from "@/constants/message";
 
 type Props = {
   idx: number;
@@ -65,7 +67,13 @@ export default function RegistrationLocation({
   const days = useQuery({
     queryKey: ["days", "IT002"],
     queryFn: ({ queryKey }) => fetchDaysList(queryKey[1]),
+    staleTime: MIDDLE_TIME,
+    gcTime: LONG_TIME,
   });
+
+  if (days.isError) {
+    throw new Error(REGISTER_ERROR_MESSAGE);
+  }
 
   const toggleSelectDay = () => {
     if (isDayShare) {
