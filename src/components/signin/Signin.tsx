@@ -19,7 +19,7 @@ export default function SignIn() {
     <div
       className={`${!isOpen && "hidden"} fixed left-0 top-[env(safe-area-inset-top)] z-30 flex h-[calc(100%-env(safe-area-inset-top))] w-full items-center justify-center backdrop-blur-xl`}
     >
-      <div className="min-h-[34.75rem] min-w-[19rem] rounded-[1.25rem] bg-black/70 sm:min-h-[39.375rem] sm:min-w-[29.625rem]">
+      <div className="min-h-[34.75rem] min-w-[19rem] rounded-[1.25rem] bg-grey-800 sm:min-h-[39.375rem] sm:min-w-[29.625rem]">
         <div className="flex justify-end">
           <div className="flex h-[3.75rem] w-[3.75rem] items-center justify-center">
             <CloseButton close={closeLoginPopup} />

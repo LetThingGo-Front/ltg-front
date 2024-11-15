@@ -78,10 +78,26 @@ export default function SideNav({ token }: CommonProps) {
                   나눔 탐색
                 </Link>
               </li>
-              <li>띵즈</li>
-              <li>캘린더</li>
-              <li>내 프로필</li>
-              <li>내 계정</li>
+              <li>
+                <Link href="/a" onClick={closeSideNav}>
+                  띵즈
+                </Link>
+              </li>
+              <li>
+                <Link href="/a" onClick={closeSideNav}>
+                  캘린더
+                </Link>
+              </li>
+              <li>
+                <Link href="/a" onClick={closeSideNav}>
+                  내 프로필
+                </Link>
+              </li>
+              <li>
+                <Link href="/a" onClick={closeSideNav}>
+                  내 계정
+                </Link>
+              </li>
             </ul>
             <div className="mt-4 text-center">
               {token ? (
