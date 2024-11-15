@@ -16,7 +16,7 @@ import { fetchCategoryList, fetchItemStatusList } from "@/data/commonData";
 import { Codes } from "@/types/common";
 import axios, { axiosAuth } from "@/lib/axios";
 import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
-import { REGISTER_ERROR_MESSAGE } from "@/constants/message";
+import { CATEGORY_CODE, ITEM_STATUS_CODE } from "@/constants/code";
 
 const sharingLocation = [
   { locationId: "나눔 장소 A", color: "bg-green-400" },
@@ -46,21 +46,18 @@ export default function RegistrationForm() {
   const watchCategory = watch("itemCreateRequest.categoryCode");
 
   const category = useQuery({
-    queryKey: ["category", "IT003"],
+    queryKey: ["category", CATEGORY_CODE],
     queryFn: ({ queryKey }) => fetchCategoryList(queryKey[1]),
     staleTime: MIDDLE_TIME,
     gcTime: LONG_TIME,
   });
+
   const itemStatus = useQuery({
-    queryKey: ["itemStatus", "IT001", isItemStatusType],
+    queryKey: ["itemStatus", ITEM_STATUS_CODE, isItemStatusType],
     queryFn: ({ queryKey }) => fetchItemStatusList(queryKey[1], queryKey[2]),
     staleTime: MIDDLE_TIME,
     gcTime: LONG_TIME,
   });
-
-  if (category.isError || itemStatus.isError) {
-    throw new Error(REGISTER_ERROR_MESSAGE);
-  }
 
   useEffect(() => {
     if (watchCategory) {

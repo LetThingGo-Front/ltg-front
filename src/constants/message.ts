@@ -1,5 +1,5 @@
 // error message
-const REGISTER_ERROR_MESSAGE =
-  "앗, 나눔 등록 양식을 불러오는 데 문제가 생긴 것 같아요.";
+const NETWORK_ERROR_MESSAGE = "네트워크 연결에 문제가 발생했어요 😢";
+const UNKNOWN_ERROR_MESSAGE = "알 수 없는 오류가 발생했어요 😢";
 
-export { REGISTER_ERROR_MESSAGE };
+export { NETWORK_ERROR_MESSAGE, UNKNOWN_ERROR_MESSAGE };

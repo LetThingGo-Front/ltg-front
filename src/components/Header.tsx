@@ -3,12 +3,13 @@
 import useLoginPopupStore from "@/store/LoginStore";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { axiosAuth } from "@/lib/axios";
+import axios, { axiosAuth } from "@/lib/axios";
 import utils from "@/utils/cmmnUtil";
 import Link from "next/link";
 import { useEffect } from "react";
 import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
+import { AxiosError } from "axios";
 
 export default function Header({ token }: CommonProps) {
   const pathname = usePathname();

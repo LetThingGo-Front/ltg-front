@@ -19,7 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchDaysList } from "@/data/commonData";
 import { Codes } from "@/types/common";
 import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
-import { REGISTER_ERROR_MESSAGE } from "@/constants/message";
+import { DAYS_CODE } from "@/constants/code";
 
 type Props = {
   idx: number;
@@ -65,15 +65,11 @@ export default function RegistrationLocation({
   const [openLocationForm, setOpenLocationForm] = useState(false);
 
   const days = useQuery({
-    queryKey: ["days", "IT002"],
+    queryKey: ["days", DAYS_CODE],
     queryFn: ({ queryKey }) => fetchDaysList(queryKey[1]),
     staleTime: MIDDLE_TIME,
     gcTime: LONG_TIME,
   });
-
-  if (days.isError) {
-    throw new Error(REGISTER_ERROR_MESSAGE);
-  }
 
   const toggleSelectDay = () => {
     if (isDayShare) {
