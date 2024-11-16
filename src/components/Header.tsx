@@ -61,7 +61,7 @@ export default function Header({ token }: CommonProps) {
             <Link href="/product/register">나눔 탐색</Link>
           </li>
           <li className="cursor-pointer hover:font-bold">
-            <Link href="/a">띵즈</Link>
+            <Link href="/product/1">띵즈</Link>
           </li>
           <li className="cursor-pointer hover:font-bold">
             <Link href="/a">캘린더</Link>

@@ -1,16 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ItemSwiper from "./ItemSwiper";
 import Image from "next/image";
 import ShareMap from "./map/ShareMap";
 import RequestPopup from "./popup/RequestPopup";
 import ProfileButton from "./ProfileButton";
 import GradationTwoButton from "../common/ui/button/GradationTwoButton";
+import { UNKNOWN_ERROR_MESSAGE } from "@/constants/message";
 
 export default function Item() {
   const [requestPopup, setRequestPopup] = useState(false);
   const [star, setStar] = useState(false);
+
+  useEffect(() => {
+    const randomValue = Math.random();
+    if (randomValue < 0.5) {
+      throw new Error();
+    }
+  }, []);
 
   return (
     <div className="flex justify-center">
