@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import imageCompression from "browser-image-compression";
 import LoadingMapSpinner from "@/components/common/LoadingMapSpinner";
-import { f } from "msw/lib/core/HttpResponse-DzhqZzTK";
 
 const MAX_FILE_UPLOAD_COUNT = 5;
 const MAX_FILE_SIZE_MB = 1;
@@ -29,7 +28,7 @@ export default function ImageUpload({ onChange }: Props) {
     };
 
     try {
-      const compressionFiles = await Promise.all(
+      const compressedFiles = await Promise.all(
         file.map(async (f) => {
           if (f.size > MAX_FILE_SIZE_MB * 1000000) {
             const compressedBlob = await imageCompression(f, options);
@@ -42,7 +41,7 @@ export default function ImageUpload({ onChange }: Props) {
           }
         }),
       );
-      return compressionFiles;
+      return compressedFiles;
     } catch (error) {
       setResizing(false);
       console.error("image resizing error: ", error);
@@ -53,16 +52,16 @@ export default function ImageUpload({ onChange }: Props) {
   const convertHeicToType = useCallback(async (file: File[]) => {
     try {
       const heic2any = require("heic2any");
-      const convertFiles = await Promise.all(
+      const convertedFiles = await Promise.all(
         file.map(async (f) => {
           const isHeic = /^.*\.(heic|heif)$/i;
           if (isHeic.test(f.name)) {
-            const heicToJpeg = await heic2any({
+            const heicToJpeg: Blob = await heic2any({
               blob: f,
               toType: CONVERSION_TYPE,
             });
             return new File(
-              [heicToJpeg as any],
+              [heicToJpeg],
               `${f.name.split(".")[0]}.${CONVERSION_FORMAT}`,
               {
                 type: CONVERSION_TYPE,
@@ -74,7 +73,7 @@ export default function ImageUpload({ onChange }: Props) {
           }
         }),
       );
-      return convertFiles;
+      return convertedFiles;
     } catch (error) {
       setResizing(false);
       console.error("heic to jpg error: ", error);
@@ -84,17 +83,17 @@ export default function ImageUpload({ onChange }: Props) {
 
   const removeFile = useCallback(
     (idx: number) => {
-      const newFile = files.filter((_, index) => index !== idx);
-      setFiles(newFile);
+      const newFiles = files.filter((_, index) => index !== idx);
+      setFiles(newFiles);
     },
     [files],
   );
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
-      const filesName = files.map((file) => file.name.split(".")[0]);
+      const filesNames = files.map((file) => file.name.split(".")[0]);
       const isDuplicated = acceptedFiles.some((newFile) =>
-        filesName.includes(newFile.name.split(".")[0]),
+        filesNames.includes(newFile.name.split(".")[0]),
       );
 
       if (files.length + acceptedFiles.length > MAX_FILE_UPLOAD_COUNT) {
@@ -108,11 +107,11 @@ export default function ImageUpload({ onChange }: Props) {
       }
       setResizing(true);
       // heic to jpeg (브라우저 호환 및  압축 가능한 형식으로 변환)
-      const conversionFiles = await convertHeicToType(acceptedFiles);
-      if (conversionFiles) {
-        const compressionFiles = await compressImage(conversionFiles);
-        if (compressionFiles) {
-          const newFiles = compressionFiles.map((file) =>
+      const convertedFiles = await convertHeicToType(acceptedFiles);
+      if (convertedFiles) {
+        const compressedFiles = await compressImage(convertedFiles);
+        if (compressedFiles) {
+          const newFiles = compressedFiles.map((file) =>
             Object.assign(file, {
               preview: URL.createObjectURL(file),
             }),
