@@ -25,10 +25,10 @@ export default function Error({ error, reset }: ErrorPageProps) {
 
       localStorage.removeItem("errorQueryKeys");
     }
-  }, []);
+  }, [queryClient]);
 
   return (
-    <div className="flex h-[calc(90%-4rem)] w-full items-center justify-center sm:h-[calc(90%-5.625rem)]">
+    <div className="flex h-[calc(100%-4rem)] w-full items-center justify-center sm:h-[calc(100%-5.625rem)]">
       <ErrorPage error={error} reset={reset} push={() => router.back()} />
     </div>
   );

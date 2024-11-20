@@ -51,7 +51,7 @@ export default function ErrorPage({
         </button>
         <button
           onClick={push}
-          className="rounded bg-green-600 px-4 py-2 text-white transition hover:bg-green-700"
+          className="rounded bg-green-400 px-4 py-2 text-white transition hover:bg-green-600"
         >
           {pushText}
         </button>

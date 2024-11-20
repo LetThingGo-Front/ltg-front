@@ -3,7 +3,7 @@ import React from "react";
 
 export default function NotfoundPage() {
   return (
-    <div className="fixed inset-0 z-50 flex h-auto items-center justify-center bg-white">
+    <div className="fixed inset-0 z-50 flex h-[calc(100%-4rem)] items-center justify-center bg-white sm:h-[calc(100%-5.625rem)]">
       <div className="text-center">
         <p className="text-[6.25rem] font-bold text-green-400 sm:text-[10.625rem]">
           404

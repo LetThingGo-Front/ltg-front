@@ -349,7 +349,7 @@ export default function RegistrationLocation({
                   <Image
                     src="/assets/images/home.svg"
                     width={20}
-                    height={20}
+                    height={21}
                     alt="home"
                   />
                 </div>
@@ -362,7 +362,7 @@ export default function RegistrationLocation({
                   <Image
                     src="/assets/images/building.svg"
                     width={20}
-                    height={20}
+                    height={21}
                     alt="company"
                   />
                 </div>
@@ -375,7 +375,7 @@ export default function RegistrationLocation({
                   <Image
                     src="/assets/images/marker/location_marked.svg"
                     width={20}
-                    height={20}
+                    height={21}
                     alt="etc"
                   />
                 </div>
@@ -524,7 +524,7 @@ export default function RegistrationLocation({
                     src="/assets/images/marker/location_marked.svg"
                     alt="location"
                     width={20}
-                    height={20}
+                    height={21}
                   />
                 </div>
                 <p>{simpleAddr}</p>

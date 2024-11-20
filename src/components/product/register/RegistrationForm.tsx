@@ -34,13 +34,13 @@ export default function RegistrationForm() {
   const registerItem: SubmitHandler<CreateItemPayload> = async (
     data: unknown,
   ) => {
-    // console.log(data);
-    try {
-      const response = await axiosAuth.post("/v1/items", data);
-      console.log(response.data);
-    } catch (error) {
-      console.error(`register item error: ${error}`);
-    }
+    console.log(data);
+    // try {
+    //   const response = await axiosAuth.post("/v1/items", data);
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.error(`register item error: ${error}`);
+    // }
   };
   const [isItemStatusType, setIsItemStatusType] = useState("N");
   const watchCategory = watch("itemCreateRequest.categoryCode");
@@ -207,7 +207,7 @@ export default function RegistrationForm() {
                 />
                 <Line />
               </div>
-              <div className="mt-3 flex flex-col gap-[1.125rem] sm:gap-10">
+              <div className="mt-3 flex flex-col gap-6 sm:gap-10">
                 {container?.map((v, i) => (
                   <RegistrationLocation
                     idx={i}

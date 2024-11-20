@@ -79,7 +79,7 @@ export default function SideNav({ token }: CommonProps) {
                 </Link>
               </li>
               <li>
-                <Link href="/product/1" onClick={closeSideNav}>
+                <Link href="/a" onClick={closeSideNav}>
                   띵즈
                 </Link>
               </li>

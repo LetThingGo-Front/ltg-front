@@ -166,7 +166,7 @@ export default function Header({ token }: CommonProps) {
           src="/images/icons/img.png"
           alt="profile"
           width={32}
-          height={32}
+          height={31}
         />
       </div>
       {/* <div className="mx-[10px] h-[74px] bg-white/70 px-[20px] pb-[8px]">

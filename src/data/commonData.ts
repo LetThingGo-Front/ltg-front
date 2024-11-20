@@ -2,7 +2,7 @@ import axios, { axiosAuth } from "@/lib/axios";
 
 // 카테고리 코드 IT003
 const fetchCategoryList = async (code: string, useYn?: string) => {
-  const { data } = await axios.get(`/v1/group-codes/${code}/codes`, {
+  const { data } = await axiosAuth.get(`/v1/group-codes/${code}/codes`, {
     params: {
       useYn: useYn ?? "Y",
     },
@@ -16,7 +16,7 @@ const fetchItemStatusList = async (
   mngItem1: string,
   useYn?: string,
 ) => {
-  const { data } = await axios.get(`/v1/group-codes/${code}/codes`, {
+  const { data } = await axiosAuth.get(`/v1/group-codes/${code}/codes`, {
     params: {
       useYn: useYn ?? "Y",
       mngItem1,
@@ -28,7 +28,7 @@ const fetchItemStatusList = async (
 
 // 요일 코드 IT002
 const fetchDaysList = async (code: string, useYn?: string) => {
-  const { data } = await axios.get(`/v1/group-codes/${code}/codes`, {
+  const { data } = await axiosAuth.get(`/v1/group-codes/${code}/codes`, {
     params: {
       useYn: useYn ?? "Y",
     },
