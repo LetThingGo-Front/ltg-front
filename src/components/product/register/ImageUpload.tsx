@@ -16,46 +16,7 @@ export default function ImageUpload({ onChange }: Props) {
   const [files, setFiles] = useState<Array<File & { preview: string }>>([]);
   const [resizing, setResizing] = useState(false);
 
-  const deleteFile = useCallback(
-    (idx: number) => {
-      const newFile = files.filter((_, index) => index !== idx);
-      setFiles(newFile);
-    },
-    [files],
-  );
-
-  const onDrop = useCallback(
-    async (acceptedFiles: File[]) => {
-      const filesName = files.map((file) => file.name);
-      const isDuplicated = acceptedFiles.some((newFile) =>
-        filesName.includes(newFile.name),
-      );
-
-      if (files.length + acceptedFiles.length > MAX_FILE_COUNT) {
-        alert("최대 5개까지만 업로드 가능합니다.");
-        return;
-      }
-
-      if (isDuplicated) {
-        alert("중복 이미지는 업로드할 수 없습니다.");
-        return;
-      }
-      const compressionFiles = await handleImageCompression(acceptedFiles);
-      if (compressionFiles) {
-        const newFiles = compressionFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          }),
-        );
-
-        setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-      }
-    },
-    [files],
-  );
-
-  const handleImageCompression = async (file: File[]) => {
-    setResizing(true);
+  const handleImageCompression = useCallback(async (file: File[]) => {
     const options = {
       maxSizeMB: 1,
       maxWidthOrHeight: 1920,
@@ -76,18 +37,100 @@ export default function ImageUpload({ onChange }: Props) {
           }
         }),
       );
-      setResizing(false);
       return compressionFiles;
     } catch (error) {
       setResizing(false);
       console.error("image resizing error: ", error);
       alert("이미지 압축 중 오류가 발생했습니다.");
     }
-  };
+  }, []);
+
+  const convertHeicToType = useCallback(
+    async (file: File[], type: string, format: string) => {
+      try {
+        const heic2any = require("heic2any");
+        const convertFiles = await Promise.all(
+          file.map(async (f) => {
+            const isHeic = /^.*\.(heic|heif)$/i;
+            if (isHeic.test(f.name)) {
+              const heicToJpeg = await heic2any({
+                blob: f,
+                toType: type,
+              });
+              return new File(
+                [heicToJpeg as any],
+                `${f.name.split(".")[0]}.${format}`,
+                {
+                  type: "image/jpeg",
+                  lastModified: new Date().getTime(),
+                },
+              );
+            } else {
+              return f;
+            }
+          }),
+        );
+        return convertFiles;
+      } catch (error) {
+        setResizing(false);
+        console.error("heic to jpg error: ", error);
+        alert("heic 이미지 변환 중 오류가 발생했습니다.");
+      }
+    },
+    [],
+  );
+
+  const deleteFile = useCallback(
+    (idx: number) => {
+      const newFile = files.filter((_, index) => index !== idx);
+      setFiles(newFile);
+    },
+    [files],
+  );
+
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      const filesName = files.map((file) => file.name.split(".")[0]);
+      const isDuplicated = acceptedFiles.some((newFile) =>
+        filesName.includes(newFile.name.split(".")[0]),
+      );
+
+      if (files.length + acceptedFiles.length > MAX_FILE_COUNT) {
+        alert("최대 5개까지만 업로드 가능합니다.");
+        return;
+      }
+
+      if (isDuplicated) {
+        alert("중복 이미지는 업로드할 수 없습니다.");
+        return;
+      }
+      setResizing(true);
+      // heic to jpeg (브라우저 호환 및  압축 가능한 형식으로 변환)
+      const conversionFiles = await convertHeicToType(
+        acceptedFiles,
+        "image/jpeg",
+        "jpg",
+      );
+      if (conversionFiles) {
+        const compressionFiles = await handleImageCompression(conversionFiles);
+        if (compressionFiles) {
+          const newFiles = compressionFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            }),
+          );
+          setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+        }
+      }
+      setResizing(false);
+    },
+    [files, handleImageCompression, convertHeicToType],
+  );
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [],
+      "image/heic": [],
     },
     onDrop,
     disabled: files.length >= MAX_FILE_COUNT ? true : false,
@@ -136,7 +179,6 @@ export default function ImageUpload({ onChange }: Props) {
   ));
 
   useEffect(() => {
-    console.log(files);
     onChange(files.map((file) => file));
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [files, onChange]);
