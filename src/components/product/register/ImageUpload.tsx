@@ -4,9 +4,14 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import imageCompression from "browser-image-compression";
-import { BeatLoader } from "react-spinners";
+import LoadingMapSpinner from "@/components/common/LoadingMapSpinner";
+import { f } from "msw/lib/core/HttpResponse-DzhqZzTK";
 
-const MAX_FILE_COUNT = 5;
+const MAX_FILE_UPLOAD_COUNT = 5;
+const MAX_FILE_SIZE_MB = 1;
+const MAX_FILE_WIDTH_HEIGHT = 1920;
+const CONVERSION_TYPE = "image/jpeg";
+const CONVERSION_FORMAT = "jpg";
 
 type Props = {
   onChange: (acceptedFiles: File[]) => void;
@@ -16,17 +21,17 @@ export default function ImageUpload({ onChange }: Props) {
   const [files, setFiles] = useState<Array<File & { preview: string }>>([]);
   const [resizing, setResizing] = useState(false);
 
-  const handleImageCompression = useCallback(async (file: File[]) => {
+  const compressImage = useCallback(async (file: File[]) => {
     const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
+      maxSizeMB: MAX_FILE_SIZE_MB,
+      maxWidthOrHeight: MAX_FILE_WIDTH_HEIGHT,
       useWebWorker: true,
     };
 
     try {
       const compressionFiles = await Promise.all(
         file.map(async (f) => {
-          if (f.size > 1024 * 1024) {
+          if (f.size > MAX_FILE_SIZE_MB * 1000000) {
             const compressedBlob = await imageCompression(f, options);
             const compressedFile = new File([compressedBlob], f.name, {
               type: f.type,
@@ -45,42 +50,39 @@ export default function ImageUpload({ onChange }: Props) {
     }
   }, []);
 
-  const convertHeicToType = useCallback(
-    async (file: File[], type: string, format: string) => {
-      try {
-        const heic2any = require("heic2any");
-        const convertFiles = await Promise.all(
-          file.map(async (f) => {
-            const isHeic = /^.*\.(heic|heif)$/i;
-            if (isHeic.test(f.name)) {
-              const heicToJpeg = await heic2any({
-                blob: f,
-                toType: type,
-              });
-              return new File(
-                [heicToJpeg as any],
-                `${f.name.split(".")[0]}.${format}`,
-                {
-                  type: "image/jpeg",
-                  lastModified: new Date().getTime(),
-                },
-              );
-            } else {
-              return f;
-            }
-          }),
-        );
-        return convertFiles;
-      } catch (error) {
-        setResizing(false);
-        console.error("heic to jpg error: ", error);
-        alert("heic 이미지 변환 중 오류가 발생했습니다.");
-      }
-    },
-    [],
-  );
+  const convertHeicToType = useCallback(async (file: File[]) => {
+    try {
+      const heic2any = require("heic2any");
+      const convertFiles = await Promise.all(
+        file.map(async (f) => {
+          const isHeic = /^.*\.(heic|heif)$/i;
+          if (isHeic.test(f.name)) {
+            const heicToJpeg = await heic2any({
+              blob: f,
+              toType: CONVERSION_TYPE,
+            });
+            return new File(
+              [heicToJpeg as any],
+              `${f.name.split(".")[0]}.${CONVERSION_FORMAT}`,
+              {
+                type: CONVERSION_TYPE,
+                lastModified: new Date().getTime(),
+              },
+            );
+          } else {
+            return f;
+          }
+        }),
+      );
+      return convertFiles;
+    } catch (error) {
+      setResizing(false);
+      console.error("heic to jpg error: ", error);
+      alert("heic 이미지 변환 중 오류가 발생했습니다.");
+    }
+  }, []);
 
-  const deleteFile = useCallback(
+  const removeFile = useCallback(
     (idx: number) => {
       const newFile = files.filter((_, index) => index !== idx);
       setFiles(newFile);
@@ -95,7 +97,7 @@ export default function ImageUpload({ onChange }: Props) {
         filesName.includes(newFile.name.split(".")[0]),
       );
 
-      if (files.length + acceptedFiles.length > MAX_FILE_COUNT) {
+      if (files.length + acceptedFiles.length > MAX_FILE_UPLOAD_COUNT) {
         alert("최대 5개까지만 업로드 가능합니다.");
         return;
       }
@@ -106,13 +108,9 @@ export default function ImageUpload({ onChange }: Props) {
       }
       setResizing(true);
       // heic to jpeg (브라우저 호환 및  압축 가능한 형식으로 변환)
-      const conversionFiles = await convertHeicToType(
-        acceptedFiles,
-        "image/jpeg",
-        "jpg",
-      );
+      const conversionFiles = await convertHeicToType(acceptedFiles);
       if (conversionFiles) {
-        const compressionFiles = await handleImageCompression(conversionFiles);
+        const compressionFiles = await compressImage(conversionFiles);
         if (compressionFiles) {
           const newFiles = compressionFiles.map((file) =>
             Object.assign(file, {
@@ -124,7 +122,7 @@ export default function ImageUpload({ onChange }: Props) {
       }
       setResizing(false);
     },
-    [files, handleImageCompression, convertHeicToType],
+    [files, compressImage, convertHeicToType],
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -133,7 +131,7 @@ export default function ImageUpload({ onChange }: Props) {
       "image/heic": [],
     },
     onDrop,
-    disabled: files.length >= MAX_FILE_COUNT ? true : false,
+    disabled: files.length >= MAX_FILE_UPLOAD_COUNT ? true : false,
     noDrag: true,
   });
 
@@ -157,7 +155,7 @@ export default function ImageUpload({ onChange }: Props) {
       <button
         type="button"
         className="absolute -right-2 -top-2 rounded-full bg-transparent"
-        onClick={() => deleteFile(idx)}
+        onClick={() => removeFile(idx)}
       >
         <Image
           src="/assets/images/button/close_grey.svg"
@@ -170,7 +168,7 @@ export default function ImageUpload({ onChange }: Props) {
   ));
 
   const emptyThumbs = Array.from({
-    length: MAX_FILE_COUNT - files.length,
+    length: MAX_FILE_UPLOAD_COUNT - files.length,
   }).map((_, idx) => (
     <div
       className="h-[5.75rem] w-[5.75rem] rounded-lg border border-dashed border-grey-200"
@@ -203,9 +201,8 @@ export default function ImageUpload({ onChange }: Props) {
       {thumbs}
       {emptyThumbs}
       {resizing && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/50">
-          <p className="font-semibold">Image resizing...</p>
-          <BeatLoader />
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/50">
+          <LoadingMapSpinner isBlur={false} />
         </div>
       )}
     </div>
