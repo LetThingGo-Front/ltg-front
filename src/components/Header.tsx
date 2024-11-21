@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useEffect } from "react";
 import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
-import { AxiosError } from "axios";
 
 export default function Header({ token }: CommonProps) {
   const pathname = usePathname();
@@ -30,7 +29,7 @@ export default function Header({ token }: CommonProps) {
     switch (pathname) {
       case "/product/register":
         return "나눔 등록";
-      case "/manage/product":
+      case "/explore":
         return "나눔 탐색";
       default:
         return null;
@@ -58,13 +57,13 @@ export default function Header({ token }: CommonProps) {
             </Link>
           </li>
           <li className="cursor-pointer hover:font-bold">
-            <Link href="/product/register">나눔 탐색</Link>
+            <Link href="/explore">나눔 탐색</Link>
           </li>
           <li className="cursor-pointer hover:font-bold">
-            <Link href="/product/1">띵즈</Link>
+            <Link href="/product/register">띵즈</Link>
           </li>
           <li className="cursor-pointer hover:font-bold">
-            <Link href="/a">캘린더</Link>
+            <Link href="/product/1">캘린더</Link>
           </li>
           <li className="cursor-pointer hover:font-bold">
             <Link href="/a">문의</Link>

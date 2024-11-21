@@ -74,17 +74,17 @@ export default function SideNav({ token }: CommonProps) {
                 </Link>
               </li>
               <li>
-                <Link href="/product/register" onClick={closeSideNav}>
+                <Link href="/explore" onClick={closeSideNav}>
                   나눔 탐색
                 </Link>
               </li>
               <li>
-                <Link href="/product/1" onClick={closeSideNav}>
+                <Link href="/product/register" onClick={closeSideNav}>
                   띵즈
                 </Link>
               </li>
               <li>
-                <Link href="/a" onClick={closeSideNav}>
+                <Link href="/product/1" onClick={closeSideNav}>
                   캘린더
                 </Link>
               </li>
