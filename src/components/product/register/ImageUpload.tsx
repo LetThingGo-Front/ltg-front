@@ -53,7 +53,10 @@ export default function ImageUpload({ onChange }: Props) {
     }
 
     return compressedFiles
-      .filter((file) => file.status === "fulfilled")
+      .filter(
+        (file): file is { status: "fulfilled"; value: any } =>
+          file.status === "fulfilled",
+      )
       .map((file) => file.value);
   }, []);
 
@@ -93,7 +96,10 @@ export default function ImageUpload({ onChange }: Props) {
     }
 
     return convertedFiles
-      .filter((file) => file.status === "fulfilled")
+      .filter(
+        (file): file is { status: "fulfilled"; value: any } =>
+          file.status === "fulfilled",
+      )
       .map((file) => file.value);
   }, []);
 
