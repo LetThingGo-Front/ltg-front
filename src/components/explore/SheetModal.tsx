@@ -3,10 +3,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import ItemCardList from "./ItemCardList";
+import { isMobile, isBrowser } from "react-device-detect";
 
-const SNAP_POINT = [0.8, 0.28, 0.05, 0];
+const SNAP_POINT = [0.8, 0.28, 0.05];
 const INITIAL_SNAP = 1;
-const Y_AXIS_RANGE = 200;
+const MIN_Y_AXIS_RANGE = 15;
 
 export default function SheetModal() {
   const [isOpen, setOpen] = useState(false);
@@ -17,7 +18,6 @@ export default function SheetModal() {
   const snapTo = (i: number) => sheetRef.current?.snapTo(i);
   const disableOnClose = () => {};
   const handlerSheetHeader = () => {
-    console.log(currentIndex);
     if (currentIndex === 0) snapTo(2);
     if (currentIndex === 1) snapTo(0);
     if (currentIndex === 2) snapTo(1);
@@ -36,25 +36,14 @@ export default function SheetModal() {
   useEffect(() => {
     setOpen(true);
     const yAxisRange = touchClientY.start - touchClientY.end;
-    if (yAxisRange > 10) {
-      if (currentIndex === 2) {
-        if (yAxisRange > Y_AXIS_RANGE) {
-          snapTo(0);
-        } else {
-          snapTo(1);
-        }
-      }
+    if (yAxisRange > MIN_Y_AXIS_RANGE) {
+      if (currentIndex === 2) snapTo(1);
       if (currentIndex === 1) snapTo(0);
     }
-    if (yAxisRange < -10) {
-      if (currentIndex === 0) {
-        if (Math.abs(yAxisRange) > Y_AXIS_RANGE) {
-          snapTo(2);
-        } else {
-          snapTo(1);
-        }
-      }
+    if (yAxisRange < -MIN_Y_AXIS_RANGE) {
+      if (currentIndex === 0) snapTo(1);
       if (currentIndex === 1) snapTo(2);
+      if (currentIndex === 2) snapTo(2);
     }
   }, [touchClientY.end]);
   return (
@@ -68,8 +57,8 @@ export default function SheetModal() {
         setCurrentIndex(index);
       }}
       dragVelocityThreshold={100}
-      disableDrag={true}
-      className="sm:mx-10"
+      disableDrag={!isMobile}
+      className="mb-[env(safe-area-inset-bottom)] sm:mx-10"
       style={{ zIndex: 10 }}
     >
       <Sheet.Container
@@ -88,7 +77,7 @@ export default function SheetModal() {
               <span className="flex h-1 w-[17.5625rem] items-center bg-white hover:bg-green-400"></span>
             </button>
           </Sheet.Header>
-          <Sheet.Content>
+          <Sheet.Content disableDrag={true}>
             <ItemCardList setIsScrolling={setIsScrolling} />
           </Sheet.Content>
         </div>
