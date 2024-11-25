@@ -58,7 +58,7 @@ export default function SheetModal() {
       }}
       dragVelocityThreshold={100}
       disableDrag={!isMobile}
-      className="mb-[env(safe-area-inset-bottom)] sm:mx-10"
+      className="sm:mx-10"
       style={{ zIndex: 10 }}
     >
       <Sheet.Container
