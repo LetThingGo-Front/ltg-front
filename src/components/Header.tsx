@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useEffect } from "react";
 import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
+import SearchNav from "./explore/SearchNav";
+import path from "path";
 
 export default function Header({ token }: CommonProps) {
   const pathname = usePathname();
@@ -44,7 +46,7 @@ export default function Header({ token }: CommonProps) {
 
   return (
     <>
-      <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 hidden h-[5.625rem] w-full items-center justify-between bg-white px-10 py-8 sm:flex">
+      <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 hidden w-full items-start justify-between bg-white px-10 py-8 sm:flex">
         <ul className="flex gap-8">
           <li className="mr-4">
             <Link href="/">
@@ -69,59 +71,7 @@ export default function Header({ token }: CommonProps) {
             <Link href="/a">문의</Link>
           </li>
         </ul>
-        {/* <div className="me-auto ms-auto">
-          <input
-            type="text"
-            placeholder="필요한 물품을 검색하세요."
-            className="mb-[16px] h-[40px] w-[444px] rounded-[10px] bg-[#f0f0f0] py-[12px] text-center text-[#969696]"
-          />
-          <div className="flex w-[444px] gap-[28px]">
-            <div className="flex w-[93px] cursor-pointer py-[4px] pe-[8px] ps-[13px]">
-              <p className="me-[8px] w-[23px] text-[12px]">지역</p>
-              <Image
-                src="/assets/images/dropdown_category.png"
-                alt="dropdown"
-                width={6.7}
-                height={3.3}
-                className="mt-[9px] h-[3.3px] w-[6.7px]"
-              />
-            </div>
-            <div className="flex w-[93px] cursor-pointer py-[4px] pe-[8px] ps-[13px]">
-              <p className="me-[8px] w-[45px] text-[12px]">카테고리</p>
-              <Image
-                src="/assets/images/dropdown_category.png"
-                alt="dropdown"
-                width={6.7}
-                height={3.3}
-                className="mt-[9px] h-[3.3px] w-[6.7px]"
-              />
-            </div>
-            <div className="flex w-[93px] cursor-pointer py-[4px] pe-[8px] ps-[13px]">
-              <p className="me-[8px] w-[45px] text-[12px]">물품선택</p>
-              <Image
-                src="/assets/images/dropdown_category.png"
-                alt="dropdown"
-                width={6.7}
-                height={3.3}
-                className="mt-[9px] h-[3.3px] w-[6.7px]"
-              />
-            </div>
-            <div className="flex w-[93px] cursor-pointer py-[4px] pe-[8px] ps-[13px]">
-              <p className="me-[8px] w-[45px] text-[12px]">나눔요일</p>
-              <Image
-                src="/assets/images/dropdown_category.png"
-                alt="dropdown"
-                width={6.7}
-                height={3.3}
-                className="mt-[9px] h-[3.3px] w-[6.7px]"
-              />
-            </div>
-          </div>
-        </div> */}
-        {/* <div className="h-[30.4px] mt-[3px] me-[30px] flex items-center justify-center">
-            <Image src="/images/appstore.png" alt="appstore" width={86} height={26} className="me-[20px]" />
-            <Image src="/images/googleplay.png" alt="google-play" width={86} height={26} />
-          </div> */}
+        {pathname === "/explore" && <SearchNav />}
         {!token ? (
           <button
             className="h-[2.375rem] rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
