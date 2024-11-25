@@ -5,7 +5,7 @@ import { Sheet, SheetRef } from "react-modal-sheet";
 import ItemCardList from "./ItemCardList";
 import { isMobile, isBrowser } from "react-device-detect";
 
-const SNAP_POINT = [0.8, 0.28, 0.05];
+const SNAP_POINT = [0.7, 0.28, 0.05];
 const INITIAL_SNAP = 1;
 const MIN_Y_AXIS_RANGE = 15;
 
@@ -58,6 +58,10 @@ export default function SheetModal() {
       }}
       dragVelocityThreshold={100}
       disableDrag={!isMobile}
+      tweenConfig={{
+        ease: "easeInOut",
+        duration: 0.2,
+      }}
       className="sm:mx-10"
       style={{ zIndex: 10 }}
     >
@@ -74,11 +78,14 @@ export default function SheetModal() {
               className="flex h-12 w-full items-center justify-center"
               onClick={handlerSheetHeader}
             >
-              <span className="flex h-1 w-[17.5625rem] items-center bg-white hover:bg-green-400"></span>
+              <span className="flex h-1 w-[17.5625rem] items-center bg-white"></span>
             </button>
           </Sheet.Header>
           <Sheet.Content disableDrag={true}>
-            <ItemCardList setIsScrolling={setIsScrolling} />
+            <ItemCardList
+              setIsScrolling={setIsScrolling}
+              currentIndex={currentIndex}
+            />
           </Sheet.Content>
         </div>
       </Sheet.Container>
