@@ -36,7 +36,7 @@ export default function SheetModal() {
   useEffect(() => {
     setOpen(true);
     const yAxisRange = touchClientY.start - touchClientY.end;
-    if (yAxisRange > 0) {
+    if (yAxisRange > 10) {
       if (currentIndex === 2) {
         if (yAxisRange > Y_AXIS_RANGE) {
           snapTo(0);
@@ -46,7 +46,7 @@ export default function SheetModal() {
       }
       if (currentIndex === 1) snapTo(0);
     }
-    if (yAxisRange < 0) {
+    if (yAxisRange < -10) {
       if (currentIndex === 0) {
         if (Math.abs(yAxisRange) > Y_AXIS_RANGE) {
           snapTo(2);
