@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import ItemCardList from "./ItemCardList";
-import { isMobile } from "react-device-detect";
 
 const SNAP_POINT = [0.7, 0.28];
 const INITIAL_SNAP = 1;
@@ -49,13 +48,15 @@ export default function SheetModal() {
         setCurrentIndex(index);
       }}
       dragVelocityThreshold={100}
-      disableDrag={!isMobile}
+      disableDrag={true}
       tweenConfig={{
         ease: "easeInOut",
-        duration: 0.1,
+        duration: 0.2,
       }}
       className="sm:mx-10"
-      style={{ zIndex: 10 }}
+      style={{
+        zIndex: 10,
+      }}
     >
       <Sheet.Container
         style={{
@@ -64,7 +65,7 @@ export default function SheetModal() {
         }}
       >
         <div
-          className="h-full rounded-t-[1.875rem] bg-black/10 backdrop-blur-[60px] hover:bg-black/10 sm:bg-white/30"
+          className="group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl hover:bg-black/10"
           onTouchStart={handlerTouchStart}
           onTouchEnd={handlerTouchEnd}
         >
@@ -73,7 +74,7 @@ export default function SheetModal() {
               className="flex h-12 w-full items-center justify-center"
               onClick={handlerSheetHeader}
             >
-              <span className="flex h-1 w-[17.5625rem] items-center bg-white"></span>
+              <span className="flex h-1 w-[17.5625rem] items-center rounded-full bg-white group-hover:bg-green-400"></span>
             </button>
           </Sheet.Header>
           <Sheet.Content disableDrag={true}>

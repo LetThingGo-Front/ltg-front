@@ -10,7 +10,6 @@ import { useEffect } from "react";
 import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
 import SearchNav from "./explore/SearchNav";
-import path from "path";
 
 export default function Header({ token }: CommonProps) {
   const pathname = usePathname();
@@ -117,6 +116,11 @@ export default function Header({ token }: CommonProps) {
           width={32}
           height={31}
         />
+        {pathname === "/explore" && (
+          <div className="fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-10 h-full w-full">
+            <SearchNav />
+          </div>
+        )}
       </div>
       {/* <div className="mx-[10px] h-[74px] bg-white/70 px-[20px] pb-[8px]">
           <input
