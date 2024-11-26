@@ -24,8 +24,8 @@ export default function ItemCardList({ setIsScrolling, currentIndex }: Props) {
       <div
         className={clsx(
           "overflow-x-auto overflow-y-auto pb-[5.625rem] sm:pb-[7.5rem]",
-          currentIndex === 0 && "h-[calc(100dvh*0.7)] sm:h-[calc(100dvh*0.7)]",
-          currentIndex === 1 && "h-[calc(100dvh*0.3)] sm:h-[calc(100dvh*0.3)]",
+          currentIndex === 0 && "h-[calc(100dvh*0.7)]",
+          currentIndex === 1 && "h-[calc(100dvh*0.3)]",
         )}
       >
         <div className="mb-10 flex flex-wrap justify-center gap-12 sm:ml-6 sm:justify-start">
