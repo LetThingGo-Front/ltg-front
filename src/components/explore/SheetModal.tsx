@@ -15,7 +15,11 @@ export default function SheetModal() {
   const [isScrolling, setIsScrolling] = useState(false);
   const sheetRef = useRef<SheetRef>(null);
   const windowHeight = typeof window !== "undefined" ? window.innerHeight : 900;
-  const snapPoints = [0.7, CONTENT_VIEW_HEIGHT / windowHeight];
+  const windowWidth = typeof window !== "undefined" ? window.innerWidth : 1920;
+  const snapPoints = [
+    windowWidth > 640 ? 0.5 : 0.75,
+    CONTENT_VIEW_HEIGHT / windowHeight,
+  ];
 
   const snapTo = (i: number) => sheetRef.current?.snapTo(i);
   const disableOnClose = () => {};
@@ -25,12 +29,10 @@ export default function SheetModal() {
   };
   const handlerTouchStart = (e: any) => {
     if (isScrolling) return;
-    e.preventDefault();
     setTouchClientY({ ...touchClientY, start: e.touches[0].clientY });
   };
   const handlerTouchEnd = (e: any) => {
     if (isScrolling) return;
-    e.preventDefault();
     setTouchClientY({ ...touchClientY, end: e.changedTouches[0].clientY });
   };
 
@@ -51,7 +53,7 @@ export default function SheetModal() {
         setCurrentIndex(index);
       }}
       dragVelocityThreshold={100}
-      disableDrag={true}
+      // disableDrag={true}
       tweenConfig={{
         ease: "easeInOut",
         duration: 0.2,
@@ -77,18 +79,19 @@ export default function SheetModal() {
               className="flex h-12 w-full items-center justify-center"
               onClick={handlerSheetHeader}
             >
-              <span className="pointerhover:group-hover:bg-green-400 flex h-1 w-[17.5625rem] items-center rounded-full bg-white"></span>
+              <span className="pointerhover:group-hover:bg-green-400 flex h-1 w-[9.5rem] items-center rounded-full bg-white sm:w-[17.5625rem]"></span>
             </button>
           </Sheet.Header>
           <Sheet.Content disableDrag={true}>
             <ItemCardList
               setIsScrolling={setIsScrolling}
               currentIndex={currentIndex}
+              windowWidth={windowWidth}
             />
           </Sheet.Content>
         </div>
       </Sheet.Container>
-      {/* <Sheet.Backdrop/> */}
+      {/* <Sheet.Backdrop className={clsx(currentIndex !== 0 && "hidden")} /> */}
     </Sheet>
   );
 }

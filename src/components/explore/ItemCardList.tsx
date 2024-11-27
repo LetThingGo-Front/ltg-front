@@ -7,9 +7,14 @@ import clsx from "clsx";
 type Props = {
   setIsScrolling: (isScrolling: boolean) => void;
   currentIndex: number;
+  windowWidth: number;
 };
 
-export default function ItemCardList({ setIsScrolling, currentIndex }: Props) {
+export default function ItemCardList({
+  setIsScrolling,
+  currentIndex,
+  windowWidth,
+}: Props) {
   const cardList = Array.from({ length: 15 }, (_, i) => i);
   return (
     <div className="flex flex-col items-center justify-center max-sm:mt-2">
@@ -20,7 +25,10 @@ export default function ItemCardList({ setIsScrolling, currentIndex }: Props) {
       <div
         className={clsx(
           "overflow-x-auto overflow-y-auto pb-[5.625rem] sm:pb-[7.5rem]",
-          currentIndex === 0 && "h-[calc(100dvh*0.7)]",
+          currentIndex === 0 &&
+            (windowWidth > 640
+              ? "h-[calc(100dvh*0.5)]"
+              : "h-[calc(100dvh*0.7)]"),
           currentIndex === 1 && "h-[15rem]",
         )}
         onTouchStart={() => setIsScrolling(true)}
