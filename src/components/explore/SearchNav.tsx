@@ -10,8 +10,8 @@ export default function SearchNav() {
     setSearch("");
   };
   return (
-    <div className="flex flex-col gap-3 bg-gradient-to-b from-white from-30% to-transparent to-100% pb-2 backdrop-blur-[3.75rem] max-sm:px-5 sm:gap-4">
-      <div className="relative flex items-center justify-center">
+    <div className="flex flex-col items-center gap-3 bg-gradient-to-b from-white from-30% to-transparent to-100% pb-2 backdrop-blur-[3.75rem] max-sm:px-5 sm:min-w-[27.75rem] sm:gap-4">
+      <div className="relative flex w-full items-center justify-center">
         <Image
           src="/assets/images/magnify.svg"
           alt="search"
@@ -22,7 +22,7 @@ export default function SearchNav() {
         <input
           type="text"
           placeholder="필요한 물품을 검색하세요."
-          className="h-8 w-full max-w-[27.75rem] rounded-[0.625rem] bg-black/5 px-8 py-2 text-grey-500 outline-none placeholder:text-center max-sm:text-xs sm:h-10 sm:px-10 sm:py-3"
+          className="h-8 w-full rounded-[0.625rem] bg-black/5 px-8 py-2 text-grey-500 outline-none placeholder:text-center max-sm:text-xs sm:h-10 sm:px-10 sm:py-3"
           onChange={(e) => setSearch(e.target.value)}
           value={search}
         />
@@ -41,7 +41,7 @@ export default function SearchNav() {
           </button>
         )}
       </div>
-      <div className="flex items-center justify-between sm:gap-7">
+      <div className="flex w-full items-center justify-between max-xl:max-w-[27.75rem] sm:gap-7">
         <SearchCategroyButton categoryName="지역" />
         <SearchCategroyButton categoryName="카테고리" />
         <SearchCategroyButton categoryName="물품선택" />

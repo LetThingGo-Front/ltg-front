@@ -7,7 +7,7 @@ type Props = {
 
 export default function SearchCategroyButton({ categoryName }: Props) {
   return (
-    <div className="flex cursor-pointer gap-1 rounded-full bg-white py-[0.3125rem] pl-[0.625rem] pr-[0.3125rem] sm:gap-2">
+    <div className="flex min-w-[4.375rem] cursor-pointer justify-center gap-1 rounded-full bg-white py-[0.3125rem] pl-[0.625rem] pr-[0.3125rem] sm:gap-2">
       <p className="text-xxs font-semibold sm:text-xs">{categoryName}</p>
       <Image
         src="/assets/images/down_arrow.svg"

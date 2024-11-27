@@ -8,6 +8,23 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        pointerhover: {
+          raw: "(hover: hover) and (pointer: fine)",
+        },
+        "max-sm": {
+          raw: "(max-width: 640px)",
+        },
+        "max-md": {
+          raw: "(max-width: 768px)",
+        },
+        "max-lg": {
+          raw: "(max-width: 1024px)",
+        },
+        "max-xl": {
+          raw: "(max-width: 1280px)",
+        },
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

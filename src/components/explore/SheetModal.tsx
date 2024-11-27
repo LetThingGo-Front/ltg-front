@@ -65,7 +65,7 @@ export default function SheetModal() {
         }}
       >
         <div
-          className="group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl hover:bg-black/10"
+          className="pointerhover:hover:bg-black/10 group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl"
           onTouchStart={handlerTouchStart}
           onTouchEnd={handlerTouchEnd}
         >
@@ -74,7 +74,7 @@ export default function SheetModal() {
               className="flex h-12 w-full items-center justify-center"
               onClick={handlerSheetHeader}
             >
-              <span className="flex h-1 w-[17.5625rem] items-center rounded-full bg-white group-hover:bg-green-400"></span>
+              <span className="pointerhover:group-hover:bg-green-400 flex h-1 w-[17.5625rem] items-center rounded-full bg-white"></span>
             </button>
           </Sheet.Header>
           <Sheet.Content disableDrag={true}>
