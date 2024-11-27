@@ -12,7 +12,7 @@ type Props = {
 export default function ItemCardList({ setIsScrolling, currentIndex }: Props) {
   const cardList = Array.from({ length: 15 }, (_, i) => i);
   return (
-    <div className="flex flex-col items-center justify-center max-sm:mt-1">
+    <div className="flex flex-col items-center justify-center max-sm:mt-2">
       <div className="mb-5 min-w-[19.5rem] sm:w-full sm:pl-6 sm:text-xl">
         <span className="font-bold text-grey-800">검색 결과 </span>
         <span className="font-semibold text-grey-500">({cardList.length})</span>
