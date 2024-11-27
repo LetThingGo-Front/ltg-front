@@ -6,6 +6,7 @@ import ItemCardList from "./ItemCardList";
 
 const INITIAL_SNAP = 1;
 const MIN_Y_AXIS_RANGE = 15;
+const CONTENT_VIEW_HEIGHT = 230;
 
 export default function SheetModal() {
   const [isOpen, setOpen] = useState(false);
@@ -14,7 +15,7 @@ export default function SheetModal() {
   const [isScrolling, setIsScrolling] = useState(false);
   const sheetRef = useRef<SheetRef>(null);
   const windowHeight = typeof window !== "undefined" ? window.innerHeight : 900;
-  const snapPoints = [0.7, 250 / windowHeight];
+  const snapPoints = [0.7, CONTENT_VIEW_HEIGHT / windowHeight];
 
   const snapTo = (i: number) => sheetRef.current?.snapTo(i);
   const disableOnClose = () => {};
