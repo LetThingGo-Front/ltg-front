@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import ItemCardList from "./ItemCardList";
 
-const SNAP_POINT = [0.7, 0.28];
 const INITIAL_SNAP = 1;
 const MIN_Y_AXIS_RANGE = 15;
 
@@ -14,6 +13,9 @@ export default function SheetModal() {
   const [touchClientY, setTouchClientY] = useState({ start: 0, end: 0 });
   const [isScrolling, setIsScrolling] = useState(false);
   const sheetRef = useRef<SheetRef>(null);
+  const windowHeight = typeof window !== "undefined" ? window.innerHeight : 900;
+  const snapPoints = [0.7, 250 / windowHeight];
+
   const snapTo = (i: number) => sheetRef.current?.snapTo(i);
   const disableOnClose = () => {};
   const handlerSheetHeader = () => {
@@ -42,7 +44,7 @@ export default function SheetModal() {
       ref={sheetRef}
       isOpen={isOpen}
       onClose={disableOnClose}
-      snapPoints={SNAP_POINT}
+      snapPoints={snapPoints}
       initialSnap={INITIAL_SNAP}
       onSnap={(index) => {
         setCurrentIndex(index);

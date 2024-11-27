@@ -82,7 +82,7 @@ export default function Header({ token }: CommonProps) {
               onClick={openLoginPopup}
             >
               로그인 후 새 나눔 등록
-              <span className="max-md:hidden">, Let things go!</span>
+              <span className="max-lg:hidden">, Let things go!</span>
             </button>
           ) : (
             <button
@@ -90,7 +90,7 @@ export default function Header({ token }: CommonProps) {
               onClick={logout}
             >
               새 나눔 등록
-              <span className="max-md:hidden">, Let things go!</span>
+              <span className="max-lg:hidden">, Let things go!</span>
             </button>
           )}
         </div>
