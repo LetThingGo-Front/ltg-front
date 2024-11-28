@@ -106,7 +106,12 @@ export default function SheetModal() {
             </div>
           </Sheet.Header>
           <Sheet.Scroller
-            style={{ height: calculateHeight(), overscrollBehavior: "contain" }}
+            style={{
+              height: calculateHeight(),
+              overscrollBehavior: "contain",
+              WebkitOverflowScrolling: "touch",
+            }}
+            onTouchStart={(e) => e.stopPropagation()}
           >
             <Sheet.Content disableDrag={true}>
               <ItemCardList
