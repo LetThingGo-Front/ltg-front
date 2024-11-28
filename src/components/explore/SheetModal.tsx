@@ -42,10 +42,10 @@ export default function SheetModal() {
     setTouchClientY({ ...touchClientY, end: e.changedTouches[0].clientY });
   };
 
-  const calculateHeight = useCallback(() => {
+  const calculateHeight = () => {
     if (!itemListHeight) return "auto";
     return windowHeight * snapPoints[currentIndex];
-  }, []);
+  };
 
   useEffect(() => {
     window.addEventListener("resize", getWindowWidth);
