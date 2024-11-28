@@ -4,8 +4,16 @@ import Image from "next/image";
 export default function ItemCard() {
   return (
     <div className="group/card pointerhover:hover:bg-black/40 h-[7rem] w-[19.5rem] cursor-pointer rounded-[1.25rem] bg-black/[16%]">
-      <div className="flex h-[92px] p-[10px]">
-        <div className="me-[14px] flex h-[92px] w-[92px] rounded-[0.625rem] bg-white"></div>
+      <div className="flex h-[5.75rem] p-[0.625rem]">
+        <div className="mr-3 h-[92px] w-[92px]">
+          <Image
+            src="/assets/images/sample/books.png"
+            alt="Thumbnail"
+            width={92}
+            height={92}
+            className="rounded-[0.625rem]"
+          />
+        </div>
         <div className="">
           <div className="flex">
             <p className="pointerhover:group-hover/card:text-white h-[2.5rem] w-[10.25rem] text-sm font-bold">
@@ -20,15 +28,16 @@ export default function ItemCard() {
             />
           </div>
           <div className="mb-[0.625rem] flex">
-            <div className="pointerhover:group-hover/card:bg-green-400 me-[0.25rem] flex rounded-[0.5rem] bg-white/70 p-[0.25rem] px-[0.5rem] text-[0.625rem] font-semibold text-grey-900">
+            <div className="pointerhover:group-hover/card:bg-green-400 mr-[0.25rem] flex rounded-[0.5rem] bg-white/70">
               <Image
-                src="/images/icons/Thunder.png"
+                src="/assets/images/button/thunder.svg"
                 alt="thunder"
-                width={6.18}
-                height={7.87}
-                className="mx-[0.375rem] my-[0.25rem] h-[0.4938rem] w-[0.3875rem]"
+                width={18}
+                height={18}
               />
-              오늘 번개 가능
+              <span className="py-1 pr-2 text-xxs font-semibold text-grey-900">
+                오늘 번개 가능
+              </span>
             </div>
             <div className="pointerhover:group-hover/card:bg-white/70 pointerhover:group-hover/card:text-grey-700 flex rounded-[0.5rem] bg-black/30 p-[0.25rem] px-[0.5rem] text-[0.625rem] font-semibold text-white">
               일정 제안 받음
