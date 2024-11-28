@@ -7,23 +7,18 @@ import debounce from "debounce";
 import { isMobile } from "react-device-detect";
 
 const INITIAL_SNAP = 1;
-const MIN_Y_AXIS_RANGE = 15;
 const CONTENT_VIEW_HEIGHT = 220;
 
 export default function SheetModal() {
   const [isOpen, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_SNAP);
-  const [touchClientY, setTouchClientY] = useState({ start: 0, end: 0 });
-  const [isScrolling, setIsScrolling] = useState(false);
 
   const sheetRef = useRef<SheetRef>(null);
   const itemListRef = useRef<HTMLDivElement>(null);
 
-  const [itemListHeight, setItemListHeight] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const getWindowWidth = debounce(() => {
     setWindowWidth(window.innerWidth);
-    setItemListHeight(itemListRef.current?.scrollHeight ?? 0);
   }, 500);
   const windowHeight =
     typeof window !== "undefined" ? window.innerHeight : CONTENT_VIEW_HEIGHT;
@@ -36,19 +31,6 @@ export default function SheetModal() {
     if (currentIndex === 0) snapTo(1);
     if (currentIndex === 1) snapTo(0);
   };
-  const handleTouchStart = (e: any) => {
-    if (isScrolling) return;
-    setTouchClientY({ ...touchClientY, start: e.touches[0].clientY });
-  };
-  const handleTouchEnd = (e: any) => {
-    if (isScrolling) return;
-    setTouchClientY({ ...touchClientY, end: e.changedTouches[0].clientY });
-  };
-
-  const calculateHeight = () => {
-    if (!itemListHeight) return "auto";
-    return windowHeight * snapPoints[currentIndex];
-  };
 
   useEffect(() => {
     setOpen(true);
@@ -58,12 +40,6 @@ export default function SheetModal() {
     };
   }, [getWindowWidth]);
 
-  // useEffect(() => {
-  //   setOpen(true);
-  //   const yAxisRange = touchClientY.start - touchClientY.end;
-  //   if (yAxisRange > MIN_Y_AXIS_RANGE) snapTo(0); // 위로 올리는 제스쳐
-  //   // if (yAxisRange < -MIN_Y_AXIS_RANGE) snapTo(1); // 아래로 내리는 제스쳐
-  // }, [touchClientY.end]);
   return (
     <Sheet
       ref={sheetRef}
@@ -75,13 +51,12 @@ export default function SheetModal() {
       initialSnap={INITIAL_SNAP}
       onSnap={(index) => {
         setCurrentIndex(index);
-        setItemListHeight(itemListRef.current?.scrollHeight ?? 0);
       }}
       // disableDrag={true}
-      dragVelocityThreshold={100} // 50px/s 이상 속도로 드래그 시 닫힘
-      dragCloseThreshold={0.01} // 화면에서 10% 이상 벗어나면 자동으로 닫힘
+      dragVelocityThreshold={50} // 50px/s 이상 속도로 드래그 시 닫힘
+      dragCloseThreshold={0.05} // 화면에서 5% 이상 벗어나면 자동으로 닫힘
       tweenConfig={{
-        duration: 0.2,
+        duration: 0.1,
         ease: "easeInOut",
       }}
       className="sm:mx-10"
@@ -95,11 +70,7 @@ export default function SheetModal() {
           borderRadius: "1.875rem",
         }}
       >
-        <div
-          className="pointerhover:hover:bg-black/10 group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl"
-          // onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-        >
+        <div className="pointerhover:hover:bg-black/10 group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl">
           <Sheet.Header>
             <div className="flex h-12 cursor-grab items-center justify-center">
               <button
@@ -110,17 +81,14 @@ export default function SheetModal() {
           </Sheet.Header>
           <Sheet.Scroller
             style={{
-              height: calculateHeight(),
+              height: windowHeight * snapPoints[currentIndex],
               WebkitOverflowScrolling: "touch",
               scrollBehavior: "smooth",
             }}
             draggableAt="both"
           >
             <Sheet.Content disableDrag={isMobile}>
-              <ItemCardList
-                itemListRef={itemListRef}
-                setIsScrolling={setIsScrolling}
-              />
+              <ItemCardList itemListRef={itemListRef} />
             </Sheet.Content>
           </Sheet.Scroller>
         </div>

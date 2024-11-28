@@ -5,21 +5,20 @@ import ItemCard from "./ItemCard";
 import clsx from "clsx";
 
 type Props = {
-  setIsScrolling: (isScrolling: boolean) => void;
   itemListRef: React.RefObject<HTMLDivElement>;
 };
 
-export default function ItemCardList({ setIsScrolling, itemListRef }: Props) {
+export default function ItemCardList({ itemListRef }: Props) {
   const cardList = Array.from({ length: 20 }, (_, i) => i);
-  const stopPropagation = (e: React.TouchEvent) => {
+  const disablePropagation = (e: React.TouchEvent) => {
     e.stopPropagation();
   };
   return (
     <div
       className="mb-[5.75rem] flex flex-col"
       ref={itemListRef}
-      onTouchStart={stopPropagation}
-      onTouchEnd={stopPropagation}
+      onTouchStart={disablePropagation}
+      onTouchEnd={disablePropagation}
     >
       <div className="mb-5 flex justify-center sm:ml-6 sm:text-xl">
         <div className="flex w-[19.5rem] justify-start sm:w-full">
@@ -38,7 +37,7 @@ export default function ItemCardList({ setIsScrolling, itemListRef }: Props) {
           <ItemCard key={i} />
         ))}
         <button className="h-[7rem] w-[19.5rem] rounded-[1.875rem] bg-green-400">
-          test
+          last item
         </button>
       </div>
     </div>
