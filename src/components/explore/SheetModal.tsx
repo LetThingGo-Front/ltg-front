@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import ItemCardList from "./ItemCardList";
 import debounce from "debounce";
+import { isMobile } from "react-device-detect";
 
 const INITIAL_SNAP = 1;
 const MIN_Y_AXIS_RANGE = 15;
@@ -14,8 +15,10 @@ export default function SheetModal() {
   const [currentIndex, setCurrentIndex] = useState(INITIAL_SNAP);
   const [touchClientY, setTouchClientY] = useState({ start: 0, end: 0 });
   const [isScrolling, setIsScrolling] = useState(false);
+
   const sheetRef = useRef<SheetRef>(null);
   const itemListRef = useRef<HTMLDivElement>(null);
+
   const [itemListHeight, setItemListHeight] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const getWindowWidth = debounce(() => {
@@ -29,15 +32,15 @@ export default function SheetModal() {
     CONTENT_VIEW_HEIGHT / windowHeight,
   ];
   const snapTo = (i: number) => sheetRef.current?.snapTo(i);
-  const handlerSheetHeader = () => {
+  const handleSheetHeader = () => {
     if (currentIndex === 0) snapTo(1);
     if (currentIndex === 1) snapTo(0);
   };
-  const handlerTouchStart = (e: any) => {
+  const handleTouchStart = (e: any) => {
     if (isScrolling) return;
     setTouchClientY({ ...touchClientY, start: e.touches[0].clientY });
   };
-  const handlerTouchEnd = (e: any) => {
+  const handleTouchEnd = (e: any) => {
     if (isScrolling) return;
     setTouchClientY({ ...touchClientY, end: e.changedTouches[0].clientY });
   };
@@ -48,6 +51,7 @@ export default function SheetModal() {
   };
 
   useEffect(() => {
+    setOpen(true);
     window.addEventListener("resize", getWindowWidth);
     return () => {
       window.removeEventListener("resize", getWindowWidth);
@@ -60,7 +64,6 @@ export default function SheetModal() {
     if (yAxisRange > MIN_Y_AXIS_RANGE) snapTo(0); // 위로 올리는 제스쳐
     // if (yAxisRange < -MIN_Y_AXIS_RANGE) snapTo(1); // 아래로 내리는 제스쳐
   }, [touchClientY.end]);
-
   return (
     <Sheet
       ref={sheetRef}
@@ -78,7 +81,7 @@ export default function SheetModal() {
       dragVelocityThreshold={100} // 50px/s 이상 속도로 드래그 시 닫힘
       dragCloseThreshold={0.01} // 화면에서 10% 이상 벗어나면 자동으로 닫힘
       tweenConfig={{
-        duration: 0.1,
+        duration: 0.2,
         ease: "easeInOut",
       }}
       className="sm:mx-10"
@@ -94,26 +97,26 @@ export default function SheetModal() {
       >
         <div
           className="pointerhover:hover:bg-black/10 group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl"
-          onTouchStart={handlerTouchStart}
-          onTouchEnd={handlerTouchEnd}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
           <Sheet.Header>
             <div className="flex h-12 cursor-grab items-center justify-center">
               <button
                 className="pointerhover:group-hover:bg-green-400 flex h-1 w-[9.5rem] items-center rounded-full bg-white sm:w-[17.5625rem]"
-                onClick={handlerSheetHeader}
+                onClick={handleSheetHeader}
               ></button>
             </div>
           </Sheet.Header>
           <Sheet.Scroller
             style={{
               height: calculateHeight(),
-              overscrollBehavior: "contain",
               WebkitOverflowScrolling: "touch",
+              scrollBehavior: "smooth",
             }}
-            onTouchStart={(e) => e.stopPropagation()}
+            draggableAt="both"
           >
-            <Sheet.Content disableDrag={true}>
+            <Sheet.Content disableDrag={isMobile}>
               <ItemCardList
                 itemListRef={itemListRef}
                 setIsScrolling={setIsScrolling}
