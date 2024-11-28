@@ -58,7 +58,7 @@ export default function SheetModal() {
     setOpen(true);
     const yAxisRange = touchClientY.start - touchClientY.end;
     if (yAxisRange > MIN_Y_AXIS_RANGE) snapTo(0); // 위로 올리는 제스쳐
-    if (yAxisRange < -MIN_Y_AXIS_RANGE) snapTo(1); // 아래로 내리는 제스쳐
+    // if (yAxisRange < -MIN_Y_AXIS_RANGE) snapTo(1); // 아래로 내리는 제스쳐
   }, [touchClientY.end]);
 
   return (
@@ -75,8 +75,12 @@ export default function SheetModal() {
         setItemListHeight(itemListRef.current?.scrollHeight ?? 0);
       }}
       // disableDrag={true}
-      dragVelocityThreshold={50} // 50px/s 이상 속도로 드래그 시 닫힘
-      dragCloseThreshold={0.1} // 화면에서 10% 이상 벗어나면 자동으로 닫힘
+      dragVelocityThreshold={100} // 50px/s 이상 속도로 드래그 시 닫힘
+      dragCloseThreshold={0.01} // 화면에서 10% 이상 벗어나면 자동으로 닫힘
+      tweenConfig={{
+        duration: 0.1,
+        ease: "easeInOut",
+      }}
       className="sm:mx-10"
       style={{
         zIndex: 10,
@@ -90,8 +94,8 @@ export default function SheetModal() {
       >
         <div
           className="pointerhover:hover:bg-black/10 group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl"
-          // onTouchStart={handlerTouchStart}
-          // onTouchEnd={handlerTouchEnd}
+          onTouchStart={handlerTouchStart}
+          onTouchEnd={handlerTouchEnd}
         >
           <Sheet.Header>
             <div className="flex h-12 cursor-grab items-center justify-center">
@@ -101,7 +105,9 @@ export default function SheetModal() {
               ></button>
             </div>
           </Sheet.Header>
-          <Sheet.Scroller style={{ height: calculateHeight() }}>
+          <Sheet.Scroller
+            style={{ height: calculateHeight(), overscrollBehavior: "contain" }}
+          >
             <Sheet.Content disableDrag={true}>
               <ItemCardList
                 itemListRef={itemListRef}
