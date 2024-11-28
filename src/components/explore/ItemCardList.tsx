@@ -6,15 +6,10 @@ import clsx from "clsx";
 
 type Props = {
   setIsScrolling: (isScrolling: boolean) => void;
-  currentIndex: number;
   itemListRef: React.RefObject<HTMLDivElement>;
 };
 
-export default function ItemCardList({
-  setIsScrolling,
-  currentIndex,
-  itemListRef,
-}: Props) {
+export default function ItemCardList({ setIsScrolling, itemListRef }: Props) {
   const cardList = Array.from({ length: 20 }, (_, i) => i);
   return (
     <div
