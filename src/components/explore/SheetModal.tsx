@@ -58,12 +58,12 @@ export default function SheetModal() {
     };
   }, [getWindowWidth]);
 
-  useEffect(() => {
-    setOpen(true);
-    const yAxisRange = touchClientY.start - touchClientY.end;
-    if (yAxisRange > MIN_Y_AXIS_RANGE) snapTo(0); // 위로 올리는 제스쳐
-    // if (yAxisRange < -MIN_Y_AXIS_RANGE) snapTo(1); // 아래로 내리는 제스쳐
-  }, [touchClientY.end]);
+  // useEffect(() => {
+  //   setOpen(true);
+  //   const yAxisRange = touchClientY.start - touchClientY.end;
+  //   if (yAxisRange > MIN_Y_AXIS_RANGE) snapTo(0); // 위로 올리는 제스쳐
+  //   // if (yAxisRange < -MIN_Y_AXIS_RANGE) snapTo(1); // 아래로 내리는 제스쳐
+  // }, [touchClientY.end]);
   return (
     <Sheet
       ref={sheetRef}
@@ -97,8 +97,8 @@ export default function SheetModal() {
       >
         <div
           className="pointerhover:hover:bg-black/10 group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          // onTouchStart={handleTouchStart}
+          // onTouchEnd={handleTouchEnd}
         >
           <Sheet.Header>
             <div className="flex h-12 cursor-grab items-center justify-center">

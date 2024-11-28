@@ -18,12 +18,8 @@ export default function ItemCardList({ setIsScrolling, itemListRef }: Props) {
     <div
       className="mb-[5.75rem] flex flex-col"
       ref={itemListRef}
-      onTouchStart={() => {
-        setIsScrolling(true);
-      }}
-      onTouchEnd={() => {
-        setIsScrolling(false);
-      }}
+      onTouchStart={stopPropagation}
+      onTouchEnd={stopPropagation}
     >
       <div className="mb-5 flex justify-center sm:ml-6 sm:text-xl">
         <div className="flex w-[19.5rem] justify-start sm:w-full">
