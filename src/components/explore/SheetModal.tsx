@@ -33,18 +33,16 @@ export default function SheetModal() {
   ];
   const snapTo = (i: number) => sheetRef.current?.snapTo(i);
   const handleSheetHeader = () => {
-    if (currentSnapPoint === 0) snapTo(2);
-    if (currentSnapPoint === 1) snapTo(0);
+    // if (currentSnapPoint === 0) snapTo(2);
+    // if (currentSnapPoint === 1) snapTo(0);
     if (currentSnapPoint === 2) snapTo(1);
   };
-
   useEffect(() => {
     window.addEventListener("resize", getWindowSize);
     return () => {
       window.removeEventListener("resize", getWindowSize);
     };
   }, [getWindowSize]);
-
   useEffect(() => {
     getWindowSize();
     setTimeout(() => {
@@ -65,11 +63,11 @@ export default function SheetModal() {
         setCurrentSnapPoint(index);
       }}
       // disableDrag={true}
-      dragVelocityThreshold={50} // 50px/s 이상 속도로 드래그 시 닫힘
-      dragCloseThreshold={0.05} // 화면에서 30% 이상 벗어나면 자동으로 닫힘
+      dragVelocityThreshold={30} // 30px/s 이상 속도로 드래그 시 닫힘
+      dragCloseThreshold={0.05} // 화면에서 5% 이상 벗어나면 자동으로 닫힘
       tweenConfig={{
-        duration: 0.1,
-        ease: "easeInOut",
+        duration: 0.15,
+        ease: "easeOut",
       }}
       className="sm:mx-10"
       style={{
@@ -85,12 +83,12 @@ export default function SheetModal() {
       >
         <div className="pointerhover:hover:bg-black/10 group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl active:bg-black/10">
           <Sheet.Header className="cursor-grab">
-            <div className="mb-1 flex h-7 items-center justify-center sm:mb-3 sm:h-12">
-              <button
-                className="pointerhover:group-hover:bg-green-400 flex h-1 w-[9.5rem] items-center rounded-full bg-white group-active:bg-green-400 sm:w-[17.5625rem]"
-                onClick={handleSheetHeader}
-              ></button>
-            </div>
+            <button
+              className="mb-1 flex h-7 w-full items-center justify-center sm:mb-3 sm:h-12"
+              onClick={handleSheetHeader}
+            >
+              <p className="pointerhover:group-hover:bg-green-400 flex h-1 w-[9.5rem] items-center rounded-full bg-white group-active:bg-green-400 sm:w-[17.5625rem]"></p>
+            </button>
             <div className="mb-2 flex justify-center sm:mb-5 sm:ml-6 sm:text-xl">
               <div className="flex w-[19.5rem] justify-start sm:w-full">
                 <span className="font-bold text-grey-800">검색 결과</span>
@@ -98,18 +96,17 @@ export default function SheetModal() {
               </div>
             </div>
           </Sheet.Header>
-          <Sheet.Scroller
-            style={{
-              height: windowHeight * snapPoints[currentSnapPoint],
-              WebkitOverflowScrolling: "touch",
-              scrollBehavior: "smooth",
-            }}
-            draggableAt="both"
-          >
-            <Sheet.Content disableDrag={isMobile}>
+          <Sheet.Content>
+            <Sheet.Scroller
+              style={{
+                height: windowHeight * snapPoints[currentSnapPoint],
+                WebkitOverflowScrolling: "touch",
+                scrollBehavior: "smooth",
+              }}
+            >
               <ItemCardList />
-            </Sheet.Content>
-          </Sheet.Scroller>
+            </Sheet.Scroller>
+          </Sheet.Content>
         </div>
       </Sheet.Container>
       {/* <Sheet.Backdrop /> */}
