@@ -8,15 +8,12 @@ import { isMobile } from "react-device-detect";
 
 const INITIAL_SNAP = 1;
 const CONTENT_VIEW_HEIGHT = 250; // pc 화면에서 컨텐츠 한 줄 보이는 높이
-const SM_CONTENT_VIEW_HEIGHT = 205; // 모바일 화면 컨텐츠 한 줄 보이는 높이
+const SM_CONTENT_VIEW_HEIGHT = 195; // 모바일 화면 컨텐츠 한 줄 보이는 높이
 
 export default function SheetModal() {
   const [isOpen, setOpen] = useState(false);
   const [currentSnapPoint, setCurrentSnapPoint] = useState(INITIAL_SNAP);
-
   const sheetRef = useRef<SheetRef>(null);
-  const itemListRef = useRef<HTMLDivElement>(null);
-
   const [windowHeight, setWindowHeight] = useState<number>(1080);
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const getWindowSize = debounce(() => {
@@ -63,11 +60,12 @@ export default function SheetModal() {
       }}
       // disableDrag={true}
       dragVelocityThreshold={50} // 50px/s 이상 속도로 드래그 시 닫힘
-      dragCloseThreshold={0.05} // 화면에서 5% 이상 벗어나면 자동으로 닫힘
+      dragCloseThreshold={0.05} // 화면에서 30% 이상 벗어나면 자동으로 닫힘
       tweenConfig={{
         duration: 0.1,
         ease: "easeInOut",
       }}
+      // detent="content-height"
       className="sm:mx-10"
       style={{
         zIndex: 10,
@@ -80,34 +78,32 @@ export default function SheetModal() {
         }}
       >
         <div className="pointerhover:hover:bg-black/10 group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl">
-          <Sheet.Header>
-            <div className="mb-1 flex h-7 cursor-grab items-center justify-center sm:mb-3 sm:h-12">
+          <Sheet.Header className="cursor-grab">
+            <div className="mb-1 flex h-7 items-center justify-center sm:mb-3 sm:h-12">
               <button
                 className="pointerhover:group-hover:bg-green-400 flex h-1 w-[9.5rem] items-center rounded-full bg-white sm:w-[17.5625rem]"
                 onClick={handleSheetHeader}
               ></button>
             </div>
-          </Sheet.Header>
-          <div className="flex flex-col">
-            <div className="mb-5 flex justify-center sm:ml-6 sm:text-xl">
+            <div className="mb-2 flex justify-center sm:mb-5 sm:ml-6 sm:text-xl">
               <div className="flex w-[19.5rem] justify-start sm:w-full">
                 <span className="font-bold text-grey-800">검색 결과</span>
                 <span className="font-semibold text-grey-500">(20)</span>
               </div>
             </div>
-            <Sheet.Scroller
-              style={{
-                height: windowHeight * snapPoints[currentSnapPoint],
-                WebkitOverflowScrolling: "touch",
-                scrollBehavior: "smooth",
-              }}
-              draggableAt="both"
-            >
-              <Sheet.Content disableDrag={isMobile}>
-                <ItemCardList itemListRef={itemListRef} />
-              </Sheet.Content>
-            </Sheet.Scroller>
-          </div>
+          </Sheet.Header>
+          <Sheet.Scroller
+            style={{
+              height: windowHeight * snapPoints[currentSnapPoint],
+              WebkitOverflowScrolling: "touch",
+              scrollBehavior: "smooth",
+            }}
+            draggableAt="both"
+          >
+            <Sheet.Content disableDrag={isMobile}>
+              <ItemCardList />
+            </Sheet.Content>
+          </Sheet.Scroller>
         </div>
       </Sheet.Container>
       {/* <Sheet.Backdrop className={clsx(currentIndex === 1 && "hidden")} /> */}

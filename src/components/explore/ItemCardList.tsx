@@ -3,19 +3,14 @@
 import React from "react";
 import ItemCard from "./ItemCard";
 
-type Props = {
-  itemListRef: React.RefObject<HTMLDivElement>;
-};
-
-export default function ItemCardList({ itemListRef }: Props) {
+export default function ItemCardList() {
   const cardList = Array.from({ length: 20 }, (_, i) => i);
   const disablePropagation = (e: React.TouchEvent) => {
     e.stopPropagation();
   };
   return (
     <div
-      className="mb-[5.75rem] flex flex-wrap justify-center gap-5 sm:mb-[8.4375rem] sm:ml-6 sm:justify-start sm:gap-12"
-      ref={itemListRef}
+      className="mb-[5.125rem] flex flex-wrap justify-center gap-5 sm:mb-[8.4375rem] sm:ml-6 sm:justify-start sm:gap-12"
       onTouchStart={disablePropagation}
       onTouchEnd={disablePropagation}
     >
