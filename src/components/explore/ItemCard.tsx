@@ -28,18 +28,19 @@ export default function ItemCard() {
             />
           </div>
           <div className="mb-[0.625rem] flex">
-            <div className="pointerhover:group-hover/card:bg-green-400 mr-[0.25rem] flex rounded-[0.5rem] bg-white/70">
+            <div className="pointerhover:group-hover/card:bg-green-400 mr-[0.25rem] flex items-center justify-center rounded-[0.5rem] bg-white/70 pl-[0.125rem] pr-2">
               <Image
                 src="/assets/images/button/thunder.svg"
                 alt="thunder"
-                width={18}
-                height={18}
+                width={16}
+                height={16}
+                className="h-4 w-4"
               />
-              <span className="py-1 pr-2 text-xxs font-semibold text-grey-900">
+              <span className="text-xxs font-semibold text-grey-900">
                 오늘 번개 가능
               </span>
             </div>
-            <div className="pointerhover:group-hover/card:bg-white/70 pointerhover:group-hover/card:text-grey-700 flex rounded-[0.5rem] bg-black/30 p-[0.25rem] px-[0.5rem] text-[0.625rem] font-semibold text-white">
+            <div className="pointerhover:group-hover/card:bg-white/70 pointerhover:group-hover/card:text-grey-700 flex rounded-[0.5rem] bg-black/30 p-[0.25rem] px-[0.5rem] text-xxs font-semibold text-white backdrop-blur-[20px]">
               일정 제안 받음
             </div>
           </div>
