@@ -9,6 +9,8 @@ import { isMobile } from "react-device-detect";
 const INITIAL_SNAP = 1;
 const CONTENT_VIEW_HEIGHT = 250; // pc 화면에서 컨텐츠 한 줄 보이는 높이
 const SM_CONTENT_VIEW_HEIGHT = 195; // 모바일 화면 컨텐츠 한 줄 보이는 높이
+const SHEET_HEADER_HEIGHT = 48;
+const SM_SHEET_HEADER_HEIGHT = 28;
 
 export default function SheetModal() {
   const [isOpen, setOpen] = useState(false);
@@ -25,11 +27,15 @@ export default function SheetModal() {
     windowWidth > 640
       ? CONTENT_VIEW_HEIGHT / windowHeight
       : SM_CONTENT_VIEW_HEIGHT / windowHeight,
+    windowWidth > 640
+      ? SHEET_HEADER_HEIGHT / windowHeight
+      : SM_SHEET_HEADER_HEIGHT / windowHeight,
   ];
   const snapTo = (i: number) => sheetRef.current?.snapTo(i);
   const handleSheetHeader = () => {
-    if (currentSnapPoint === 0) snapTo(1);
+    if (currentSnapPoint === 0) snapTo(2);
     if (currentSnapPoint === 1) snapTo(0);
+    if (currentSnapPoint === 2) snapTo(1);
   };
 
   useEffect(() => {
@@ -51,7 +57,7 @@ export default function SheetModal() {
       ref={sheetRef}
       isOpen={isOpen}
       onClose={() => {
-        snapTo(1);
+        snapTo(2);
       }}
       snapPoints={snapPoints}
       initialSnap={INITIAL_SNAP}
@@ -65,7 +71,6 @@ export default function SheetModal() {
         duration: 0.1,
         ease: "easeInOut",
       }}
-      // detent="content-height"
       className="sm:mx-10"
       style={{
         zIndex: 10,
@@ -75,13 +80,14 @@ export default function SheetModal() {
         style={{
           backgroundColor: "transparent",
           borderRadius: "1.875rem",
+          boxShadow: "rgba(0, 0, 0, 0.2) 0px -4px 30px",
         }}
       >
-        <div className="pointerhover:hover:bg-black/10 group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl">
+        <div className="pointerhover:hover:bg-black/10 group h-full rounded-t-[1.875rem] bg-white/30 backdrop-blur-xl active:bg-black/10">
           <Sheet.Header className="cursor-grab">
             <div className="mb-1 flex h-7 items-center justify-center sm:mb-3 sm:h-12">
               <button
-                className="pointerhover:group-hover:bg-green-400 flex h-1 w-[9.5rem] items-center rounded-full bg-white sm:w-[17.5625rem]"
+                className="pointerhover:group-hover:bg-green-400 flex h-1 w-[9.5rem] items-center rounded-full bg-white group-active:bg-green-400 sm:w-[17.5625rem]"
                 onClick={handleSheetHeader}
               ></button>
             </div>
@@ -106,7 +112,7 @@ export default function SheetModal() {
           </Sheet.Scroller>
         </div>
       </Sheet.Container>
-      {/* <Sheet.Backdrop className={clsx(currentIndex === 1 && "hidden")} /> */}
+      {/* <Sheet.Backdrop /> */}
     </Sheet>
   );
 }
