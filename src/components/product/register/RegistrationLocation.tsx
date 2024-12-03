@@ -439,7 +439,7 @@ export default function RegistrationLocation({
                 <button
                   key={d.codeSeq}
                   className={clsx(
-                    "rounded-md px-1.5 py-0.5 font-semibold max-sm:text-xs sm:px-4 sm:py-1",
+                    "rounded-md px-1.5 py-0.5 font-semibold sm:px-4 sm:py-1 max-sm:text-xs",
                     isDayShare
                       ? selectDay.includes(d.codeKorName)
                         ? "bg-black text-white"
@@ -547,14 +547,14 @@ export default function RegistrationLocation({
                 className="text-xs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
                 onClick={() => setOpenLocationForm(true)}
               >
-                수정하기
+                수정<span className="max-sm:hidden">하기</span>
               </button>
               <button
                 type="button"
                 className="text-xs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
                 onClick={deleteLocationInfo}
               >
-                삭제하기
+                삭제<span className="max-sm:hidden">하기</span>
               </button>
             </div>
           </div>
