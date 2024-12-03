@@ -76,7 +76,7 @@ export default function Header({ token }: CommonProps) {
           </div>
         )}
         <div className="flex justify-end xl:w-[22.8125rem]">
-          {token ? (
+          {!token ? (
             <button
               className="h-10 rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
               onClick={openLoginPopup}
