@@ -51,7 +51,7 @@ export default function RootLayout({
       <body className={pretendard.className}>
         <ReactQueryProviders>
           <MapsProvider clientId={clientId}>
-            <InstallAppBanner />
+            {/* <InstallAppBanner /> */}
             <SignIn />
             <SideNav token={refreshToken} />
             <Header token={refreshToken} />

@@ -3,8 +3,11 @@
 import clsx from "clsx";
 import Image from "next/image";
 import LandingButton from "./button/LandingButton";
+import { useState } from "react";
+import utils from "@/utils/cmmnUtil";
 
 export default function LandingModal() {
+  const isLogin = utils.getStorage("accessToken") ? true : false;
   return (
     <div
       className={clsx(
@@ -46,19 +49,24 @@ export default function LandingModal() {
       </div>
       <div className="mt-8 flex flex-col items-center justify-center gap-4 text-sm">
         <LandingButton
-          imgSrc="/images/icons/Thunder.png"
-          label="오늘 번개 나눔 보기"
-          altText="thunder icon"
-        />
-        <LandingButton
           imgSrc="/images/icons/Location.png"
           label="내 주변 나눔 보기"
           altText="location icon"
+          url="/explore?type=near"
+        />
+        <LandingButton
+          imgSrc="/images/icons/Thunder.png"
+          label="오늘 번개 나눔 보기"
+          altText="thunder icon"
+          url="/explore?type=lightning"
         />
         <LandingButton
           imgSrc="/images/icons/Thing_Sm.png"
-          label="새 나눔 등록하기"
+          label={`${isLogin ? "새 나눔 등록하기" : "로그인 후 새 나눔 등록하기"}`}
           altText="thing icon"
+          url="/product/register"
+          loginCheck
+          isLogin={isLogin}
         />
       </div>
     </div>
