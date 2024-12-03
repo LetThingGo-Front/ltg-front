@@ -3,11 +3,11 @@
 import clsx from "clsx";
 import Image from "next/image";
 import LandingButton from "./button/LandingButton";
-import { useState } from "react";
 import utils from "@/utils/cmmnUtil";
 
 export default function LandingModal() {
   const isLogin = utils.getStorage("accessToken") ? true : false;
+
   return (
     <div
       className={clsx(

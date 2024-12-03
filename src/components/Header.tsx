@@ -76,22 +76,32 @@ export default function Header({ token }: CommonProps) {
           </div>
         )}
         <div className="flex justify-end xl:w-[22.8125rem]">
-          {!token ? (
+          {token ? (
             <button
-              className="h-[2.375rem] rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
+              className="h-10 rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
               onClick={openLoginPopup}
             >
               로그인 후 새 나눔 등록
               <span className="max-lg:hidden">, Let things go!</span>
             </button>
           ) : (
-            <button
-              className="h-[2.375rem] rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
-              onClick={logout}
-            >
-              새 나눔 등록
-              <span className="max-lg:hidden">, Let things go!</span>
-            </button>
+            <div className="flex gap-[1.875rem]">
+              <Link
+                href="/product/register"
+                className="h-10 w-[14.8125rem] rounded-[0.625rem] bg-green-400 px-5 py-2 text-center font-bold"
+              >
+                새 나눔 등록
+                <span className="max-lg:hidden">, Let things go!</span>
+              </Link>
+              <button onClick={logout}>
+                <Image
+                  src="/assets/images/profile.svg"
+                  alt="profile"
+                  width={40}
+                  height={40}
+                />
+              </button>
+            </div>
           )}
         </div>
       </div>

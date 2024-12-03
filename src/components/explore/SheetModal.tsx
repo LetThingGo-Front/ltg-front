@@ -6,7 +6,6 @@ import ItemCardList from "./ItemCardList";
 import debounce from "debounce";
 import { useSearchParams } from "next/navigation";
 import useExploreStore from "@/store/exploreStore";
-import { isSea } from "node:sea";
 import clsx from "clsx";
 
 const INITIAL_SNAP = 1;
