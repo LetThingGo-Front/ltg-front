@@ -207,7 +207,7 @@ export default function RegistrationForm() {
                 />
                 <Line />
               </div>
-              <div className="mt-3 flex flex-col gap-6 sm:gap-10">
+              <div className="mt-3 flex flex-col gap-[1.125rem] sm:gap-[2.625rem]">
                 {container?.map((v, i) => (
                   <RegistrationLocation
                     idx={i}
