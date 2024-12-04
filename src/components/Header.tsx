@@ -47,7 +47,7 @@ export default function Header({ token }: CommonProps) {
   return (
     <>
       <div
-        className="fixed left-0 top-[env(safe-area-inset-top)] z-10 hidden h-[8.125rem] w-full items-start justify-between bg-white px-10 pb-7 pt-[1.875rem] sm:flex"
+        className="fixed left-0 top-[env(safe-area-inset-top)] z-10 hidden h-[5.625rem] w-full items-start justify-between bg-white px-10 pb-7 pt-[1.875rem] sm:flex"
         onClick={closeLoginPopup}
       >
         <ul className="flex items-center gap-8">
