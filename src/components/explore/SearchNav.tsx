@@ -13,7 +13,6 @@ export default function SearchNav() {
   const searchInputValue = useExploreStore.use.searchInput();
 
   const getSearchItemList = () => {
-    console.log("검색어로 아이템 리스트 조회");
     setItemList({ list: [searchInputValue] });
     setIsSearch(true);
   };

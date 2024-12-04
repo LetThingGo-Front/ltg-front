@@ -4,6 +4,14 @@ import Image from "next/image";
 import React from "react";
 import CloseButton from "./button/CloseButton";
 import useLoginPopupStore from "@/store/LoginStore";
+import SignInButton from "./button/SignInButton";
+import clsx from "clsx";
+
+const socialLoginList = [
+  { id: 1, name: "kakao", src: "/assets/images/login/kakao.svg" },
+  { id: 2, name: "naver", src: "/assets/images/login/naver.svg" },
+  { id: 3, name: "google", src: "/assets/images/login/google.svg" },
+];
 
 export default function SignIn() {
   const isOpen = useLoginPopupStore.use.isOpen();
@@ -17,7 +25,11 @@ export default function SignIn() {
   };
   return (
     <div
-      className={`${!isOpen && "hidden"} fixed left-0 top-[env(safe-area-inset-top)] z-30 flex h-[calc(100%-env(safe-area-inset-top))] w-full items-center justify-center backdrop-blur-xl`}
+      className={clsx(
+        "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-30 flex h-[calc(100%-env(safe-area-inset-top)-4rem)] w-full items-center justify-center backdrop-blur-xl",
+        "sm:top-[calc(env(safe-area-inset-top)+5.625rem)] sm:h-[calc(100%-env(safe-area-inset-top)-5.625rem)]",
+        !isOpen && "hidden",
+      )}
     >
       <div className="min-h-[34.75rem] min-w-[19rem] rounded-[1.25rem] bg-grey-800 sm:min-h-[39.375rem] sm:min-w-[29.625rem]">
         <div className="flex justify-end">
@@ -41,46 +53,14 @@ export default function SignIn() {
                 소셜 미디어 계정으로 로그인하기
               </p>
               <div className="flex justify-between">
-                <p className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ffeC00]">
-                  <button
-                    onClick={() => {
-                      socialLogin("kakao");
-                    }}
-                  >
-                    <Image
-                      src="/assets/images/kakao.svg"
-                      width={17}
-                      height={15}
-                      alt="kakao"
-                    />
-                  </button>
-                </p>
-                <p className="flex h-10 w-10 items-center justify-center rounded-full bg-[#03cf5d]">
-                  <button
-                    onClick={() => {
-                      socialLogin("naver");
-                    }}
-                  >
-                    <Image
-                      src="/assets/images/naver.svg"
-                      width={17}
-                      height={15}
-                      alt="naver"
-                    />
-                  </button>
-                </p>
-                <button
-                  onClick={() => {
-                    socialLogin("google");
-                  }}
-                >
-                  <Image
-                    src="/assets/images/google.svg"
-                    width={40}
-                    height={40}
-                    alt="google"
+                {socialLoginList.map((social) => (
+                  <SignInButton
+                    key={social.id}
+                    src={social.src}
+                    name={social.name}
+                    onClick={() => socialLogin(social.name)}
                   />
-                </button>
+                ))}
               </div>
             </div>
           </div>

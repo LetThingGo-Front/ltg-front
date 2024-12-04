@@ -49,19 +49,19 @@ export default function LandingModal() {
       </div>
       <div className="mt-8 flex flex-col items-center justify-center gap-4 text-sm">
         <LandingButton
-          imgSrc="/images/icons/Location.png"
+          imgSrc="/assets/images/button/location_red.svg"
           label="내 주변 나눔 보기"
           altText="location icon"
           url="/explore?type=near"
         />
         <LandingButton
-          imgSrc="/images/icons/Thunder.png"
+          imgSrc="/assets/images/button/thunder.svg"
           label="오늘 번개 나눔 보기"
           altText="thunder icon"
           url="/explore?type=lightning"
         />
         <LandingButton
-          imgSrc="/images/icons/Thing_Sm.png"
+          imgSrc="/assets/images/thing_sm_black.svg"
           label={`${isLogin ? "새 나눔 등록하기" : "로그인 후 새 나눔 등록하기"}`}
           altText="thing icon"
           url="/product/register"

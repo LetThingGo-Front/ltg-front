@@ -112,7 +112,10 @@ export default function SideNav({ token }: CommonProps) {
                 <button
                   className="rounded-md bg-green-400 px-4 py-2 text-xxs font-bold"
                   type="button"
-                  onClick={openLoginPopup}
+                  onClick={() => {
+                    resetSideNav();
+                    openLoginPopup();
+                  }}
                 >
                   소셜 미디어 로그인
                 </button>

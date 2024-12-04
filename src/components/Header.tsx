@@ -14,6 +14,7 @@ import SearchNav from "./explore/SearchNav";
 export default function Header({ token }: CommonProps) {
   const pathname = usePathname();
   const openLoginPopup = useLoginPopupStore.use.actions().openLoginPopup;
+  const closeLoginPopup = useLoginPopupStore.use.actions().closeLoginPopup;
   const toggleSideNav = useSideNavStore.use.actions().toggleSideNav;
 
   const logout = async () => {
@@ -45,7 +46,10 @@ export default function Header({ token }: CommonProps) {
 
   return (
     <>
-      <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 hidden w-full items-start justify-between bg-white px-10 py-8 sm:flex">
+      <div
+        className="fixed left-0 top-[env(safe-area-inset-top)] z-10 hidden h-[8.125rem] w-full items-start justify-between bg-white px-10 pb-7 pt-[1.875rem] sm:flex"
+        onClick={closeLoginPopup}
+      >
         <ul className="flex items-center gap-8">
           <li className="mr-4">
             <Link href="/">
@@ -79,7 +83,10 @@ export default function Header({ token }: CommonProps) {
           {!token ? (
             <button
               className="h-10 rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
-              onClick={openLoginPopup}
+              onClick={(e) => {
+                e.stopPropagation();
+                openLoginPopup();
+              }}
             >
               로그인 후 새 나눔 등록
               <span className="max-lg:hidden">, Let things go!</span>
@@ -93,7 +100,12 @@ export default function Header({ token }: CommonProps) {
                 새 나눔 등록
                 <span className="max-lg:hidden">, Let things go!</span>
               </Link>
-              <button onClick={logout}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  logout();
+                }}
+              >
                 <Image
                   src="/assets/images/profile.svg"
                   alt="profile"
@@ -106,7 +118,10 @@ export default function Header({ token }: CommonProps) {
         </div>
       </div>
       {/* 모바일 화면 */}
-      <div className="fixed left-0 top-[env(safe-area-inset-top)] z-10 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] text-center sm:hidden">
+      <div
+        className="fixed left-0 top-[env(safe-area-inset-top)] z-10 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] text-center sm:hidden"
+        onClick={closeLoginPopup}
+      >
         <button className="h-8 w-8" onClick={toggleSideNav}>
           <Image
             src="/assets/images/button/hamburger.svg"

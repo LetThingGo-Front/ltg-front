@@ -27,7 +27,7 @@ export default function LandingButton({
           loginCheck && !isLogin ? "bg-green-400" : "bg-white",
         )}
       >
-        <Image src={imgSrc} alt={altText} width={30} height={30} />
+        <Image src={imgSrc} alt={altText} width={32} height={32} />
         <p className="ml-auto mr-5 w-full text-center">{label}</p>
       </button>
     </Link>
