@@ -8,7 +8,6 @@ import ZoomControl from "@/components/common/map/ZoomControl";
 import axios from "axios";
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
-import { isMobile } from "react-device-detect";
 import debounce from "debounce";
 
 type Props = {
@@ -63,7 +62,7 @@ export default memo(function RegisterMap({
 }: Props) {
   const [isMovingMarker, setIsMovingMarker] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
-  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [windowWidth, setWindowWidth] = useState<number>(1920);
 
   const getMarkerIcon = () => {
     return windowWidth < 640
@@ -76,7 +75,6 @@ export default memo(function RegisterMap({
   };
 
   const getWindowSize = debounce(() => {
-    console.log("window.innerWidth: ", window.innerWidth);
     setWindowWidth(window.innerWidth);
   }, 100);
 
@@ -141,6 +139,7 @@ export default memo(function RegisterMap({
   }, [isTodayShare]);
 
   useEffect(() => {
+    getWindowSize();
     // 주소가 없는 최초의 상태에서만 현위치로 이동(위치 권한 허용시)
     if (!address) {
       navigator.geolocation.getCurrentPosition(
