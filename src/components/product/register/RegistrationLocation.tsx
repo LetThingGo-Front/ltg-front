@@ -398,7 +398,7 @@ export default function RegistrationLocation({
               onChange={(e) => setAddExplain(e.target.value)}
             />
           </div>
-          <div className="h-[7.5rem] w-full sm:h-[12.5rem]">
+          <div className="h-[7.5rem] w-full sm:h-[11.25rem]">
             <RegistrationMap
               address={address}
               coordinate={coordinate}
@@ -406,6 +406,7 @@ export default function RegistrationLocation({
               setAddress={setAddress}
               setSimpleAddr={setSimpleAddr}
               locationId={locationCase.locationId}
+              isTodayShare={isTodayShare}
             />
           </div>
           <div className="flex w-full flex-col gap-2">
@@ -514,6 +515,8 @@ export default function RegistrationLocation({
               locationId={locationCase.locationId}
               setSimpleAddr={setSimpleAddr}
               disableFullscreen
+              progressStatus="complete"
+              isTodayShare={isTodayShare}
             />
           </div>
           <div className="flex justify-between">

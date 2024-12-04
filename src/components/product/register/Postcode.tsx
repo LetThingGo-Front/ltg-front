@@ -6,6 +6,7 @@ import React from "react";
 import { useDaumPostcodePopup, DaumPostcodeEmbed } from "react-daum-postcode";
 import SearchInput from "./SearchInput";
 import clsx from "clsx";
+import Image from "next/image";
 
 type Props = {
   addr: string;
@@ -30,20 +31,6 @@ const themeObj = {
 const postCodeStyle = {
   width: "100%",
   height: "100%",
-};
-
-const postVariants = {
-  start: {
-    opacity: 0,
-    ease: "easeInOut",
-    ...duration.medium,
-  },
-  end: {
-    opacity: 1,
-    ease: "easeInOut",
-    ...duration.medium,
-  },
-  exit: {},
 };
 
 export default function Postcode({
@@ -78,7 +65,7 @@ export default function Postcode({
       className={clsx(
         "h-full w-full",
         isOpen &&
-          "max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-10 max-sm:bg-black/70 sm:h-[31.25rem]",
+          "sm:h-[31.25rem] max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-10 max-sm:bg-black/70",
       )}
     >
       <SearchInput
@@ -87,19 +74,25 @@ export default function Postcode({
         address={addr}
       />
       {isOpen && (
-        <motion.div
-          className="h-full"
-          variants={postVariants}
-          initial="start"
-          animate="end"
-          exit="exit"
-        >
+        <div className="h-full">
+          <div className="flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
+            <button onClick={() => openPostcode(!isOpen)}>
+              <Image
+                src="/assets/images/button/arrow_left_2.svg"
+                width={32}
+                height={32}
+                alt="뒤로가기"
+              />
+            </button>
+            <div className="font-bold">나눔 등록</div>
+            <div className="h-8 w-8"></div>
+          </div>
           <DaumPostcodeEmbed
             onComplete={handleComplete}
             style={postCodeStyle}
             theme={themeObj}
           />
-        </motion.div>
+        </div>
       )}
     </div>
   );

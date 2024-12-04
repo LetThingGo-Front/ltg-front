@@ -18,8 +18,8 @@ export default function SearchInput({
   return (
     <motion.div
       className={clsx(
-        "relative flex h-11 bg-grey-50 text-grey-500 backdrop-blur-[50px]",
-        isOpenSearchAddr ? "sm:rounded-t-lg" : "rounded-lg max-sm:h-8",
+        "relative flex h-11 rounded-lg bg-grey-50 text-grey-500 backdrop-blur-[50px] max-sm:h-8",
+        isOpenSearchAddr && "sm:rounded-t-lg max-sm:hidden",
       )}
       whileHover={commonHover}
       whileTap={commonTap}
@@ -28,23 +28,15 @@ export default function SearchInput({
     >
       <div
         className={clsx(
-          "flex w-full cursor-pointer items-center justify-center bg-transparent text-center text-inherit",
+          "flex w-full cursor-pointer items-center justify-center bg-transparent text-center text-inherit max-sm:px-8 max-sm:text-xs",
           address && "font-semibold text-grey-700",
-          isOpenSearchAddr ? "max-sm:px-9" : "max-sm:px-8 max-sm:text-xs",
         )}
       >
         <p className="truncate font-semibold">
           {address ? address : "주소를 검색하세요"}
         </p>
       </div>
-      <div
-        className={clsx(
-          "absolute left-3 top-[0.625rem] h-4 w-5 sm:top-[0.875rem]",
-          isOpenSearchAddr
-            ? "max-sm:top-3 max-sm:h-4 max-sm:w-4"
-            : "max-sm:h-3 max-sm:w-3",
-        )}
-      >
+      <div className="absolute left-3 top-[0.625rem] h-4 w-5 sm:top-[0.875rem] max-sm:h-3 max-sm:w-3">
         <Image
           src="/assets/images/magnify.svg"
           width={20}

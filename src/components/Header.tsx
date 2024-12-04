@@ -142,10 +142,10 @@ export default function Header({ token }: CommonProps) {
           />
         )}
         <Image
-          src="/images/icons/img.png"
+          src="/assets/images/profile.svg"
           alt="profile"
           width={32}
-          height={31}
+          height={32}
         />
         {pathname === "/explore" && (
           <div className="fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-10 w-full">

@@ -36,7 +36,7 @@ export default function Calendar() {
           <div className="flex items-center justify-start gap-px">
             <div className="flex h-[36px] w-[36px] items-center justify-center px-[6.50px] py-[5.42px]">
               <Image
-                src="/assets/images/marker/md_marker.svg"
+                src="/assets/images/marker/marker.svg"
                 alt="location"
                 width={36}
                 height={36}
@@ -107,7 +107,7 @@ export default function Calendar() {
               ))}
             </div>
           </div>
-          <div className="relative h-[88px] w-full rounded-[10px] bg-black/5 max-sm:mx-5 sm:h-52 sm:w-[432px]">
+          <div className="relative h-[88px] w-full rounded-[10px] bg-black/5 sm:h-52 sm:w-[432px] max-sm:mx-5">
             <div className="absolute top-0 h-full w-full p-5">
               <div className="flex h-full w-full flex-col items-center overflow-y-scroll">
                 {hourOptions.map((hour) => (

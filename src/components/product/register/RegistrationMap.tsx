@@ -2,11 +2,14 @@
 
 import LoadingMapSpinner from "@/components/common/LoadingMapSpinner";
 import FullScreenButton from "@/components/common/map/FullScreenButton";
+import FullScreenTextButton from "@/components/common/map/FullScreenTextButton";
 import MoveCenter from "@/components/common/map/MoveCenter";
 import ZoomControl from "@/components/common/map/ZoomControl";
 import axios from "axios";
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
+import { isMobile } from "react-device-detect";
+import debounce from "debounce";
 
 type Props = {
   address?: string;
@@ -17,6 +20,34 @@ type Props = {
   setSimpleAddr?: (address: string) => void;
   disableFullscreen?: boolean;
   isTodayShare?: boolean;
+  progressStatus?: "register" | "complete";
+};
+
+const markerIconList = {
+  marker: {
+    url: "/assets/images/marker/marker.png",
+    size: { width: 69, height: 68 },
+    scaledSize: { width: 69, height: 68 },
+    anchor: { x: 34, y: 34 },
+  },
+  markerSm: {
+    url: "/assets/images/marker/marker_sm.png",
+    size: { width: 126, height: 64 },
+    scaledSize: { width: 126, height: 64 },
+    anchor: { x: 63, y: 32 },
+  },
+  thunderMarker: {
+    url: "/assets/images/marker/thunder_marker.png",
+    size: { width: 126, height: 96 },
+    scaledSize: { width: 126, height: 96 },
+    anchor: { x: 63, y: 57 },
+  },
+  thunderMarkerSm: {
+    url: "/assets/images/marker/thunder_marker_sm.png",
+    size: { width: 126, height: 73 },
+    scaledSize: { width: 126, height: 73 },
+    anchor: { x: 63, y: 41 },
+  },
 };
 
 export default memo(function RegisterMap({
@@ -27,9 +58,30 @@ export default memo(function RegisterMap({
   locationId,
   setSimpleAddr,
   disableFullscreen = false,
+  isTodayShare,
+  progressStatus = "register",
 }: Props) {
   const [isMovingMarker, setIsMovingMarker] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+
+  const getMarkerIcon = () => {
+    return windowWidth < 640
+      ? isTodayShare
+        ? markerIconList.thunderMarkerSm
+        : markerIconList.markerSm
+      : isTodayShare
+        ? markerIconList.thunderMarker
+        : markerIconList.marker;
+  };
+
+  const getWindowSize = debounce(() => {
+    console.log("window.innerWidth: ", window.innerWidth);
+    setWindowWidth(window.innerWidth);
+  }, 100);
+
+  const markerIcon = getMarkerIcon();
+
   const getReverseGeoCode = useCallback(
     async (lat: number, lng: number) => {
       if (!lat || !lng) {
@@ -76,6 +128,18 @@ export default memo(function RegisterMap({
     },
     [setAddress, setSimpleAddr],
   );
+
+  useEffect(() => {
+    window.addEventListener("resize", getWindowSize);
+    return () => {
+      window.removeEventListener("resize", getWindowSize);
+    };
+  }, [getWindowSize]);
+
+  useEffect(() => {
+    getMarkerIcon();
+  }, [isTodayShare]);
+
   useEffect(() => {
     // 주소가 없는 최초의 상태에서만 현위치로 이동(위치 권한 허용시)
     if (!address) {
@@ -138,9 +202,11 @@ export default memo(function RegisterMap({
       }}
       id={locationId}
     >
-      <div className="absolute m-3 h-[1.5625rem] w-[4.625rem] rounded bg-[#303030]/50 p-1 text-center text-xs font-bold text-white backdrop-blur-sm">
-        {locationId}
-      </div>
+      {progressStatus === "complete" && (
+        <div className="absolute m-3 h-[1.5625rem] w-[4.625rem] rounded bg-[#303030]/50 p-1 text-center text-xs font-bold text-white backdrop-blur-sm">
+          {locationId}
+        </div>
+      )}
       <NaverMap
         defaultCenter={coordinate}
         defaultZoom={18}
@@ -150,21 +216,27 @@ export default memo(function RegisterMap({
         draggable={isEnabled}
         scrollWheel={isEnabled}
       >
-        {!disableFullscreen && <FullScreenButton id={locationId} />}
-        <Marker
-          position={coordinate}
-          draggable={isEnabled}
-          icon={{
-            url: "/assets/images/marker/md_marker.svg",
-            size: { width: 50, height: 50 },
-            scaledSize: { width: 40, height: 40 },
-            anchor: { x: 25, y: 25 },
-          }}
-          onDragend={(e) => {
-            setIsMovingMarker(true);
-            getReverseGeoCode(e.coord.y, e.coord.x);
-          }}
-        />
+        {!disableFullscreen && address && <FullScreenButton id={locationId} />}
+        {!document.fullscreenElement &&
+          progressStatus === "register" &&
+          !address && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <FullScreenTextButton id={locationId} />
+            </div>
+          )}
+        {(document.fullscreenElement ||
+          progressStatus === "complete" ||
+          address) && (
+          <Marker
+            position={coordinate}
+            draggable={isEnabled}
+            icon={markerIcon}
+            onDragend={(e) => {
+              setIsMovingMarker(true);
+              getReverseGeoCode(e.coord.y, e.coord.x);
+            }}
+          />
+        )}
         <MoveCenter lat={coordinate.lat} lng={coordinate.lng} />
         <ZoomControl address={address} zoom={18} />
       </NaverMap>
