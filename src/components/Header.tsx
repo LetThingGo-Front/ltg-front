@@ -85,7 +85,7 @@ export default function Header({ token }: CommonProps) {
               className="h-10 rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
               onClick={(e) => {
                 e.stopPropagation();
-                openLoginPopup();
+                openLoginPopup("/product/register");
               }}
             >
               로그인 후 새 나눔 등록

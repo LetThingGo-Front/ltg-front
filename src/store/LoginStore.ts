@@ -1,36 +1,36 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
-import createSelectors from './selectorStore';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
+import createSelectors from "./selectorStore";
 
 type LoginPopupState = {
   isOpen: boolean;
+  redirectUrl: string | undefined;
 };
 
 type LoginPopupAction = {
   actions: {
-    openLoginPopup: () => void;
+    openLoginPopup: (redirectUrl?: string) => void;
     closeLoginPopup: () => void;
   };
 };
 
 const initialPopup = {
   isOpen: false,
+  redirectUrl: "",
 };
 
 const loginPopupStore = create<LoginPopupState & LoginPopupAction>()(
   devtools(
-    immer(set => ({
+    immer((set) => ({
       ...initialPopup,
       actions: {
-        openLoginPopup: () =>
-          set(state => {
+        openLoginPopup: (redirectUrl) =>
+          set((state) => {
             state.isOpen = true;
+            state.redirectUrl = redirectUrl;
           }),
-        closeLoginPopup: () =>
-          set(state => {
-            state.isOpen = false;
-          }),
+        closeLoginPopup: () => set(initialPopup),
       },
     })),
   ),
