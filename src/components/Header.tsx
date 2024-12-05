@@ -86,7 +86,7 @@ export default function Header({ token }: CommonProps) {
               onClick={(e) => {
                 e.stopPropagation();
                 utils.setStorage("redirect", "/product/register");
-                openLoginPopup("/product/register");
+                openLoginPopup();
               }}
             >
               로그인 후 새 나눔 등록
