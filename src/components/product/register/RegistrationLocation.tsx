@@ -298,7 +298,7 @@ export default function RegistrationLocation({
 
   useEffect(() => {
     initLocationInfo();
-  }, [modifyLocation]);
+  }, [modifyLocation, locationInfo]);
 
   useEffect(() => {
     const weekly = ["월", "화", "수", "목", "금"];
