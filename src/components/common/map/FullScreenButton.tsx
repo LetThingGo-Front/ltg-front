@@ -21,7 +21,7 @@ export default function FullScreenButton({
     }
 
     if (isIOS && isTablet && !isSafari) {
-      alert("해당 디바이스에서는 safari에서만 지원하는 기능입니다.");
+      alert("사파리 브라우저에서 확대가 가능해요!");
       return;
     }
 
@@ -33,35 +33,19 @@ export default function FullScreenButton({
       }
     }
   };
-  const ButtonIcon = () => {
-    if (document.fullscreenElement || isFullScreen) {
-      return (
-        <Image
-          src="/assets/images/button/minimisescreen.svg"
-          width={25}
-          height={25}
-          alt="Minimisescreen"
-        />
-      );
-    } else {
-      return (
-        <Image
-          src="/assets/images/button/fullscreen.svg"
-          width={25}
-          height={25}
-          alt="fullscreen"
-        />
-      );
-    }
-  };
 
   return (
     <button
-      className="absolute right-0 m-3 h-[1.5625rem] w-[1.5625rem] rounded bg-[#303030]/50 p-1 text-center text-xs font-bold text-white backdrop-blur-sm"
+      className="absolute right-0 z-10 m-3 h-[1.5625rem] w-[1.5625rem] rounded bg-[#303030]/50 p-1 text-center text-xs font-bold text-white backdrop-blur-sm"
       onClick={fullScreen}
       type="button"
     >
-      <ButtonIcon />
+      <Image
+        src={`${document.fullscreenElement || isFullScreen ? "/assets/images/button/minimisescreen.svg" : "/assets/images/button/fullscreen.svg"}`}
+        width={25}
+        height={25}
+        alt="fullscreen"
+      />
     </button>
   );
 }

@@ -13,13 +13,13 @@ export default function FullScreenTextButton({
   const mapElement = document.getElementById(id); // html element tag id
   const fullScreen = () => {
     if (isIOS) {
-      // alert("iOS에서는 지원하지 않는 기능입니다.");
+      console.log("isIOS");
       setIsFullScreen();
       return;
     }
 
     if (isIOS && isTablet && !isSafari) {
-      alert("해당 디바이스에서는 safari에서만 지원하는 기능입니다.");
+      alert("사파리 브라우저에서 확대가 가능해요!");
       return;
     }
 

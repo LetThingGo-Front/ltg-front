@@ -214,16 +214,15 @@ export default memo(function RegisterMap({
         draggable={isEnabled || isFullScreen}
         scrollWheel={isEnabled || isFullScreen}
       >
-        {(!disableFullscreen && address) ||
-          (isFullScreen && (
-            <FullScreenButton
-              id={locationId}
-              isFullScreen={isFullScreen}
-              setIsFullScreen={() => {
-                setIsFullScreen && setIsFullScreen(!isFullScreen);
-              }}
-            />
-          ))}
+        {((!disableFullscreen && address) || isFullScreen) && (
+          <FullScreenButton
+            id={locationId}
+            isFullScreen={isFullScreen}
+            setIsFullScreen={() => {
+              setIsFullScreen && setIsFullScreen(!isFullScreen);
+            }}
+          />
+        )}
         {!isEnabled &&
           progressStatus === "register" &&
           !address &&

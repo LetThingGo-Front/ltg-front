@@ -192,7 +192,6 @@ export default function RegistrationForm() {
         defaultValue={[]}
         rules={{ required: "나눔 장소 및 일정은 필수입니다." }}
         render={({ field: { onChange, value } }) => {
-          console.log(value);
           const containerCount =
             value.length + 1 > sharingLocation.length
               ? sharingLocation.length
