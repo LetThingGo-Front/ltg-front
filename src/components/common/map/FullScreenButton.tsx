@@ -18,7 +18,7 @@ export default function FullScreenButton({
   const fullScreen = () => {
     if (isIOS) {
       setIsFullScreen();
-      setZoom(19);
+      setZoom(18);
       return;
     }
 
@@ -32,7 +32,7 @@ export default function FullScreenButton({
         document.exitFullscreen();
       } else {
         mapElement.requestFullscreen();
-        setZoom(19);
+        setZoom(18);
       }
     }
   };

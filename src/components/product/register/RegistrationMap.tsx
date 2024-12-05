@@ -67,6 +67,7 @@ export default memo(function RegisterMap({
   const [isMovingMarker, setIsMovingMarker] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(1920);
+  const [zoom, setZoom] = useState<number>(17);
 
   const getMarkerIcon = useMemo(() => {
     return windowWidth < 640
@@ -213,6 +214,7 @@ export default memo(function RegisterMap({
             setIsFullScreen={() => {
               setIsFullScreen && setIsFullScreen(!isFullScreen);
             }}
+            setZoom={setZoom}
           />
         )}
         {!isEnabled &&
@@ -225,6 +227,7 @@ export default memo(function RegisterMap({
                 setIsFullScreen={() => {
                   setIsFullScreen && setIsFullScreen(true);
                 }}
+                setZoom={setZoom}
               />
             </div>
           )}
@@ -243,7 +246,7 @@ export default memo(function RegisterMap({
           />
         )}
         <MoveCenter lat={coordinate.lat} lng={coordinate.lng} />
-        <ZoomControl address={address} zoom={18} />
+        <ZoomControl address={address} zoom={zoom} />
       </NaverMap>
       {isMovingMarker && <LoadingMapSpinner />}
     </MapDiv>
