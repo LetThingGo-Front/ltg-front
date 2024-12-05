@@ -49,6 +49,7 @@ export default function RegistrationLocation({
   locationInfo,
   locationList,
 }: Props) {
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const [isTodayShare, setIsTodayShare] = useState(false); // 오늘 번개 나눔 여부
   const [isDayShare, setIsDayShare] = useState(false); // 나눔 가능 요일 및 시간대 선택 여부
   const [selectDay, setSelectDay] = useState<Array<string>>([]); // 선택된 요일
@@ -398,7 +399,12 @@ export default function RegistrationLocation({
               onChange={(e) => setAddExplain(e.target.value)}
             />
           </div>
-          <div className="h-[7.5rem] w-full sm:h-[11.25rem]">
+          <div
+            className={clsx(
+              "h-[7.5rem] w-full sm:h-[11.25rem]",
+              isFullScreen && "fixed inset-0 z-20 h-[100dvh] w-[100dvw]",
+            )}
+          >
             <RegistrationMap
               address={address}
               coordinate={coordinate}
@@ -407,6 +413,8 @@ export default function RegistrationLocation({
               setSimpleAddr={setSimpleAddr}
               locationId={locationCase.locationId}
               isTodayShare={isTodayShare}
+              setIsFullScreen={setIsFullScreen}
+              isFullScreen={isFullScreen}
             />
           </div>
           <div className="flex w-full flex-col gap-2">

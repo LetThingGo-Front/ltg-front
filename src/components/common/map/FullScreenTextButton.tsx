@@ -4,13 +4,17 @@ import { isIOS, isTablet, isSafari } from "react-device-detect";
 
 type Props = {
   id?: string;
+  setIsFullScreen: () => void;
 };
-export default function FullScreenTextButton({ id = "map" }: Props) {
+export default function FullScreenTextButton({
+  id = "map",
+  setIsFullScreen,
+}: Props) {
   const mapElement = document.getElementById(id); // html element tag id
-  const element = document.documentElement;
   const fullScreen = () => {
     if (isIOS) {
-      alert("iOS에서는 지원하지 않는 기능입니다.");
+      // alert("iOS에서는 지원하지 않는 기능입니다.");
+      setIsFullScreen();
       return;
     }
 

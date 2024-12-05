@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import createSelectors from "./selectorStore";
 
@@ -20,19 +20,27 @@ const initialPopup = {
   redirectUrl: "",
 };
 
+const LOGIN_KEY = "login-store";
+
 const loginPopupStore = create<LoginPopupState & LoginPopupAction>()(
   devtools(
-    immer((set) => ({
-      ...initialPopup,
-      actions: {
-        openLoginPopup: (redirectUrl) =>
-          set((state) => {
-            state.isOpen = true;
-            state.redirectUrl = redirectUrl;
-          }),
-        closeLoginPopup: () => set(initialPopup),
+    persist(
+      immer((set) => ({
+        ...initialPopup,
+        actions: {
+          openLoginPopup: (redirectUrl) =>
+            set((state) => {
+              state.isOpen = true;
+              state.redirectUrl = redirectUrl || "";
+            }),
+          closeLoginPopup: () => set(initialPopup),
+        },
+      })),
+      {
+        name: LOGIN_KEY,
+        partialize: (state) => ({ redirectUrl: state.redirectUrl }),
       },
-    })),
+    ),
   ),
 );
 

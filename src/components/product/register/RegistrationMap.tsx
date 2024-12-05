@@ -20,6 +20,8 @@ type Props = {
   disableFullscreen?: boolean;
   isTodayShare?: boolean;
   progressStatus?: "register" | "complete";
+  setIsFullScreen?: (isFullScreen: boolean) => void;
+  isFullScreen?: boolean;
 };
 
 const markerIconList = {
@@ -59,6 +61,8 @@ export default memo(function RegisterMap({
   disableFullscreen = false,
   isTodayShare,
   progressStatus = "register",
+  setIsFullScreen,
+  isFullScreen,
 }: Props) {
   const [isMovingMarker, setIsMovingMarker] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -167,16 +171,6 @@ export default memo(function RegisterMap({
         }
       });
     }
-    // iOS mobile 환경 fullscreenElement 미지원
-    // iOS 크롬에서 마커 이동 안됨(사파리는 동작) 일단 iOS에서는 주소 검색으로만 선택이 가능하도록
-    // const userAgent = navigator.userAgent.toLowerCase();
-    // if (
-    //   userAgent.indexOf("iphone") > -1 ||
-    //   userAgent.indexOf("ipad") > -1 ||
-    //   userAgent.indexOf("ipod") > -1
-    // ) {
-    //   setIsEnabled(true);
-    // }
     return () => {
       if (mapElement) {
         mapElement.removeEventListener("fullscreenchange", () => {
@@ -189,6 +183,11 @@ export default memo(function RegisterMap({
       }
     };
   }, []);
+
+  useEffect(() => {
+    // 지도 화면 짤림 현상 대응
+    window.dispatchEvent(new Event("resize"));
+  }, [isEnabled, isFullScreen]);
 
   return (
     <MapDiv
@@ -209,26 +208,48 @@ export default memo(function RegisterMap({
       <NaverMap
         defaultCenter={coordinate}
         defaultZoom={18}
-        disableDoubleClickZoom={!isEnabled}
-        disableDoubleTapZoom={!isEnabled}
-        disableTwoFingerTapZoom={!isEnabled}
-        draggable={isEnabled}
-        scrollWheel={isEnabled}
+        disableDoubleClickZoom={!isEnabled || !isFullScreen}
+        disableDoubleTapZoom={!isEnabled || !isFullScreen}
+        disableTwoFingerTapZoom={!isEnabled || !isFullScreen}
+        draggable={isEnabled || isFullScreen}
+        scrollWheel={isEnabled || isFullScreen}
       >
-        {!disableFullscreen && address && <FullScreenButton id={locationId} />}
-        {!document.fullscreenElement &&
+        <FullScreenButton
+          id={locationId}
+          isFullScreen={isFullScreen}
+          setIsFullScreen={() => {
+            setIsFullScreen && setIsFullScreen(!isFullScreen);
+          }}
+        />
+        {!disableFullscreen && address && (
+          <FullScreenButton
+            id={locationId}
+            isFullScreen={isFullScreen}
+            setIsFullScreen={() => {
+              setIsFullScreen && setIsFullScreen(!isFullScreen);
+            }}
+          />
+        )}
+        {!isEnabled &&
           progressStatus === "register" &&
-          !address && (
+          !address &&
+          !isFullScreen && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <FullScreenTextButton id={locationId} />
+              <FullScreenTextButton
+                id={locationId}
+                setIsFullScreen={() => {
+                  setIsFullScreen && setIsFullScreen(true);
+                }}
+              />
             </div>
           )}
-        {(document.fullscreenElement ||
+        {(isEnabled ||
           progressStatus === "complete" ||
-          address) && (
+          address ||
+          isFullScreen) && (
           <Marker
             position={coordinate}
-            draggable={isEnabled}
+            draggable={isEnabled || isFullScreen}
             icon={markerIcon}
             onDragend={(e) => {
               setIsMovingMarker(true);
