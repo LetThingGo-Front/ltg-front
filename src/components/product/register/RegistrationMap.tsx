@@ -206,7 +206,7 @@ export default memo(function RegisterMap({
         draggable={isEnabled || isFullScreen}
         scrollWheel={isEnabled || isFullScreen}
       >
-        {(!disableFullscreen || address || isFullScreen) && (
+        {((!disableFullscreen && address) || address || isFullScreen) && (
           <FullScreenButton
             id={locationId}
             isFullScreen={isFullScreen}

@@ -6,17 +6,19 @@ type Props = {
   id?: string;
   isFullScreen?: boolean;
   setIsFullScreen: () => void;
+  setZoom: (zoom: number) => void;
 };
 export default function FullScreenButton({
   id = "map",
   isFullScreen,
   setIsFullScreen,
+  setZoom,
 }: Props) {
   const mapElement = document.getElementById(id); // html element tag id
   const fullScreen = () => {
     if (isIOS) {
-      // alert("iOS에서는 지원하지 않는 기능입니다.");
       setIsFullScreen();
+      setZoom(19);
       return;
     }
 
@@ -30,6 +32,7 @@ export default function FullScreenButton({
         document.exitFullscreen();
       } else {
         mapElement.requestFullscreen();
+        setZoom(19);
       }
     }
   };

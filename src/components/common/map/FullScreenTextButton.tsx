@@ -5,16 +5,18 @@ import { isIOS, isTablet, isSafari } from "react-device-detect";
 type Props = {
   id?: string;
   setIsFullScreen: () => void;
+  setZoom: (zoom: number) => void;
 };
 export default function FullScreenTextButton({
   id = "map",
   setIsFullScreen,
+  setZoom,
 }: Props) {
   const mapElement = document.getElementById(id); // html element tag id
   const fullScreen = () => {
     if (isIOS) {
-      console.log("isIOS");
       setIsFullScreen();
+      setZoom(19);
       return;
     }
 
@@ -28,6 +30,7 @@ export default function FullScreenTextButton({
         document.exitFullscreen();
       } else {
         mapElement.requestFullscreen();
+        setZoom(19);
       }
     }
   };
