@@ -19,7 +19,7 @@ export default function InitApp({ token }: CommonProps) {
     if (token) {
       utils.setStorage("accessToken", token);
       deleteCookieAccessToken();
-
+      console.log(redirectUrl);
       if (redirectUrl) router.push(redirectUrl);
     }
   }, []);

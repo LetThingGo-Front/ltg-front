@@ -1,12 +1,24 @@
 import Image from "next/image";
 import React from "react";
+import { isIOS, isTablet, isSafari } from "react-device-detect";
 
 type Props = {
   id?: string;
 };
 export default function FullScreenTextButton({ id = "map" }: Props) {
   const mapElement = document.getElementById(id); // html element tag id
+  const element = document.documentElement;
   const fullScreen = () => {
+    if (isIOS) {
+      alert("iOS에서는 지원하지 않는 기능입니다.");
+      return;
+    }
+
+    if (isIOS && isTablet && !isSafari) {
+      alert("해당 디바이스에서는 safari에서만 지원하는 기능입니다.");
+      return;
+    }
+
     if (mapElement) {
       if (document.fullscreenElement) {
         document.exitFullscreen();
