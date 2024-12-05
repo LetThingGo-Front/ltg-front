@@ -9,7 +9,6 @@ import axios from "axios";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
 import debounce from "debounce";
-import { isIOS, isMacOs, isSafari } from "react-device-detect";
 
 type Props = {
   address?: string;
@@ -138,7 +137,6 @@ export default memo(function RegisterMap({
   }, [getWindowSize]);
 
   useEffect(() => {
-    getWindowSize();
     // 주소가 없는 최초의 상태에서만 현위치로 이동(위치 권한 허용시)
     if (!address) {
       navigator.geolocation.getCurrentPosition(
@@ -180,8 +178,7 @@ export default memo(function RegisterMap({
   }, []);
 
   useEffect(() => {
-    // apple 환경에서 지도 화면 짤림 현상 대응(안드로이드에서는 오히려 지도 렌더링 안됨)
-    if (isIOS || isMacOs || isSafari) window.dispatchEvent(new Event("resize"));
+    window.dispatchEvent(new Event("resize"));
   }, [isEnabled, isFullScreen]);
 
   return (
