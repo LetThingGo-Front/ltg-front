@@ -17,6 +17,7 @@ import { Codes } from "@/types/common";
 import axios, { axiosAuth } from "@/lib/axios";
 import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
 import { CATEGORY_CODE, ITEM_STATUS_CODE } from "@/constants/code";
+import EmptyLocationBox from "./EmptyLocationBox";
 
 const sharingLocation = [
   { locationId: "나눔 장소 A", color: "bg-green-400" },
@@ -43,6 +44,7 @@ export default function RegistrationForm() {
     // }
   };
   const [isItemStatusType, setIsItemStatusType] = useState("N");
+  const [isOpenLocationForm, setIsOpenLocationForm] = useState(false);
   const watchCategory = watch("itemCreateRequest.categoryCode");
 
   const category = useQuery({
@@ -209,14 +211,25 @@ export default function RegistrationForm() {
               </div>
               <div className="mt-3 flex flex-col gap-[1.125rem] sm:gap-[2.625rem]">
                 {container?.map((v, i) => (
-                  <RegistrationLocation
-                    idx={i}
-                    key={sharingLocation[i].locationId}
-                    locationCase={sharingLocation[i]}
-                    onSave={onChange}
-                    locationInfo={v}
-                    locationList={value}
-                  />
+                  <div key={sharingLocation[i].locationId}>
+                    {isOpenLocationForm || v?.address ? (
+                      <RegistrationLocation
+                        idx={i}
+                        locationCase={sharingLocation[i]}
+                        onSave={onChange}
+                        locationInfo={v}
+                        locationList={value}
+                        isOpenLocationForm={isOpenLocationForm}
+                        setIsOpenLocationForm={setIsOpenLocationForm}
+                      />
+                    ) : (
+                      <EmptyLocationBox
+                        setIsOpenLocationForm={() =>
+                          setIsOpenLocationForm(true)
+                        }
+                      />
+                    )}
+                  </div>
                 ))}
               </div>
               {errors.itemCreateRequest?.itemLocations && (

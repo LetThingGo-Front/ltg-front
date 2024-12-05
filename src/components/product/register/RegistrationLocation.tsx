@@ -27,6 +27,8 @@ type Props = {
   onSave: (location: ItemLocationDto[]) => void;
   locationInfo: ItemLocationDto;
   locationList: ItemLocationDto[];
+  isOpenLocationForm: boolean;
+  setIsOpenLocationForm: (isOpen: boolean) => void;
 };
 
 const locationVariants = {
@@ -48,6 +50,8 @@ export default function RegistrationLocation({
   onSave,
   locationInfo,
   locationList,
+  isOpenLocationForm,
+  setIsOpenLocationForm,
 }: Props) {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isTodayShare, setIsTodayShare] = useState(false); // 오늘 번개 나눔 여부
@@ -63,7 +67,7 @@ export default function RegistrationLocation({
     lng: 126.9783882,
   });
   const [simpleAddr, setSimpleAddr] = useState(""); // 간단한 주소
-  const [openLocationForm, setOpenLocationForm] = useState(false);
+  const [modifyLocation, setModifyLocation] = useState(false);
 
   const days = useQuery({
     queryKey: ["days", DAYS_CODE],
@@ -234,15 +238,19 @@ export default function RegistrationLocation({
       });
       onSave(insertAndModifyList);
     }
-    setOpenLocationForm(false);
+    setIsOpenLocationForm(false);
+    setModifyLocation(false);
   };
 
   const deleteLocationInfo = () => {
     const filterLocationList = locationList.filter((_, i) => i !== idx);
     onSave(filterLocationList);
+    setIsOpenLocationForm(false);
+    setModifyLocation(false);
   };
 
-  const initLocationInfo = useCallback(() => {
+  const initLocationInfo = () => {
+    // save한 나눔 장소 불러오기
     if (locationInfo) {
       setAddress(locationInfo.address);
       setAddExplain(locationInfo.addressDescription ?? "");
@@ -280,7 +288,7 @@ export default function RegistrationLocation({
         setSelectDayTime([]);
       }
     }
-  }, [locationInfo]);
+  };
 
   useEffect(() => {
     if (address) {
@@ -290,7 +298,7 @@ export default function RegistrationLocation({
 
   useEffect(() => {
     initLocationInfo();
-  }, [initLocationInfo, locationInfo]);
+  }, [modifyLocation]);
 
   useEffect(() => {
     const weekly = ["월", "화", "수", "목", "금"];
@@ -305,26 +313,9 @@ export default function RegistrationLocation({
     }
   }, [selectDay]);
 
-  if (!openLocationForm && !locationInfo?.address) {
-    return (
-      <button
-        className="flex h-[6.875rem] w-full items-center justify-center rounded-lg bg-grey-50 hover:bg-grey-100 active:bg-grey-50/70 sm:h-[11.25rem]"
-        onClick={() => setOpenLocationForm(true)}
-        type="button"
-      >
-        <Image
-          src="/assets/images/button/square_plus.svg"
-          width={32}
-          height={32}
-          alt="add"
-        />
-      </button>
-    );
-  }
-
   return (
     <div>
-      {openLocationForm ? (
+      {(isOpenLocationForm && !locationInfo?.address) || modifyLocation ? (
         <motion.div
           className={clsx(
             "flex h-full flex-col items-center gap-6 rounded-xl bg-ltg-gradient-b px-[1.875rem] py-[1.625rem] sm:gap-11",
@@ -509,7 +500,10 @@ export default function RegistrationLocation({
             </button>
             <button
               className="px-4 py-2 text-xs font-semibold text-grey-700 active:text-grey-300 sm:text-sm"
-              onClick={() => setOpenLocationForm(false)}
+              onClick={() => {
+                setIsOpenLocationForm(false);
+                setModifyLocation(false);
+              }}
               type="button"
             >
               닫기
@@ -557,7 +551,7 @@ export default function RegistrationLocation({
               <button
                 type="button"
                 className="text-xs font-bold text-grey-300 hover:text-grey-700 sm:text-sm"
-                onClick={() => setOpenLocationForm(true)}
+                onClick={() => setModifyLocation(true)}
               >
                 수정<span className="max-sm:hidden">하기</span>
               </button>
