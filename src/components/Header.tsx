@@ -85,6 +85,7 @@ export default function Header({ token }: CommonProps) {
               className="h-10 rounded-[0.625rem] bg-green-400 px-5 py-2 font-bold"
               onClick={(e) => {
                 e.stopPropagation();
+                utils.setStorage("redirect", "/product/register");
                 openLoginPopup("/product/register");
               }}
             >

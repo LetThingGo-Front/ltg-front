@@ -17,11 +17,11 @@ export default function InitApp({ token }: CommonProps) {
   };
   useEffect(() => {
     console.log({ redirectUrl });
+    console.log(utils.getStorage("redirect"));
     setupInterceptor();
     if (token) {
       utils.setStorage("accessToken", token);
       deleteCookieAccessToken();
-      if (redirectUrl) router.push(redirectUrl);
     }
   }, []);
 
