@@ -16,12 +16,10 @@ export default function InitApp({ token }: CommonProps) {
     setupInterceptor();
     if (token) {
       const redirectUrl = utils.getStorage("redirect");
-      console.log({ redirectUrl });
       utils.setStorage("accessToken", token);
       deleteCookieAccessToken();
       if (redirectUrl) {
         utils.removeStorage("redirect");
-        console.log("스토리지 제거 후 redirect", redirectUrl);
         router.push(redirectUrl);
       }
     } else {

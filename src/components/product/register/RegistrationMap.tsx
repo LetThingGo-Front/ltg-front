@@ -6,9 +6,10 @@ import FullScreenTextButton from "@/components/common/map/FullScreenTextButton";
 import MoveCenter from "@/components/common/map/MoveCenter";
 import ZoomControl from "@/components/common/map/ZoomControl";
 import axios from "axios";
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
 import debounce from "debounce";
+import { isIOS, isMacOs, isSafari } from "react-device-detect";
 
 type Props = {
   address?: string;
@@ -68,7 +69,7 @@ export default memo(function RegisterMap({
   const [isEnabled, setIsEnabled] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(1920);
 
-  const getMarkerIcon = () => {
+  const getMarkerIcon = useMemo(() => {
     return windowWidth < 640
       ? isTodayShare
         ? markerIconList.thunderMarkerSm
@@ -76,13 +77,11 @@ export default memo(function RegisterMap({
       : isTodayShare
         ? markerIconList.thunderMarker
         : markerIconList.marker;
-  };
+  }, [windowWidth, isTodayShare]);
 
   const getWindowSize = debounce(() => {
     setWindowWidth(window.innerWidth);
   }, 100);
-
-  const markerIcon = getMarkerIcon();
 
   const getReverseGeoCode = useCallback(
     async (lat: number, lng: number) => {
@@ -139,10 +138,6 @@ export default memo(function RegisterMap({
   }, [getWindowSize]);
 
   useEffect(() => {
-    getMarkerIcon();
-  }, [isTodayShare]);
-
-  useEffect(() => {
     getWindowSize();
     // 주소가 없는 최초의 상태에서만 현위치로 이동(위치 권한 허용시)
     if (!address) {
@@ -185,8 +180,8 @@ export default memo(function RegisterMap({
   }, []);
 
   useEffect(() => {
-    // 지도 화면 짤림 현상 대응
-    window.dispatchEvent(new Event("resize"));
+    // apple 환경에서 지도 화면 짤림 현상 대응(안드로이드에서는 오히려 지도 렌더링 안됨)
+    if (isIOS || isMacOs || isSafari) window.dispatchEvent(new Event("resize"));
   }, [isEnabled, isFullScreen]);
 
   return (
@@ -214,7 +209,7 @@ export default memo(function RegisterMap({
         draggable={isEnabled || isFullScreen}
         scrollWheel={isEnabled || isFullScreen}
       >
-        {((!disableFullscreen && address) || isFullScreen) && (
+        {(!disableFullscreen || address || isFullScreen) && (
           <FullScreenButton
             id={locationId}
             isFullScreen={isFullScreen}
@@ -243,7 +238,7 @@ export default memo(function RegisterMap({
           <Marker
             position={coordinate}
             draggable={isEnabled || isFullScreen}
-            icon={markerIcon}
+            icon={getMarkerIcon}
             onDragend={(e) => {
               setIsMovingMarker(true);
               getReverseGeoCode(e.coord.y, e.coord.x);
