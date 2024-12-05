@@ -39,7 +39,7 @@ const markerIconList = {
     url: "/assets/images/marker/thunder_marker.png",
     size: { width: 126, height: 96 },
     scaledSize: { width: 126, height: 96 },
-    anchor: { x: 63, y: 57 },
+    anchor: { x: 63.2, y: 56 },
   },
   thunderMarkerSm: {
     url: "/assets/images/marker/thunder_marker_sm.png",
