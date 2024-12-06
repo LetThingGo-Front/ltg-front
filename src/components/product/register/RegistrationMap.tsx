@@ -160,8 +160,10 @@ export default memo(function RegisterMap({
       mapElement.addEventListener("fullscreenchange", () => {
         if (document.fullscreenElement) {
           setIsEnabled(true);
+          setZoom(18);
         } else {
           setIsEnabled(false);
+          setZoom(17);
         }
       });
     }
@@ -170,8 +172,10 @@ export default memo(function RegisterMap({
         mapElement.removeEventListener("fullscreenchange", () => {
           if (document.fullscreenElement) {
             setIsEnabled(true);
+            setZoom(18);
           } else {
             setIsEnabled(false);
+            setZoom(17);
           }
         });
       }
@@ -214,7 +218,6 @@ export default memo(function RegisterMap({
             setIsFullScreen={() => {
               setIsFullScreen && setIsFullScreen(!isFullScreen);
             }}
-            setZoom={setZoom}
           />
         )}
         {!isEnabled &&
@@ -245,7 +248,12 @@ export default memo(function RegisterMap({
             }}
           />
         )}
-        <MoveCenter lat={coordinate.lat} lng={coordinate.lng} />
+        <MoveCenter
+          lat={coordinate.lat}
+          lng={coordinate.lng}
+          isEnabled={isEnabled}
+          isFullScreen={isFullScreen}
+        />
         <ZoomControl address={address} zoom={zoom} />
       </NaverMap>
       {isMovingMarker && <LoadingMapSpinner />}

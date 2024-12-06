@@ -6,19 +6,16 @@ type Props = {
   id?: string;
   isFullScreen?: boolean;
   setIsFullScreen: () => void;
-  setZoom: (zoom: number) => void;
 };
 export default function FullScreenButton({
   id = "map",
   isFullScreen,
   setIsFullScreen,
-  setZoom,
 }: Props) {
   const mapElement = document.getElementById(id); // html element tag id
   const fullScreen = () => {
     if (isIOS) {
       setIsFullScreen();
-      setZoom(18);
       return;
     }
 
@@ -32,7 +29,6 @@ export default function FullScreenButton({
         document.exitFullscreen();
       } else {
         mapElement.requestFullscreen();
-        setZoom(18);
       }
     }
   };

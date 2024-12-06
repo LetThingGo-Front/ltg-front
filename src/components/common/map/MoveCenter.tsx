@@ -6,15 +6,21 @@ import { useMap } from "react-naver-maps";
 type Props = {
   lat: number;
   lng: number;
-  isDisabled?: boolean;
+  isEnabled: boolean;
+  isFullScreen?: boolean;
 };
 
-export default function MoveCenter({ lat, lng, isDisabled }: Props) {
+export default function MoveCenter({
+  lat,
+  lng,
+  isEnabled,
+  isFullScreen,
+}: Props) {
   const map = useMap();
   useEffect(() => {
     if (lat && lng) {
-      map?.panTo({ lat, lng }, { duration: 500 });
+      map?.panTo({ lat, lng }, { duration: 300 });
     }
-  }, [lat, lng, map, isDisabled]);
+  }, [lat, lng, map, isEnabled, isFullScreen]);
   return null;
 }
