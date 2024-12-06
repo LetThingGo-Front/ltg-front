@@ -218,6 +218,7 @@ export default memo(function RegisterMap({
             setIsFullScreen={() => {
               setIsFullScreen && setIsFullScreen(!isFullScreen);
             }}
+            setZoom={setZoom}
           />
         )}
         {!isEnabled &&

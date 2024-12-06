@@ -28,10 +28,8 @@ export default function FullScreenTextButton({
     if (mapElement) {
       if (document.fullscreenElement) {
         document.exitFullscreen();
-        setZoom(17);
       } else {
         mapElement.requestFullscreen();
-        setZoom(18);
       }
     }
   };

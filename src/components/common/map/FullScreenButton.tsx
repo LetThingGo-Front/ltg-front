@@ -6,15 +6,22 @@ type Props = {
   id?: string;
   isFullScreen?: boolean;
   setIsFullScreen: () => void;
+  setZoom: (zoom: number) => void;
 };
 export default function FullScreenButton({
   id = "map",
   isFullScreen,
   setIsFullScreen,
+  setZoom,
 }: Props) {
   const mapElement = document.getElementById(id); // html element tag id
   const fullScreen = () => {
     if (isIOS) {
+      if (isFullScreen) {
+        setZoom(17);
+      } else {
+        setZoom(18);
+      }
       setIsFullScreen();
       return;
     }
