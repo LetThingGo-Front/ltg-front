@@ -210,7 +210,6 @@ export default memo(function RegisterMap({
         disableTwoFingerTapZoom={!isEnabled || !isFullScreen}
         draggable={isEnabled || isFullScreen}
         scrollWheel={isEnabled || isFullScreen}
-        center={coordinate}
       >
         {(document.fullscreenElement ||
           (!disableFullscreen && address) ||

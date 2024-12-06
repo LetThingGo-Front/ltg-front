@@ -84,7 +84,7 @@ export default function Postcode({
                 alt="뒤로가기"
               />
             </button>
-            <div className="font-bold">나눔 등록</div>
+            <div className="font-bold">주소 검색</div>
             <div className="h-8 w-8"></div>
           </div>
           <DaumPostcodeEmbed

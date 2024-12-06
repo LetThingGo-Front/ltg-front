@@ -20,6 +20,8 @@ import { fetchDaysList } from "@/data/commonData";
 import { Codes } from "@/types/common";
 import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
 import { DAYS_CODE } from "@/constants/code";
+import SelectDaysButton from "./button/SelectDaysButton";
+import SelectTimesButton from "./button/SelectTimesButton";
 
 type Props = {
   idx: number;
@@ -62,6 +64,7 @@ export default function RegistrationLocation({
   const [isOpenSearchAddr, setIsOpenSearchAddr] = useState(false); // 주소 검색창 오픈 여부
   const [address, setAddress] = useState(""); // 주소
   const [addExplain, setAddExplain] = useState(""); // 장소 세부 설명
+  const [selectAllTimes, setSelectAllTimes] = useState(false); // 요일만 선택(모든 시간 선택)
   const [coordinate, setCoordinate] = useState<{ lat: number; lng: number }>({
     lat: 37.5666103,
     lng: 126.9783882,
@@ -75,6 +78,13 @@ export default function RegistrationLocation({
     staleTime: MIDDLE_TIME,
     gcTime: LONG_TIME,
   });
+
+  const handleSelectDaysButton = () => {
+    if (!selectAllTimes) {
+      setOpenTime(false);
+    }
+    setSelectAllTimes(!selectAllTimes);
+  };
 
   const toggleSelectDay = () => {
     if (isDayShare) {
@@ -415,7 +425,7 @@ export default function RegistrationLocation({
           </div>
           <div className="flex w-full flex-col gap-3 sm:gap-9">
             <div className="flex items-center justify-between">
-              <p className="font-semibold text-grey-800 max-sm:text-xs">
+              <p className="font-semibold text-grey-800 max-sm:text-xxs">
                 오늘 번개 나눔
               </p>
               <ToggleButton
@@ -423,67 +433,72 @@ export default function RegistrationLocation({
                 on={isTodayShare}
               />
             </div>
-            <div className="flex items-center justify-between">
-              <p className="font-semibold text-grey-800 max-sm:text-xs">
-                나눔 가능 요일 및 시간대 선택
-              </p>
-              <ToggleButton
-                toggle={() => toggleSelectDay()}
-                on={isDayShare}
-                onText="나눔자"
-                offText="신청자"
-                isShort={false}
-              />
-            </div>
-            <div className="flex justify-between">
-              {daysList.map((d: Codes) => (
-                <button
-                  key={d.codeSeq}
-                  className={clsx(
-                    "rounded-md px-1.5 py-0.5 font-semibold sm:px-4 sm:py-1 max-sm:text-xs",
-                    isDayShare
-                      ? selectDay.includes(d.codeKorName)
-                        ? "bg-black text-white"
-                        : "bg-black/5 text-black"
-                      : "text-grey-300",
-                    ((selectDay.includes("주중") &&
-                      /^(월|화|수|목|금)$/.test(d.codeKorName)) ||
+            <div className="flex flex-col gap-4 sm:gap-6">
+              <div className="flex items-center justify-between">
+                <p className="font-semibold text-grey-800 max-sm:text-xxs">
+                  나눔 가능 요일 및 시간대 선택
+                </p>
+                <ToggleButton
+                  toggle={() => toggleSelectDay()}
+                  on={isDayShare}
+                  onText="나눔자"
+                  offText="신청자"
+                  isShort={false}
+                />
+              </div>
+              <div className="flex justify-between">
+                {daysList.map((d: Codes) => (
+                  <button
+                    key={d.codeSeq}
+                    className={clsx(
+                      "rounded px-1.5 py-0.5 font-semibold sm:px-4 sm:py-1 pointerhover:hover:bg-white pointerhover:hover:text-black pointerhover:hover:shadow-[0_4px_10px_0_rgba(0,0,0,0.1)] max-sm:text-xxs",
+                      isDayShare
+                        ? selectDay.includes(d.codeKorName)
+                          ? "bg-green-400 text-black"
+                          : "bg-black/5 text-grey-900"
+                        : "text-grey-300",
+                      ((selectDay.includes("주중") &&
+                        /^(월|화|수|목|금)$/.test(d.codeKorName)) ||
+                        (selectDay.includes("주말") &&
+                          /^(토|일)$/.test(d.codeKorName))) &&
+                        "bg-transparent text-grey-300",
+                    )}
+                    onClick={() => addSelectDay(d.codeKorName)}
+                    type="button"
+                    disabled={
+                      !isDayShare ||
+                      (selectDay.includes("주중") &&
+                        /^(월|화|수|목|금)$/.test(d.codeKorName)) ||
                       (selectDay.includes("주말") &&
-                        /^(토|일)$/.test(d.codeKorName))) &&
-                      "bg-transparent text-grey-300",
-                  )}
-                  onClick={() => addSelectDay(d.codeKorName)}
-                  type="button"
-                  disabled={
-                    !isDayShare ||
-                    (selectDay.includes("주중") &&
-                      /^(월|화|수|목|금)$/.test(d.codeKorName)) ||
-                    (selectDay.includes("주말") &&
-                      /^(토|일)$/.test(d.codeKorName))
-                  }
-                >
-                  {d.codeKorName}
-                </button>
-              ))}
+                        /^(토|일)$/.test(d.codeKorName))
+                    }
+                  >
+                    {d.codeKorName}
+                  </button>
+                ))}
+              </div>
+              <div className="flex flex-col gap-[0.875rem]">
+                {selectDay.length > 0 && (
+                  <SelectDaysButton
+                    selectAllTimes={selectAllTimes}
+                    setSelectAllTimes={handleSelectDaysButton}
+                  />
+                )}
+
+                {openTime ? (
+                  <TimeList
+                    selectTime={selectDayTime}
+                    addSelectTime={addSelectDayTime}
+                    setOpenTime={() => setOpenTime(false)}
+                  />
+                ) : (
+                  <SelectTimesButton
+                    selectDay={selectDay}
+                    setOpenTime={() => setOpenTime(true)}
+                  />
+                )}
+              </div>
             </div>
-            <button
-              className={clsx(
-                "rounded-full bg-black/5 py-1 text-center font-semibold max-sm:text-xs",
-                selectDay.length === 0 ? "text-grey-300" : "text-black",
-                openTime && "hidden",
-              )}
-              disabled={selectDay.length === 0}
-              onClick={() => setOpenTime(true)}
-              type="button"
-            >
-              시간 선택 하기
-            </button>
-            {openTime && (
-              <TimeList
-                selectTime={selectDayTime}
-                addSelectTime={addSelectDayTime}
-              />
-            )}
           </div>
           <div className="flex flex-col gap-3">
             <button
