@@ -10,7 +10,7 @@ export default function SelectTimesButton({ selectDay, setOpenTime }: Props) {
   return (
     <button
       className={clsx(
-        "cursor-pointer rounded-full bg-black/[0.03] text-center font-semibold max-sm:text-xxxs",
+        "min-h-5 cursor-pointer rounded-[0.625rem] bg-black/[0.03] text-center font-semibold max-sm:text-xxxs",
         selectDay.length === 0
           ? "text-grey-200"
           : "text-grey-800 pointerhover:hover:bg-black/20",

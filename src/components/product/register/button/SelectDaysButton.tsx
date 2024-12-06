@@ -14,7 +14,7 @@ export default function SelectDaysButton({
   return (
     <button
       className={clsx(
-        "flex cursor-pointer items-center justify-center gap-2 rounded-[0.625rem] border-[0.0625rem] border-grey-50",
+        "flex min-h-5 cursor-pointer items-center justify-center gap-2 rounded-[0.625rem]",
         selectAllTimes ? "bg-green-400" : "bg-white",
       )}
       onClick={setSelectAllTimes}
