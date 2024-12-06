@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { isIOS, isTablet, isSafari } from "react-device-detect";
+import { useMap } from "react-naver-maps";
 
 type Props = {
   id?: string;

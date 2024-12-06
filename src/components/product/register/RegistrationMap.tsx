@@ -210,8 +210,12 @@ export default memo(function RegisterMap({
         disableTwoFingerTapZoom={!isEnabled || !isFullScreen}
         draggable={isEnabled || isFullScreen}
         scrollWheel={isEnabled || isFullScreen}
+        center={coordinate}
       >
-        {((!disableFullscreen && address) || address || isFullScreen) && (
+        {(document.fullscreenElement ||
+          (!disableFullscreen && address) ||
+          address ||
+          isFullScreen) && (
           <FullScreenButton
             id={locationId}
             isFullScreen={isFullScreen}
@@ -252,8 +256,8 @@ export default memo(function RegisterMap({
         <MoveCenter
           lat={coordinate.lat}
           lng={coordinate.lng}
-          isEnabled={isEnabled}
           isFullScreen={isFullScreen}
+          isEnabled={isEnabled}
         />
         <ZoomControl address={address} zoom={zoom} />
       </NaverMap>
