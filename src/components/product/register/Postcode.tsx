@@ -1,12 +1,10 @@
 "use client";
 
-import { duration } from "@/constants/animation/style";
-import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import { useDaumPostcodePopup, DaumPostcodeEmbed } from "react-daum-postcode";
 import SearchInput from "./SearchInput";
 import clsx from "clsx";
 import Image from "next/image";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   addr: string;
@@ -40,60 +38,43 @@ export default function Postcode({
   openPostcode,
   setSimpleAddr,
 }: Props) {
-  const handleComplete = (data: {
-    address: string;
-    addressType?: string;
-    sigungu?: string;
-    bname?: string;
-    buildingName?: string;
-  }) => {
-    const { address, addressType, sigungu, bname, buildingName } = data;
-    let fullAddress = address;
-    if (addressType === "R") {
-      const extraAddress = [bname, buildingName]
-        .filter((item) => item !== "")
-        .join(", ");
-      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-    }
-    setAddress(fullAddress);
-    setSimpleAddr(`${sigungu} ${bname}`);
+  const closeOpenPostcode = () => {
     openPostcode(false);
   };
-
   return (
     <div
       className={clsx(
         "h-full w-full",
         isOpen &&
-          "sm:h-[31.25rem] max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-10 max-sm:bg-black/70",
+          "sm:h-[31.25rem] max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20 max-sm:bg-black/70",
       )}
     >
-      <SearchInput
-        isOpenSearchAddr={isOpen}
-        setIsOpenSearchAddr={() => openPostcode(!isOpen)}
-        address={addr}
-      />
       {isOpen && (
-        <div className="h-full">
-          <div className="flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
-            <button onClick={() => openPostcode(!isOpen)}>
-              <Image
-                src="/assets/images/button/arrow_left_2.svg"
-                width={32}
-                height={32}
-                alt="뒤로가기"
-              />
-            </button>
-            <div className="font-bold">주소 검색</div>
-            <div className="h-8 w-8"></div>
-          </div>
-          <DaumPostcodeEmbed
-            onComplete={handleComplete}
-            style={postCodeStyle}
-            theme={themeObj}
-          />
+        <div className="flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
+          <button onClick={() => openPostcode(!isOpen)}>
+            <Image
+              src="/assets/images/button/arrow_left_2.svg"
+              width={32}
+              height={32}
+              alt="뒤로가기"
+            />
+          </button>
+          <div className="font-bold">주소 검색</div>
+          <div className="h-8 w-8"></div>
         </div>
       )}
+      <SearchInput
+        addr={addr}
+        isOpenMoblieView={isOpen}
+        setIsOpenMoblieView={() => {
+          isMobile && openPostcode(true);
+        }}
+        closeIsOpenMobileView={() => {
+          isMobile && openPostcode(false);
+        }}
+        setAddress={setAddress}
+        setSimpleAddr={setSimpleAddr}
+      />
     </div>
   );
 }

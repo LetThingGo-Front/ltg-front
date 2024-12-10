@@ -28,7 +28,7 @@ const setupInterceptor = () => {
     (response) => response,
     async (error) => {
       const prevRequest = error.config;
-      if (error.response.status === 401 && !prevRequest.sent) {
+      if (error.response?.status === 401 && !prevRequest.sent) {
         if (getRefreshing()) {
           return new Promise((resolve) => {
             subscribeTokenRefresh((newAccessToken: any) => {

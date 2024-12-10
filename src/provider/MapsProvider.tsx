@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { NavermapsProvider } from 'react-naver-maps';
+import React from "react";
+import { NavermapsProvider } from "react-naver-maps";
 
 type Props = {
   clientId: string;
@@ -9,5 +9,9 @@ type Props = {
 };
 
 export default function MapsProvider({ clientId, children }: Props) {
-  return <NavermapsProvider ncpClientId={clientId}>{children}</NavermapsProvider>;
+  return (
+    <NavermapsProvider ncpClientId={clientId} submodules={["geocoder"]}>
+      {children}
+    </NavermapsProvider>
+  );
 }

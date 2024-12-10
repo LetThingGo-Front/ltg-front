@@ -37,7 +37,7 @@ export default function TimeList({
       animate="end"
     >
       <div className="h-[17.9375rem] w-full rounded-lg bg-black/[0.03] px-5 py-5">
-        <div className="flex h-full w-full flex-col items-center gap-[0.125rem] overflow-y-scroll sm:px-12">
+        <div className="flex h-full w-full flex-col items-center gap-[0.125rem] overflow-y-auto sm:px-12">
           {timeList.map((hour) => (
             <div key={hour} className="flex w-[9.125rem] gap-[0.125rem]">
               <div className="mt-0.5 h-3 w-6 text-center text-xxxs font-semibold text-grey-800">

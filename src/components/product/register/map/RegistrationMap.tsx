@@ -7,8 +7,16 @@ import MoveCenter from "@/components/common/map/MoveCenter";
 import ZoomControl from "@/components/common/map/ZoomControl";
 import axios from "axios";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
+import { Container as MapDiv, Marker, useNavermaps } from "react-naver-maps";
 import debounce from "debounce";
+import Maps from "./Maps";
+
+type Latlng = {
+  y: number;
+  _lat: number;
+  x: number;
+  _lng: number;
+};
 
 type Props = {
   address?: string;
@@ -64,10 +72,70 @@ export default memo(function RegisterMap({
   setIsFullScreen,
   isFullScreen,
 }: Props) {
-  const [isMovingMarker, setIsMovingMarker] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(1920);
   const [zoom, setZoom] = useState<number>(17);
+  const navermaps = useNavermaps();
+  const searchAddressToCoordinate = (address: string) => {
+    if (!address) {
+      alert("주소를 입력하세요.");
+      return;
+    }
+    navermaps.Service.geocode(
+      {
+        query: address,
+      },
+      (status: number, response: any) => {
+        if (status === 200) {
+          if (response.v2.meta.totalCount === 0) {
+            console.log("searchAddressToCoordinate 검색 결과가 없습니다.");
+          } else {
+            const { x, y } = response.v2.addresses[0];
+            if (setCoordinate) {
+              setCoordinate({ lat: y, lng: x });
+            }
+          }
+        }
+      },
+    );
+  };
+
+  const searchCoordinateToAddress = (latlng: Latlng) => {
+    navermaps.Service.reverseGeocode(
+      {
+        coords: latlng,
+        orders: [navermaps.Service.OrderType.ROAD_ADDR].join(","),
+      },
+      (status: number, response: any) => {
+        if (status === 200) {
+          if (response.v2.status.code === 0) {
+            const address = response.v2.results[0];
+            console.log(address);
+            const { land, region } = address;
+            let fullAddress = `${region.area1.alias} ${region.area2.name} ${land.name} ${land.number1} ${land.number2}`;
+            const extraAddress = [region.area3.name, land.addition0.value]
+              .filter((item) => item !== "")
+              .join(", ");
+
+            fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+            if (setAddress && setSimpleAddr) {
+              setAddress(fullAddress);
+              setSimpleAddr(`${region.area2.name} ${region.area3.name}`);
+            }
+          }
+          if (response.v2.status.code === 3) {
+            alert("해당 위치의 정확한 주소를 모르겠어요. 😥");
+          }
+          if (response.v2.status.code === 100) {
+            alert("요청 정보를 다시 확인해주세요. ☹️");
+          }
+          if (response.v2.status.code === 900) {
+            alert("알 수 없는 오류가 발생했어요. 😳");
+          }
+        }
+      },
+    );
+  };
 
   const getMarkerIcon = useMemo(() => {
     return windowWidth < 640
@@ -83,59 +151,18 @@ export default memo(function RegisterMap({
     setWindowWidth(window.innerWidth);
   }, 100);
 
-  const getReverseGeoCode = useCallback(
-    async (lat: number, lng: number) => {
-      if (!lat || !lng) {
-        alert("좌표를 불러오는데 실패했어요.");
-        return;
-      }
-      try {
-        const response = await axios.get("/api/maps/geocode/reverse", {
-          params: {
-            coords: `${lng},${lat}`,
-          },
-        });
-        if (response.status === 200) {
-          if (response.data.status.code === 0) {
-            const address = response.data.results[0];
-            const { land, region } = address;
-            let fullAddress = `${region.area1.alias} ${region.area2.name} ${land.name} ${land.number1} ${land.number2}`;
-            const extraAddress = [region.area3.name, land.addition0.value]
-              .filter((item) => item !== "")
-              .join(", ");
-
-            fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-            if (setAddress && setSimpleAddr) {
-              setAddress(fullAddress);
-              setSimpleAddr(`${region.area2.name} ${region.area3.name}`);
-            }
-          }
-          if (response.data.status.code === 3) {
-            alert("해당 위치의 정확한 주소를 모르겠어요. 😥");
-          }
-          if (response.data.status.code === 100) {
-            alert("요청 정보를 다시 확인해주세요. ☹️");
-          }
-          if (response.data.status.code === 900) {
-            alert("알 수 없는 오류가 발생했어요. 😳");
-          }
-        }
-        setIsMovingMarker(false);
-      } catch (error) {
-        console.error("지오코딩 오류: ", error);
-        alert("주소 정보를 불러오는데 실패했어요. 😳");
-        setIsMovingMarker(false);
-      }
-    },
-    [setAddress, setSimpleAddr],
-  );
-
   useEffect(() => {
     window.addEventListener("resize", getWindowSize);
     return () => {
       window.removeEventListener("resize", getWindowSize);
     };
   }, [getWindowSize]);
+
+  useEffect(() => {
+    if (address) {
+      searchAddressToCoordinate(address);
+    }
+  }, [address]);
 
   useEffect(() => {
     // 주소가 없는 최초의 상태에서만 현위치로 이동(위치 권한 허용시)
@@ -202,14 +229,10 @@ export default memo(function RegisterMap({
           {locationId}
         </div>
       )}
-      <NaverMap
-        defaultCenter={coordinate}
-        defaultZoom={18}
-        disableDoubleClickZoom={!isEnabled || !isFullScreen}
-        disableDoubleTapZoom={!isEnabled || !isFullScreen}
-        disableTwoFingerTapZoom={!isEnabled || !isFullScreen}
-        draggable={isEnabled || isFullScreen}
-        scrollWheel={isEnabled || isFullScreen}
+      <Maps
+        coordinate={coordinate}
+        isEnabled={isEnabled}
+        isFullScreen={isFullScreen}
       >
         {(document.fullscreenElement ||
           (!disableFullscreen && address) ||
@@ -247,8 +270,7 @@ export default memo(function RegisterMap({
             draggable={isEnabled || isFullScreen}
             icon={getMarkerIcon}
             onDragend={(e) => {
-              setIsMovingMarker(true);
-              getReverseGeoCode(e.coord.y, e.coord.x);
+              searchCoordinateToAddress(e.coord);
             }}
           />
         )}
@@ -259,8 +281,7 @@ export default memo(function RegisterMap({
           isEnabled={isEnabled}
         />
         <ZoomControl address={address} zoom={zoom} />
-      </NaverMap>
-      {isMovingMarker && <LoadingMapSpinner />}
+      </Maps>
     </MapDiv>
   );
 });

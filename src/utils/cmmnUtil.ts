@@ -33,6 +33,37 @@ const objectToQueryString = (params: Record<string, any>) => {
   return queryString ? `?${queryString}` : "";
 };
 
+const unescapeHtml = (str: string) => {
+  const map: { [key: string]: string } = {
+    "&apos;": "'",
+    "&quot;": '"',
+    "&amp;": "&",
+    "&lt;": "<",
+    "&gt;": ">",
+    "&nbsp;": " ", // HTML 엔티티에서 공백으로 변환
+  };
+
+  return str.replace(
+    /&apos;|&quot;|&amp;|&lt;|&gt;|&nbsp;/g,
+    (match) => map[match] || match,
+  );
+};
+
+const parseHtmlString = (html: any) => {
+  const regex = /(<([^>]+)>(.*?)<\/\2>)|([^<]+)/g;
+
+  return html.match(regex).map((part: any) => {
+    if (part.startsWith("<")) {
+      const match = part.match(/<([^>]+)>(.*?)<\/\1>/);
+      const content = match[2]; // 태그 내부 텍스트
+      return content;
+    }
+
+    // 텍스트에서 특수 문자를 변환
+    return part;
+  });
+};
+
 const utils = {
   setStorage,
   getStorage,
@@ -40,6 +71,8 @@ const utils = {
   removeStorageAll,
   isEmpty,
   objectToQueryString,
+  parseHtmlString,
+  unescapeHtml,
 };
 
 export default utils;

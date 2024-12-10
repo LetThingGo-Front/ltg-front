@@ -17,6 +17,7 @@ export default function MoveCenter({
   isEnabled,
 }: Props) {
   const map = useMap();
+
   useEffect(() => {
     if (lat && lng) {
       // full screen 모드에서 닫힐 때 중앙으로 이동 이벤트가 동작하지 않아 setTimeout으로 간격 주어서 이동

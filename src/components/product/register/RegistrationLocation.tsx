@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Line from "./Line";
 import MinSemiTitle from "./MinSemiTitle";
 import Image from "next/image";
-import RegistrationMap from "./RegistrationMap";
+import RegistrationMap from "./map/RegistrationMap";
 import ToggleButton from "./button/ToggleButton";
 import { daysList, timeList } from "./constants/constants";
 import TextInput from "./TextInput";
@@ -83,31 +83,6 @@ export default function RegistrationLocation({
     setIsDayShare(!isDayShare);
     setOpenTime(false);
   };
-
-  const getGeoCode = useCallback(async (address: string) => {
-    if (!address) {
-      alert("주소를 입력하세요.");
-      return;
-    }
-    try {
-      const response = await axios.get("/api/maps/geocode", {
-        params: {
-          query: address,
-        },
-      });
-      if (response.status === 200 && response.data.addresses.length > 0) {
-        const { x, y } = response.data.addresses[0];
-        if (setCoordinate) {
-          setCoordinate({ lat: y, lng: x });
-        }
-      } else {
-        alert("검색 결과가 없습니다.");
-      }
-    } catch (error) {
-      console.error("지오코딩 오류: ", error);
-      alert("불러오는 과정에서 오류가 발생했습니다. 다시 시도해주세요.");
-    }
-  }, []);
 
   const processItemAvailabilities = () => {
     const numberTimeList = selectDayTime.map((time) =>
@@ -212,12 +187,6 @@ export default function RegistrationLocation({
       }
     }
   };
-
-  useEffect(() => {
-    if (address) {
-      getGeoCode(address);
-    }
-  }, [address, getGeoCode]);
 
   useEffect(() => {
     initLocationInfo();

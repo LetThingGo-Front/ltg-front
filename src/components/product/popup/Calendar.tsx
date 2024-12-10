@@ -109,7 +109,7 @@ export default function Calendar() {
           </div>
           <div className="relative h-[88px] w-full rounded-[10px] bg-black/5 sm:h-52 sm:w-[432px] max-sm:mx-5">
             <div className="absolute top-0 h-full w-full p-5">
-              <div className="flex h-full w-full flex-col items-center overflow-y-scroll">
+              <div className="flex h-full w-full flex-col items-center overflow-y-auto">
                 {hourOptions.map((hour) => (
                   <div key={hour} className="flex gap-[2px]">
                     <div className="h-[13px] w-6 text-center text-[8px] font-semibold leading-[12.80px] tracking-tight text-grey-800">

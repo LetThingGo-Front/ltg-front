@@ -31,7 +31,7 @@ export default function TextInput({
       )}
     >
       <input
-        className="normal shrink grow basis-0 bg-transparent font-semibold text-grey-700 outline-none placeholder:text-grey-400 max-sm:text-xs"
+        className="normal shrink grow basis-0 bg-transparent text-xs font-semibold text-grey-700 outline-none placeholder:text-grey-400 sm:text-[0.875rem]"
         placeholder={placeholder}
         onChange={onChange}
         value={value}
