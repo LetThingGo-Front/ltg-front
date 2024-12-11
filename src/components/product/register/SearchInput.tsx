@@ -56,10 +56,6 @@ export default function SearchInput({
   const [isFocused, setIsFocused] = useState(false);
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
-  const [viewportHeight, setViewportHeight] = useState<number>(1080);
-
-  const innerHeight = typeof window !== "undefined" ? window.innerHeight : 1080;
-  const innerWidth = typeof window !== "undefined" ? window.innerWidth : 1920;
 
   const setSearchInput = debounce((value: string) => {
     if (value.length > 1) getSearchToLocation(value);
@@ -117,23 +113,14 @@ export default function SearchInput({
     closeIsOpenMobileView();
   };
 
-  // const setSearchInputHeight = () => {
-  //   if (window.visualViewport) {
-  //     // setViewportHeight(window.visualViewport.height);
-  //     // 키보드가 올라올 때 스크롤 위치 초기화
-  //     if (window.innerHeight > window.visualViewport.height) {
-  //       window.scrollTo(0, 0);
-  //     }
-  //   }
-  // };
-
-  // const getSearchInputHeight = useMemo(() => {
-  //   if (isOpenMoblieView) {
-  //     return viewportHeight - 64;
-  //   } else {
-  //     return innerWidth < 640 ? 32 : 44;
-  //   }
-  // }, [isOpenMoblieView, viewportHeight]);
+  const setSearchInputHeight = () => {
+    if (window.visualViewport) {
+      // 키보드가 올라올 때 스크롤 위치 초기화
+      if (window.innerHeight > window.visualViewport.height) {
+        window.scrollTo(0, 0);
+      }
+    }
+  };
 
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
@@ -155,16 +142,16 @@ export default function SearchInput({
     }
   }, [addr]);
 
-  // useEffect(() => {
-  //   setSearchInputHeight();
-  //   window.visualViewport?.addEventListener("resize", setSearchInputHeight);
-  //   return () => {
-  //     window.visualViewport?.removeEventListener(
-  //       "resize",
-  //       setSearchInputHeight,
-  //     );
-  //   };
-  // }, []);
+  useEffect(() => {
+    setSearchInputHeight();
+    window.visualViewport?.addEventListener("resize", setSearchInputHeight);
+    return () => {
+      window.visualViewport?.removeEventListener(
+        "resize",
+        setSearchInputHeight,
+      );
+    };
+  }, []);
 
   return (
     <div
@@ -177,11 +164,6 @@ export default function SearchInput({
           ? "relative h-full"
           : "rounded-t-[0.625rem] max-sm:h-8",
       )}
-      // style={{
-      //   height: isOpenMoblieView
-      //     ? `calc(${getSearchInputHeight}px - env(safe-area-inset-top))`
-      //     : `${getSearchInputHeight}px`,
-      // }}
       tabIndex={0}
       onFocus={() => setIsFocused(true)}
       onBlur={(e) => {
