@@ -117,9 +117,6 @@ export default function SearchInput({
   const containerFocus = () => {
     if (!isFocused) setIsFocused(true);
     setIsOpenMoblieView();
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
   };
 
   useEffect(() => {
@@ -146,7 +143,7 @@ export default function SearchInput({
     <div
       ref={containerRef}
       className={clsx(
-        "group/search relative z-20 flex h-11 backdrop-blur-[50px] pointerhover:hover:bg-[#474747]",
+        "group/search pointerhover:hover:bg-[#474747] relative z-20 flex h-11 backdrop-blur-[50px]",
         !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
         isOpenMoblieView
@@ -197,14 +194,12 @@ export default function SearchInput({
       <input
         className={clsx(
           "ml-10 w-full truncate bg-transparent pr-9 text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-[0.875rem]",
-          "placeholder:text-center disabled:opacity-100 disabled:placeholder:opacity-100 pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white",
+          "pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white placeholder:text-center",
           !isOpenMoblieView && isFocused && "text-white placeholder:text-white",
           isOpenMoblieView
             ? "h-[2.75rem]"
             : "max-sm:text-xs max-sm:placeholder:text-xs",
-          innerWidth < 640 && !isOpenMoblieView && "pointer-events-none",
         )}
-        disabled={innerWidth < 640 && !isOpenMoblieView}
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
         ref={inputRef}

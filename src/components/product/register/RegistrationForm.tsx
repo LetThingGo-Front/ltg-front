@@ -80,6 +80,25 @@ export default function RegistrationForm() {
     }
   }, [watchCategory]);
 
+  const openKeyboardToScrollTop = () => {
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", () => {
+        if (
+          window.visualViewport &&
+          window.innerHeight > window.visualViewport.height
+        )
+          window.scrollTo(0, 0);
+      });
+    }
+  };
+  useEffect(() => {
+    window.visualViewport?.addEventListener("resize", openKeyboardToScrollTop);
+    return window.visualViewport?.removeEventListener(
+      "resize",
+      openKeyboardToScrollTop,
+    );
+  }, []);
+
   return (
     <form
       className="flex flex-col gap-[4.5rem] sm:gap-10"
