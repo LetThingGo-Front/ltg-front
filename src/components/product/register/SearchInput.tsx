@@ -117,16 +117,18 @@ export default function SearchInput({
   };
 
   const setSearchInputHeight = () => {
-    console.log("set window.visualViewport!!");
-    console.log(window.visualViewport);
-    if (window.visualViewport) setViewportHeight(window.visualViewport.height);
+    if (window.visualViewport) {
+      console.log(window.visualViewport.height);
+      document.documentElement.style.height = `${window.visualViewport.height}px`;
+      setViewportHeight(window.visualViewport.height);
+    }
   };
 
   const getSearchInputHeight = useMemo(() => {
     if (isOpenMoblieView) {
-      return `${viewportHeight - 64}px`;
+      return viewportHeight - 64;
     } else {
-      return innerWidth < 640 ? "2rem" : "2.75rem";
+      return innerWidth < 640 ? 32 : 44;
     }
   }, [isOpenMoblieView, viewportHeight]);
 
@@ -169,7 +171,9 @@ export default function SearchInput({
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
         isOpenMoblieView ? "relative" : "rounded-t-[0.625rem]",
       )}
-      style={{ height: getSearchInputHeight }}
+      style={{
+        height: `calc(${getSearchInputHeight}-env(safe-area-inset-top))`,
+      }}
       tabIndex={0}
       onFocus={() => setFocused(true)}
       onBlur={(e) => {
