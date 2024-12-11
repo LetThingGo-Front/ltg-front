@@ -138,6 +138,7 @@ export default memo(function RegisterMap({
   };
 
   const getMarkerIcon = useMemo(() => {
+    alert(`"windowWidth" : ${windowWidth}`);
     return windowWidth < 640
       ? isTodayShare
         ? markerIconList.thunderMarkerSm
