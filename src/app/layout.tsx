@@ -55,7 +55,7 @@ export default function RootLayout({
             <SignIn />
             <SideNav token={refreshToken} />
             <Header token={refreshToken} />
-            <main className="mt-16 h-[calc(100%-4rem)] w-full sm:mt-[5.625rem] sm:h-[calc(100%-5.625rem)]">
+            <main className="mt-16 h-[calc(100%-4rem)] w-full overscroll-contain sm:mt-[5.625rem] sm:h-[calc(100%-5.625rem)]">
               {children}
             </main>
             <InitApp token={accessToken} />
