@@ -113,6 +113,16 @@ export default function SearchInput({
     closeIsOpenMobileView();
   };
 
+  const handleFocusContorl = () => {
+    if (isOpenMoblieView) {
+      window.scrollTo(0, 0);
+      inputRef.current?.blur();
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 50);
+    }
+  };
+
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
       const selectedItem = searchListRef.current.children[
@@ -134,15 +144,9 @@ export default function SearchInput({
   }, [addr]);
 
   useEffect(() => {
-    window.addEventListener("focusin", () => {
-      window.scrollTo(0, 0);
-      inputRef.current?.blur();
-    });
+    window.addEventListener("focusin", handleFocusContorl);
     return () => {
-      window.removeEventListener("focusin", () => {
-        window.scrollTo(0, 0);
-        inputRef.current?.blur();
-      });
+      window.removeEventListener("focusin", handleFocusContorl);
     };
   }, []);
 
