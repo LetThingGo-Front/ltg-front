@@ -117,7 +117,7 @@ export default function SearchInput({
     closeIsOpenMobileView();
   };
 
-  const setSearchInputHeight = () => {
+  const setSearchInputHeight = debounce(() => {
     if (window.visualViewport) {
       if (isOpenMoblieView) {
         document.documentElement.style.height = `${window.visualViewport.height}px`;
@@ -127,7 +127,7 @@ export default function SearchInput({
         setViewportHeight(window.visualViewport.height);
       }
     }
-  };
+  }, 50);
 
   const getSearchInputHeight = useMemo(() => {
     if (isOpenMoblieView) {
