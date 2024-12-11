@@ -13,7 +13,6 @@ html {
   margin: 0;
   overflow: hidden;
   overscroll-behavior: none;
-  touch-action: none;
 }
 
 body {
@@ -29,7 +28,6 @@ body {
   width: 100dvw;
   height: 100dvh;
   padding-top: env(safe-area-inset-top);
-  touch-action: none;
 }
 
 @layer utilities {

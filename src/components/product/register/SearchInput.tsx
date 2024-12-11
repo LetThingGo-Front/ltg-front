@@ -117,15 +117,15 @@ export default function SearchInput({
     closeIsOpenMobileView();
   };
 
-  const setSearchInputHeight = () => {
-    if (window.visualViewport) {
-      // setViewportHeight(window.visualViewport.height);
-      // 키보드가 올라올 때 스크롤 위치 초기화
-      if (window.innerHeight > window.visualViewport.height) {
-        window.scrollTo(0, 0);
-      }
-    }
-  };
+  // const setSearchInputHeight = () => {
+  //   if (window.visualViewport) {
+  //     // setViewportHeight(window.visualViewport.height);
+  //     // 키보드가 올라올 때 스크롤 위치 초기화
+  //     if (window.innerHeight > window.visualViewport.height) {
+  //       window.scrollTo(0, 0);
+  //     }
+  //   }
+  // };
 
   // const getSearchInputHeight = useMemo(() => {
   //   if (isOpenMoblieView) {
@@ -155,16 +155,16 @@ export default function SearchInput({
     }
   }, [addr]);
 
-  useEffect(() => {
-    setSearchInputHeight();
-    window.visualViewport?.addEventListener("resize", setSearchInputHeight);
-    return () => {
-      window.visualViewport?.removeEventListener(
-        "resize",
-        setSearchInputHeight,
-      );
-    };
-  }, []);
+  // useEffect(() => {
+  //   setSearchInputHeight();
+  //   window.visualViewport?.addEventListener("resize", setSearchInputHeight);
+  //   return () => {
+  //     window.visualViewport?.removeEventListener(
+  //       "resize",
+  //       setSearchInputHeight,
+  //     );
+  //   };
+  // }, []);
 
   return (
     <div
