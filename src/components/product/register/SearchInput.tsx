@@ -118,10 +118,12 @@ export default function SearchInput({
     if (window.visualViewport) {
       //키보드가 올라올 때
       if (window.innerHeight > window.visualViewport.height) {
-        document.documentElement.style.height = `calc(${window.visualViewport.height}px - env(safe-area-inset-top) - 300px)`;
+        document.documentElement.style.height = `calc(${window.visualViewport.height}px - env(safe-area-inset-top))`;
+        document.body.style.height = `calc(${window.visualViewport.height}px - env(safe-area-inset-top))`;
       } else {
         //키보드가 내려갈 때
         document.documentElement.style.height = "100%";
+        document.body.style.height = "100dvh";
       }
     }
   };

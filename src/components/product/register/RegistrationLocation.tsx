@@ -290,7 +290,7 @@ export default function RegistrationLocation({
             className={clsx(
               "h-[7.5rem] w-full sm:h-[11.25rem]",
               isFullScreen &&
-                "fixed left-0 top-[env(safe-area-inset-top)] z-20 h-[calc(100vh-env(safe-area-inset-top))]",
+                "fixed left-0 top-[env(safe-area-inset-top)] z-20 h-[calc(100dvh-env(safe-area-inset-top))]",
             )}
           >
             <RegistrationMap
