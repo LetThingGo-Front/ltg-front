@@ -81,23 +81,25 @@ export default function RegistrationForm() {
     }
   }, [watchCategory]);
 
-  const openKeyboardToScrollTop = debounce(() => {
+  const openKeyboardToScrollTop = () => {
     if (
       window.visualViewport &&
       window.innerHeight > window.visualViewport.height
     ) {
       window.scrollTo(0, 0);
     }
-    alert(
-      `window.innerHeight: ${window.innerHeight}, window.visualViewport.height: ${window.visualViewport?.height}`,
-    );
-  }, 1000);
+    // alert(
+    //   `window.innerHeight: ${window.innerHeight}, window.visualViewport.height: ${window.visualViewport?.height}`,
+    // );
+  };
   useEffect(() => {
     window.visualViewport?.addEventListener("resize", openKeyboardToScrollTop);
-    return window.visualViewport?.removeEventListener(
-      "resize",
-      openKeyboardToScrollTop,
-    );
+    return () => {
+      window.visualViewport?.removeEventListener(
+        "resize",
+        openKeyboardToScrollTop,
+      );
+    };
   }, []);
 
   return (
