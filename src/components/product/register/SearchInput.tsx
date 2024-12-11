@@ -194,8 +194,6 @@ export default function SearchInput({
       onKeyDown={handleKeyDown}
       onClick={() => {
         !isOpenMoblieView && setIsOpenMoblieView();
-        containerRef.current?.focus();
-        setIsFocused(true);
       }}
       title={addr}
     >
