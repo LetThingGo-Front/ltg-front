@@ -56,6 +56,7 @@ export default function SearchInput({
   const [isFocused, setIsFocused] = useState(false);
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+  const innerWidth = typeof window !== "undefined" ? window.innerWidth : 0;
 
   const setSearchInput = debounce((value: string) => {
     if (value.length > 1) getSearchToLocation(value);
@@ -113,15 +114,14 @@ export default function SearchInput({
     closeIsOpenMobileView();
   };
 
-  const handleFocusContorl = () => {
+  const handleFocusContorl = debounce(() => {
     if (isOpenMoblieView) {
       window.scrollTo(0, 0);
-      inputRef.current?.blur();
       setTimeout(() => {
         inputRef.current?.focus();
       }, 50);
     }
-  };
+  }, 50);
 
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
@@ -144,9 +144,9 @@ export default function SearchInput({
   }, [addr]);
 
   useEffect(() => {
-    window.addEventListener("focusin", handleFocusContorl);
+    window.visualViewport?.addEventListener("resize", handleFocusContorl);
     return () => {
-      window.removeEventListener("focusin", handleFocusContorl);
+      window.visualViewport?.removeEventListener("resize", handleFocusContorl);
     };
   }, []);
 
@@ -207,7 +207,7 @@ export default function SearchInput({
       <input
         className={clsx(
           "ml-10 w-full truncate bg-transparent pr-9 text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-[0.875rem]",
-          "placeholder:text-center pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white",
+          "placeholder:text-center disabled:opacity-100 disabled:placeholder:opacity-100 pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white",
           !isOpenMoblieView && isFocused && "text-white placeholder:text-white",
           isOpenMoblieView
             ? "h-[2.75rem]"
@@ -216,6 +216,7 @@ export default function SearchInput({
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
         ref={inputRef}
+        disabled={innerWidth < 640 && !isOpenMoblieView}
       />
       {inputRef.current?.value && (
         <button
