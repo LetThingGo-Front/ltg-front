@@ -118,7 +118,6 @@ export default function SearchInput({
 
   const setSearchInputHeight = () => {
     if (window.visualViewport) {
-      console.log(window.visualViewport.height);
       document.documentElement.style.height = `${window.visualViewport.height}px`;
       setViewportHeight(window.visualViewport.height);
     }
@@ -153,6 +152,7 @@ export default function SearchInput({
   }, [addr]);
 
   useEffect(() => {
+    setSearchInputHeight();
     window.visualViewport?.addEventListener("resize", setSearchInputHeight);
     return () => {
       window.visualViewport?.removeEventListener(
@@ -172,7 +172,7 @@ export default function SearchInput({
         isOpenMoblieView ? "relative" : "rounded-t-[0.625rem]",
       )}
       style={{
-        height: `calc(${getSearchInputHeight}px - env(safe-area-inset-top))`,
+        height: `calc(${getSearchInputHeight}px-env(safe-area-inset-top))`,
       }}
       tabIndex={0}
       onFocus={() => setFocused(true)}
