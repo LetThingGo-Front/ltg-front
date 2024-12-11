@@ -114,6 +114,27 @@ export default function SearchInput({
     closeIsOpenMobileView();
   };
 
+  const setSearchInputHeight = () => {
+    if (window.visualViewport) {
+      console.log(`뷰포트 높이 변경!! ${window.visualViewport.height}`);
+      document.body.style.height = `${window.visualViewport.height}px`;
+      // 키보드가 올라올 때 스크롤 위치 초기화
+      // if (window.innerHeight > window.visualViewport.height) {
+      //   window.scrollTo(0, 0);
+      // }
+    }
+  };
+  useEffect(() => {
+    setSearchInputHeight();
+    window.visualViewport?.addEventListener("resize", setSearchInputHeight);
+    return () => {
+      window.visualViewport?.removeEventListener(
+        "resize",
+        setSearchInputHeight,
+      );
+    };
+  }, []);
+
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
       const selectedItem = searchListRef.current.children[
