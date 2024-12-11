@@ -20,6 +20,7 @@ import { CATEGORY_CODE, ITEM_STATUS_CODE } from "@/constants/code";
 import EmptyLocationBox from "./EmptyLocationBox";
 import statusData from "@/mocks/data/code/statusData.json";
 import categoryData from "@/mocks/data/code/categoryData.json";
+import debounce from "debounce";
 
 const sharingLocation = [
   { locationId: "나눔 장소 A", color: "bg-green-400" },
@@ -80,14 +81,14 @@ export default function RegistrationForm() {
     }
   }, [watchCategory]);
 
-  const openKeyboardToScrollTop = () => {
+  const openKeyboardToScrollTop = debounce(() => {
     if (
       window.visualViewport &&
       window.innerHeight > window.visualViewport.height
     ) {
       window.scrollTo(0, 0);
     }
-  };
+  }, 50);
   useEffect(() => {
     window.visualViewport?.addEventListener("resize", openKeyboardToScrollTop);
     return window.visualViewport?.removeEventListener(
