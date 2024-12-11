@@ -202,7 +202,9 @@ export default function SearchInput({
           isOpenMoblieView
             ? "h-[2.75rem]"
             : "max-sm:text-xs max-sm:placeholder:text-xs",
-          innerWidth < 640 && !isOpenMoblieView && "pointer-events-none",
+          innerWidth < 640 && !isOpenMoblieView
+            ? "pointer-events-none"
+            : "pointer-events-auto",
         )}
         disabled={innerWidth < 640 && !isOpenMoblieView}
         placeholder="주소를 검색하세요"
