@@ -119,7 +119,7 @@ export default function SearchInput({
 
   const setSearchInputHeight = () => {
     if (window.visualViewport) {
-      setViewportHeight(window.visualViewport.height);
+      // setViewportHeight(window.visualViewport.height);
       // 키보드가 올라올 때 스크롤 위치 초기화
       if (window.innerHeight > window.visualViewport.height) {
         window.scrollTo(0, 0);
@@ -127,15 +127,14 @@ export default function SearchInput({
     }
   };
 
-  const getSearchInputHeight = useMemo(() => {
-    if (isOpenMoblieView) {
-      return viewportHeight - 64;
-    } else {
-      return innerWidth < 640 ? 32 : 44;
-    }
-  }, [isOpenMoblieView, viewportHeight]);
-  console.log(isOpenMoblieView);
-  console.log(getSearchInputHeight);
+  // const getSearchInputHeight = useMemo(() => {
+  //   if (isOpenMoblieView) {
+  //     return viewportHeight - 64;
+  //   } else {
+  //     return innerWidth < 640 ? 32 : 44;
+  //   }
+  // }, [isOpenMoblieView, viewportHeight]);
+
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
       const selectedItem = searchListRef.current.children[
@@ -171,16 +170,18 @@ export default function SearchInput({
     <div
       ref={containerRef}
       className={clsx(
-        "group/search relative z-20 flex backdrop-blur-[50px] pointerhover:hover:bg-[#474747]",
+        "group/search relative z-20 flex h-11 backdrop-blur-[50px] pointerhover:hover:bg-[#474747]",
         !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
-        isOpenMoblieView ? "relative" : "rounded-t-[0.625rem]",
+        isOpenMoblieView
+          ? "relative h-full"
+          : "rounded-t-[0.625rem] max-sm:h-8",
       )}
-      style={{
-        height: isOpenMoblieView
-          ? `calc(${getSearchInputHeight}px - env(safe-area-inset-top))`
-          : `${getSearchInputHeight}px`,
-      }}
+      // style={{
+      //   height: isOpenMoblieView
+      //     ? `calc(${getSearchInputHeight}px - env(safe-area-inset-top))`
+      //     : `${getSearchInputHeight}px`,
+      // }}
       tabIndex={0}
       onFocus={() => setIsFocused(true)}
       onBlur={(e) => {
