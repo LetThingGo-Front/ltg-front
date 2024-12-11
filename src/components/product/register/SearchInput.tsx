@@ -114,14 +114,15 @@ export default function SearchInput({
     closeIsOpenMobileView();
   };
 
-  const handleFocusContorl = debounce(() => {
-    if (isOpenMoblieView) {
-      window.scrollTo(0, 0);
+  const containerFocus = () => {
+    if (!isOpenMoblieView) {
+      setIsFocused(true);
+      setIsOpenMoblieView();
       setTimeout(() => {
         inputRef.current?.focus();
-      }, 50);
+      }, 100);
     }
-  }, 50);
+  };
 
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
@@ -143,13 +144,6 @@ export default function SearchInput({
     }
   }, [addr]);
 
-  useEffect(() => {
-    window.visualViewport?.addEventListener("resize", handleFocusContorl);
-    return () => {
-      window.visualViewport?.removeEventListener("resize", handleFocusContorl);
-    };
-  }, []);
-
   return (
     <div
       ref={containerRef}
@@ -162,10 +156,7 @@ export default function SearchInput({
           : "rounded-t-[0.625rem] max-sm:h-8",
       )}
       tabIndex={0}
-      onFocus={() => {
-        setIsFocused(true);
-        !isOpenMoblieView && setIsOpenMoblieView();
-      }}
+      onFocus={containerFocus}
       onBlur={(e) => {
         if (
           containerRef.current &&
@@ -212,11 +203,16 @@ export default function SearchInput({
           isOpenMoblieView
             ? "h-[2.75rem]"
             : "max-sm:text-xs max-sm:placeholder:text-xs",
+          innerWidth < 640 && !isOpenMoblieView
+            ? "pointer-events-none"
+            : "pointer-events-auto",
         )}
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
         ref={inputRef}
-        disabled={innerWidth < 640 && !isOpenMoblieView}
+        onFocus={(e) => {
+          e.stopPropagation();
+        }}
       />
       {inputRef.current?.value && (
         <button
