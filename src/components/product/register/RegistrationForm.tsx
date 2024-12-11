@@ -80,6 +80,17 @@ export default function RegistrationForm() {
     }
   }, [watchCategory]);
 
+  useEffect(() => {
+    window.addEventListener("focusin", () => {
+      window.scrollTo(0, 0);
+    });
+    return () => {
+      window.removeEventListener("focusin", () => {
+        window.scrollTo(0, 0);
+      });
+    };
+  }, []);
+
   return (
     <form
       className="flex flex-col gap-[4.5rem] sm:gap-10"

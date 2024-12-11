@@ -56,7 +56,6 @@ export default function SearchInput({
   const [isFocused, setIsFocused] = useState(false);
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
-  const innerWidth = typeof window !== "undefined" ? window.innerWidth : 1920;
 
   const setSearchInput = debounce((value: string) => {
     if (value.length > 1) getSearchToLocation(value);
@@ -114,30 +113,6 @@ export default function SearchInput({
     closeIsOpenMobileView();
   };
 
-  const setSearchInputHeight = () => {
-    if (window.visualViewport) {
-      //키보드가 올라올 때
-      if (window.innerHeight > window.visualViewport.height) {
-        document.documentElement.style.height = `calc(${window.visualViewport.height}px - env(safe-area-inset-top))`;
-        document.body.style.height = `calc(${window.visualViewport.height}px - env(safe-area-inset-top))`;
-      } else {
-        //키보드가 내려갈 때
-        document.documentElement.style.height = "100%";
-        document.body.style.height = "100dvh";
-      }
-    }
-  };
-  useEffect(() => {
-    setSearchInputHeight();
-    window.visualViewport?.addEventListener("resize", setSearchInputHeight);
-    return () => {
-      window.visualViewport?.removeEventListener(
-        "resize",
-        setSearchInputHeight,
-      );
-    };
-  }, []);
-
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
       const selectedItem = searchListRef.current.children[
@@ -173,7 +148,6 @@ export default function SearchInput({
       onFocus={() => {
         setIsFocused(true);
         !isOpenMoblieView && setIsOpenMoblieView();
-        inputRef.current?.focus();
       }}
       onBlur={(e) => {
         if (
@@ -225,7 +199,6 @@ export default function SearchInput({
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
         ref={inputRef}
-        disabled={innerWidth < 640 && !isOpenMoblieView}
       />
       {inputRef.current?.value && (
         <button
