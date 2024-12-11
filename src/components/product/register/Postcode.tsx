@@ -41,9 +41,9 @@ export default function Postcode({
   return (
     <div
       className={clsx(
-        "h-full w-full",
+        "w-full",
         isOpen &&
-          "relative h-[calc(100dvh-env(safe-area-inset-top))] overscroll-contain max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
+          "relative h-[calc(100dvh-env(safe-area-inset-top))] max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
       )}
     >
       {isOpen && (
