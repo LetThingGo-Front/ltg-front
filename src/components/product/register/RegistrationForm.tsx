@@ -88,7 +88,7 @@ export default function RegistrationForm() {
     ) {
       window.scrollTo(0, 0);
     }
-  }, 50);
+  }, 1000);
   useEffect(() => {
     window.visualViewport?.addEventListener("resize", openKeyboardToScrollTop);
     return window.visualViewport?.removeEventListener(
