@@ -115,7 +115,8 @@ export default function SearchInput({
   };
 
   const containerFocus = () => {
-    setIsFocused(true);
+    console.log("containerFocus!!");
+    if (!isFocused) setIsFocused(true);
     if (!isOpenMoblieView) {
       console.log("포커스!");
       setIsOpenMoblieView();
@@ -157,7 +158,7 @@ export default function SearchInput({
           : "rounded-t-[0.625rem] max-sm:h-8",
       )}
       tabIndex={0}
-      // onFocus={containerFocus}
+      onFocus={() => console.log("컨테이너 포커싱")}
       onBlur={(e) => {
         if (
           containerRef.current &&
@@ -205,9 +206,7 @@ export default function SearchInput({
           isOpenMoblieView
             ? "h-[2.75rem]"
             : "max-sm:text-xs max-sm:placeholder:text-xs",
-          innerWidth < 640 && !isOpenMoblieView
-            ? "pointer-events-none"
-            : "pointer-events-auto",
+          innerWidth < 640 && !isOpenMoblieView && "pointer-events-none",
         )}
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
