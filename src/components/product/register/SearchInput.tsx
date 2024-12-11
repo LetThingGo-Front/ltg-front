@@ -82,8 +82,7 @@ export default function SearchInput({
   };
 
   const clearField = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log("clearField");
-    if (isOpenMoblieView) e.stopPropagation();
+    e.stopPropagation();
     if (inputRef.current) {
       inputRef.current.value = "";
     }
@@ -118,7 +117,6 @@ export default function SearchInput({
     if (!isFocused) setIsFocused(true);
     setIsOpenMoblieView();
   };
-
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
       const selectedItem = searchListRef.current.children[
@@ -155,6 +153,7 @@ export default function SearchInput({
       onBlur={(e) => {
         if (
           containerRef.current &&
+          e.relatedTarget &&
           !containerRef.current.contains(e.relatedTarget as Node)
         ) {
           setIsFocused(false);
