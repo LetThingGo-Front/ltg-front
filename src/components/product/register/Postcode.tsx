@@ -43,7 +43,7 @@ export default function Postcode({
       className={clsx(
         "w-full",
         isOpen &&
-          "relative h-[calc(100dvh-env(safe-area-inset-top))] max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
+          "relative h-[calc(100dvh-env(safe-area-inset-top))] overflow-hidden max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
       )}
     >
       {isOpen && (

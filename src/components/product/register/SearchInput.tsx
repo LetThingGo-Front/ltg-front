@@ -116,12 +116,16 @@ export default function SearchInput({
 
   const setSearchInputHeight = () => {
     if (window.visualViewport) {
-      console.log(`뷰포트 높이 변경!! ${window.visualViewport.height}`);
-      document.body.style.height = `${window.visualViewport.height}px`;
-      // 키보드가 올라올 때 스크롤 위치 초기화
-      // if (window.innerHeight > window.visualViewport.height) {
-      //   window.scrollTo(0, 0);
-      // }
+      alert(`window.visualViewport.height :${window.visualViewport.height}
+        window.innerHeight : ${window.innerHeight}`);
+      document.documentElement.style.height = `${window.visualViewport.height}px`;
+      //키보드가 올라올 때
+      if (window.innerHeight > window.visualViewport.height) {
+        document.documentElement.style.height = `calc(${window.visualViewport.height}px - env(safe-area-inset-top))`;
+      } else {
+        //키보드가 내려갈 때
+        document.documentElement.style.height = "100%";
+      }
     }
   };
   useEffect(() => {
@@ -169,7 +173,6 @@ export default function SearchInput({
       tabIndex={0}
       onFocus={() => {
         setIsFocused(true);
-        console.log("container focus!");
         !isOpenMoblieView && setIsOpenMoblieView();
         inputRef.current?.focus();
       }}
