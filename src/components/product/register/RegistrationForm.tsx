@@ -81,27 +81,6 @@ export default function RegistrationForm() {
     }
   }, [watchCategory]);
 
-  const openKeyboardToScrollTop = debounce(() => {
-    if (
-      window.visualViewport &&
-      window.innerHeight > window.visualViewport.height
-    ) {
-      window.scrollTo(0, 0);
-    }
-    // alert(
-    //   `window.innerHeight: ${window.innerHeight}, window.visualViewport.height: ${window.visualViewport?.height}`,
-    // );
-  }, 1000);
-  useEffect(() => {
-    window.visualViewport?.addEventListener("resize", openKeyboardToScrollTop);
-    return () => {
-      window.visualViewport?.removeEventListener(
-        "resize",
-        openKeyboardToScrollTop,
-      );
-    };
-  }, []);
-
   return (
     <form
       className="flex flex-col gap-[4.5rem] sm:gap-10"
