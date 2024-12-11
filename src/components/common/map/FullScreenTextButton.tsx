@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { isIOS, isTablet, isSafari } from "react-device-detect";
+import { isIOS, isMobile, isTablet, isSafari } from "react-device-detect";
 
 type Props = {
   id?: string;
@@ -14,7 +14,7 @@ export default function FullScreenTextButton({
 }: Props) {
   const mapElement = document.getElementById(id); // html element tag id
   const fullScreen = () => {
-    if (isIOS) {
+    if (isIOS && isMobile && !isTablet) {
       setIsFullScreen();
       setZoom(18);
       return;

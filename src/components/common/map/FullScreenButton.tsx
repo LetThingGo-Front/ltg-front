@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { isIOS, isTablet, isSafari } from "react-device-detect";
+import { isIOS, isMobile, isTablet, isSafari } from "react-device-detect";
 import { useMap } from "react-naver-maps";
 
 type Props = {
@@ -17,7 +17,7 @@ export default function FullScreenButton({
 }: Props) {
   const mapElement = document.getElementById(id); // html element tag id
   const fullScreen = () => {
-    if (isIOS) {
+    if (isIOS && isMobile && !isTablet) {
       if (isFullScreen) {
         setZoom(17);
       } else {

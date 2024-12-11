@@ -4,7 +4,7 @@ import React from "react";
 import SearchInput from "./SearchInput";
 import clsx from "clsx";
 import Image from "next/image";
-import { isMobile } from "react-device-detect";
+import { isMobile, isTablet } from "react-device-detect";
 
 type Props = {
   addr: string;
@@ -64,10 +64,10 @@ export default function Postcode({
         addr={addr}
         isOpenMoblieView={isOpen}
         setIsOpenMoblieView={() => {
-          isMobile && openPostcode(true);
+          isMobile && !isTablet && openPostcode(true);
         }}
         closeIsOpenMobileView={() => {
-          isMobile && openPostcode(false);
+          isMobile && !isTablet && openPostcode(false);
         }}
         setAddress={setAddress}
         setSimpleAddr={setSimpleAddr}

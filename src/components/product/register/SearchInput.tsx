@@ -56,6 +56,7 @@ export default function SearchInput({
   const [isFocused, setIsFocused] = useState(false);
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+  const innerWidth = typeof window !== "undefined" ? window.innerWidth : 1920;
 
   const setSearchInput = debounce((value: string) => {
     if (value.length > 1) getSearchToLocation(value);
@@ -108,18 +109,9 @@ export default function SearchInput({
     setAddress(addressNm);
     setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
     setSelectedIndex(-1);
-    containerRef.current?.blur();
+    inputRef.current?.blur();
     setIsFocused(false);
     closeIsOpenMobileView();
-  };
-
-  const setSearchInputHeight = () => {
-    if (window.visualViewport) {
-      // 키보드가 올라올 때 스크롤 위치 초기화
-      if (window.innerHeight > window.visualViewport.height) {
-        window.scrollTo(0, 0);
-      }
-    }
   };
 
   useEffect(() => {
@@ -142,17 +134,6 @@ export default function SearchInput({
     }
   }, [addr]);
 
-  useEffect(() => {
-    setSearchInputHeight();
-    window.visualViewport?.addEventListener("resize", setSearchInputHeight);
-    return () => {
-      window.visualViewport?.removeEventListener(
-        "resize",
-        setSearchInputHeight,
-      );
-    };
-  }, []);
-
   return (
     <div
       ref={containerRef}
@@ -165,7 +146,12 @@ export default function SearchInput({
           : "rounded-t-[0.625rem] max-sm:h-8",
       )}
       tabIndex={0}
-      onFocus={() => setIsFocused(true)}
+      onFocus={() => {
+        setIsFocused(true);
+        console.log("container focus!");
+        !isOpenMoblieView && setIsOpenMoblieView();
+        inputRef.current?.focus();
+      }}
       onBlur={(e) => {
         if (
           containerRef.current &&
@@ -175,9 +161,6 @@ export default function SearchInput({
         }
       }}
       onKeyDown={handleKeyDown}
-      onClick={() => {
-        !isOpenMoblieView && setIsOpenMoblieView();
-      }}
       title={addr}
     >
       <div
@@ -219,6 +202,7 @@ export default function SearchInput({
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
         ref={inputRef}
+        disabled={innerWidth < 640 && !isOpenMoblieView}
       />
       {inputRef.current?.value && (
         <button
