@@ -58,6 +58,7 @@ export default function SearchInput({
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [viewportHeight, setViewportHeight] = useState<number>(1080);
 
+  const innerHeight = typeof window !== "undefined" ? window.innerHeight : 1080;
   const innerWidth = typeof window !== "undefined" ? window.innerWidth : 1920;
 
   const setSearchInput = debounce((value: string) => {
@@ -118,8 +119,13 @@ export default function SearchInput({
 
   const setSearchInputHeight = () => {
     if (window.visualViewport) {
-      document.documentElement.style.height = `${window.visualViewport.height}px`;
-      setViewportHeight(window.visualViewport.height);
+      if (isOpenMoblieView) {
+        document.documentElement.style.height = `${window.visualViewport.height}px`;
+        setViewportHeight(window.visualViewport.height);
+      } else {
+        document.documentElement.style.height = `100dvh`;
+        setViewportHeight(window.visualViewport.height);
+      }
     }
   };
 
@@ -172,7 +178,9 @@ export default function SearchInput({
         isOpenMoblieView ? "relative" : "rounded-t-[0.625rem]",
       )}
       style={{
-        height: `${getSearchInputHeight}px`,
+        height: isOpenMoblieView
+          ? `calc(${getSearchInputHeight}px-env(safe-area-inset-top))`
+          : `${getSearchInputHeight}px`,
       }}
       tabIndex={0}
       onFocus={() => setFocused(true)}
