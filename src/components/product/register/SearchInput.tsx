@@ -172,7 +172,7 @@ export default function SearchInput({
         isOpenMoblieView ? "relative" : "rounded-t-[0.625rem]",
       )}
       style={{
-        height: `calc(${getSearchInputHeight}-env(safe-area-inset-top))`,
+        height: `calc(${getSearchInputHeight}px - env(safe-area-inset-top))`,
       }}
       tabIndex={0}
       onFocus={() => setFocused(true)}
