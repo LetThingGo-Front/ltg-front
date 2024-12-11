@@ -258,7 +258,7 @@ export default function SearchInput({
       )}
       <div
         className={clsx(
-          "absolute left-0 top-[2.75rem] max-h-[13.75rem] w-full overflow-hidden",
+          "absolute left-0 top-[2.75rem] max-h-[13.75rem] w-full",
           isOpenMoblieView
             ? "bg-transparent"
             : "rounded-b-[0.625rem] bg-[#474747] text-white",
