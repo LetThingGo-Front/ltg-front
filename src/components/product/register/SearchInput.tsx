@@ -133,6 +133,19 @@ export default function SearchInput({
     }
   }, [addr]);
 
+  useEffect(() => {
+    window.addEventListener("focusin", () => {
+      window.scrollTo(0, 0);
+      inputRef.current?.blur();
+    });
+    return () => {
+      window.removeEventListener("focusin", () => {
+        window.scrollTo(0, 0);
+        inputRef.current?.blur();
+      });
+    };
+  }, []);
+
   return (
     <div
       ref={containerRef}
