@@ -115,8 +115,8 @@ export default function SearchInput({
   };
 
   const containerFocus = () => {
+    setIsFocused(true);
     if (!isOpenMoblieView) {
-      setIsFocused(true);
       setIsOpenMoblieView();
       setTimeout(() => {
         inputRef.current?.focus();
