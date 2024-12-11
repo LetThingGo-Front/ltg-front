@@ -120,6 +120,10 @@ export default function SearchInput({
   const setSearchInputHeight = () => {
     if (window.visualViewport) {
       setViewportHeight(window.visualViewport.height);
+      // 키보드가 올라올 때 스크롤 위치 초기화
+      if (window.innerHeight > window.visualViewport.height) {
+        window.scrollTo(0, 0);
+      }
     }
   };
 
