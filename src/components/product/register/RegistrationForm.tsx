@@ -18,6 +18,8 @@ import axios, { axiosAuth } from "@/lib/axios";
 import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
 import { CATEGORY_CODE, ITEM_STATUS_CODE } from "@/constants/code";
 import EmptyLocationBox from "./EmptyLocationBox";
+import statusData from "@/mocks/data/code/statusData.json";
+import categoryData from "@/mocks/data/code/categoryData.json";
 
 const sharingLocation = [
   { locationId: "나눔 장소 A", color: "bg-green-400" },
@@ -47,19 +49,28 @@ export default function RegistrationForm() {
   const [isOpenLocationForm, setIsOpenLocationForm] = useState(false);
   const watchCategory = watch("itemCreateRequest.categoryCode");
 
-  const category = useQuery({
-    queryKey: ["category", CATEGORY_CODE],
-    queryFn: ({ queryKey }) => fetchCategoryList(queryKey[1]),
-    staleTime: MIDDLE_TIME,
-    gcTime: LONG_TIME,
-  });
+  // const category = useQuery({
+  //   queryKey: ["category", CATEGORY_CODE],
+  //   queryFn: ({ queryKey }) => fetchCategoryList(queryKey[1]),
+  //   staleTime: MIDDLE_TIME,
+  //   gcTime: LONG_TIME,
+  // });
 
-  const itemStatus = useQuery({
-    queryKey: ["itemStatus", ITEM_STATUS_CODE, isItemStatusType],
-    queryFn: ({ queryKey }) => fetchItemStatusList(queryKey[1], queryKey[2]),
-    staleTime: MIDDLE_TIME,
-    gcTime: LONG_TIME,
-  });
+  // const itemStatus = useQuery({
+  //   queryKey: ["itemStatus", ITEM_STATUS_CODE, isItemStatusType],
+  //   queryFn: ({ queryKey }) => fetchItemStatusList(queryKey[1], queryKey[2]),
+  //   staleTime: MIDDLE_TIME,
+  //   gcTime: LONG_TIME,
+  // });
+
+  const category = { data: categoryData[CATEGORY_CODE] };
+  const itemStatus = { data: statusData[ITEM_STATUS_CODE] };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
 
   useEffect(() => {
     if (watchCategory) {
@@ -73,6 +84,7 @@ export default function RegistrationForm() {
     <form
       className="flex flex-col gap-[4.5rem] sm:gap-10"
       onSubmit={handleSubmit(registerItem)}
+      onKeyDown={handleKeyDown}
     >
       {/* 물품명 */}
       <Controller

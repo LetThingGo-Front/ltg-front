@@ -20,6 +20,7 @@ import { Codes } from "@/types/common";
 import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
 import { DAYS_CODE } from "@/constants/code";
 import SelctDaysAndTimes from "./SelctDaysAndTimes";
+import daysData from "@/mocks/data/code/daysData.json";
 
 type Props = {
   idx: number;
@@ -69,12 +70,14 @@ export default function RegistrationLocation({
   const [simpleAddr, setSimpleAddr] = useState(""); // 간단한 주소
   const [modifyLocation, setModifyLocation] = useState(false);
 
-  const days = useQuery({
-    queryKey: ["days", DAYS_CODE],
-    queryFn: ({ queryKey }) => fetchDaysList(queryKey[1]),
-    staleTime: MIDDLE_TIME,
-    gcTime: LONG_TIME,
-  });
+  // const days = useQuery({
+  //   queryKey: ["days", DAYS_CODE],
+  //   queryFn: ({ queryKey }) => fetchDaysList(queryKey[1]),
+  //   staleTime: MIDDLE_TIME,
+  //   gcTime: LONG_TIME,
+  // });
+
+  const days = { data: daysData[DAYS_CODE] };
 
   const toggleSelectDay = () => {
     if (isDayShare) {
@@ -104,7 +107,8 @@ export default function RegistrationLocation({
 
     const itemAvailabilities = filteredDay.map((day) => {
       return {
-        dayOfWeek: days.data?.find((d: Codes) => d.codeKorName === day)?.code,
+        dayOfWeek:
+          days.data.find((d: Codes) => d.codeKorName === day)?.code ?? "0",
         startTime: min < 10 ? `0${min}00` : `${min}00`,
         endTime: max < 10 ? `0${max}59` : `${max}59`,
       };
@@ -286,7 +290,7 @@ export default function RegistrationLocation({
             className={clsx(
               "h-[7.5rem] w-full sm:h-[11.25rem]",
               isFullScreen &&
-                "fixed left-0 top-[env(safe-area-inset-top)] z-20 h-[calc(100dvh-env(safe-area-inset-top))]",
+                "fixed left-0 top-[env(safe-area-inset-top)] z-20 h-[calc(100vh-env(safe-area-inset-top))]",
             )}
           >
             <RegistrationMap

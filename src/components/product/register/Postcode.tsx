@@ -38,9 +38,6 @@ export default function Postcode({
   openPostcode,
   setSimpleAddr,
 }: Props) {
-  const closeOpenPostcode = () => {
-    openPostcode(false);
-  };
   return (
     <div
       className={clsx(

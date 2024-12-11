@@ -96,7 +96,6 @@ export default function SearchInput({
     } else if (e.key === "ArrowUp") {
       setSelectedIndex((prev) => Math.max(0, prev - 1));
     } else if (e.key === "Enter" && selectedIndex !== -1) {
-      e.preventDefault();
       // 엔터 키로 선택
       handleSetAddress(searchList[selectedIndex]);
     }
@@ -142,7 +141,7 @@ export default function SearchInput({
         !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
         isOpenMoblieView
-          ? "relative h-full"
+          ? "relative h-[calc(100%-env(safe-area-inset-top)-4rem)]"
           : "rounded-t-[0.625rem] max-sm:h-8",
       )}
       tabIndex={0}
@@ -221,9 +220,9 @@ export default function SearchInput({
       )}
       <div
         className={clsx(
-          "absolute left-0 top-[2.75rem] w-full overflow-y-auto sm:max-h-[13.75rem]",
+          "absolute left-0 top-[2.75rem] max-h-[13.75rem] w-full overflow-y-auto",
           isOpenMoblieView
-            ? "max-h-[37.5rem] bg-transparent"
+            ? "bg-transparent"
             : "rounded-b-[0.625rem] bg-[#474747] text-white",
         )}
         ref={searchListRef}

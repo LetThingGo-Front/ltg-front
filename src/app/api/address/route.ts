@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.url.slice(req.url.indexOf("?"));
-  const url = `https://business.juso.go.kr/addrlink/addrLinkApi.do${searchParams}&currentPage=1&countPerPage=10&confmKey=${process.env.CONFIRM_KEY!}`;
+  const url = `https://business.juso.go.kr/addrlink/addrLinkApi.do${searchParams}&currentPage=1&countPerPage=5&confmKey=${process.env.CONFIRM_KEY!}`;
   const bodyData = new URLSearchParams({
     resultType: "json",
   });

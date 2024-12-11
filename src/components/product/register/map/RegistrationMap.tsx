@@ -217,7 +217,7 @@ export default memo(function RegisterMap({
     <MapDiv
       style={{
         height: "100%",
-        borderRadius: "0.625rem",
+        borderRadius: isFullScreen ? "0" : "0.625rem",
         overflow: "hidden",
         position: "relative",
         border: "0.5px solid #E8E8E8",
