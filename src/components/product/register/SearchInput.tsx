@@ -238,6 +238,7 @@ export default function SearchInput({
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
         ref={inputRef}
+        disabled={innerWidth < 640 && !isOpenMoblieView}
       />
       {inputRef.current?.value && (
         <button
