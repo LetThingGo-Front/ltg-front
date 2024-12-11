@@ -118,7 +118,7 @@ export default function SearchInput({
     if (window.visualViewport) {
       //키보드가 올라올 때
       if (window.innerHeight > window.visualViewport.height) {
-        document.documentElement.style.height = `calc(${window.visualViewport.height}px - env(safe-area-inset-top))`;
+        document.documentElement.style.height = `calc(${window.visualViewport.height}px - env(safe-area-inset-top) - 300px)`;
       } else {
         //키보드가 내려갈 때
         document.documentElement.style.height = "100%";
