@@ -136,7 +136,8 @@ export default function SearchInput({
       return innerWidth < 640 ? 32 : 44;
     }
   }, [isOpenMoblieView, viewportHeight]);
-
+  console.log(isOpenMoblieView);
+  console.log(getSearchInputHeight);
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
       const selectedItem = searchListRef.current.children[
@@ -179,7 +180,7 @@ export default function SearchInput({
       )}
       style={{
         height: isOpenMoblieView
-          ? `calc(${getSearchInputHeight}px-env(safe-area-inset-top))`
+          ? `calc(${getSearchInputHeight}px - env(safe-area-inset-top))`
           : `${getSearchInputHeight}px`,
       }}
       tabIndex={0}
