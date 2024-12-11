@@ -53,7 +53,7 @@ export default function SearchInput({
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchListRef = useRef<HTMLDivElement>(null);
-  const [isFocused, setFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [viewportHeight, setViewportHeight] = useState<number>(1080);
@@ -113,21 +113,15 @@ export default function SearchInput({
     setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
     setSelectedIndex(-1);
     containerRef.current?.blur();
-    setFocused(false);
+    setIsFocused(false);
     closeIsOpenMobileView();
   };
 
-  const setSearchInputHeight = debounce(() => {
+  const setSearchInputHeight = () => {
     if (window.visualViewport) {
-      if (isOpenMoblieView) {
-        document.documentElement.style.height = `${window.visualViewport.height}px`;
-        setViewportHeight(window.visualViewport.height);
-      } else {
-        document.documentElement.style.height = `100dvh`;
-        setViewportHeight(window.visualViewport.height);
-      }
+      setViewportHeight(window.visualViewport.height);
     }
-  }, 50);
+  };
 
   const getSearchInputHeight = useMemo(() => {
     if (isOpenMoblieView) {
@@ -184,18 +178,20 @@ export default function SearchInput({
           : `${getSearchInputHeight}px`,
       }}
       tabIndex={0}
-      onFocus={() => setFocused(true)}
+      onFocus={() => setIsFocused(true)}
       onBlur={(e) => {
         if (
           containerRef.current &&
           !containerRef.current.contains(e.relatedTarget as Node)
         ) {
-          setFocused(false);
+          setIsFocused(false);
         }
       }}
       onKeyDown={handleKeyDown}
       onClick={() => {
         !isOpenMoblieView && setIsOpenMoblieView();
+        containerRef.current?.focus();
+        setIsFocused(true);
       }}
       title={addr}
     >
@@ -238,7 +234,6 @@ export default function SearchInput({
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
         ref={inputRef}
-        disabled={innerWidth < 640 && !isOpenMoblieView}
       />
       {inputRef.current?.value && (
         <button
@@ -260,7 +255,7 @@ export default function SearchInput({
       )}
       <div
         className={clsx(
-          "absolute left-0 top-[2.75rem] max-h-[13.75rem] w-full overflow-y-auto",
+          "absolute left-0 top-[2.75rem] max-h-[13.75rem] w-full overflow-hidden",
           isOpenMoblieView
             ? "bg-transparent"
             : "rounded-b-[0.625rem] bg-[#474747] text-white",
