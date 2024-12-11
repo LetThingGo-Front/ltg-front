@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import debounce from "debounce";
 import axios from "axios";
@@ -56,6 +56,9 @@ export default function SearchInput({
   const [isFocused, setFocused] = useState(false);
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+  const [viewportHeight, setViewportHeight] = useState<number>(1080);
+
+  const innerWidth = typeof window !== "undefined" ? window.innerWidth : 1920;
 
   const setSearchInput = debounce((value: string) => {
     if (value.length > 1) getSearchToLocation(value);
@@ -113,6 +116,20 @@ export default function SearchInput({
     closeIsOpenMobileView();
   };
 
+  const setSearchInputHeight = () => {
+    console.log("set window.visualViewport!!");
+    console.log(window.visualViewport);
+    if (window.visualViewport) setViewportHeight(window.visualViewport.height);
+  };
+
+  const getSearchInputHeight = useMemo(() => {
+    if (isOpenMoblieView) {
+      return `${viewportHeight - 64}px`;
+    } else {
+      return innerWidth < 640 ? "2rem" : "2.75rem";
+    }
+  }, [isOpenMoblieView, viewportHeight]);
+
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
       const selectedItem = searchListRef.current.children[
@@ -133,17 +150,26 @@ export default function SearchInput({
     }
   }, [addr]);
 
+  useEffect(() => {
+    window.visualViewport?.addEventListener("resize", setSearchInputHeight);
+    return () => {
+      window.visualViewport?.removeEventListener(
+        "resize",
+        setSearchInputHeight,
+      );
+    };
+  }, []);
+
   return (
     <div
       ref={containerRef}
       className={clsx(
-        "group/search relative z-20 flex h-11 backdrop-blur-[50px] pointerhover:hover:bg-[#474747]",
+        "group/search relative z-20 flex backdrop-blur-[50px] pointerhover:hover:bg-[#474747]",
         !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
-        isOpenMoblieView
-          ? "relative h-[calc(100%-env(safe-area-inset-top)-4rem)]"
-          : "rounded-t-[0.625rem] max-sm:h-8",
+        isOpenMoblieView ? "relative" : "rounded-t-[0.625rem]",
       )}
+      style={{ height: getSearchInputHeight }}
       tabIndex={0}
       onFocus={() => setFocused(true)}
       onBlur={(e) => {

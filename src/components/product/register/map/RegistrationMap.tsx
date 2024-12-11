@@ -10,6 +10,7 @@ import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Container as MapDiv, Marker, useNavermaps } from "react-naver-maps";
 import debounce from "debounce";
 import Maps from "./Maps";
+import { isMobile } from "react-device-detect";
 
 type Latlng = {
   y: number;
@@ -73,8 +74,6 @@ export default memo(function RegisterMap({
   isFullScreen,
 }: Props) {
   const [isEnabled, setIsEnabled] = useState(false);
-  const [windowWidth, setWindowWidth] = useState<number>(1920);
-  const [viewportHeight, setViewportHeight] = useState<number>(1080);
   const [zoom, setZoom] = useState<number>(17);
   const navermaps = useNavermaps();
   const searchAddressToCoordinate = (address: string) => {
@@ -139,53 +138,14 @@ export default memo(function RegisterMap({
   };
 
   const getMarkerIcon = useMemo(() => {
-    return windowWidth < 640
+    return isMobile
       ? isTodayShare
         ? markerIconList.thunderMarkerSm
         : markerIconList.markerSm
       : isTodayShare
         ? markerIconList.thunderMarker
         : markerIconList.marker;
-  }, [windowWidth, isTodayShare]);
-
-  const getWindowSize = debounce(() => {
-    setWindowWidth(window.innerWidth);
-  }, 100);
-
-  useEffect(() => {
-    window.visualViewport?.addEventListener("resize", () => {
-      console.log("뷰포트 높이:", window.visualViewport?.height);
-      console.log("뷰포트 너비:", window.visualViewport?.width);
-      console.log("창 높이:", window.innerHeight);
-      console.log("창 너비:", window.innerWidth);
-      alert(
-        `뷰포트 높이: ${window.visualViewport?.height}
-        뷰포트 너비: ${window.visualViewport?.width}
-        창 높이: ${window.innerHeight}
-        창 너비: ${window.innerWidth}`,
-      );
-      setViewportHeight(window.visualViewport?.height ?? 0);
-
-      if (
-        window.visualViewport &&
-        window.visualViewport.height < window.innerHeight
-      ) {
-        console.log("키보드가 열렸습니다.");
-      } else {
-        console.log("키보드가 닫혔습니다.");
-      }
-    });
-    return () => {
-      window.visualViewport?.removeEventListener("resize", getWindowSize);
-    };
-  }, [viewportHeight]);
-
-  useEffect(() => {
-    window.addEventListener("resize", getWindowSize);
-    return () => {
-      window.removeEventListener("resize", getWindowSize);
-    };
-  }, [getWindowSize]);
+  }, [isMobile, isTodayShare]);
 
   useEffect(() => {
     if (address) {
