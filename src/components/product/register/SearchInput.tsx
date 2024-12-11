@@ -116,9 +116,6 @@ export default function SearchInput({
 
   const setSearchInputHeight = () => {
     if (window.visualViewport) {
-      alert(`window.visualViewport.height :${window.visualViewport.height}
-        window.innerHeight : ${window.innerHeight}`);
-      document.documentElement.style.height = `${window.visualViewport.height}px`;
       //키보드가 올라올 때
       if (window.innerHeight > window.visualViewport.height) {
         document.documentElement.style.height = `calc(${window.visualViewport.height}px - env(safe-area-inset-top))`;
