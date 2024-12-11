@@ -81,14 +81,11 @@ export default function RegistrationForm() {
   }, [watchCategory]);
 
   const openKeyboardToScrollTop = () => {
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", () => {
-        if (
-          window.visualViewport &&
-          window.innerHeight > window.visualViewport.height
-        )
-          window.scrollTo(0, 0);
-      });
+    if (
+      window.visualViewport &&
+      window.innerHeight > window.visualViewport.height
+    ) {
+      window.scrollTo(0, 0);
     }
   };
   useEffect(() => {
