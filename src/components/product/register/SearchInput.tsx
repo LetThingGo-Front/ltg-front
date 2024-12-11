@@ -210,9 +210,6 @@ export default function SearchInput({
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
         ref={inputRef}
-        onFocus={(e) => {
-          e.stopPropagation();
-        }}
       />
       {inputRef.current?.value && (
         <button
