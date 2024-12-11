@@ -117,6 +117,7 @@ export default function SearchInput({
   const containerFocus = () => {
     setIsFocused(true);
     if (!isOpenMoblieView) {
+      console.log("포커스!");
       setIsOpenMoblieView();
       setTimeout(() => {
         inputRef.current?.focus();
@@ -156,7 +157,7 @@ export default function SearchInput({
           : "rounded-t-[0.625rem] max-sm:h-8",
       )}
       tabIndex={0}
-      onFocus={containerFocus}
+      // onFocus={containerFocus}
       onBlur={(e) => {
         if (
           containerRef.current &&
@@ -166,6 +167,7 @@ export default function SearchInput({
         }
       }}
       onKeyDown={handleKeyDown}
+      onClick={containerFocus}
       title={addr}
     >
       <div
