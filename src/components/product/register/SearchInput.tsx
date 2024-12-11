@@ -194,7 +194,7 @@ export default function SearchInput({
       <input
         className={clsx(
           "ml-10 w-full truncate bg-transparent pr-9 text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-[0.875rem]",
-          "pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white placeholder:text-center",
+          "pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white placeholder:text-center disabled:opacity-100 placeholder:disabled:opacity-100",
           !isOpenMoblieView && isFocused && "text-white placeholder:text-white",
           isOpenMoblieView
             ? "h-[2.75rem]"
