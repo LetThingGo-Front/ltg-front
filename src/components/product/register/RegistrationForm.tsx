@@ -88,6 +88,9 @@ export default function RegistrationForm() {
     ) {
       window.scrollTo(0, 0);
     }
+    alert(
+      `window.innerHeight: ${window.innerHeight}, window.visualViewport.height: ${window.visualViewport?.height}`,
+    );
   }, 1000);
   useEffect(() => {
     window.visualViewport?.addEventListener("resize", openKeyboardToScrollTop);
