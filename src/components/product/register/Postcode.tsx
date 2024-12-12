@@ -25,6 +25,7 @@ export default function Postcode({
   const [isFocused, setIsFocused] = useState(false);
 
   const controlWindowHeight = () => {
+    alert(`isFocused: ${isFocused}`);
     if (isMobile && !isTablet && isFocused) window.scrollTo(0, 0);
   };
 
