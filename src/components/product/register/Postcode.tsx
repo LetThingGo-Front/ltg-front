@@ -25,8 +25,10 @@ export default function Postcode({
   const [isFocused, setIsFocused] = useState(false);
 
   const controlWindowHeight = debounce(() => {
-    alert(`isOpen: ${isOpen} window.scrollY: ${window.scrollY}`);
-    if (isOpen) window.scrollTo(0, 0);
+    // if (isOpen) window.scrollTo(0, 0);
+    if (window.visualViewport) {
+      document.documentElement.style.height = `${window.visualViewport.height}px`;
+    }
   }, 1000);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function Postcode({
       className={clsx(
         "w-full",
         isOpen &&
-          "relative h-[calc(100dvh-env(safe-area-inset-top))] overflow-hidden max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
+          "relative h-[calc(100%-env(safe-area-inset-top))] overflow-hidden max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
       )}
     >
       {isOpen && (
