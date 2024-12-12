@@ -148,7 +148,8 @@ export default function SearchInput({
 
   useEffect(() => {
     if (isOpenMoblieView) {
-      document.documentElement.scrollTop = 0;
+      // alert("scroll to top!!");
+      (document.documentElement || document.body).scrollTop = 0;
     }
   }, [isOpenMoblieView]);
 
