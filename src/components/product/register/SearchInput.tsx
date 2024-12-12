@@ -5,7 +5,7 @@ import debounce from "debounce";
 import axios from "axios";
 import utils from "@/utils/cmmnUtil";
 import AddressButton from "./button/AddressButton";
-import { set } from "react-hook-form";
+import { isMobile, isTablet } from "react-device-detect";
 
 type Props = {
   addr: string;
@@ -117,20 +117,14 @@ export default function SearchInput({
       inputRef.current.blur();
     }
     setIsFocused(false);
+    setSearchList([]);
     closeIsOpenMobileView();
   };
 
   const searchInputFocus = () => {
-    console.log("searchInputFocus!!!");
     if (!isFocused) setIsFocused(true);
     if (!isOpenMoblieView) setIsOpenMoblieView();
   };
-
-  // useEffect(() => {
-  //   if (!isOpenMoblieView) {
-  //     setIsFocused(false);
-  //   }
-  // }, [isOpenMoblieView]);
 
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
@@ -154,7 +148,7 @@ export default function SearchInput({
 
   useEffect(() => {
     if (isOpenMoblieView) {
-      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
     }
   }, [isOpenMoblieView]);
 
@@ -212,6 +206,9 @@ export default function SearchInput({
         onChange={handleSearchInput}
         ref={inputRef}
         onFocus={searchInputFocus}
+        onBlur={() => {
+          (!isMobile || isTablet) && setIsFocused(false);
+        }}
       />
       {inputRef.current?.value && (
         <button
@@ -240,16 +237,15 @@ export default function SearchInput({
         )}
         ref={searchListRef}
       >
-        {isFocused &&
-          searchList.map((addr, idx) => (
-            <AddressButton
-              key={idx}
-              address={addr}
-              isSelected={selectedIndex === idx}
-              isOpenMoblieView={isOpenMoblieView}
-              handleSetAddress={handleSetAddress}
-            />
-          ))}
+        {searchList.map((addr, idx) => (
+          <AddressButton
+            key={idx}
+            address={addr}
+            isSelected={selectedIndex === idx}
+            isOpenMoblieView={isOpenMoblieView}
+            handleSetAddress={handleSetAddress}
+          />
+        ))}
       </div>
     </div>
   );
