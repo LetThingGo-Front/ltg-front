@@ -25,11 +25,8 @@ export default function Postcode({
   const [isFocused, setIsFocused] = useState(false);
 
   const controlWindowHeight = debounce(() => {
-    // if (isOpen) window.scrollTo(0, 0);
-    if (window.visualViewport) {
-      document.documentElement.style.height = `${window.visualViewport.height}px`;
-    }
-  }, 1000);
+    if (isMobile && !isTablet) window.scrollTo(0, 0);
+  }, 100);
 
   useEffect(() => {
     window.visualViewport?.addEventListener("resize", controlWindowHeight);
