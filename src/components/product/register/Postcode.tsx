@@ -30,9 +30,9 @@ export default function Postcode({
   }, 1000);
 
   useEffect(() => {
-    window.addEventListener("resize", controlWindowHeight);
+    window.visualViewport?.addEventListener("resize", controlWindowHeight);
     return () => {
-      window.removeEventListener("resize", controlWindowHeight);
+      window.visualViewport?.removeEventListener("resize", controlWindowHeight);
     };
   }, []);
 
