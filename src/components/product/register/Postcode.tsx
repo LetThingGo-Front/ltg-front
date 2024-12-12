@@ -46,10 +46,8 @@ export default function Postcode({
     if (window.visualViewport) {
       // 키보드 오픈
       if (window.innerHeight > window.visualViewport.height) {
-        document.documentElement.scrollIntoView({
-          behavior: "instant",
-          block: "start",
-        });
+        alert(`window.scrollY: ${window.scrollY}`);
+        window.scrollTo(0, 0);
       }
     }
   }, 1000);
