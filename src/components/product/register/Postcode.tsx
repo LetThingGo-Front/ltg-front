@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchInput from "./SearchInput";
 import clsx from "clsx";
 import Image from "next/image";
@@ -39,13 +39,38 @@ export default function Postcode({
   setSimpleAddr,
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
+  const [inputHeight, setInputHeight] = useState(0);
+
+  const controlWindowHeight = () => {
+    if (window.visualViewport) {
+      // 키보드 오픈
+      if (window.innerHeight > window.visualViewport.height) {
+        document.body.style.height = `${window.visualViewport.height}px`;
+        setInputHeight(window.visualViewport.height);
+        window.scrollTo(0, 0);
+      } else {
+        document.body.style.height = "100dvh";
+        setInputHeight(window.innerHeight);
+      }
+    }
+  };
+  useEffect(() => {
+    window.visualViewport?.addEventListener("resize", controlWindowHeight);
+
+    return () => {
+      window.visualViewport?.removeEventListener("resize", controlWindowHeight);
+    };
+  }, []);
   return (
     <div
       className={clsx(
         "w-full",
         isOpen &&
-          "relative h-[calc(100dvh-env(safe-area-inset-top))] overflow-hidden max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
+          "relative overflow-hidden max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
       )}
+      style={{
+        height: isOpen && inputHeight > 0 ? `${inputHeight}px` : "100%",
+      }}
     >
       {isOpen && (
         <div className="flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">

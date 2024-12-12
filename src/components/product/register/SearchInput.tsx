@@ -1,5 +1,11 @@
 import clsx from "clsx";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import Image from "next/image";
 import debounce from "debounce";
 import axios from "axios";
@@ -61,14 +67,15 @@ export default function SearchInput({
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
-  const setSearchInput = debounce((value: string) => {
+  const setAddressInput = debounce((value: string) => {
+    if (value !== inputRef.current?.value) return;
     if (value.length > 1) getSearchToLocation(value);
   }, 300);
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value ? setSearchInput(e.target.value) : setSearchList([]);
+    e.target.value ? setAddressInput(e.target.value) : setSearchList([]);
   };
 
-  const getSearchToLocation = async (search: string) => {
+  const getSearchToLocation = useCallback(async (search: string) => {
     if (!inputRef.current?.value) return;
 
     // 검색어로 위치 검색
@@ -82,15 +89,16 @@ export default function SearchInput({
     } catch (error) {
       console.error(`[ERROR] getSearchToLocation: ${error}`);
     }
-  };
+  }, []);
 
   const clearField = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
     setSearchList([]);
     setSelectedIndex(-1);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+      inputRef.current.focus();
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -105,17 +113,14 @@ export default function SearchInput({
   };
 
   const handleSetAddress = (address: JusoProps) => {
-    console.log("handleSetAddress!!!");
+    console.log("handleSetAddress!!");
     const addressNm = address.bdNm
       ? `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(address.bdNm)})`
       : `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
     setAddress(addressNm);
     setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
+    if (inputRef.current) inputRef.current.value = addressNm;
     setSelectedIndex(-1);
-    if (inputRef.current) {
-      inputRef.current.value = addressNm;
-      inputRef.current.blur();
-    }
     setIsFocused(false);
     setSearchList([]);
     closeIsOpenMobileView();
@@ -145,26 +150,6 @@ export default function SearchInput({
       inputRef.current.value = addr;
     }
   }, [addr]);
-
-  const controlWindowHeight = () => {
-    if (window.visualViewport) {
-      // 키보드 오픈
-      if (window.innerHeight > window.visualViewport.height) {
-        document.body.style.height = `${window.visualViewport.height}px`;
-        window.scrollTo(0, 0);
-      } else {
-        document.body.style.height = "100dvh";
-      }
-    }
-  };
-
-  useEffect(() => {
-    window.visualViewport?.addEventListener("resize", controlWindowHeight);
-
-    return () => {
-      window.visualViewport?.removeEventListener("resize", controlWindowHeight);
-    };
-  }, []);
 
   return (
     <div
@@ -220,8 +205,14 @@ export default function SearchInput({
         onChange={handleSearchInput}
         ref={inputRef}
         onFocus={searchInputFocus}
-        onBlur={() => {
-          (!isMobile || isTablet) && setIsFocused(false);
+        onBlur={(e) => {
+          if (
+            !isMobile &&
+            containerRef.current &&
+            !containerRef.current.contains(e.relatedTarget as Node)
+          ) {
+            setIsFocused(false);
+          }
         }}
       />
       {inputRef.current?.value && (
@@ -244,22 +235,23 @@ export default function SearchInput({
       )}
       <div
         className={clsx(
-          "absolute left-0 top-[2.75rem] max-h-[13.75rem] w-full",
+          "absolute left-0 max-h-[13.75rem] w-full sm:top-[2.75rem]",
           isOpenMoblieView
-            ? "bg-transparent"
-            : "rounded-b-[0.625rem] bg-[#474747] text-white",
+            ? "top-[2.75rem] bg-transparent"
+            : "top-8 rounded-b-[0.625rem] bg-[#474747] text-white",
         )}
         ref={searchListRef}
       >
-        {searchList.map((addr, idx) => (
-          <AddressButton
-            key={idx}
-            address={addr}
-            isSelected={selectedIndex === idx}
-            isOpenMoblieView={isOpenMoblieView}
-            handleSetAddress={handleSetAddress}
-          />
-        ))}
+        {isFocused &&
+          searchList.map((addr, idx) => (
+            <AddressButton
+              key={idx}
+              address={addr}
+              isSelected={selectedIndex === idx}
+              isOpenMoblieView={isOpenMoblieView}
+              handleSetAddress={handleSetAddress}
+            />
+          ))}
       </div>
     </div>
   );
