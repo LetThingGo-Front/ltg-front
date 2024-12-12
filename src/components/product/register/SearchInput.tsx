@@ -146,12 +146,25 @@ export default function SearchInput({
     }
   }, [addr]);
 
-  useEffect(() => {
-    if (isOpenMoblieView) {
-      // alert("scroll to top!!");
-      (document.documentElement || document.body).scrollTop = 0;
+  const controlWindowHeight = () => {
+    if (window.visualViewport) {
+      // 키보드 오픈
+      if (window.innerHeight > window.visualViewport.height) {
+        document.body.style.height = `${window.visualViewport.height}px`;
+        window.scrollTo(0, 0);
+      } else {
+        document.body.style.height = "100dvh";
+      }
     }
-  }, [isOpenMoblieView]);
+  };
+
+  useEffect(() => {
+    window.visualViewport?.addEventListener("resize", controlWindowHeight);
+
+    return () => {
+      window.visualViewport?.removeEventListener("resize", controlWindowHeight);
+    };
+  }, []);
 
   return (
     <div
