@@ -5,6 +5,7 @@ import SearchInput from "./SearchInput";
 import clsx from "clsx";
 import Image from "next/image";
 import { isMobile, isTablet } from "react-device-detect";
+import debounce from "debounce";
 
 type Props = {
   addr: string;
@@ -41,7 +42,7 @@ export default function Postcode({
   const [isFocused, setIsFocused] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
 
-  const controlWindowHeight = () => {
+  const controlWindowHeight = debounce(() => {
     if (window.visualViewport) {
       // 키보드 오픈
       if (window.innerHeight > window.visualViewport.height) {
@@ -53,7 +54,8 @@ export default function Postcode({
         setInputHeight(window.innerHeight);
       }
     }
-  };
+  }, 1000);
+
   useEffect(() => {
     window.visualViewport?.addEventListener("resize", controlWindowHeight);
 
