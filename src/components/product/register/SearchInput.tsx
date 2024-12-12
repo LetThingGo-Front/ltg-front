@@ -155,7 +155,7 @@ export default function SearchInput({
     <div
       ref={containerRef}
       className={clsx(
-        "group/search relative z-20 flex h-11 backdrop-blur-[50px] pointerhover:hover:bg-[#474747]",
+        "group/search pointerhover:hover:bg-[#474747] relative z-20 flex h-11 backdrop-blur-[50px]",
         !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
         isOpenMoblieView
@@ -195,7 +195,7 @@ export default function SearchInput({
       <input
         className={clsx(
           "ml-10 w-full truncate bg-transparent pr-9 text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-[0.875rem]",
-          "placeholder:text-center disabled:opacity-100 placeholder:disabled:opacity-100 pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white",
+          "pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white placeholder:text-center disabled:opacity-100 placeholder:disabled:opacity-100",
           !isOpenMoblieView && isFocused && "text-white placeholder:text-white",
           isOpenMoblieView
             ? "h-[2.75rem]"
