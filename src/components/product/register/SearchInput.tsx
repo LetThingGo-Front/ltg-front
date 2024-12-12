@@ -5,6 +5,7 @@ import debounce from "debounce";
 import axios from "axios";
 import utils from "@/utils/cmmnUtil";
 import AddressButton from "./button/AddressButton";
+import { set } from "react-hook-form";
 
 type Props = {
   addr: string;
@@ -102,6 +103,7 @@ export default function SearchInput({
   };
 
   const handleSetAddress = (address: JusoProps) => {
+    console.log("handleSetAddress!!!");
     const addressNm = address.bdNm
       ? `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(address.bdNm)})`
       : `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
@@ -117,11 +119,16 @@ export default function SearchInput({
   };
 
   const searchInputFocus = () => {
-    if (!isOpenMoblieView) {
-      if (!isFocused) setIsFocused(true);
-      setIsOpenMoblieView();
-    }
+    console.log("searchInputFocus!!!");
+    if (!isFocused) setIsFocused(true);
+    if (!isOpenMoblieView) setIsOpenMoblieView();
   };
+
+  // useEffect(() => {
+  //   if (!isOpenMoblieView) {
+  //     setIsFocused(false);
+  //   }
+  // }, [isOpenMoblieView]);
 
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
@@ -198,6 +205,8 @@ export default function SearchInput({
         ref={inputRef}
         onFocus={searchInputFocus}
         onBlur={(e) => {
+          console.log(e.relatedTarget);
+          console.log(containerRef.current?.contains(e.relatedTarget as Node));
           if (
             containerRef.current &&
             !containerRef.current.contains(e.relatedTarget as Node)

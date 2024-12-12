@@ -25,7 +25,7 @@ export default function AddressButton({
   return (
     <button
       className={clsx(
-        "pointerhover:hover:bg-grey-700 h-[2.75rem] w-full truncate pl-10 text-left text-[0.875rem]",
+        "h-[2.75rem] w-full truncate pl-10 text-left text-[0.875rem] pointerhover:hover:bg-grey-700",
         isSelected &&
           (isOpenMoblieView ? "bg-grey-200 active:bg-grey-200" : "bg-grey-700"),
       )}
