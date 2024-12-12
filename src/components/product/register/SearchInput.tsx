@@ -57,7 +57,6 @@ export default function SearchInput({
   const [isFocused, setIsFocused] = useState(false);
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
-  const innerWidth = typeof window !== "undefined" ? window.innerWidth : 0;
 
   const setSearchInput = debounce((value: string) => {
     if (value.length > 1) getSearchToLocation(value);
@@ -150,6 +149,25 @@ export default function SearchInput({
     }
   }, [addr]);
 
+  const onKeyboardToScrollTop = debounce(() => {
+    if (window.visualViewport && isOpenMoblieView) {
+      if (window.innerHeight > window.visualViewport.height) {
+        window.scrollTo(0, 0);
+      }
+    }
+  }, 100);
+
+  useEffect(() => {
+    window.visualViewport?.addEventListener("resize", onKeyboardToScrollTop);
+
+    return () => {
+      window.visualViewport?.removeEventListener(
+        "resize",
+        onKeyboardToScrollTop,
+      );
+    };
+  }, []);
+
   return (
     <div
       ref={containerRef}
@@ -207,6 +225,7 @@ export default function SearchInput({
         onBlur={(e) => {
           console.log(e.relatedTarget);
           console.log(containerRef.current?.contains(e.relatedTarget as Node));
+          alert(containerRef.current?.contains(e.relatedTarget as Node));
           if (
             containerRef.current &&
             !containerRef.current.contains(e.relatedTarget as Node)
