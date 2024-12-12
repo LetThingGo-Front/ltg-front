@@ -24,18 +24,6 @@ export default function Postcode({
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
 
-  const controlWindowHeight = () => {
-    alert(`isFocused: ${isFocused}`);
-    if (isMobile && !isTablet && isFocused) window.scrollTo(0, 0);
-  };
-
-  useEffect(() => {
-    window.visualViewport?.addEventListener("resize", controlWindowHeight);
-    return () => {
-      window.visualViewport?.removeEventListener("resize", controlWindowHeight);
-    };
-  }, []);
-
   return (
     <div
       className={clsx(

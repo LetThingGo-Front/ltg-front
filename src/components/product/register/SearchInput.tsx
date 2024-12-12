@@ -131,6 +131,21 @@ export default function SearchInput({
     if (!isOpenMoblieView) setIsOpenMoblieView();
   };
 
+  const searchInputToScrollTop = () => {
+    if (isMobile && !isTablet && inputRef.current === document.activeElement)
+      window.scrollTo(0, 0);
+  };
+
+  useEffect(() => {
+    window.visualViewport?.addEventListener("resize", searchInputToScrollTop);
+    return () => {
+      window.visualViewport?.removeEventListener(
+        "resize",
+        searchInputToScrollTop,
+      );
+    };
+  }, []);
+
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
       const selectedItem = searchListRef.current.children[
