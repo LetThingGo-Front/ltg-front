@@ -15,23 +15,6 @@ type Props = {
   setSimpleAddr: (address: string) => void;
 };
 
-const themeObj = {
-  // bgColor: "#E1F452", // 바탕 배경색 (흰색)
-  // searchBgColor: "#ffffff", // 검색창 배경색
-  // contentBgColor: "#ffffff", // 본문 배경색 (흰색)
-  // pageBgColor: "#ffffff", // 페이지 배경색 (흰색)
-  // textColor: "#333333", // 기본 글자색 (진한 회색)
-  // queryTextColor: "#000000", // 검색창 글자색 (검은색)
-  // // postcodeTextColor: "#E1F452", // 우편번호 글자색 (메인 컬러)
-  // emphTextColor: "#C4DD0E", // 강조 글자색 (메인 컬러)
-  // outlineColor: "#BABABA", // 테두리 색상 (밝은 회색)
-};
-
-const postCodeStyle = {
-  width: "100%",
-  height: "100%",
-};
-
 export default function Postcode({
   addr,
   setAddress,
@@ -40,9 +23,9 @@ export default function Postcode({
   setSimpleAddr,
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
-  const [inputHeight, setInputHeight] = useState(0);
 
   const controlWindowHeight = debounce(() => {
+    alert(`isOpen: ${isOpen} window.scrollY: ${window.scrollY}`);
     if (isOpen) window.scrollTo(0, 0);
   }, 1000);
 
@@ -60,9 +43,6 @@ export default function Postcode({
         isOpen &&
           "relative h-[calc(100dvh-env(safe-area-inset-top))] overflow-hidden max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
       )}
-      // style={{
-      //   height: isOpen && inputHeight > 0 ? `${inputHeight}px` : "100%",
-      // }}
     >
       {isOpen && (
         <div className="flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
