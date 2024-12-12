@@ -149,23 +149,10 @@ export default function SearchInput({
     }
   }, [addr]);
 
-  const onKeyboardToScrollTop = debounce(() => {
-    if (window.visualViewport && isOpenMoblieView) {
-      if (window.innerHeight > window.visualViewport.height) {
-        window.scrollTo(0, 0);
-      }
-    }
-  }, 100);
-
   useEffect(() => {
-    window.visualViewport?.addEventListener("resize", onKeyboardToScrollTop);
-
-    return () => {
-      window.visualViewport?.removeEventListener(
-        "resize",
-        onKeyboardToScrollTop,
-      );
-    };
+    if (isOpenMoblieView) {
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   return (
@@ -224,11 +211,10 @@ export default function SearchInput({
         onFocus={searchInputFocus}
         onBlur={(e) => {
           console.log(e.relatedTarget);
-          console.log(containerRef.current?.contains(e.relatedTarget as Node));
-          alert(containerRef.current?.contains(e.relatedTarget as Node));
+          console.log(searchListRef.current?.contains(e.relatedTarget as Node));
           if (
-            containerRef.current &&
-            !containerRef.current.contains(e.relatedTarget as Node)
+            searchListRef.current &&
+            !searchListRef.current.contains(e.relatedTarget as Node)
           ) {
             setIsFocused(false);
           }
