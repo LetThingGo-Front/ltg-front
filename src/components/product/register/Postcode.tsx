@@ -43,21 +43,13 @@ export default function Postcode({
   const [inputHeight, setInputHeight] = useState(0);
 
   const controlWindowHeight = debounce(() => {
-    if (window.visualViewport) {
-      // 키보드 오픈
-      alert(
-        `window.innerHeight: ${window.innerHeight} window.visualViewport.height: ${window.visualViewport.height}`,
-      );
-      if (window.innerHeight > window.visualViewport.height) {
-        window.scrollTo(0, 0);
-      }
-    }
+    if (isOpen) window.scrollTo(0, 0);
   }, 1000);
 
   useEffect(() => {
-    window.visualViewport?.addEventListener("resize", controlWindowHeight);
+    window.addEventListener("resize", controlWindowHeight);
     return () => {
-      window.visualViewport?.removeEventListener("resize", controlWindowHeight);
+      window.removeEventListener("resize", controlWindowHeight);
     };
   }, []);
 
