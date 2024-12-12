@@ -46,7 +46,7 @@ export default function Postcode({
     if (window.visualViewport) {
       // 키보드 오픈
       if (window.innerHeight > window.visualViewport.height) {
-        document.body.style.height = `${window.visualViewport.height}px`;
+        document.body.style.height = "0px";
         setInputHeight(window.visualViewport.height);
         window.scrollTo(0, 0);
       } else {
@@ -58,11 +58,11 @@ export default function Postcode({
 
   useEffect(() => {
     window.visualViewport?.addEventListener("resize", controlWindowHeight);
-
     return () => {
       window.visualViewport?.removeEventListener("resize", controlWindowHeight);
     };
   }, []);
+
   return (
     <div
       className={clsx(
