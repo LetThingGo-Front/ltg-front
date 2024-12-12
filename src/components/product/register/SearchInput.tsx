@@ -114,6 +114,7 @@ export default function SearchInput({
   };
 
   const containerFocus = () => {
+    console.log("containerFocus!!!");
     if (!isFocused) setIsFocused(true);
     setIsOpenMoblieView();
   };
@@ -141,26 +142,14 @@ export default function SearchInput({
     <div
       ref={containerRef}
       className={clsx(
-        "group/search pointerhover:hover:bg-[#474747] relative z-20 flex h-11 backdrop-blur-[50px]",
+        "group/search relative z-20 flex h-11 backdrop-blur-[50px] pointerhover:hover:bg-[#474747]",
         !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
         isOpenMoblieView
           ? "relative h-full"
           : "rounded-t-[0.625rem] max-sm:h-8",
       )}
-      tabIndex={0}
-      onFocus={containerFocus}
-      onBlur={(e) => {
-        if (
-          containerRef.current &&
-          e.relatedTarget &&
-          !containerRef.current.contains(e.relatedTarget as Node)
-        ) {
-          setIsFocused(false);
-        }
-      }}
       onKeyDown={handleKeyDown}
-      // onClick={containerFocus}
       title={addr}
     >
       <div
@@ -193,7 +182,7 @@ export default function SearchInput({
       <input
         className={clsx(
           "ml-10 w-full truncate bg-transparent pr-9 text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-[0.875rem]",
-          "pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white placeholder:text-center disabled:opacity-100 placeholder:disabled:opacity-100",
+          "placeholder:text-center disabled:opacity-100 placeholder:disabled:opacity-100 pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white",
           !isOpenMoblieView && isFocused && "text-white placeholder:text-white",
           isOpenMoblieView
             ? "h-[2.75rem]"
@@ -202,7 +191,15 @@ export default function SearchInput({
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
         ref={inputRef}
-        disabled={innerWidth < 640 && !isOpenMoblieView}
+        onFocus={containerFocus}
+        onBlur={(e) => {
+          if (
+            containerRef.current &&
+            !containerRef.current.contains(e.relatedTarget as Node)
+          ) {
+            setIsFocused(false);
+          }
+        }}
       />
       {inputRef.current?.value && (
         <button
