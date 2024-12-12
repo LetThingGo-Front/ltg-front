@@ -108,16 +108,21 @@ export default function SearchInput({
     setAddress(addressNm);
     setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
     setSelectedIndex(-1);
-    inputRef.current?.blur();
+    if (inputRef.current) {
+      inputRef.current.value = addressNm;
+      inputRef.current.blur();
+    }
     setIsFocused(false);
     closeIsOpenMobileView();
   };
 
-  const containerFocus = () => {
-    console.log("containerFocus!!!");
-    if (!isFocused) setIsFocused(true);
-    setIsOpenMoblieView();
+  const searchInputFocus = () => {
+    if (!isOpenMoblieView) {
+      if (!isFocused) setIsFocused(true);
+      setIsOpenMoblieView();
+    }
   };
+
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
       const selectedItem = searchListRef.current.children[
@@ -191,7 +196,7 @@ export default function SearchInput({
         placeholder="주소를 검색하세요"
         onChange={handleSearchInput}
         ref={inputRef}
-        onFocus={containerFocus}
+        onFocus={searchInputFocus}
         onBlur={(e) => {
           if (
             containerRef.current &&
