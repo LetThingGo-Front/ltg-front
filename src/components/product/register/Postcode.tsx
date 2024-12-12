@@ -45,8 +45,10 @@ export default function Postcode({
   const controlWindowHeight = debounce(() => {
     if (window.visualViewport) {
       // 키보드 오픈
+      alert(
+        `window.innerHeight: ${window.innerHeight} window.visualViewport.height: ${window.visualViewport.height}`,
+      );
       if (window.innerHeight > window.visualViewport.height) {
-        alert(`window.scrollY: ${window.scrollY}`);
         window.scrollTo(0, 0);
       }
     }
