@@ -46,12 +46,10 @@ export default function Postcode({
     if (window.visualViewport) {
       // 키보드 오픈
       if (window.innerHeight > window.visualViewport.height) {
-        document.body.style.height = "0px";
-        setInputHeight(window.visualViewport.height);
-        window.scrollTo(0, 0);
-      } else {
-        document.body.style.height = "100dvh";
-        setInputHeight(window.innerHeight);
+        document.documentElement.scrollIntoView({
+          behavior: "instant",
+          block: "start",
+        });
       }
     }
   }, 1000);
@@ -68,11 +66,11 @@ export default function Postcode({
       className={clsx(
         "w-full",
         isOpen &&
-          "relative overflow-hidden max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
+          "relative h-[calc(100dvh-env(safe-area-inset-top))] overflow-hidden max-sm:fixed max-sm:left-0 max-sm:top-[env(safe-area-inset-top)] max-sm:z-20",
       )}
-      style={{
-        height: isOpen && inputHeight > 0 ? `${inputHeight}px` : "100%",
-      }}
+      // style={{
+      //   height: isOpen && inputHeight > 0 ? `${inputHeight}px` : "100%",
+      // }}
     >
       {isOpen && (
         <div className="flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
