@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import SearchInput from "./SearchInput";
 import clsx from "clsx";
 import Image from "next/image";
@@ -38,6 +38,7 @@ export default function Postcode({
   openPostcode,
   setSimpleAddr,
 }: Props) {
+  const [isFocused, setIsFocused] = useState(false);
   return (
     <div
       className={clsx(
@@ -48,7 +49,12 @@ export default function Postcode({
     >
       {isOpen && (
         <div className="flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
-          <button onClick={() => openPostcode(!isOpen)}>
+          <button
+            onClick={() => {
+              setIsFocused(false);
+              openPostcode(false);
+            }}
+          >
             <Image
               src="/assets/images/button/arrow_left_2.svg"
               width={32}
@@ -71,6 +77,8 @@ export default function Postcode({
         }}
         setAddress={setAddress}
         setSimpleAddr={setSimpleAddr}
+        isFocused={isFocused}
+        setIsFocused={setIsFocused}
       />
     </div>
   );

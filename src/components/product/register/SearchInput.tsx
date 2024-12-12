@@ -14,6 +14,8 @@ type Props = {
   closeIsOpenMobileView: () => void;
   setAddress: (address: string) => void;
   setSimpleAddr: (simpleAddr: string) => void;
+  isFocused: boolean;
+  setIsFocused: (isFocused: boolean) => void;
 };
 
 export type JusoProps = {
@@ -50,11 +52,12 @@ export default function SearchInput({
   closeIsOpenMobileView,
   setAddress,
   setSimpleAddr,
+  isFocused,
+  setIsFocused,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchListRef = useRef<HTMLDivElement>(null);
-  const [isFocused, setIsFocused] = useState(false);
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
@@ -153,7 +156,7 @@ export default function SearchInput({
     if (isOpenMoblieView) {
       window.scrollTo(0, 0);
     }
-  }, []);
+  }, [isOpenMoblieView]);
 
   return (
     <div
@@ -209,16 +212,6 @@ export default function SearchInput({
         onChange={handleSearchInput}
         ref={inputRef}
         onFocus={searchInputFocus}
-        onBlur={(e) => {
-          console.log(e.relatedTarget);
-          console.log(searchListRef.current?.contains(e.relatedTarget as Node));
-          if (
-            searchListRef.current &&
-            !searchListRef.current.contains(e.relatedTarget as Node)
-          ) {
-            setIsFocused(false);
-          }
-        }}
       />
       {inputRef.current?.value && (
         <button
