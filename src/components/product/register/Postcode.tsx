@@ -65,7 +65,7 @@ export default function Postcode({
             <div className="font-bold">주소 검색</div>
             <div className="h-8 w-8"></div>
           </div>
-          <div className="h-100dvh bg-grey-50"></div>
+          <div className="h-dvh bg-grey-50"></div>
         </>
       )}
     </div>

@@ -12,7 +12,7 @@ import axios from "axios";
 import utils from "@/utils/cmmnUtil";
 import AddressButton from "./button/AddressButton";
 import { isMobile, isTablet } from "react-device-detect";
-import jusoData from "@/mocks/sample/jusoData.json";
+import jusoData from "@/mocks/data/juso/jusoData.json";
 
 type Props = {
   addr: string;
