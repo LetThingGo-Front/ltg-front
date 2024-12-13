@@ -42,7 +42,7 @@ export default function Postcode({
       />
       <div
         className={clsx(
-          "fixed left-0 top-0 z-40 h-[calc(env(safe-area-inset-top)+4rem)] w-full overscroll-none",
+          "fixed left-0 top-[env(safe-area-inset-top)] z-40 h-[calc(env(safe-area-inset-top)+4rem)] w-full overscroll-none",
           !isOpen && "hidden",
         )}
       >
