@@ -133,6 +133,7 @@ export default function SearchInput({
 
   const searchInputToScrollTop = debounce(() => {
     if (isMobile && !isTablet && inputRef.current === document.activeElement) {
+      alert(`scrollY: ${window.scrollY}`);
       window.scrollTo(0, 0);
     }
   }, 100);
