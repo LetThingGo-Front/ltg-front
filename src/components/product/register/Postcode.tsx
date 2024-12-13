@@ -69,7 +69,9 @@ export default function Postcode({
         <div className="font-bold">주소 검색</div>
         <div className="h-8 w-8"></div>
       </div>
-      {isOpen && <div className="h-dvh bg-grey-50"></div>}
+      {isOpen && (
+        <div className="h-[calc(100dvh-env(safe-area-inset-top)-3.9375rem)] bg-grey-50"></div>
+      )}
     </div>
   );
 }
