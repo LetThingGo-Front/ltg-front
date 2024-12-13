@@ -133,14 +133,14 @@ export default function SearchInput({
     if (!isOpenMoblieView) setIsOpenMoblieView();
     if (isMobile && !isTablet && inputRef.current === document.activeElement) {
       setTimeout(() => {
-        // window.scrollTo(0, 0);
+        window.scrollTo(0, 0);
       }, 100);
     }
   };
 
   const searchInputToScrollTop = debounce(() => {
     if (isMobile && !isTablet && inputRef.current === document.activeElement) {
-      // window.scrollTo(0, 0);
+      window.scrollTo(0, 0);
     }
   }, 100);
 

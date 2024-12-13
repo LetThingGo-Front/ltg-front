@@ -48,7 +48,7 @@ export default function Postcode({
       />
       {isOpen && (
         <>
-          <div className="fixed left-0 top-[env(safe-area-inset-top)] z-30 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
+          <div className="fixed left-0 top-0 z-30 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
             <button
               onClick={() => {
                 setIsFocused(false);
