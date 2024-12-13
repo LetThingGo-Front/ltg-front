@@ -132,7 +132,7 @@ export default function SearchInput({
     if (isMobile && !isTablet && inputRef.current === document.activeElement) {
       setTimeout(() => {
         window.scrollTo(0, 0);
-      }, 1000);
+      }, 100);
     }
   };
 
@@ -180,7 +180,7 @@ export default function SearchInput({
         !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
         isOpenMoblieView
-          ? "relative h-full"
+          ? "relative h-[calc(100%-4rem)]"
           : "rounded-t-[0.625rem] max-sm:h-8",
       )}
       onKeyDown={handleKeyDown}

@@ -29,11 +29,11 @@ export default function Postcode({
       className={clsx(
         "w-full",
         isOpen &&
-          "relative h-full overflow-y-scroll overscroll-none pt-[calc(env(safe-area-inset-top)+4rem)] scrollbar-hide max-sm:fixed max-sm:left-0 max-sm:top-0 max-sm:z-20",
+          "relative h-dvh overflow-y-scroll overscroll-none pt-[calc(env(safe-area-inset-top))] scrollbar-hide max-sm:fixed max-sm:left-0 max-sm:top-0 max-sm:z-20",
       )}
     >
       {isOpen && (
-        <div className="fixed left-0 top-[env(safe-area-inset-top)] flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
+        <div className="flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
           <button
             onClick={() => {
               setIsFocused(false);
