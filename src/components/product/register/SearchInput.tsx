@@ -137,7 +137,7 @@ export default function SearchInput({
       inputRef.current?.blur();
       setTimeout(() => {
         inputRef.current?.focus();
-      }, 100);
+      }, 1000);
     }
   };
 
