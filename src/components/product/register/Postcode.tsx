@@ -29,7 +29,7 @@ export default function Postcode({
       className={clsx(
         "w-full",
         isOpen &&
-          "relative h-[calc(100dvh-env(safe-area-inset-top)-4rem)] overflow-y-scroll overscroll-none scrollbar-hide max-sm:fixed max-sm:left-0 max-sm:top-[calc(env(safe-area-inset-top)+4rem)] max-sm:z-20",
+          "relative h-full overflow-y-scroll overscroll-none pt-[calc(env(safe-area-inset-top)+4rem)] scrollbar-hide max-sm:fixed max-sm:left-0 max-sm:top-0 max-sm:z-20",
       )}
     >
       {isOpen && (
