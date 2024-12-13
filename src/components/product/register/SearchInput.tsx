@@ -84,10 +84,10 @@ export default function SearchInput({
       const response = await axios.get("/api/address", {
         params: { keyword: search },
       });
+      // setSearchList(jusoData);
       if (response.status === 200 && response.data.results.juso) {
         setSearchList(response.data.results.juso);
       }
-      setSearchList(jusoData);
     } catch (error) {
       console.error(`[ERROR] getSearchToLocation: ${error}`);
     }
@@ -133,14 +133,14 @@ export default function SearchInput({
     if (!isOpenMoblieView) setIsOpenMoblieView();
     if (isMobile && !isTablet && inputRef.current === document.activeElement) {
       setTimeout(() => {
-        window.scrollTo(0, 0);
+        // window.scrollTo(0, 0);
       }, 100);
     }
   };
 
   const searchInputToScrollTop = debounce(() => {
     if (isMobile && !isTablet && inputRef.current === document.activeElement) {
-      window.scrollTo(0, 0);
+      // window.scrollTo(0, 0);
     }
   }, 100);
 
