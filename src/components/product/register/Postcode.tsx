@@ -29,7 +29,7 @@ export default function Postcode({
       className={clsx(
         "w-full",
         isOpen &&
-          "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-20 h-[calc(100dvh-env(safe-area-inset-top))] overflow-y-auto overscroll-none scrollbar-hide",
+          "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-20 h-[calc(100dvh-env(safe-area-inset-top))-4rem] overflow-y-auto overscroll-none scrollbar-hide",
       )}
     >
       <SearchInput
@@ -46,6 +46,29 @@ export default function Postcode({
         isFocused={isFocused}
         setIsFocused={setIsFocused}
       />
+      <div
+        className={clsx(
+          "fixed left-0 top-[env(safe-area-inset-top)] z-30 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden",
+          isOpen ? "flex" : "hidden",
+        )}
+      >
+        <button
+          onClick={() => {
+            setIsFocused(false);
+            openPostcode(false);
+          }}
+          type="button"
+        >
+          <Image
+            src="/assets/images/button/arrow_left_2.svg"
+            width={32}
+            height={32}
+            alt="뒤로가기"
+          />
+        </button>
+        <div className="font-bold">주소 검색</div>
+        <div className="h-8 w-8"></div>
+      </div>
       {isOpen && <div className="h-dvh bg-grey-50"></div>}
     </div>
   );
