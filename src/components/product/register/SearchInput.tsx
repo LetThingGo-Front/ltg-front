@@ -145,11 +145,13 @@ export default function SearchInput({
 
   useEffect(() => {
     window.visualViewport?.addEventListener("resize", searchInputToScrollTop);
+    window.addEventListener("scroll", searchInputToScrollTop);
     return () => {
       window.visualViewport?.removeEventListener(
         "resize",
         searchInputToScrollTop,
       );
+      window.removeEventListener("scroll", searchInputToScrollTop);
     };
   }, []);
 
@@ -177,7 +179,7 @@ export default function SearchInput({
     <div
       ref={containerRef}
       className={clsx(
-        "group/search pointerhover:hover:bg-[#474747] flex h-11 overscroll-none backdrop-blur-[50px]",
+        "group/search pointerhover:hover:bg-[#474747] flex h-11 backdrop-blur-[50px]",
         !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
         isOpenMoblieView
