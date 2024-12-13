@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
 import SearchNav from "./explore/SearchNav";
-import useLoginPopupStore from "@/store/loginStore";
+import useLoginPopupStore from "@/store/loginServiceStore";
 
 export default function Header({ token }: CommonProps) {
   const pathname = usePathname();

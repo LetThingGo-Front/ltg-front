@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import CloseButton from "./button/CloseButton";
-import useLoginPopupStore from "@/store/loginStore";
+import useLoginPopupStore from "@/store/loginServiceStore";
 import SignInButton from "./button/SignInButton";
 import clsx from "clsx";
 
