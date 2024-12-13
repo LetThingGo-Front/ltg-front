@@ -177,12 +177,12 @@ export default function SearchInput({
     <div
       ref={containerRef}
       className={clsx(
-        "group/search pointerhover:hover:bg-[#474747] z-20 flex h-11 backdrop-blur-[50px]",
+        "group/search pointerhover:hover:bg-[#474747] flex h-11 backdrop-blur-[50px]",
         !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
         isOpenMoblieView
-          ? "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] w-full"
-          : "relative rounded-t-[0.625rem] max-sm:h-8",
+          ? "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-40 w-full"
+          : "relative z-20 rounded-t-[0.625rem] max-sm:h-8",
       )}
       onKeyDown={handleKeyDown}
       title={addr}

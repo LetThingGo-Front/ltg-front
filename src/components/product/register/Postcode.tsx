@@ -25,13 +25,7 @@ export default function Postcode({
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <div
-      className={clsx(
-        "w-full",
-        isOpen &&
-          "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-20 h-[calc(100dvh-env(safe-area-inset-top)-4rem)] overflow-y-auto overscroll-none scrollbar-hide",
-      )}
-    >
+    <div className="w-full">
       <SearchInput
         addr={addr}
         isOpenMoblieView={isOpen}
@@ -48,8 +42,10 @@ export default function Postcode({
       />
       <div
         className={clsx(
-          "fixed left-0 top-[env(safe-area-inset-top)] z-30 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden",
-          isOpen ? "flex" : "hidden",
+          "z-40 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden",
+          isOpen
+            ? "fixed left-0 top-[env(safe-area-inset-top)] flex"
+            : "hidden",
         )}
       >
         <button
@@ -70,7 +66,9 @@ export default function Postcode({
         <div className="h-8 w-8"></div>
       </div>
       {isOpen && (
-        <div className="h-[calc(100dvh-env(safe-area-inset-top)-3.9375rem)] bg-grey-50"></div>
+        <div className="fixed left-0 top-0 z-30 h-[calc(100dvh-env(safe-area-inset-top))] w-full overflow-y-auto overscroll-none scrollbar-hide">
+          <div className="h-[calc(100dvh-env(safe-area-inset-top)+0.0625rem)] bg-grey-50"></div>
+        </div>
       )}
     </div>
   );
