@@ -135,7 +135,7 @@ export default function SearchInput({
     if (isMobile && !isTablet && inputRef.current === document.activeElement) {
       // window.scrollTo(0, 0);
       inputRef.current?.blur();
-      inputRef.current?.focus();
+      // inputRef.current?.focus();
     }
   };
 
