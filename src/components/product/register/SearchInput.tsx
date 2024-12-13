@@ -133,11 +133,7 @@ export default function SearchInput({
 
   const searchInputToScrollTop = debounce(() => {
     if (isMobile && !isTablet && inputRef.current === document.activeElement) {
-      // window.scrollTo(0, 0);
-      if (!isFocused) inputRef.current?.blur();
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 1000);
+      window.scrollTo(0, 0);
     }
   }, 100);
 
