@@ -16,6 +16,7 @@ export default function SearchAddressPage() {
   const isOpenSearchAddress = useSearchStore.use.isOpen();
   const closeSearchAddress = useSearchStore.use.actions().searchClose;
   const setSearchAddress = useSearchStore.use.actions().setAddress;
+  const searchAddressGlobal = useSearchStore.use.address();
 
   const setAddressInput = debounce((value: string) => {
     if (value !== inputRef.current?.value) return;
@@ -63,8 +64,14 @@ export default function SearchAddressPage() {
   useEffect(() => {
     if (isOpenSearchAddress) {
       inputRef.current?.focus();
+      if (searchAddressGlobal) {
+        const addressNm = searchAddressGlobal.bdNm
+          ? `${searchAddressGlobal.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(searchAddressGlobal.bdNm)})`
+          : `${searchAddressGlobal.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
+        if (inputRef.current) inputRef.current.value = addressNm;
+      }
     }
-  }, [isOpenSearchAddress]);
+  }, [isOpenSearchAddress, searchAddressGlobal]);
 
   if (!isOpenSearchAddress) return null;
 

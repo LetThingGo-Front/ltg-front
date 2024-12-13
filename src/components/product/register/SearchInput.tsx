@@ -166,13 +166,15 @@ export default function SearchInput({
   useEffect(() => {
     if (searchAddressGlobal) {
       handleSetAddress(searchAddressGlobal);
-      initSearchAddressStore();
     }
+    return () => {
+      initSearchAddressStore();
+    };
   }, [handleSetAddress, initSearchAddressStore, searchAddressGlobal]);
 
   return (
     <>
-      <div className="relative z-20 flex h-11 rounded-[0.625rem] bg-grey-50 backdrop-blur-[50px] sm:hidden max-sm:h-8">
+      <div className="relative z-20 flex h-11 w-full rounded-[0.625rem] bg-grey-50 backdrop-blur-[50px] sm:hidden max-sm:h-8">
         <div
           className={clsx(
             "absolute left-3 top-[0.875rem] h-4 w-4 max-sm:top-[0.625rem] max-sm:h-3 max-sm:w-3",
@@ -186,29 +188,16 @@ export default function SearchInput({
             alt="search"
           />
         </div>
-        <div
-          className={clsx(
-            "ml-10 flex w-full items-center justify-center truncate bg-transparent pr-9 text-center text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-[0.875rem] max-sm:text-xs max-sm:placeholder:text-xs",
-          )}
-          onClick={openSearhAddress}
-        >
-          {addr || <span className="text-grey-500">주소를 검색하세요</span>}
-        </div>
         <button
           className={clsx(
-            "absolute right-3 top-4 h-3 w-3",
-            !isOpenMoblieView &&
-              "max-sm:right-[0.625rem] max-sm:top-[0.625rem]",
+            "relative ml-10 flex w-[calc(100%-4.75rem)] items-center justify-start bg-transparent text-center text-xs font-semibold text-grey-700 outline-none placeholder:text-xs",
           )}
-          onClick={(e) => clearField(e)}
+          onClick={openSearhAddress}
           type="button"
         >
-          <Image
-            src="/assets/images/button/close_grey.svg"
-            width={12}
-            height={12}
-            alt="close"
-          />
+          <p className="w-full truncate text-center">
+            {addr || "주소를 검색하세요"}
+          </p>
         </button>
       </div>
       <div
