@@ -10,6 +10,7 @@ import { cookies } from "next/headers";
 import ReactQueryProviders from "@/provider/ReactQueryProviders";
 import splashScreens from "./splashScreens";
 import InstallAppBanner from "@/components/common/InstallAppBanner";
+import SearchAddressPage from "@/components/product/register/SearchAddressPage";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -59,6 +60,7 @@ export default function RootLayout({
               {children}
             </main>
             <InitApp token={accessToken} />
+            <SearchAddressPage />
           </MapsProvider>
         </ReactQueryProviders>
       </body>

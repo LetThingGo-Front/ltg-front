@@ -13,6 +13,7 @@ import utils from "@/utils/cmmnUtil";
 import AddressButton from "./button/AddressButton";
 import { isMobile, isTablet } from "react-device-detect";
 import jusoData from "@/mocks/data/juso/jusoData.json";
+import useSearchStore from "@/store/searchStore";
 
 type Props = {
   addr: string;
@@ -67,6 +68,9 @@ export default function SearchInput({
   const searchListRef = useRef<HTMLDivElement>(null);
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+  const openSearhAddress = useSearchStore.use.actions().searchOpen;
+  const searchAddressGlobal = useSearchStore.use.address();
+  const initSearchAddressStore = useSearchStore.use.actions().initSearch;
 
   const setAddressInput = debounce((value: string) => {
     if (value !== inputRef.current?.value) return;
@@ -114,18 +118,20 @@ export default function SearchInput({
     }
   };
 
-  const handleSetAddress = (address: JusoProps) => {
-    const addressNm = address.bdNm
-      ? `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(address.bdNm)})`
-      : `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
-    setAddress(addressNm);
-    setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
-    if (inputRef.current) inputRef.current.value = addressNm;
-    setSelectedIndex(-1);
-    setIsFocused(false);
-    setSearchList([]);
-    closeIsOpenMobileView();
-  };
+  const handleSetAddress = useCallback(
+    (address: JusoProps) => {
+      const addressNm = address.bdNm
+        ? `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(address.bdNm)})`
+        : `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
+      setAddress(addressNm);
+      setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
+      if (inputRef.current) inputRef.current.value = addressNm;
+      setSelectedIndex(-1);
+      setIsFocused(false);
+      setSearchList([]);
+    },
+    [setAddress, setSimpleAddr, setIsFocused],
+  );
 
   const searchInputFocus = () => {
     if (!isFocused) setIsFocused(true);
@@ -136,24 +142,6 @@ export default function SearchInput({
       }, 100);
     }
   };
-
-  const searchInputToScrollTop = debounce(() => {
-    if (isMobile && !isTablet && inputRef.current === document.activeElement) {
-      window.scrollTo(0, 0);
-    }
-  }, 100);
-
-  useEffect(() => {
-    window.visualViewport?.addEventListener("resize", searchInputToScrollTop);
-    window.addEventListener("scroll", searchInputToScrollTop);
-    return () => {
-      window.visualViewport?.removeEventListener(
-        "resize",
-        searchInputToScrollTop,
-      );
-      window.removeEventListener("scroll", searchInputToScrollTop);
-    };
-  }, []);
 
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
@@ -175,71 +163,37 @@ export default function SearchInput({
     }
   }, [addr]);
 
+  useEffect(() => {
+    if (searchAddressGlobal) {
+      handleSetAddress(searchAddressGlobal);
+      initSearchAddressStore();
+    }
+  }, [handleSetAddress, initSearchAddressStore, searchAddressGlobal]);
+
   return (
-    <div
-      ref={containerRef}
-      className={clsx(
-        "group/search pointerhover:hover:bg-[#474747] flex h-11 backdrop-blur-[50px]",
-        !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
-        (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
-        isOpenMoblieView
-          ? "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-40 w-full"
-          : "relative z-20 rounded-t-[0.625rem] max-sm:h-8",
-      )}
-      onKeyDown={handleKeyDown}
-      title={addr}
-    >
-      <div
-        className={clsx(
-          "absolute left-3 top-[0.875rem] h-4 w-4",
-          !isOpenMoblieView && "max-sm:top-[0.625rem] max-sm:h-3 max-sm:w-3",
-        )}
-      >
-        <Image
+    <>
+      <div className="relative z-20 flex h-11 rounded-[0.625rem] bg-grey-50 backdrop-blur-[50px] sm:hidden max-sm:h-8">
+        <div
           className={clsx(
-            "pointerhover:group-hover/search:hidden",
-            !isOpenMoblieView && isFocused && "hidden",
+            "absolute left-3 top-[0.875rem] h-4 w-4 max-sm:top-[0.625rem] max-sm:h-3 max-sm:w-3",
           )}
-          src="/assets/images/magnify.svg"
-          width={20}
-          height={20}
-          alt="search"
-        />
-        <Image
+        >
+          <Image
+            className=""
+            src="/assets/images/magnify.svg"
+            width={20}
+            height={20}
+            alt="search"
+          />
+        </div>
+        <div
           className={clsx(
-            "pointerhover:group-hover/search:block",
-            !isOpenMoblieView && isFocused ? "block" : "hidden",
+            "ml-10 flex w-full items-center justify-center truncate bg-transparent pr-9 text-center text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-[0.875rem] max-sm:text-xs max-sm:placeholder:text-xs",
           )}
-          src="/assets/images/magnify_white.svg"
-          width={20}
-          height={20}
-          alt="search"
-        />
-      </div>
-      <input
-        className={clsx(
-          "ml-10 w-full truncate bg-transparent pr-9 text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-[0.875rem]",
-          "pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white placeholder:text-center disabled:opacity-100 placeholder:disabled:opacity-100",
-          !isOpenMoblieView && isFocused && "text-white placeholder:text-white",
-          isOpenMoblieView
-            ? "h-[2.75rem]"
-            : "max-sm:text-xs max-sm:placeholder:text-xs",
-        )}
-        placeholder="주소를 검색하세요"
-        onChange={handleSearchInput}
-        ref={inputRef}
-        onFocus={searchInputFocus}
-        onBlur={(e) => {
-          if (
-            !isMobile &&
-            containerRef.current &&
-            !containerRef.current.contains(e.relatedTarget as Node)
-          ) {
-            setIsFocused(false);
-          }
-        }}
-      />
-      {inputRef.current?.value && (
+          onClick={openSearhAddress}
+        >
+          {addr || <span className="text-grey-500">주소를 검색하세요</span>}
+        </div>
         <button
           className={clsx(
             "absolute right-3 top-4 h-3 w-3",
@@ -256,27 +210,111 @@ export default function SearchInput({
             alt="close"
           />
         </button>
-      )}
-      <div
-        className={clsx(
-          "absolute left-0 max-h-[13.75rem] w-full sm:top-[2.75rem]",
-          isOpenMoblieView
-            ? "top-[2.75rem] bg-transparent"
-            : "top-8 rounded-b-[0.625rem] bg-[#474747] text-white",
-        )}
-        ref={searchListRef}
-      >
-        {isFocused &&
-          searchList.map((addr, idx) => (
-            <AddressButton
-              key={idx}
-              address={addr}
-              isSelected={selectedIndex === idx}
-              isOpenMoblieView={isOpenMoblieView}
-              handleSetAddress={handleSetAddress}
-            />
-          ))}
       </div>
-    </div>
+      <div
+        ref={containerRef}
+        className={clsx(
+          "group/search flex h-11 backdrop-blur-[50px] pointerhover:hover:bg-[#474747] max-sm:hidden",
+          !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
+          (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
+          isOpenMoblieView
+            ? "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-40 w-full"
+            : "relative z-20 rounded-t-[0.625rem] max-sm:h-8",
+        )}
+        onKeyDown={handleKeyDown}
+        title={addr}
+      >
+        <div
+          className={clsx(
+            "absolute left-3 top-[0.875rem] h-4 w-4",
+            !isOpenMoblieView && "max-sm:top-[0.625rem] max-sm:h-3 max-sm:w-3",
+          )}
+        >
+          <Image
+            className={clsx(
+              "pointerhover:group-hover/search:hidden",
+              !isOpenMoblieView && isFocused && "hidden",
+            )}
+            src="/assets/images/magnify.svg"
+            width={20}
+            height={20}
+            alt="search"
+          />
+          <Image
+            className={clsx(
+              "pointerhover:group-hover/search:block",
+              !isOpenMoblieView && isFocused ? "block" : "hidden",
+            )}
+            src="/assets/images/magnify_white.svg"
+            width={20}
+            height={20}
+            alt="search"
+          />
+        </div>
+        <input
+          className={clsx(
+            "ml-10 w-full truncate bg-transparent pr-9 text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-[0.875rem]",
+            "placeholder:text-center disabled:opacity-100 placeholder:disabled:opacity-100 pointerhover:group-hover/search:text-white pointerhover:placeholder:group-hover/search:text-white",
+            !isOpenMoblieView &&
+              isFocused &&
+              "text-white placeholder:text-white",
+            isOpenMoblieView
+              ? "h-[2.75rem]"
+              : "max-sm:text-xs max-sm:placeholder:text-xs",
+          )}
+          placeholder="주소를 검색하세요"
+          onChange={handleSearchInput}
+          ref={inputRef}
+          onFocus={searchInputFocus}
+          onBlur={(e) => {
+            if (
+              !isMobile &&
+              containerRef.current &&
+              !containerRef.current.contains(e.relatedTarget as Node)
+            ) {
+              setIsFocused(false);
+            }
+          }}
+        />
+        {inputRef.current?.value && (
+          <button
+            className={clsx(
+              "absolute right-3 top-4 h-3 w-3",
+              !isOpenMoblieView &&
+                "max-sm:right-[0.625rem] max-sm:top-[0.625rem]",
+            )}
+            onClick={(e) => clearField(e)}
+            type="button"
+          >
+            <Image
+              src="/assets/images/button/close_grey.svg"
+              width={12}
+              height={12}
+              alt="close"
+            />
+          </button>
+        )}
+        <div
+          className={clsx(
+            "absolute left-0 max-h-[13.75rem] w-full sm:top-[2.75rem]",
+            isOpenMoblieView
+              ? "top-[2.75rem] bg-transparent"
+              : "top-8 rounded-b-[0.625rem] bg-[#474747] text-white",
+          )}
+          ref={searchListRef}
+        >
+          {isFocused &&
+            searchList.map((addr, idx) => (
+              <AddressButton
+                key={idx}
+                address={addr}
+                isSelected={selectedIndex === idx}
+                isOpenMoblieView={isOpenMoblieView}
+                handleSetAddress={handleSetAddress}
+              />
+            ))}
+        </div>
+      </div>
+    </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { duration } from "@/constants/animation/style";
 import { axiosAuth } from "@/lib/axios";
-import useLoginPopupStore from "@/store/LoginStore";
+import useLoginPopupStore from "@/store/loginStore";
 import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
 import utils from "@/utils/cmmnUtil";

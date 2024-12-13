@@ -1,6 +1,5 @@
 "use client";
 
-import useLoginPopupStore from "@/store/LoginStore";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import axios, { axiosAuth } from "@/lib/axios";
@@ -10,6 +9,7 @@ import { useEffect } from "react";
 import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
 import SearchNav from "./explore/SearchNav";
+import useLoginPopupStore from "@/store/loginStore";
 
 export default function Header({ token }: CommonProps) {
   const pathname = usePathname();
