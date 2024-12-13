@@ -130,7 +130,9 @@ export default function SearchInput({
     if (!isFocused) setIsFocused(true);
     if (!isOpenMoblieView) setIsOpenMoblieView();
     if (isMobile && !isTablet && inputRef.current === document.activeElement) {
-      window.scrollTo(0, 0);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 1000);
     }
   };
 
