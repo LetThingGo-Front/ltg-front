@@ -131,15 +131,15 @@ export default function SearchInput({
     if (!isOpenMoblieView) setIsOpenMoblieView();
   };
 
-  const searchInputToScrollTop = () => {
+  const searchInputToScrollTop = debounce(() => {
     if (isMobile && !isTablet && inputRef.current === document.activeElement) {
       // window.scrollTo(0, 0);
-      inputRef.current?.blur();
+      if (!isFocused) inputRef.current?.blur();
       setTimeout(() => {
         inputRef.current?.focus();
       }, 1000);
     }
-  };
+  }, 100);
 
   useEffect(() => {
     window.visualViewport?.addEventListener("resize", searchInputToScrollTop);
