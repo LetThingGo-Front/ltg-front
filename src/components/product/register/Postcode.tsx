@@ -29,28 +29,9 @@ export default function Postcode({
       className={clsx(
         "w-full",
         isOpen &&
-          "relative h-dvh overflow-y-scroll overscroll-none pt-[calc(env(safe-area-inset-top))] scrollbar-hide max-sm:fixed max-sm:left-0 max-sm:top-0 max-sm:z-20",
+          "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-20 h-[calc(100dvh-env(safe-area-inset-top))] overflow-y-auto overscroll-none scrollbar-hide",
       )}
     >
-      {isOpen && (
-        <div className="flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
-          <button
-            onClick={() => {
-              setIsFocused(false);
-              openPostcode(false);
-            }}
-          >
-            <Image
-              src="/assets/images/button/arrow_left_2.svg"
-              width={32}
-              height={32}
-              alt="뒤로가기"
-            />
-          </button>
-          <div className="font-bold">주소 검색</div>
-          <div className="h-8 w-8"></div>
-        </div>
-      )}
       <SearchInput
         addr={addr}
         isOpenMoblieView={isOpen}
@@ -65,6 +46,28 @@ export default function Postcode({
         isFocused={isFocused}
         setIsFocused={setIsFocused}
       />
+      {isOpen && (
+        <>
+          <div className="fixed left-0 top-[env(safe-area-inset-top)] z-[25] flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem] sm:hidden">
+            <button
+              onClick={() => {
+                setIsFocused(false);
+                openPostcode(false);
+              }}
+            >
+              <Image
+                src="/assets/images/button/arrow_left_2.svg"
+                width={32}
+                height={32}
+                alt="뒤로가기"
+              />
+            </button>
+            <div className="font-bold">주소 검색</div>
+            <div className="h-8 w-8"></div>
+          </div>
+          <div className="h-[calc(100%+1px)] bg-grey-50"></div>
+        </>
+      )}
     </div>
   );
 }

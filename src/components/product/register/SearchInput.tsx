@@ -12,6 +12,7 @@ import axios from "axios";
 import utils from "@/utils/cmmnUtil";
 import AddressButton from "./button/AddressButton";
 import { isMobile, isTablet } from "react-device-detect";
+import jusoData from "@/mocks/sample/jusoData.json";
 
 type Props = {
   addr: string;
@@ -86,6 +87,7 @@ export default function SearchInput({
       if (response.status === 200 && response.data.results.juso) {
         setSearchList(response.data.results.juso);
       }
+      // setSearchList(jusoData);
     } catch (error) {
       console.error(`[ERROR] getSearchToLocation: ${error}`);
     }
@@ -176,12 +178,12 @@ export default function SearchInput({
     <div
       ref={containerRef}
       className={clsx(
-        "group/search pointerhover:hover:bg-[#474747] relative z-20 flex h-11 backdrop-blur-[50px]",
+        "group/search pointerhover:hover:bg-[#474747] z-20 flex h-11 backdrop-blur-[50px]",
         !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
         (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
         isOpenMoblieView
-          ? "relative h-[calc(100%-4rem)]"
-          : "rounded-t-[0.625rem] max-sm:h-8",
+          ? "fixed w-full"
+          : "relative rounded-t-[0.625rem] max-sm:h-8",
       )}
       onKeyDown={handleKeyDown}
       title={addr}
