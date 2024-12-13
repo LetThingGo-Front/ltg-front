@@ -132,8 +132,11 @@ export default function SearchInput({
   };
 
   const searchInputToScrollTop = () => {
-    if (isMobile && !isTablet && inputRef.current === document.activeElement)
-      window.scrollTo(0, 0);
+    if (isMobile && !isTablet && inputRef.current === document.activeElement) {
+      // window.scrollTo(0, 0);
+      inputRef.current?.blur();
+      inputRef.current?.focus();
+    }
   };
 
   useEffect(() => {
