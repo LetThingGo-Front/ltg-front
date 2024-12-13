@@ -195,8 +195,8 @@ export default function SearchInput({
           onClick={openSearhAddress}
           type="button"
         >
-          <p className="w-full truncate text-center">
-            {addr || "주소를 검색하세요"}
+          <p className="w-full overflow-x-auto whitespace-nowrap scrollbar-hide">
+            {addr || <span className="text-grey-500">주소를 검색하세요</span>}
           </p>
         </button>
       </div>

@@ -33,6 +33,7 @@ export default function SearchAddressPage() {
       const response = await axios.get("/api/address", {
         params: { keyword: search },
       });
+      setSearchList(jusoData);
       if (response.status === 200 && response.data.results.juso) {
         setSearchList(response.data.results.juso);
       }
@@ -52,6 +53,7 @@ export default function SearchAddressPage() {
         )}
         onClick={() => {
           setSearchAddress(address);
+          setSearchList([]);
           closeSearchAddress();
         }}
         type="button"
@@ -59,6 +61,14 @@ export default function SearchAddressPage() {
         {addressNm}
       </button>
     );
+  };
+
+  const clearField = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setSearchList([]);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+      inputRef.current.focus();
+    }
   };
 
   useEffect(() => {
@@ -114,6 +124,7 @@ export default function SearchAddressPage() {
         <button
           className={clsx("absolute right-3 top-4 h-3 w-3")}
           type="button"
+          onClick={clearField}
         >
           <Image
             src="/assets/images/button/close_grey.svg"
