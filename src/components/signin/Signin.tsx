@@ -26,7 +26,7 @@ export default function SignIn() {
   return (
     <div
       className={clsx(
-        "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-40 flex h-[calc(100%-env(safe-area-inset-top)-4rem)] w-full items-center justify-center backdrop-blur-xl",
+        "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-50 flex h-[calc(100%-env(safe-area-inset-top)-4rem)] w-full items-center justify-center backdrop-blur-xl",
         "sm:top-[calc(env(safe-area-inset-top)+5.625rem)] sm:h-[calc(100%-env(safe-area-inset-top)-5.625rem)]",
         !isOpen && "hidden",
       )}

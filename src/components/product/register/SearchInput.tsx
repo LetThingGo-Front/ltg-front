@@ -87,7 +87,7 @@ export default function SearchInput({
       if (response.status === 200 && response.data.results.juso) {
         setSearchList(response.data.results.juso);
       }
-      // setSearchList(jusoData);
+      setSearchList(jusoData);
     } catch (error) {
       console.error(`[ERROR] getSearchToLocation: ${error}`);
     }
