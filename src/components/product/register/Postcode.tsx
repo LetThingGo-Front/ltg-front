@@ -29,7 +29,7 @@ export default function Postcode({
       className={clsx(
         "w-full",
         isOpen &&
-          "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-20 h-[calc(100dvh-env(safe-area-inset-top))-4rem] overflow-y-auto overscroll-none scrollbar-hide",
+          "fixed left-0 top-[calc(env(safe-area-inset-top)+4rem)] z-20 h-[calc(100dvh-env(safe-area-inset-top)-4rem)] overflow-y-auto overscroll-none scrollbar-hide",
       )}
     >
       <SearchInput
