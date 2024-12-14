@@ -99,7 +99,12 @@ export default function SearchAddressPage() {
   if (!isOpenSearchAddress) return null;
 
   return (
-    <div className="fixed left-0 top-[env(safe-area-inset-top)] z-30 h-[calc(100dvh-env(safe-area-inset-top))] w-full overflow-y-auto overscroll-none bg-white scrollbar-hide">
+    <div
+      className="relative left-0 top-[env(safe-area-inset-top)] z-30 h-[calc(100dvh-env(safe-area-inset-top))] w-full overflow-y-auto overscroll-none bg-white scrollbar-hide"
+      onTouchStart={() => {
+        inputRef.current?.blur();
+      }}
+    >
       <div className="h-[calc(100dvh-env(safe-area-inset-top)+1px)]">
         <div
           className={clsx(
