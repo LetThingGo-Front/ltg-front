@@ -17,7 +17,6 @@ export default function SearchAddressPage() {
   const closeSearchAddress = useSearchStore.use.actions().searchClose;
   const setSearchAddress = useSearchStore.use.actions().setAddress;
   const searchAddressGlobal = useSearchStore.use.address();
-  const [pageHeight, setPageHeight] = useState(0);
 
   const setAddressInput = debounce((value: string) => {
     if (value !== inputRef.current?.value) return;
@@ -72,15 +71,11 @@ export default function SearchAddressPage() {
     }
   };
 
-  const resizePageHeight = debounce(() => {
-    if (
-      window.visualViewport &&
-      inputRef.current &&
-      inputRef.current === document.activeElement
-    ) {
-      setPageHeight(window.visualViewport?.height);
+  const inputUnFocused = () => {
+    if (inputRef.current && inputRef.current === document.activeElement) {
+      inputRef.current.blur();
     }
-  }, 100);
+  };
 
   useEffect(() => {
     if (isOpenSearchAddress) {
@@ -95,23 +90,16 @@ export default function SearchAddressPage() {
   }, [isOpenSearchAddress, searchAddressGlobal]);
 
   useEffect(() => {
-    window.visualViewport?.addEventListener("resize", resizePageHeight);
+    window.addEventListener("scroll", inputUnFocused);
     return () => {
-      window.visualViewport?.removeEventListener("resize", resizePageHeight);
+      window.removeEventListener("scroll", inputUnFocused);
     };
-  }, [resizePageHeight]);
+  }, []);
 
   if (!isOpenSearchAddress) return null;
 
   return (
-    <div
-      className="fixed left-0 top-[env(safe-area-inset-top)] z-30 w-full bg-white"
-      style={{
-        height: pageHeight
-          ? `calc(${pageHeight}px - env(safe-area-inset-top))`
-          : "100dvh",
-      }}
-    >
+    <div className="fixed left-0 top-[env(safe-area-inset-top)] z-30 h-[calc(100dvh-env(safe-area-inset-top))] w-full bg-white">
       <div
         className={clsx(
           "flex h-16 w-full items-center justify-between overscroll-none bg-white px-5 py-[0.875rem]",
