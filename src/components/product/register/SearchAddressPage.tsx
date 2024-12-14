@@ -87,7 +87,10 @@ export default function SearchAddressPage() {
 
   return (
     <>
-      <div className="fixed left-0 top-[env(safe-area-inset-top)] h-[calc(100dvh-env(safe-area-inset-top))] w-full"></div>
+      <div
+        className="fixed left-0 top-[env(safe-area-inset-top)] z-30 h-[calc(100dvh-env(safe-area-inset-top))] w-full bg-white"
+        onTouchStart={() => inputRef.current?.blur()}
+      ></div>
       <div
         className="fixed left-0 top-[env(safe-area-inset-top)] z-40 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem]"
         onTouchStart={() => inputRef.current?.blur()}
@@ -103,7 +106,7 @@ export default function SearchAddressPage() {
         <div className="font-bold">주소 검색</div>
         <div className="h-8 w-8"></div>
       </div>
-      <div className="fixed left-0 top-[calc(env(safe-area-inset-top))] z-30 h-[calc(100dvh-env(safe-area-inset-top))] w-full overflow-y-auto bg-white scrollbar-hide">
+      <div className="fixed left-0 top-[calc(env(safe-area-inset-top))] z-30 h-[20.5rem] w-full overflow-y-auto overscroll-contain bg-white scrollbar-hide">
         <div className="h-[calc(100%+1px)]">
           <div className="relative top-[4rem] h-[2.75rem] bg-grey-50">
             <div className={clsx("absolute left-3 top-[0.875rem] h-4 w-4")}>
@@ -135,7 +138,7 @@ export default function SearchAddressPage() {
                 alt="close"
               />
             </button>
-            <div className="absolute left-0 top-[2.75rem] z-10 bg-white">
+            <div className="absolute left-0 top-[2.75rem] bg-white">
               <div
                 className={clsx(
                   "max-h-[13.75rem] w-full bg-grey-50 sm:top-[2.75rem]",
