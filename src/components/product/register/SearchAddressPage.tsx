@@ -49,7 +49,7 @@ export default function SearchAddressPage() {
     return (
       <button
         className={clsx(
-          "h-[2.75rem] w-full truncate px-10 text-left text-[0.875rem]",
+          "h-[2.75rem] w-full truncate px-10 text-left text-[0.875rem] active:bg-grey-200",
         )}
         onClick={() => {
           setSearchAddress(address);
@@ -71,12 +71,6 @@ export default function SearchAddressPage() {
     }
   };
 
-  const inputUnFocused = () => {
-    if (inputRef.current && inputRef.current === document.activeElement) {
-      inputRef.current.blur();
-    }
-  };
-
   useEffect(() => {
     if (isOpenSearchAddress) {
       inputRef.current?.focus();
@@ -89,40 +83,29 @@ export default function SearchAddressPage() {
     }
   }, [isOpenSearchAddress, searchAddressGlobal]);
 
-  useEffect(() => {
-    window.addEventListener("scroll", inputUnFocused);
-    return () => {
-      window.removeEventListener("scroll", inputUnFocused);
-    };
-  }, []);
-
   if (!isOpenSearchAddress) return null;
 
   return (
-    <div
-      className="relative left-0 top-[env(safe-area-inset-top)] z-30 h-[calc(100dvh-env(safe-area-inset-top))] w-full overflow-y-auto overscroll-none bg-white scrollbar-hide"
-      onTouchStart={() => {
-        inputRef.current?.blur();
-      }}
-    >
-      <div className="h-[calc(100dvh-env(safe-area-inset-top)+1px)]">
-        <div
-          className={clsx(
-            "flex h-16 w-full items-center justify-between overscroll-none bg-white px-5 py-[0.875rem]",
-          )}
-        >
-          <button onClick={closeSearchAddress} type="button">
-            <Image
-              src="/assets/images/button/arrow_left_2.svg"
-              width={32}
-              height={32}
-              alt="뒤로가기"
-            />
-          </button>
-          <div className="font-bold">주소 검색</div>
-          <div className="h-8 w-8"></div>
-        </div>
-        <div className="relative h-[2.75rem] bg-grey-50">
+    <>
+      <div
+        className={clsx(
+          "fixed left-0 top-[env(safe-area-inset-top)] z-50 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem]",
+        )}
+        onTouchStart={() => inputRef.current?.blur()}
+      >
+        <button onClick={closeSearchAddress} type="button">
+          <Image
+            src="/assets/images/button/arrow_left_2.svg"
+            width={32}
+            height={32}
+            alt="뒤로가기"
+          />
+        </button>
+        <div className="font-bold">주소 검색</div>
+        <div className="h-8 w-8"></div>
+      </div>
+      <div className="fixed left-0 top-[calc(env(safe-area-inset-top))] z-40 h-[calc(100dvh-env(safe-area-inset-top))] w-full overflow-y-auto scrollbar-hide">
+        <div className="relative top-[4rem] h-[2.75rem] bg-grey-50">
           <div className={clsx("absolute left-3 top-[0.875rem] h-4 w-4")}>
             <Image
               className={clsx("pointerhover:group-hover/search:hidden")}
@@ -152,17 +135,19 @@ export default function SearchAddressPage() {
               alt="close"
             />
           </button>
-          <div
-            className={clsx(
-              "absolute left-0 top-[2.75rem] max-h-[13.75rem] w-full bg-grey-50 sm:top-[2.75rem]",
-            )}
-          >
-            {searchList.map((addr, idx) => (
-              <AddAddressButton key={idx} {...addr} />
-            ))}
+          <div className="absolute left-0 top-[2.75rem] h-[calc(100dvh-env(safe-area-inset-top)-107px)] w-full bg-white">
+            <div
+              className={clsx(
+                "max-h-[13.75rem] w-full bg-grey-50 sm:top-[2.75rem]",
+              )}
+            >
+              {searchList.map((addr, idx) => (
+                <AddAddressButton key={idx} {...addr} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
