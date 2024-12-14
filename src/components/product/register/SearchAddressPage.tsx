@@ -106,7 +106,7 @@ export default function SearchAddressPage() {
         <div className="font-bold">주소 검색</div>
         <div className="h-8 w-8"></div>
       </div>
-      <div className="fixed left-0 top-[calc(env(safe-area-inset-top))] z-30 h-[6.75rem] w-full overflow-y-auto overscroll-contain bg-white scrollbar-hide">
+      <div className="fixed left-0 top-[calc(env(safe-area-inset-top))] z-30 h-[6.75rem] w-full overflow-y-auto overscroll-none bg-white scrollbar-hide">
         <div className="h-[calc(100%+1px)]">
           <div className="relative top-[4rem] h-[2.75rem] bg-grey-50">
             <div className={clsx("absolute left-3 top-[0.875rem] h-4 w-4")}>
@@ -142,7 +142,7 @@ export default function SearchAddressPage() {
         </div>
       </div>
       <div
-        className="fixed left-0 top-[calc(env(safe-area-inset-top)+6.75rem)] z-30"
+        className="fixed left-0 top-[calc(env(safe-area-inset-top)+6.6875rem)] z-30"
         onTouchStart={() => inputRef.current?.blur()}
       >
         <div
