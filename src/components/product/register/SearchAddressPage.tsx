@@ -9,6 +9,7 @@ import jusoData from "@/mocks/data/juso/jusoData.json";
 import debounce from "debounce";
 import utils from "@/utils/cmmnUtil";
 import useSearchStore from "@/store/searchStore";
+import { isAndroid } from "react-device-detect";
 
 export default function SearchAddressPage() {
   const [searchList, setSearchList] = useState<JusoProps[]>([]);
@@ -107,7 +108,7 @@ export default function SearchAddressPage() {
         <div className="h-8 w-8"></div>
       </div>
       <div className="fixed left-0 top-[calc(env(safe-area-inset-top))] z-30 h-[6.75rem] w-full overflow-y-auto overscroll-none bg-white scrollbar-hide">
-        <div className="h-[calc(100%+1px)]">
+        <div className={`${isAndroid ? "h-full" : "h-[calc(100% + 1px)]"}`}>
           <div className="relative top-[4rem] h-[2.75rem] bg-grey-50">
             <div className={clsx("absolute left-3 top-[0.875rem] h-4 w-4")}>
               <Image
