@@ -87,10 +87,9 @@ export default function SearchAddressPage() {
 
   return (
     <>
+      <div className="fixed left-0 top-[env(safe-area-inset-top)] h-[calc(100dvh-env(safe-area-inset-top))] w-full"></div>
       <div
-        className={clsx(
-          "fixed left-0 top-[env(safe-area-inset-top)] z-50 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem]",
-        )}
+        className="fixed left-0 top-[env(safe-area-inset-top)] z-40 flex h-16 w-full items-center justify-between bg-white px-5 py-[0.875rem]"
         onTouchStart={() => inputRef.current?.blur()}
       >
         <button onClick={closeSearchAddress} type="button">
@@ -104,46 +103,48 @@ export default function SearchAddressPage() {
         <div className="font-bold">주소 검색</div>
         <div className="h-8 w-8"></div>
       </div>
-      <div className="fixed left-0 top-[calc(env(safe-area-inset-top))] z-40 h-[calc(100dvh-env(safe-area-inset-top))] w-full overflow-y-auto scrollbar-hide">
-        <div className="relative top-[4rem] h-[2.75rem] bg-grey-50">
-          <div className={clsx("absolute left-3 top-[0.875rem] h-4 w-4")}>
-            <Image
-              className={clsx("pointerhover:group-hover/search:hidden")}
-              src="/assets/images/magnify.svg"
-              width={20}
-              height={20}
-              alt="search"
-            />
-          </div>
-          <input
-            className={clsx(
-              "ml-10 h-11 w-[calc(100%-4.75rem)] truncate bg-transparent text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-center placeholder:text-[0.875rem]",
-            )}
-            ref={inputRef}
-            placeholder="주소를 검색하세요"
-            onChange={handleSearchInput}
-          />
-          <button
-            className={clsx("absolute right-3 top-4 h-3 w-3")}
-            type="button"
-            onClick={clearField}
-          >
-            <Image
-              src="/assets/images/button/close_grey.svg"
-              width={12}
-              height={12}
-              alt="close"
-            />
-          </button>
-          <div className="absolute left-0 top-[2.75rem] h-[calc(100dvh-env(safe-area-inset-top)-107px)] w-full bg-white">
-            <div
+      <div className="fixed left-0 top-[calc(env(safe-area-inset-top))] z-30 h-[calc(100dvh-env(safe-area-inset-top))] w-full overflow-y-auto bg-white scrollbar-hide">
+        <div className="h-[calc(100%+1px)]">
+          <div className="relative top-[4rem] h-[2.75rem] bg-grey-50">
+            <div className={clsx("absolute left-3 top-[0.875rem] h-4 w-4")}>
+              <Image
+                className={clsx("pointerhover:group-hover/search:hidden")}
+                src="/assets/images/magnify.svg"
+                width={20}
+                height={20}
+                alt="search"
+              />
+            </div>
+            <input
               className={clsx(
-                "max-h-[13.75rem] w-full bg-grey-50 sm:top-[2.75rem]",
+                "ml-10 h-11 w-[calc(100%-4.75rem)] truncate bg-transparent text-[0.875rem] font-semibold text-grey-700 outline-none placeholder:text-center placeholder:text-[0.875rem]",
               )}
+              ref={inputRef}
+              placeholder="주소를 검색하세요"
+              onChange={handleSearchInput}
+            />
+            <button
+              className={clsx("absolute right-3 top-4 h-3 w-3")}
+              type="button"
+              onClick={clearField}
             >
-              {searchList.map((addr, idx) => (
-                <AddAddressButton key={idx} {...addr} />
-              ))}
+              <Image
+                src="/assets/images/button/close_grey.svg"
+                width={12}
+                height={12}
+                alt="close"
+              />
+            </button>
+            <div className="absolute left-0 top-[2.75rem] z-10 bg-white">
+              <div
+                className={clsx(
+                  "max-h-[13.75rem] w-full bg-grey-50 sm:top-[2.75rem]",
+                )}
+              >
+                {searchList.map((addr, idx) => (
+                  <AddAddressButton key={idx} {...addr} />
+                ))}
+              </div>
             </div>
           </div>
         </div>
