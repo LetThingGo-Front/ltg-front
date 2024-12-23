@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 import useExploreStore from "@/store/exploreStore";
 import clsx from "clsx";
 
-const INITIAL_SNAP = 1;
+const INITIAL_SNAP = 2;
 const CONTENT_VIEW_HEIGHT = 250; // pc 화면에서 컨텐츠 한 줄 보이는 높이
 const SM_CONTENT_VIEW_HEIGHT = 195; // 모바일 화면 컨텐츠 한 줄 보이는 높이
 const SHEET_HEADER_HEIGHT = 48;
@@ -29,7 +29,8 @@ export default function SheetModal() {
     setWindowHeight(window.innerHeight);
   }, 500);
   const snapPoints = [
-    windowWidth > 640 ? 0.5 : 0.7,
+    0.7,
+    0.5,
     windowWidth > 640
       ? CONTENT_VIEW_HEIGHT / windowHeight
       : SM_CONTENT_VIEW_HEIGHT / windowHeight,
@@ -39,9 +40,7 @@ export default function SheetModal() {
   ];
   const snapTo = (i: number) => sheetRef.current?.snapTo(i);
   const handleSheetHeader = () => {
-    // if (currentSnapPoint === 0) snapTo(2);
-    // if (currentSnapPoint === 1) snapTo(0);
-    if (currentSnapPoint === 2) snapTo(1);
+    snapTo(currentSnapPoint === 0 ? 3 : currentSnapPoint - 1);
   };
 
   const calculateSheetMarginBottom = () => {
@@ -61,8 +60,9 @@ export default function SheetModal() {
   useEffect(() => {
     getWindowSize();
     setTimeout(() => {
-      setOpen(type || isSearch ? true : false);
-    }, 500);
+      // setOpen(type || isSearch ? true : false);
+      setOpen(true);
+    }, 300);
   }, [getWindowSize, isSearch, type]);
 
   return (
@@ -70,7 +70,7 @@ export default function SheetModal() {
       ref={sheetRef}
       isOpen={isOpen}
       onClose={() => {
-        snapTo(2);
+        snapTo(3);
       }}
       snapPoints={snapPoints}
       initialSnap={INITIAL_SNAP}

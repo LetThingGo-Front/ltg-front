@@ -11,8 +11,11 @@ import { Container as MapDiv, Marker, useNavermaps } from "react-naver-maps";
 import debounce from "debounce";
 import Maps from "./Maps";
 import { isMobile } from "react-device-detect";
+import Image from "next/image";
+import clsx from "clsx";
+import AddressModal from "../AddressModal";
 
-type Latlng = {
+export type Latlng = {
   y: number;
   _lat: number;
   x: number;
@@ -36,8 +39,8 @@ type Props = {
 const markerIconList = {
   marker: {
     url: "/assets/images/marker/marker.png",
-    size: { width: 69, height: 68 },
-    scaledSize: { width: 69, height: 68 },
+    size: { width: 68, height: 68 },
+    scaledSize: { width: 68, height: 68 },
     anchor: { x: 34, y: 34 },
   },
   markerSm: {
@@ -75,67 +78,78 @@ export default memo(function RegisterMap({
 }: Props) {
   const [isEnabled, setIsEnabled] = useState(false);
   const [zoom, setZoom] = useState<number>(17);
+  const [isDraggingMap, setIsDraggingMap] = useState(false);
   const navermaps = useNavermaps();
-  const searchAddressToCoordinate = (address: string) => {
-    if (!address) {
-      alert("주소를 입력하세요.");
-      return;
-    }
-    navermaps.Service.geocode(
-      {
-        query: address,
-      },
-      (status: number, response: any) => {
-        if (status === 200) {
-          if (response.v2.meta.totalCount === 0) {
-            console.log("searchAddressToCoordinate 검색 결과가 없습니다.");
-          } else {
-            const { x, y } = response.v2.addresses[0];
-            if (setCoordinate) {
-              setCoordinate({ lat: y, lng: x });
+  const searchAddressToCoordinate = useCallback(
+    (address: string) => {
+      if (!address) {
+        alert("주소를 입력하세요.");
+        return;
+      }
+      navermaps.Service.geocode(
+        {
+          query: address,
+        },
+        (status: number, response: any) => {
+          if (status === 200) {
+            if (response.v2.meta.totalCount === 0) {
+              console.log("searchAddressToCoordinate 검색 결과가 없습니다.");
+            } else {
+              const { x, y } = response.v2.addresses[0];
+              if (setCoordinate) {
+                // setCoordinate({ lat: y, lng: x });
+              }
             }
           }
-        }
-      },
-    );
-  };
+        },
+      );
+    },
+    [navermaps.Service, setCoordinate],
+  );
 
-  const searchCoordinateToAddress = (latlng: Latlng) => {
-    navermaps.Service.reverseGeocode(
-      {
-        coords: latlng,
-        orders: [navermaps.Service.OrderType.ROAD_ADDR].join(","),
-      },
-      (status: number, response: any) => {
-        if (status === 200) {
-          if (response.v2.status.code === 0) {
-            const address = response.v2.results[0];
-            console.log(address);
-            const { land, region } = address;
-            let fullAddress = `${region.area1.alias} ${region.area2.name} ${land.name} ${land.number1} ${land.number2}`;
-            const extraAddress = [region.area3.name, land.addition0.value]
-              .filter((item) => item !== "")
-              .join(", ");
+  const searchCoordinateToAddress = useCallback(
+    (latlng: Latlng) => {
+      navermaps.Service.reverseGeocode(
+        {
+          coords: latlng,
+          orders: [navermaps.Service.OrderType.ROAD_ADDR].join(","),
+        },
+        (status: number, response: any) => {
+          if (status === 200) {
+            if (response.v2.status.code === 0) {
+              const address = response.v2.results[0];
 
-            fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-            if (setAddress && setSimpleAddr) {
-              setAddress(fullAddress);
-              setSimpleAddr(`${region.area2.name} ${region.area3.name}`);
+              const { land, region } = address;
+              let fullAddress = `${region.area1.alias} ${region.area2.name} ${land.name} ${land.number1} ${land.number2}`;
+              const extraAddress = [region.area3.name, land.addition0.value]
+                .filter((item) => item !== "")
+                .join(", ");
+
+              fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+              if (setAddress && setSimpleAddr) {
+                setAddress(fullAddress);
+                setSimpleAddr(`${region.area2.name} ${region.area3.name}`);
+              }
+              if (setCoordinate) {
+                setCoordinate({ lat: latlng.y, lng: latlng.x });
+              }
+            } else {
+              if (response.v2.status.code === 3) {
+                console.log("해당 위치의 정확한 주소를 모르겠어요. 😥");
+              }
+              if (response.v2.status.code === 100) {
+                console.log("요청 정보를 다시 확인해주세요. ☹️");
+              }
+              if (response.v2.status.code === 900) {
+                console.log("알 수 없는 오류가 발생했어요. 😳");
+              }
             }
           }
-          if (response.v2.status.code === 3) {
-            alert("해당 위치의 정확한 주소를 모르겠어요. 😥");
-          }
-          if (response.v2.status.code === 100) {
-            alert("요청 정보를 다시 확인해주세요. ☹️");
-          }
-          if (response.v2.status.code === 900) {
-            alert("알 수 없는 오류가 발생했어요. 😳");
-          }
-        }
-      },
-    );
-  };
+        },
+      );
+    },
+    [navermaps.Service, setAddress, setCoordinate, setSimpleAddr],
+  );
 
   const getMarkerIcon = useMemo(() => {
     return isMobile
@@ -145,13 +159,24 @@ export default memo(function RegisterMap({
       : isTodayShare
         ? markerIconList.thunderMarker
         : markerIconList.marker;
-  }, [isMobile, isTodayShare]);
+  }, [isTodayShare]);
 
-  useEffect(() => {
-    if (address) {
-      searchAddressToCoordinate(address);
-    }
-  }, [address]);
+  // useEffect(() => {
+  //   if (address) {
+  //     searchAddressToCoordinate(address);
+  //   }
+  // }, [address, searchAddressToCoordinate]);
+
+  // useEffect(() => {
+  //   if (coordinate.lat && coordinate.lng) {
+  //     searchCoordinateToAddress({
+  //       y: coordinate.lat,
+  //       x: coordinate.lng,
+  //       _lat: coordinate.lat,
+  //       _lng: coordinate.lng,
+  //     });
+  //   }
+  // }, [coordinate, searchCoordinateToAddress]);
 
   useEffect(() => {
     // 주소가 없는 최초의 상태에서만 현위치로 이동(위치 권한 허용시)
@@ -212,6 +237,18 @@ export default memo(function RegisterMap({
         border: "0.5px solid #E8E8E8",
       }}
       id={locationId}
+      onMouseDown={() => {
+        setIsDraggingMap(true);
+      }}
+      onMouseUp={() => {
+        setIsDraggingMap(false);
+      }}
+      onTouchStart={() => {
+        setIsDraggingMap(true);
+      }}
+      onTouchEnd={() => {
+        setIsDraggingMap(false);
+      }}
     >
       {progressStatus === "complete" && (
         <div className="absolute m-3 h-[1.5625rem] w-[4.625rem] rounded bg-[#303030]/50 p-1 text-center text-xs font-bold text-white backdrop-blur-sm">
@@ -222,6 +259,7 @@ export default memo(function RegisterMap({
         coordinate={coordinate}
         isEnabled={isEnabled}
         isFullScreen={isFullScreen}
+        searchCoordinateToAddress={searchCoordinateToAddress}
       >
         {(document.fullscreenElement ||
           (!disableFullscreen && address) ||
@@ -250,19 +288,37 @@ export default memo(function RegisterMap({
               />
             </div>
           )}
-        {(isEnabled ||
-          progressStatus === "complete" ||
-          address ||
-          isFullScreen) && (
+        {address && !isEnabled && !isFullScreen && (
           <Marker
             position={coordinate}
-            draggable={isEnabled || isFullScreen}
+            draggable={false}
             icon={getMarkerIcon}
-            onDragend={(e) => {
-              searchCoordinateToAddress(e.coord);
-            }}
+            // onDragend={(e) => {
+            //   searchCoordinateToAddress(e.coord);
+            // }}
           />
         )}
+        {(isEnabled || isFullScreen) && (
+          <div className="flex flex-col justify-center">
+            <Image
+              className={clsx(
+                "absolute left-[calc(50%-34px)] top-[calc(50%-34px)] z-10",
+                isDraggingMap && "opacity-50",
+              )}
+              src="/assets/images/marker/marker.png"
+              width={68}
+              height={68}
+              alt="marker"
+            />
+            <div className="absolute left-[calc(50%-34px)] top-[calc(50%-70px)]">
+              {address}
+            </div>
+          </div>
+        )}
+        <AddressModal
+          isOpen={isEnabled || isFullScreen ? true : false}
+          address={address}
+        />
         <MoveCenter
           lat={coordinate.lat}
           lng={coordinate.lng}

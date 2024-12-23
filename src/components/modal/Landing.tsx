@@ -49,16 +49,16 @@ export default function LandingModal() {
       </div>
       <div className="mt-8 flex flex-col items-center justify-center gap-4 text-sm">
         <LandingButton
-          imgSrc="/assets/images/button/location_red.svg"
-          label="내 주변 나눔 보기"
-          altText="location icon"
-          url="/explore?type=near"
-        />
-        <LandingButton
           imgSrc="/assets/images/button/thunder.svg"
           label="오늘 번개 나눔 보기"
           altText="thunder icon"
           url="/explore?type=lightning"
+        />
+        <LandingButton
+          imgSrc="/assets/images/button/location_red.svg"
+          label="내 주변 나눔 보기"
+          altText="location icon"
+          url="/explore?type=near"
         />
         <LandingButton
           imgSrc="/assets/images/thing_sm_black.svg"
