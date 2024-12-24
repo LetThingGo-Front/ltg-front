@@ -14,6 +14,7 @@ import AddressButton from "./button/AddressButton";
 import { isMobile, isTablet } from "react-device-detect";
 import jusoData from "@/mocks/data/juso/jusoData.json";
 import useSearchStore from "@/store/searchStore";
+import { useNavermaps } from "react-naver-maps";
 
 type Props = {
   addr: string;
@@ -24,6 +25,7 @@ type Props = {
   setSimpleAddr: (simpleAddr: string) => void;
   isFocused: boolean;
   setIsFocused: (isFocused: boolean) => void;
+  setCoordinate: (coordinate: { lat: number; lng: number }) => void;
 };
 
 export type JusoProps = {
@@ -62,6 +64,7 @@ export default function SearchInput({
   setSimpleAddr,
   isFocused,
   setIsFocused,
+  setCoordinate,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -71,6 +74,34 @@ export default function SearchInput({
   const openSearhAddress = useSearchStore.use.actions().searchOpen;
   const searchAddressGlobal = useSearchStore.use.address();
   const initSearchAddressStore = useSearchStore.use.actions().initSearch;
+  const navermaps = useNavermaps();
+
+  const searchAddressToCoordinate = useCallback(
+    (address: string) => {
+      if (!address) {
+        alert("주소를 입력하세요.");
+        return;
+      }
+      navermaps.Service.geocode(
+        {
+          query: address,
+        },
+        (status: number, response: any) => {
+          if (status === 200) {
+            if (response.v2.meta.totalCount === 0) {
+              console.log("searchAddressToCoordinate 검색 결과가 없습니다.");
+            } else {
+              const { x, y } = response.v2.addresses[0];
+              if (setCoordinate) {
+                setCoordinate({ lat: y, lng: x });
+              }
+            }
+          }
+        },
+      );
+    },
+    [navermaps.Service, setCoordinate],
+  );
 
   const setAddressInput = debounce((value: string) => {
     if (value !== inputRef.current?.value) return;
@@ -123,6 +154,7 @@ export default function SearchInput({
       const addressNm = address.bdNm
         ? `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(address.bdNm)})`
         : `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
+      searchAddressToCoordinate(addressNm);
       setAddress(addressNm);
       setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
       if (inputRef.current) inputRef.current.value = addressNm;
@@ -130,7 +162,7 @@ export default function SearchInput({
       setIsFocused(false);
       setSearchList([]);
     },
-    [setAddress, setSimpleAddr, setIsFocused],
+    [searchAddressToCoordinate, setAddress, setSimpleAddr, setIsFocused],
   );
 
   const searchInputFocus = () => {

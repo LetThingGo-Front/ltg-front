@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import React from "react";
 
 type Props = {
-  isOpen: boolean;
   address?: string;
+  saveLocation: () => void;
 };
 
 const modalVariants = {
@@ -26,11 +26,10 @@ const modalVariants = {
   },
 };
 
-export default function AddressModal({ isOpen, address }: Props) {
-  if (!isOpen) return null;
+export default function AddressModal({ address, saveLocation }: Props) {
   return (
     <motion.div
-      className="absolute bottom-0 left-0 h-[12.75rem] w-full rounded-t-[1.875rem] bg-white"
+      className="absolute bottom-0 left-0 h-[12.75rem] w-full rounded-t-[0.625rem] bg-black/70 px-[1.875rem] pb-[1.625rem] pt-7 backdrop-blur-[50px]"
       variants={modalVariants}
       initial="start"
       animate="end"
@@ -39,8 +38,20 @@ export default function AddressModal({ isOpen, address }: Props) {
         e.stopPropagation();
       }}
     >
-      <div className="h-full w-full rounded-t-[1.875rem] bg-black/70">
-        <p className="text-center font-semibold text-white">{address}</p>
+      <div className="flex h-[6.9375rem] flex-col gap-4">
+        <p className="text-xxs font-semibold text-green-400">
+          띵즈 핀을 이동해서 위치를 설정해주세요
+        </p>
+        <p className="text-sm text-white">{address}</p>
+      </div>
+      <div className="text-center">
+        <button
+          className="h-[2.5625rem] w-[8.25rem] rounded-full border border-white/20 bg-white/70 text-xs font-semibold text-grey-800 shadow-[0_0_10px_0_rgba(0,0,0,0.1)] backdrop-blur-[10px] hover:border-white hover:bg-black/60 hover:text-white active:border-white active:bg-black/60 active:text-white"
+          type="button"
+          onClick={saveLocation}
+        >
+          나눔위치 설정완료
+        </button>
       </div>
     </motion.div>
   );

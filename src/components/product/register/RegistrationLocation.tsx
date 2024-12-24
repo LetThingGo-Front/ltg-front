@@ -278,6 +278,7 @@ export default function RegistrationLocation({
               isOpen={isOpenSearchAddr}
               openPostcode={setIsOpenSearchAddr}
               setSimpleAddr={setSimpleAddr}
+              setCoordinate={setCoordinate}
             />
             <TextInput
               placeholder="길안내 (예: 지상 강남역 12번 출구 앞)"

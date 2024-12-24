@@ -36,6 +36,12 @@ type Props = {
   isFullScreen?: boolean;
 };
 
+type SearchLocationInfo = {
+  address: string;
+  simpleAddr: string;
+  coordinate: { lat: number; lng: number };
+};
+
 const markerIconList = {
   marker: {
     url: "/assets/images/marker/marker.png",
@@ -63,6 +69,12 @@ const markerIconList = {
   },
 };
 
+const INIT_SEARCH_LOCATION_INFO = {
+  address: "",
+  simpleAddr: "",
+  coordinate: { lat: 0, lng: 0 },
+};
+
 export default memo(function RegistrationMap({
   address,
   setAddress,
@@ -79,33 +91,9 @@ export default memo(function RegistrationMap({
   const [isEnabled, setIsEnabled] = useState(false);
   const [zoom, setZoom] = useState<number>(17);
   const [isDraggingMap, setIsDraggingMap] = useState(false);
+  const [searchLocationInfo, setSearchLocationInfo] =
+    useState<SearchLocationInfo>(INIT_SEARCH_LOCATION_INFO);
   const navermaps = useNavermaps();
-  const searchAddressToCoordinate = useCallback(
-    (address: string) => {
-      if (!address) {
-        alert("주소를 입력하세요.");
-        return;
-      }
-      navermaps.Service.geocode(
-        {
-          query: address,
-        },
-        (status: number, response: any) => {
-          if (status === 200) {
-            if (response.v2.meta.totalCount === 0) {
-              console.log("searchAddressToCoordinate 검색 결과가 없습니다.");
-            } else {
-              const { x, y } = response.v2.addresses[0];
-              if (setCoordinate) {
-                // setCoordinate({ lat: y, lng: x });
-              }
-            }
-          }
-        },
-      );
-    },
-    [navermaps.Service, setCoordinate],
-  );
 
   const searchCoordinateToAddress = useCallback(
     (latlng: Latlng) => {
@@ -126,13 +114,13 @@ export default memo(function RegistrationMap({
                 .join(", ");
 
               fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-              if (setAddress && setSimpleAddr) {
-                setAddress(fullAddress);
-                setSimpleAddr(`${region.area2.name} ${region.area3.name}`);
-              }
-              if (setCoordinate) {
-                setCoordinate({ lat: latlng.y, lng: latlng.x });
-              }
+
+              const locationInfo = {
+                address: fullAddress,
+                simpleAddr: `${region.area2.name} ${region.area3.name}`,
+                coordinate: { lat: latlng.y, lng: latlng.x },
+              };
+              setSearchLocationInfo(locationInfo);
             } else {
               if (response.v2.status.code === 3) {
                 console.log("해당 위치의 정확한 주소를 모르겠어요. 😥");
@@ -148,7 +136,7 @@ export default memo(function RegistrationMap({
         },
       );
     },
-    [navermaps.Service, setAddress, setCoordinate, setSimpleAddr],
+    [navermaps.Service],
   );
 
   const getMarkerIcon = useMemo(() => {
@@ -161,22 +149,23 @@ export default memo(function RegistrationMap({
         : markerIconList.marker;
   }, [isTodayShare]);
 
-  // useEffect(() => {
-  //   if (address) {
-  //     searchAddressToCoordinate(address);
-  //   }
-  // }, [address, searchAddressToCoordinate]);
-
-  // useEffect(() => {
-  //   if (coordinate.lat && coordinate.lng) {
-  //     searchCoordinateToAddress({
-  //       y: coordinate.lat,
-  //       x: coordinate.lng,
-  //       _lat: coordinate.lat,
-  //       _lng: coordinate.lng,
-  //     });
-  //   }
-  // }, [coordinate, searchCoordinateToAddress]);
+  const saveLocation = () => {
+    if (setAddress) {
+      setAddress(searchLocationInfo.address);
+    }
+    if (setSimpleAddr) {
+      setSimpleAddr(searchLocationInfo.simpleAddr);
+    }
+    if (setCoordinate) {
+      setCoordinate(searchLocationInfo.coordinate);
+    }
+    if (setIsFullScreen) {
+      setIsFullScreen(false);
+    }
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  };
 
   useEffect(() => {
     // 주소가 없는 최초의 상태에서만 현위치로 이동(위치 권한 허용시)
@@ -225,6 +214,7 @@ export default memo(function RegistrationMap({
 
   useEffect(() => {
     window.dispatchEvent(new Event("resize"));
+    setSearchLocationInfo(INIT_SEARCH_LOCATION_INFO);
   }, [isEnabled, isFullScreen]);
 
   return (
@@ -260,6 +250,7 @@ export default memo(function RegistrationMap({
           isEnabled={isEnabled}
           isFullScreen={isFullScreen}
           searchCoordinateToAddress={searchCoordinateToAddress}
+          isDraggingMap={isDraggingMap}
         >
           {(document.fullscreenElement ||
             (!disableFullscreen && address) ||
@@ -288,7 +279,8 @@ export default memo(function RegistrationMap({
                 />
               </div>
             )}
-          {address && !isEnabled && !isFullScreen && (
+          {((address && !isEnabled && !isFullScreen) ||
+            progressStatus === "complete") && (
             <Marker
               position={coordinate}
               draggable={false}
@@ -301,12 +293,19 @@ export default memo(function RegistrationMap({
           {(isEnabled || isFullScreen) && (
             <Image
               className={clsx(
-                "absolute left-[calc(50%-34px)] top-[calc(50%-34px)] z-10",
-                isDraggingMap && "opacity-50",
+                "absolute z-10",
+                // isDraggingMap && "opacity-50",
+                isMobile
+                  ? "left-[calc(50%-63px)] top-[calc(50%-32px)]"
+                  : "left-[calc(50%-34px)] top-[calc(50%-34px)]",
               )}
-              src="/assets/images/marker/marker.png"
-              width={68}
-              height={68}
+              src={
+                isMobile
+                  ? "/assets/images/marker/marker_sm.png"
+                  : "/assets/images/marker/marker.png"
+              }
+              width={isMobile ? 126 : 68}
+              height={isMobile ? 64 : 68}
               alt="marker"
             />
           )}
@@ -319,10 +318,12 @@ export default memo(function RegistrationMap({
           <ZoomControl address={address} zoom={zoom} />
         </Maps>
       </MapDiv>
-      <AddressModal
-        isOpen={isEnabled || isFullScreen ? true : false}
-        address={address}
-      />
+      {(isEnabled || isFullScreen) && searchLocationInfo.address && (
+        <AddressModal
+          address={searchLocationInfo.address}
+          saveLocation={saveLocation}
+        />
+      )}
     </div>
   );
 });

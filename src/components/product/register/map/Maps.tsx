@@ -11,6 +11,7 @@ type Props = {
   isFullScreen?: boolean;
   isEnabled?: boolean;
   searchCoordinateToAddress?: (latlng: Latlng) => void;
+  isDraggingMap: boolean;
 };
 
 export default function Maps({
@@ -19,6 +20,7 @@ export default function Maps({
   isFullScreen,
   isEnabled,
   searchCoordinateToAddress,
+  isDraggingMap,
 }: Props) {
   const setCoordinateToAddress = debounce((lat: number, lng: number) => {
     if (searchCoordinateToAddress)
@@ -35,7 +37,7 @@ export default function Maps({
       draggable={isEnabled || isFullScreen}
       scrollWheel={isEnabled || isFullScreen}
       onCenterChanged={(e) => {
-        if (isEnabled || isFullScreen) setCoordinateToAddress(e._lat, e._lng);
+        if (isDraggingMap) setCoordinateToAddress(e._lat, e._lng);
       }}
     >
       {children}

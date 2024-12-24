@@ -13,6 +13,7 @@ type Props = {
   isOpen: boolean;
   openPostcode: (open: boolean) => void;
   setSimpleAddr: (address: string) => void;
+  setCoordinate: (coord: { lat: number; lng: number }) => void;
 };
 
 export default function Postcode({
@@ -21,6 +22,7 @@ export default function Postcode({
   isOpen,
   openPostcode,
   setSimpleAddr,
+  setCoordinate,
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -39,6 +41,7 @@ export default function Postcode({
         setSimpleAddr={setSimpleAddr}
         isFocused={isFocused}
         setIsFocused={setIsFocused}
+        setCoordinate={setCoordinate}
       />
     </div>
   );
