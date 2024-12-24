@@ -17,7 +17,7 @@ const modalVariants = {
   end: {
     y: "0%",
     ease: "easeInOut",
-    transition: { type: "tween", ...duration.short, ...delay.short },
+    transition: { type: "tween", ...duration.short },
   },
   exit: {
     y: "100%",
