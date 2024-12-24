@@ -211,7 +211,7 @@ export default memo(function RegistrationMap({
       }
     };
   }, []);
-
+  console.log({ isEnabled, isFullScreen, addres: searchLocationInfo.address });
   useEffect(() => {
     window.dispatchEvent(new Event("resize"));
     setSearchLocationInfo(INIT_SEARCH_LOCATION_INFO);
@@ -250,7 +250,6 @@ export default memo(function RegistrationMap({
           isEnabled={isEnabled}
           isFullScreen={isFullScreen}
           searchCoordinateToAddress={searchCoordinateToAddress}
-          isDraggingMap={isDraggingMap}
         >
           {(document.fullscreenElement ||
             (!disableFullscreen && address) ||
