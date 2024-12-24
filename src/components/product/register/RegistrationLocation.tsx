@@ -288,7 +288,7 @@ export default function RegistrationLocation({
           </div>
           <div
             className={clsx(
-              "h-[7.5rem] w-full sm:h-[11.25rem]",
+              "relative h-[7.5rem] w-full sm:h-[11.25rem]",
               isFullScreen &&
                 "fixed left-0 top-[env(safe-area-inset-top)] z-20 h-[calc(100dvh-env(safe-area-inset-top))]",
             )}
@@ -362,7 +362,7 @@ export default function RegistrationLocation({
         </motion.div>
       ) : (
         <div className="flex h-[6.875rem] flex-col gap-2 rounded-lg sm:h-[13.75rem] sm:gap-5">
-          <div className="h-[5.625rem] sm:h-[11.25rem]">
+          <div className="relative h-[5.625rem] sm:h-[11.25rem]">
             <RegistrationMap
               coordinate={coordinate}
               locationId={locationCase.locationId}

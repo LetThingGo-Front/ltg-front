@@ -63,7 +63,7 @@ const markerIconList = {
   },
 };
 
-export default memo(function RegisterMap({
+export default memo(function RegistrationMap({
   address,
   setAddress,
   coordinate,
@@ -228,78 +228,77 @@ export default memo(function RegisterMap({
   }, [isEnabled, isFullScreen]);
 
   return (
-    <MapDiv
-      style={{
-        height: "100%",
-        borderRadius: isFullScreen ? "0" : "0.625rem",
-        overflow: "hidden",
-        position: "relative",
-        border: "0.5px solid #E8E8E8",
-      }}
-      id={locationId}
-      onMouseDown={() => {
-        setIsDraggingMap(true);
-      }}
-      onMouseUp={() => {
-        setIsDraggingMap(false);
-      }}
-      onTouchStart={() => {
-        setIsDraggingMap(true);
-      }}
-      onTouchEnd={() => {
-        setIsDraggingMap(false);
-      }}
-    >
-      {progressStatus === "complete" && (
-        <div className="absolute m-3 h-[1.5625rem] w-[4.625rem] rounded bg-[#303030]/50 p-1 text-center text-xs font-bold text-white backdrop-blur-sm">
-          {locationId}
-        </div>
-      )}
-      <Maps
-        coordinate={coordinate}
-        isEnabled={isEnabled}
-        isFullScreen={isFullScreen}
-        searchCoordinateToAddress={searchCoordinateToAddress}
+    <div id={locationId} className="h-full w-full">
+      <MapDiv
+        style={{
+          height: "100%",
+          borderRadius: isFullScreen ? "0" : "0.625rem",
+          overflow: "hidden",
+          position: "relative",
+          border: "0.5px solid #E8E8E8",
+        }}
+        onMouseDown={() => {
+          setIsDraggingMap(true);
+        }}
+        onMouseUp={() => {
+          setIsDraggingMap(false);
+        }}
+        onTouchStart={() => {
+          setIsDraggingMap(true);
+        }}
+        onTouchEnd={() => {
+          setIsDraggingMap(false);
+        }}
       >
-        {(document.fullscreenElement ||
-          (!disableFullscreen && address) ||
-          address ||
-          isFullScreen) && (
-          <FullScreenButton
-            id={locationId}
-            isFullScreen={isFullScreen}
-            setIsFullScreen={() => {
-              setIsFullScreen && setIsFullScreen(!isFullScreen);
-            }}
-            setZoom={setZoom}
-          />
+        {progressStatus === "complete" && (
+          <div className="absolute m-3 h-[1.5625rem] w-[4.625rem] rounded bg-[#303030]/50 p-1 text-center text-xs font-bold text-white backdrop-blur-sm">
+            {locationId}
+          </div>
         )}
-        {!isEnabled &&
-          progressStatus === "register" &&
-          !address &&
-          !isFullScreen && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <FullScreenTextButton
-                id={locationId}
-                setIsFullScreen={() => {
-                  setIsFullScreen && setIsFullScreen(true);
-                }}
-                setZoom={setZoom}
-              />
-            </div>
+        <Maps
+          coordinate={coordinate}
+          isEnabled={isEnabled}
+          isFullScreen={isFullScreen}
+          searchCoordinateToAddress={searchCoordinateToAddress}
+        >
+          {(document.fullscreenElement ||
+            (!disableFullscreen && address) ||
+            address ||
+            isFullScreen) && (
+            <FullScreenButton
+              id={locationId}
+              isFullScreen={isFullScreen}
+              setIsFullScreen={() => {
+                setIsFullScreen && setIsFullScreen(!isFullScreen);
+              }}
+              setZoom={setZoom}
+            />
           )}
-        {address && !isEnabled && !isFullScreen && (
-          <Marker
-            position={coordinate}
-            draggable={false}
-            icon={getMarkerIcon}
-            // onDragend={(e) => {
-            //   searchCoordinateToAddress(e.coord);
-            // }}
-          />
-        )}
-        {(isEnabled || isFullScreen) && (
-          <div className="flex flex-col justify-center">
+          {!isEnabled &&
+            progressStatus === "register" &&
+            !address &&
+            !isFullScreen && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <FullScreenTextButton
+                  id={locationId}
+                  setIsFullScreen={() => {
+                    setIsFullScreen && setIsFullScreen(true);
+                  }}
+                  setZoom={setZoom}
+                />
+              </div>
+            )}
+          {address && !isEnabled && !isFullScreen && (
+            <Marker
+              position={coordinate}
+              draggable={false}
+              icon={getMarkerIcon}
+              // onDragend={(e) => {
+              //   searchCoordinateToAddress(e.coord);
+              // }}
+            />
+          )}
+          {(isEnabled || isFullScreen) && (
             <Image
               className={clsx(
                 "absolute left-[calc(50%-34px)] top-[calc(50%-34px)] z-10",
@@ -310,23 +309,20 @@ export default memo(function RegisterMap({
               height={68}
               alt="marker"
             />
-            <div className="absolute left-[calc(50%-34px)] top-[calc(50%-70px)]">
-              {address}
-            </div>
-          </div>
-        )}
-        <AddressModal
-          isOpen={isEnabled || isFullScreen ? true : false}
-          address={address}
-        />
-        <MoveCenter
-          lat={coordinate.lat}
-          lng={coordinate.lng}
-          isFullScreen={isFullScreen}
-          isEnabled={isEnabled}
-        />
-        <ZoomControl address={address} zoom={zoom} />
-      </Maps>
-    </MapDiv>
+          )}
+          <MoveCenter
+            lat={coordinate.lat}
+            lng={coordinate.lng}
+            isFullScreen={isFullScreen}
+            isEnabled={isEnabled}
+          />
+          <ZoomControl address={address} zoom={zoom} />
+        </Maps>
+      </MapDiv>
+      <AddressModal
+        isOpen={isEnabled || isFullScreen ? true : false}
+        address={address}
+      />
+    </div>
   );
 });
