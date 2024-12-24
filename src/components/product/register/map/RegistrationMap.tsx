@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingMapSpinner from "@/components/common/LoadingMapSpinner";
 import FullScreenButton from "@/components/common/map/FullScreenButton";
 import FullScreenTextButton from "@/components/common/map/FullScreenTextButton";
 import MoveCenter from "@/components/common/map/MoveCenter";
@@ -8,7 +7,6 @@ import ZoomControl from "@/components/common/map/ZoomControl";
 import axios from "axios";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Container as MapDiv, Marker, useNavermaps } from "react-naver-maps";
-import debounce from "debounce";
 import Maps from "./Maps";
 import { isMobile } from "react-device-detect";
 import Image from "next/image";
@@ -218,7 +216,10 @@ export default memo(function RegistrationMap({
   }, [isEnabled, isFullScreen]);
 
   return (
-    <div id={locationId} className="relative h-full w-full">
+    <div
+      id={locationId}
+      className={clsx("relative h-full w-full", isMobile && "select-none")}
+    >
       <MapDiv
         style={{
           height: "100%",

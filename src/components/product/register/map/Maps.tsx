@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { NaverMap, useNavermaps } from "react-naver-maps";
+import React from "react";
+import { NaverMap } from "react-naver-maps";
 import debounce from "debounce";
 import { Latlng } from "./RegistrationMap";
 
