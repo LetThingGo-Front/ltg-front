@@ -228,7 +228,7 @@ export default memo(function RegistrationMap({
   }, [isEnabled, isFullScreen]);
 
   return (
-    <div id={locationId} className="h-full w-full">
+    <div id={locationId} className="relative h-full w-full">
       <MapDiv
         style={{
           height: "100%",

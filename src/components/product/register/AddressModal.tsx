@@ -12,17 +12,17 @@ type Props = {
 const modalVariants = {
   start: {
     y: "100%",
-    transition: { type: "tween", ...duration.medium },
+    transition: { type: "tween", ...duration.short },
   },
   end: {
     y: "0%",
     ease: "easeInOut",
-    transition: { type: "tween", ...duration.medium, ...delay.short },
+    transition: { type: "tween", ...duration.short, ...delay.short },
   },
   exit: {
     y: "100%",
     ease: "easeIn",
-    transition: { type: "tween", ...duration.medium },
+    transition: { type: "tween", ...duration.short },
   },
 };
 

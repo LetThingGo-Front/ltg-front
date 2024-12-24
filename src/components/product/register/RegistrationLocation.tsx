@@ -288,9 +288,10 @@ export default function RegistrationLocation({
           </div>
           <div
             className={clsx(
-              "relative h-[7.5rem] w-full sm:h-[11.25rem]",
-              isFullScreen &&
-                "fixed left-0 top-[env(safe-area-inset-top)] z-20 h-[calc(100dvh-env(safe-area-inset-top))]",
+              "h-[7.5rem] w-full sm:h-[11.25rem]",
+              isFullScreen
+                ? "fixed left-0 top-[env(safe-area-inset-top)] z-20 h-[calc(100dvh-env(safe-area-inset-top))]"
+                : "relative",
             )}
           >
             <RegistrationMap
