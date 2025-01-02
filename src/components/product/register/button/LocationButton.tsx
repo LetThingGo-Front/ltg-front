@@ -18,10 +18,11 @@ export default function LocationButton({ address }: Props) {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-        map?.panTo(
+        map.panTo(
           { lat: position.coords.latitude, lng: position.coords.longitude },
           { duration: 100 },
         );
+        map.setZoom(18);
       },
       (error) => {
         console.error("위치 정보를 가져오는데 실패했습니다: ", error);
