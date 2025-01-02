@@ -7,18 +7,26 @@ import { useMap } from "react-naver-maps";
 
 type Props = {
   address: string;
-  myLocation?: { lat: number; lng: number };
 };
 
-export default function LocationButton({ address, myLocation }: Props) {
+export default function LocationButton({ address }: Props) {
   const map = useMap();
   const moveMyLocation = () => {
-    console.log(myLocation);
-    if (myLocation)
-      map?.panTo(
-        { lat: myLocation.lat, lng: myLocation.lng },
-        { duration: 300 },
-      );
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        console.log({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        map?.panTo(
+          { lat: position.coords.latitude, lng: position.coords.longitude },
+          { duration: 100 },
+        );
+      },
+      (error) => {
+        console.error("위치 정보를 가져오는데 실패했습니다: ", error);
+      },
+    );
   };
   return (
     <button

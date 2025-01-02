@@ -6,12 +6,7 @@ import MoveCenter from "@/components/common/map/MoveCenter";
 import ZoomControl from "@/components/common/map/ZoomControl";
 import axios from "axios";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Container as MapDiv,
-  Marker,
-  useMap,
-  useNavermaps,
-} from "react-naver-maps";
+import { Container as MapDiv, Marker, useNavermaps } from "react-naver-maps";
 import Maps from "./Maps";
 import { isMobile } from "react-device-detect";
 import Image from "next/image";
@@ -102,7 +97,6 @@ export default memo(function RegistrationMap({
   const [isDraggingMap, setIsDraggingMap] = useState(false);
   const [searchLocationInfo, setSearchLocationInfo] =
     useState<SearchLocationInfo>(INIT_SEARCH_LOCATION_INFO);
-  const [myLocation, setMyLocation] = useState<Coord>();
   const navermaps = useNavermaps();
 
   const searchCoordinateToAddress = useCallback(
@@ -184,10 +178,6 @@ export default memo(function RegistrationMap({
         (position) => {
           if (setCoordinate) {
             setCoordinate({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            });
-            setMyLocation({
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             });
@@ -332,14 +322,11 @@ export default memo(function RegistrationMap({
             isEnabled={isEnabled}
           />
           <ZoomControl address={address} zoom={zoom} />
+          {(isEnabled || isFullScreen) && (
+            <LocationButton address={searchLocationInfo.address} />
+          )}
         </Maps>
       </MapDiv>
-      {(isEnabled || isFullScreen) && (
-        <LocationButton
-          address={searchLocationInfo.address}
-          myLocation={myLocation}
-        />
-      )}
       {(isEnabled || isFullScreen) && searchLocationInfo.address && (
         <AddressModal
           address={searchLocationInfo.address}
