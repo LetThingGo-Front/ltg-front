@@ -3,11 +3,13 @@ import { timeList } from "./constants/constants";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { duration } from "@/constants/animation/style";
+import { ItemAvailabiltyDto } from "@/models/data-contracts";
 
 type Props = {
-  selectTime: string[];
+  selectTimeInfoList: ItemAvailabiltyDto[];
   addSelectTime: (time: string) => void;
   setOpenTime: () => void;
+  activeDay: string;
 };
 
 const timeVariants = {
@@ -24,9 +26,10 @@ const timeVariants = {
 };
 
 export default function TimeList({
-  selectTime,
+  selectTimeInfoList,
   addSelectTime,
   setOpenTime,
+  activeDay,
 }: Props) {
   return (
     <motion.div
@@ -46,7 +49,11 @@ export default function TimeList({
               <div
                 className={clsx(
                   "h-[1.625rem] w-[7.5rem] cursor-pointer rounded",
-                  selectTime.includes(hour) ? "bg-green-400" : "bg-white/70",
+                  selectTimeInfoList.some((v) => {
+                    return v.dayOfWeek === activeDay && v.startTime === hour;
+                  })
+                    ? "bg-green-400"
+                    : "bg-white/70",
                 )}
                 onClick={() => addSelectTime(hour)}
               ></div>

@@ -1,106 +1,165 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { daysList, timeList } from "./constants/constants";
 import { Codes } from "@/types/common";
 import clsx from "clsx";
 import SelectDaysButton from "./button/SelectDaysButton";
 import TimeList from "./TimeList";
 import SelectTimesButton from "./button/SelectTimesButton";
+import { ItemAvailabiltyDto } from "@/models/data-contracts";
 
 type Props = {
   isDayShare: boolean;
+  selectTimeInfoList: ItemAvailabiltyDto[];
+  setSelectTimeInfoList: React.Dispatch<
+    React.SetStateAction<ItemAvailabiltyDto[]>
+  >;
 };
 
-export default function SelctDaysAndTimes({ isDayShare }: Props) {
-  const [selectDay, setSelectDay] = useState<Array<string>>([]); // 선택된 요일
-  const [selectAllTimes, setSelectAllTimes] = useState(false); // 요일만 선택(모든 시간 선택)
-  const [openTime, setOpenTime] = useState(false); // 시간대 선택 여부
-  const [selectDayTime, setSelectDayTime] = useState<Array<string>>([]); // 나눔 가능 요일 시간대
+const WEEKDAYS_CODE = "8";
+const WEEKENDS_CODE = "9";
+const WEEKDAYS_REGEX = /[1-5]/;
+const WEEKEND_REGEX = /[6-7]/;
 
-  const addSelectDay = (day: string) => {
-    // 주중이면 월~금 삭제
-    if (day === "주중") {
-      setSelectDay((prev) => prev.filter((d) => !/^(월|화|수|목|금)$/.test(d)));
-    }
-    // 월~금 중 하나라도 선택되어 있으면 주중 삭제
-    if (/^(월|화|수|목|금)$/.test(day)) {
-      setSelectDay((prev) => prev.filter((d) => d !== "주중"));
-    }
-    // 주말이면 토, 일 삭제
-    if (day === "주말") {
-      setSelectDay((prev) => prev.filter((d) => !/^(토|일)$/.test(d)));
-    }
-    // 토, 일 중 하나라도 선택되어 있으면 주말 삭제
-    if (/^(토|일)$/.test(day)) {
-      setSelectDay((prev) => prev.filter((d) => d !== "주말"));
-    }
-    setSelectDay((prev) => {
-      if (prev.includes(day)) {
-        return prev.filter((d) => d !== day);
-      }
-      return [...prev, day];
-    });
-  };
+export default function SelctDaysAndTimes({
+  isDayShare,
+  selectTimeInfoList,
+  setSelectTimeInfoList,
+}: Props) {
+  const [openTime, setOpenTime] = useState(false); // 시간대 선택 여부
+  const [activeDay, setActiveDay] = useState<string>(""); // 선택된 요일
+
+  const isSelectedAllTimes =
+    selectTimeInfoList.filter((v) => v.dayOfWeek === activeDay).length ===
+    timeList.length;
 
   const handleSelectDaysButton = () => {
-    if (!selectAllTimes) {
-      setOpenTime(false);
+    setOpenTime(false);
+    const isSelectedDaysButton =
+      selectTimeInfoList.filter((v) => v.dayOfWeek === activeDay).length ===
+      timeList.length;
+
+    setSelectTimeInfoList(
+      selectTimeInfoList.filter((v) => v.dayOfWeek !== activeDay),
+    );
+    if (!isSelectedDaysButton) {
+      const isContainWeekdays = selectTimeInfoList.some((v) =>
+        WEEKDAYS_REGEX.test(String(v.dayOfWeek)),
+      );
+      const isContainWeekends = selectTimeInfoList.some((v) =>
+        WEEKEND_REGEX.test(String(v.dayOfWeek)),
+      );
+      if (activeDay === "8" && isContainWeekdays) {
+        setSelectTimeInfoList(
+          selectTimeInfoList.filter((v) => {
+            if (!WEEKDAYS_REGEX.test(v.dayOfWeek.toString())) return v;
+          }),
+        );
+      }
+      if (activeDay === "9" && isContainWeekends) {
+        setSelectTimeInfoList(
+          selectTimeInfoList.filter((v) => {
+            if (!WEEKEND_REGEX.test(v.dayOfWeek.toString())) return v;
+          }),
+        );
+      }
+
+      const activeDayAllTm = timeList.map((v) => {
+        return {
+          dayOfWeek: activeDay,
+          startTime: v,
+          endTime: `${v.split(":")[0]}:59`,
+        };
+      });
+
+      setSelectTimeInfoList((prev) => [...prev, ...activeDayAllTm]);
     }
-    setSelectAllTimes(!selectAllTimes);
   };
 
   const addSelectDayTime = (time: string) => {
-    /**
-     * 시간 선택 정책
-     * 1. 선택한 시간이 선택한 시간 목록 중 최소값과 최대값 사이에 있을 경우 스킵
-     * 2. 선택한 시간 목록이 없을 경우 선택한 시간으로 설정
-     * 3. 최소값과 선택한 시간이 같을 경우 최소값 삭제
-     * 4. 최대값과 선택한 시간이 같을 경우 최대값 삭제
-     * 5. 최소값보다 작은 시간을 선택할 경우 선택한 시간값과 최대값 사이의 시간 선택
-     * 6. 최대값보다 큰 시간을 선택할 경우 선택한 시간값과 최소값 사이의 시간 선택
-     */
-    const selectTime = parseInt(time.split(":")[0]); // 선택한 시간의 숫자 값
-    const numList = selectDayTime.map((t) => parseInt(t.split(":")[0])); // 선택한 시간 목록 숫자 값
-    const min = numList.length > 0 ? Math.min(...numList) : 0; // 선택한 시간 목록 중 최소값
-    const max = numList.length > 0 ? Math.max(...numList) : 0; // 선택한 시간 목록 중 최대값
-    let selectTimeList: string[] = [];
+    const isExistSelectTime = selectTimeInfoList.some((v) => {
+      return v.dayOfWeek == activeDay && v.startTime === time;
+    });
 
-    if (selectTime > min && selectTime < max) return;
-    if (!numList.length) {
-      selectTimeList = timeList.filter(
-        (t) => parseInt(t.split(":")[0]) === selectTime,
+    if (isExistSelectTime) {
+      setSelectTimeInfoList(
+        selectTimeInfoList.filter((v) => {
+          return !(v.dayOfWeek === activeDay && v.startTime === time);
+        }),
       );
-    }
-
-    if (min === selectTime) {
-      selectTimeList = timeList.filter(
-        (t) =>
-          parseInt(t.split(":")[0]) <= max && parseInt(t.split(":")[0]) > min,
+      const isContainWeekdays = selectTimeInfoList.some((v) =>
+        WEEKDAYS_REGEX.test(String(v.dayOfWeek)),
       );
-    }
-    if (max === selectTime) {
-      selectTimeList = timeList.filter(
-        (t) =>
-          parseInt(t.split(":")[0]) >= min && parseInt(t.split(":")[0]) < max,
+      const isContainWeekends = selectTimeInfoList.some((v) =>
+        WEEKEND_REGEX.test(String(v.dayOfWeek)),
       );
+      if (activeDay === "8" && isContainWeekdays) {
+        setSelectTimeInfoList(
+          selectTimeInfoList.filter((v) => {
+            if (!WEEKDAYS_REGEX.test(v.dayOfWeek.toString())) return v;
+          }),
+        );
+      }
+      if (activeDay === "9" && isContainWeekends) {
+        setSelectTimeInfoList(
+          selectTimeInfoList.filter((v) => {
+            if (!WEEKEND_REGEX.test(v.dayOfWeek.toString())) return v;
+          }),
+        );
+      }
+    } else {
+      const timeInfo = {
+        dayOfWeek: activeDay,
+        startTime: time,
+        endTime: `${time.split(":")[0]}:59`,
+      };
+      setSelectTimeInfoList((prev) => [...prev, timeInfo]);
     }
-    if (min && selectTime < min) {
-      selectTimeList = timeList.filter(
-        (t) =>
-          parseInt(t.split(":")[0]) >= selectTime &&
-          parseInt(t.split(":")[0]) <= max,
-      );
-    }
-    if (max && selectTime > max) {
-      selectTimeList = timeList.filter(
-        (t) =>
-          parseInt(t.split(":")[0]) <= selectTime &&
-          parseInt(t.split(":")[0]) >= min,
-      );
-    }
-    setSelectDayTime(selectTimeList);
   };
+
+  const buttonStatusStyle = useMemo(
+    () => (dayCode: string) => {
+      if (isDayShare) {
+        // 시간 선택 중인 날짜
+        if (activeDay === dayCode) {
+          return "shadow-[0_4px_10px_0_rgba(0,0,0,0.1)] bg-white text-black";
+        }
+        // 선택된 날짜
+        if (selectTimeInfoList.some((v) => v.dayOfWeek === dayCode)) {
+          return "bg-green-400 text-black";
+        } else {
+          return "bg-black/5 text-grey-300";
+        }
+      }
+    },
+    [activeDay, isDayShare, selectTimeInfoList],
+  );
+
+  const isDisabled = (type: string, dayCode: string) => {
+    // 주중 선택 시, 월~금 선택 불가
+    if (type === "weekday") {
+      return (
+        selectTimeInfoList.some((v) => v.dayOfWeek === WEEKDAYS_CODE) &&
+        WEEKDAYS_REGEX.test(dayCode)
+      );
+    }
+    // 주말 선택 시, 토,일 선택 불가
+    if (type === "weekend") {
+      return (
+        selectTimeInfoList.some((v) => v.dayOfWeek === WEEKENDS_CODE) &&
+        WEEKEND_REGEX.test(dayCode)
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (!isDayShare) {
+      setSelectTimeInfoList([]);
+      setActiveDay("");
+      setOpenTime(false);
+    }
+  }, [isDayShare, setSelectTimeInfoList]);
 
   return (
     <div className="flex flex-col gap-4 sm:gap-6">
@@ -109,25 +168,17 @@ export default function SelctDaysAndTimes({ isDayShare }: Props) {
           <button
             key={d.codeSeq}
             className={clsx(
-              "rounded px-1.5 py-0.5 font-semibold sm:px-4 sm:py-1 pointerhover:hover:bg-white pointerhover:hover:text-black pointerhover:hover:shadow-[0_4px_10px_0_rgba(0,0,0,0.1)] max-sm:text-xxs",
-              isDayShare
-                ? selectDay.includes(d.codeKorName)
-                  ? "bg-green-400 text-black"
-                  : "bg-black/5 text-grey-900"
-                : "text-grey-300",
-              ((selectDay.includes("주중") &&
-                /^(월|화|수|목|금)$/.test(d.codeKorName)) ||
-                (selectDay.includes("주말") &&
-                  /^(토|일)$/.test(d.codeKorName))) &&
-                "bg-transparent text-grey-300",
+              "rounded px-1.5 py-0.5 font-semibold disabled:bg-transparent disabled:text-grey-300 sm:px-4 sm:py-1 max-sm:text-xxs",
+              buttonStatusStyle(d.code),
             )}
-            onClick={() => addSelectDay(d.codeKorName)}
+            onClick={() => {
+              setActiveDay(d.code);
+            }}
             type="button"
             disabled={
               !isDayShare ||
-              (selectDay.includes("주중") &&
-                /^(월|화|수|목|금)$/.test(d.codeKorName)) ||
-              (selectDay.includes("주말") && /^(토|일)$/.test(d.codeKorName))
+              isDisabled("weekday", d.code) ||
+              isDisabled("weekend", d.code)
             }
           >
             {d.codeKorName}
@@ -135,23 +186,24 @@ export default function SelctDaysAndTimes({ isDayShare }: Props) {
         ))}
       </div>
       <div className="flex flex-col gap-2 sm:gap-[0.875rem]">
-        {selectDay.length > 0 && (
+        {isDayShare && activeDay && (
           <SelectDaysButton
-            selectAllTimes={selectAllTimes}
+            selectAllTimes={isSelectedAllTimes}
             setSelectAllTimes={handleSelectDaysButton}
           />
         )}
-
-        {openTime ? (
+        {isDayShare && activeDay && !openTime && (
+          <SelectTimesButton
+            isSelectedAllTimes={isSelectedAllTimes}
+            setOpenTime={() => setOpenTime(true)}
+          />
+        )}
+        {openTime && (
           <TimeList
-            selectTime={selectDayTime}
+            selectTimeInfoList={selectTimeInfoList}
             addSelectTime={addSelectDayTime}
             setOpenTime={() => setOpenTime(false)}
-          />
-        ) : (
-          <SelectTimesButton
-            selectDay={selectDay}
-            setOpenTime={() => setOpenTime(true)}
+            activeDay={activeDay}
           />
         )}
       </div>

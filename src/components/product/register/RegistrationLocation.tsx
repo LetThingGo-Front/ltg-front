@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Line from "./Line";
 import MinSemiTitle from "./MinSemiTitle";
 import Image from "next/image";
@@ -13,7 +13,7 @@ import Postcode from "./Postcode";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { duration } from "@/constants/animation/style";
-import { ItemLocationDto } from "@/models/data-contracts";
+import { ItemAvailabiltyDto, ItemLocationDto } from "@/models/data-contracts";
 import { useQuery } from "@tanstack/react-query";
 import { fetchDaysList } from "@/data/commonData";
 import { Codes } from "@/types/common";
@@ -69,6 +69,9 @@ export default function RegistrationLocation({
   });
   const [simpleAddr, setSimpleAddr] = useState(""); // 간단한 주소
   const [modifyLocation, setModifyLocation] = useState(false);
+  const [selectTimeInfoList, setSelectTimeInfoList] = useState<
+    ItemAvailabiltyDto[]
+  >([]); // 선택된 요일 시간대
 
   // const days = useQuery({
   //   queryKey: ["days", DAYS_CODE],
@@ -124,7 +127,7 @@ export default function RegistrationLocation({
       latitude: coordinate.lat,
       longitude: coordinate.lng,
       lightningYn: isTodayShare ? "Y" : "N",
-      itemAvailabilities: processItemAvailabilities(),
+      itemAvailabilities: selectTimeInfoList,
     };
 
     // 인덱스 번호가 저장한 장소 정보 개수 이상일 경우 신규등록
@@ -151,7 +154,7 @@ export default function RegistrationLocation({
     setModifyLocation(false);
   };
 
-  const initLocationInfo = () => {
+  const initLocationInfo = useCallback(() => {
     // save한 나눔 장소 불러오기
     if (locationInfo) {
       setAddress(locationInfo.address);
@@ -162,39 +165,13 @@ export default function RegistrationLocation({
         lng: locationInfo.longitude,
       });
       setIsTodayShare(locationInfo.lightningYn === "Y");
-      if (locationInfo.itemAvailabilities?.length) {
-        setIsDayShare(true);
-        const selectDayList = locationInfo.itemAvailabilities.map((item) => {
-          return (
-            daysList.find((d: Codes) => d.code === item.dayOfWeek)
-              ?.codeKorName ?? ""
-          );
-        });
-        setSelectDay(selectDayList);
-        const selectTimelist = timeList.filter((time) => {
-          if (
-            Number(time.split(":")[0]) >=
-              Number(
-                locationInfo.itemAvailabilities?.[0].startTime?.slice(0, 2),
-              ) &&
-            Number(time.split(":")[0]) <=
-              Number(locationInfo.itemAvailabilities?.[0].endTime?.slice(0, 2))
-          ) {
-            return time;
-          }
-        });
-        setSelectDayTime(selectTimelist);
-      } else {
-        setIsDayShare(false);
-        setSelectDay([]);
-        setSelectDayTime([]);
-      }
+      setSelectTimeInfoList(locationInfo.itemAvailabilities ?? []);
     }
-  };
+  }, [locationInfo]);
 
   useEffect(() => {
     initLocationInfo();
-  }, [modifyLocation, locationInfo]);
+  }, [modifyLocation, locationInfo, initLocationInfo]);
 
   useEffect(() => {
     const weekly = ["월", "화", "수", "목", "금"];
@@ -334,7 +311,11 @@ export default function RegistrationLocation({
                   isShort={false}
                 />
               </div>
-              <SelctDaysAndTimes isDayShare={isDayShare} />
+              <SelctDaysAndTimes
+                isDayShare={isDayShare}
+                selectTimeInfoList={selectTimeInfoList}
+                setSelectTimeInfoList={setSelectTimeInfoList}
+              />
             </div>
           </div>
           <div className="flex flex-col gap-3">
@@ -343,9 +324,7 @@ export default function RegistrationLocation({
               type="button"
               onClick={saveLocationInfo}
               disabled={
-                !address ||
-                (isDayShare &&
-                  (selectDay.length === 0 || selectDayTime.length === 0))
+                !address || (isDayShare && selectTimeInfoList.length === 0)
               }
             >
               장소 및 일정 저장

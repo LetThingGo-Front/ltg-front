@@ -14,15 +14,11 @@ export default function LocationButton({ address }: Props) {
   const moveMyLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        console.log({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
+        map.setZoom(18);
         map.panTo(
           { lat: position.coords.latitude, lng: position.coords.longitude },
-          { duration: 100 },
+          { duration: 300 },
         );
-        map.setZoom(18);
       },
       (error) => {
         console.error("위치 정보를 가져오는데 실패했습니다: ", error);

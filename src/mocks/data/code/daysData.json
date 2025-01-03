@@ -1,6 +1,30 @@
 {
     "IT002": [
       {
+        "code": "8",
+        "codeKorName": "주중",
+        "codeEngName": "WEEKDAY",
+        "mngItem1": "주중",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": -1
+      },
+      {
+        "code": "9",
+        "codeKorName": "주말",
+        "codeEngName": "WEEKEND",
+        "mngItem1": "주말",
+        "mngItem2": "",
+        "mngItem3": "",
+        "mngItem4": "",
+        "description": "",
+        "useYn": "Y",
+        "codeSeq": 0
+      },
+      {
         "code": "1",
         "codeKorName": "월",
         "codeEngName": "MONDAY",
@@ -83,31 +107,6 @@
         "description": "",
         "useYn": "Y",
         "codeSeq": 9
-      }
-      ,
-      {
-        "code": "8",
-        "codeKorName": "주중",
-        "codeEngName": "WEEKDAY",
-        "mngItem1": "주중",
-        "mngItem2": "",
-        "mngItem3": "",
-        "mngItem4": "",
-        "description": "",
-        "useYn": "Y",
-        "codeSeq": 10
-      },
-      {
-        "code": "9",
-        "codeKorName": "주말",
-        "codeEngName": "WEEKEND",
-        "mngItem1": "주말",
-        "mngItem2": "",
-        "mngItem3": "",
-        "mngItem4": "",
-        "description": "",
-        "useYn": "Y",
-        "codeSeq": 11
       }
     ]
   }

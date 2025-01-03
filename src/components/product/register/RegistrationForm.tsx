@@ -30,7 +30,7 @@ const sharingLocation = [
 export default function RegistrationForm() {
   const {
     control,
-    formState: { errors }, // isDirty: 변경됨, isValid: 유효함, errors: 에러
+    formState: { errors, isValid, isDirty }, // isDirty: 변경됨, isValid: 유효함, errors: 에러
     handleSubmit,
     resetField,
     watch,
@@ -105,11 +105,6 @@ export default function RegistrationForm() {
               value={value}
               onChange={(e) => onChange(e.target.value)}
             />
-            {errors.itemCreateRequest?.itemName && (
-              <p className="font-semibold text-red-500 max-sm:text-xs">
-                {errors.itemCreateRequest.itemName.message}
-              </p>
-            )}
           </div>
         )}
       />
@@ -135,11 +130,6 @@ export default function RegistrationForm() {
                 />
               ))}
             </div>
-            {errors.itemCreateRequest?.categoryCode && (
-              <p className="font-semibold text-red-500 max-sm:text-xs">
-                {errors.itemCreateRequest.categoryCode.message}
-              </p>
-            )}
           </div>
         )}
       />
@@ -160,11 +150,6 @@ export default function RegistrationForm() {
               <Line />
             </div>
             <ImageUpload onChange={onChange} />
-            {errors.itemImages && (
-              <p className="font-semibold text-red-500 max-sm:text-xs">
-                {errors.itemImages.message}
-              </p>
-            )}
           </div>
         )}
       />
@@ -190,11 +175,6 @@ export default function RegistrationForm() {
                 />
               ))}
             </div>
-            {errors.itemCreateRequest?.itemStatus && (
-              <p className="mt-1 font-semibold text-red-500 max-sm:text-xs">
-                {errors.itemCreateRequest.itemStatus.message}
-              </p>
-            )}
           </div>
         )}
       />
@@ -245,11 +225,6 @@ export default function RegistrationForm() {
                   </div>
                 ))}
               </div>
-              {errors.itemCreateRequest?.itemLocations && (
-                <p className="font-semibold text-red-500 max-sm:text-xs">
-                  {errors.itemCreateRequest.itemLocations.message}
-                </p>
-              )}
             </div>
           );
         }}
@@ -277,12 +252,11 @@ export default function RegistrationForm() {
         )}
       />
       <div className="mb-[8.125rem] flex flex-col items-center justify-center gap-3 sm:mt-[3.75rem]">
-        {!utils.isEmpty(errors) && (
-          <p className="font-semibold text-red-500 max-sm:text-xs">
-            필수 항목이 비어 있습니다. 확인 후 완료해주세요.
-          </p>
-        )}
-        <GradationButton buttonText="나눔 등록 완료" type="submit" />
+        <GradationButton
+          buttonText="나눔 등록 완료"
+          type="submit"
+          disabled={!isValid}
+        />
       </div>
     </form>
   );
