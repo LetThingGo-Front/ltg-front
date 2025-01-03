@@ -21,21 +21,12 @@ export interface UserProfileRequest {
   hasRemovedProfile: string;
 }
 
-export interface CategoryDto {
-  /** @format int64 */
-  id?: number;
-  categoryName?: string;
-  /** @format int32 */
-  seq?: number;
-  useYn?: string;
+export interface ApiCommonResponseObject {
+  status?: string;
+  data?: object;
+  message?: string;
+  code?: string;
 }
-
-export interface EntityModelObject {
-  content?: object;
-  _links?: Links;
-}
-
-export type Links = Record<string, Link>;
 
 export interface TokenRequestDto {
   externalToken: string;
@@ -210,7 +201,7 @@ export interface ItemLocationResponse {
    * 일정 제안 받기 여부
    * @example false
    */
-  isScheduleProposal?: boolean;
+  isScheduleSuggestible?: boolean;
 }
 
 /** 나눔 신청 가능 시간 DTO */
@@ -516,12 +507,12 @@ export interface PageableObject {
   /** @format int64 */
   offset?: number;
   sort?: SortObject;
-  unpaged?: boolean;
-  /** @format int32 */
-  pageNumber?: number;
   /** @format int32 */
   pageSize?: number;
   paged?: boolean;
+  /** @format int32 */
+  pageNumber?: number;
+  unpaged?: boolean;
 }
 
 /** 나눔 신청 믈픔 DTO */
@@ -630,8 +621,75 @@ export interface UserProfileResponse {
   history?: Record<string, UserHistoryDto>;
 }
 
+export interface ItemDto {
+  /**
+   * 물품ID
+   * @format int64
+   * @example 1
+   */
+  itemId?: number;
+  /**
+   * 물품명
+   * @example "자바의 정석"
+   */
+  itemName?: string;
+  /**
+   * 물품 썸네일 URL
+   * @example "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/item_thumb_ec9221b5fbee4eec9302905ab723020e.jpg"
+   */
+  itemThumbnailUrl?: string;
+}
+
 /** 나눔 물품 리스트 DTO */
-export type ItemSearchRequest = object;
+export interface ItemSearchRequest {
+  /**
+   * 카테고리 코드
+   * @example "1"
+   */
+  categoryCode?: string;
+  /**
+   * 물품상태코드
+   * @example "11"
+   */
+  itemStatus?: string;
+  /**
+   * 요일 코드
+   * @example "1"
+   */
+  dayOfWeek?: string;
+}
+
+/** 나눔 물품 리스트 DTO */
+export interface ItemSearchResponse {
+  /**
+   * 나눔물품ID
+   * @format int64
+   * @example 1
+   */
+  itemId?: number;
+  /**
+   * 물품명
+   * @example "Java의 정석"
+   */
+  itemName?: string;
+  /**
+   * 동정보
+   * @example "삼성동"
+   */
+  dongList?: string;
+  /** 나눔 가능 요일 */
+  availableDayList?: string;
+  /**
+   * 오늘 번개 가능 여부
+   * @example true
+   */
+  isLightningAvailableToday?: boolean;
+  /**
+   * 일정 제안 가능 여부
+   * @example false
+   */
+  isScheduleSuggestible?: boolean;
+}
 
 export interface CodeSearchRequest {
   /**
@@ -694,26 +752,11 @@ export interface GroupCodeSearchRequest {
   groupCodeName?: string;
 }
 
-export interface Link {
-  href?: string;
-  hreflang?: string;
-  title?: string;
-  type?: string;
-  deprecation?: string;
-  profile?: string;
-  name?: string;
-  templated?: boolean;
-}
-
 export type GetUserInfoData = UserProfileResponse;
 
 export type SaveUserProfileData = string;
 
-export type GetCategoryByIdData = EntityModelObject;
-
-export type UpdateCategoryData = EntityModelObject;
-
-export type DeleteCategoryData = any;
+export type ItemBookmarkData = ApiCommonResponseObject;
 
 /** @example {"status":"success","data":{}} */
 export type ReissueData = string;
@@ -725,7 +768,7 @@ export type LoginError = string;
 /** @example {"status":"success","data":{}} */
 export type LogoutData = string;
 
-export type RetrieveItemsData = string;
+export type RetrieveItemsData = ItemSearchResponse;
 
 export interface CreateItemPayload {
   /** 아이템 생성 요청 JSON */
@@ -761,13 +804,17 @@ export type CreateCodeData = any;
 
 export type CreateCodeError = string;
 
-export type GetAllCategoriesData = EntityModelObject;
-
-export type CreateCategoryData = EntityModelObject;
-
 export type RetrieveUserRequestsData = UserItemRequestSearchResponsePage;
 
 export type GenerateNicknameData = any;
+
+export type RetrieveUserFavoritePlacesData = any;
+
+export type RetrieveUserFavoritePlaceByPlaceTypeData = any;
+
+export type RetrieveUserFavoritePlaceByPlaceTypeError = string;
+
+export type RetrieveBookmarkedItemsData = ItemDto;
 
 /** @example {"status":"success","data":{"AP001":[{"code":"1","codeKorName":"수락 대기 중","codeEngName":"WAITING","mngItem1":"","mngItem2":"","mngItem3":"","mngItem4":"","description":"","useYn":"Y","codeSeq":1}]}} */
 export type RetrieveCodesData = string;

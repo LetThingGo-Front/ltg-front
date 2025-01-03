@@ -21,6 +21,7 @@ import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
 import { DAYS_CODE } from "@/constants/code";
 import SelctDaysAndTimes from "./SelctDaysAndTimes";
 import daysData from "@/mocks/data/code/daysData.json";
+import FavoriteLocation from "./FavoriteLocation";
 
 type Props = {
   idx: number;
@@ -208,7 +209,8 @@ export default function RegistrationLocation({
             </div> */}
             <MinSemiTitle title="나눔 장소 설정" required />
             <Line />
-            <div className="flex gap-2">
+            <FavoriteLocation />
+            {/* <div className="flex gap-2">
               <div className="flex items-center gap-1">
                 <div className="h-3 w-3 sm:h-5 sm:w-5">
                   <Image
@@ -248,7 +250,7 @@ export default function RegistrationLocation({
                   기타
                 </p>
               </div>
-            </div>
+            </div> */}
             <Postcode
               addr={address}
               setAddress={setAddress}

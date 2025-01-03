@@ -23,13 +23,15 @@ export class ItemController<
   SecurityDataType = unknown,
 > extends HttpClient<SecurityDataType> {
   /**
-   * No description
+   * @description 나눔 물품 목록을 조회합니다.
    *
    * @tags item-controller
    * @name RetrieveItems
+   * @summary 나눔 물품 목록 조회 API
    * @request GET:/v1/items
    * @secure
-   * @response `200` `RetrieveItemsData` OK
+   * @response `200` `RetrieveItemsData` OK 또는 Validation Error
+   * @response `500` `void` Interval Server Error
    */
   retrieveItems = (
     query: {
@@ -39,7 +41,7 @@ export class ItemController<
     },
     params: RequestParams = {},
   ) =>
-    this.request<RetrieveItemsData, any>({
+    this.request<RetrieveItemsData, void>({
       path: `/v1/items`,
       method: "GET",
       query: query,

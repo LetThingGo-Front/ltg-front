@@ -12,6 +12,9 @@
 import {
   GenerateNicknameData,
   GetUserInfoData,
+  RetrieveUserFavoritePlaceByPlaceTypeData,
+  RetrieveUserFavoritePlaceByPlaceTypeError,
+  RetrieveUserFavoritePlacesData,
   SaveUserProfileData,
   UserProfileRequest,
 } from "./data-contracts";
@@ -69,6 +72,49 @@ export class UserController<
   generateNickname = (params: RequestParams = {}) =>
     this.request<GenerateNicknameData, any>({
       path: `/v1/users/nickname`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags user-controller
+   * @name RetrieveUserFavoritePlaces
+   * @summary 내 즐겨찾기 장소 전체 조회 API
+   * @request GET:/v1/users/favorite-places
+   * @secure
+   * @response `200` `RetrieveUserFavoritePlacesData` OK
+   * @response `404` `void` Not Found
+   */
+  retrieveUserFavoritePlaces = (params: RequestParams = {}) =>
+    this.request<RetrieveUserFavoritePlacesData, void>({
+      path: `/v1/users/favorite-places`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  /**
+   * @description 장소타입(H: 집근처, W: 회사근처, E 기타)
+   *
+   * @tags user-controller
+   * @name RetrieveUserFavoritePlaceByPlaceType
+   * @summary 장소 타입별 내 즐겨찾기 장소 조회 API
+   * @request GET:/v1/users/favorite-places/{placeType}
+   * @secure
+   * @response `200` `RetrieveUserFavoritePlaceByPlaceTypeData` OK
+   * @response `400` `string` Invalid Place Type
+   * @response `404` `void` Not Found
+   */
+  retrieveUserFavoritePlaceByPlaceType = (
+    placeType: string,
+    params: RequestParams = {},
+  ) =>
+    this.request<
+      RetrieveUserFavoritePlaceByPlaceTypeData,
+      RetrieveUserFavoritePlaceByPlaceTypeError
+    >({
+      path: `/v1/users/favorite-places/${placeType}`,
       method: "GET",
       secure: true,
       ...params,
