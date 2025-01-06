@@ -13,7 +13,7 @@ export default function SearchNav() {
   const searchInputValue = useExploreStore.use.searchInput();
 
   const getSearchItemList = () => {
-    setItemList({ list: [searchInputValue] });
+    setItemList([]);
     setIsSearch(true);
   };
 

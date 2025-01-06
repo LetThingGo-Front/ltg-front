@@ -2,12 +2,12 @@ import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import createSelectors from "./selectorStore";
 import { create } from "zustand";
-import { ItemSearchRequest } from "@/models/data-contracts";
+import { ItemSearchRequest, ItemSearchResponse } from "@/models/data-contracts";
 
 type ExploreState = {
   searchInput: string;
   isSearch: boolean; // 검색을 통한 목록 조회 여부
-  itemList: ItemSearchRequest;
+  itemList: ItemSearchResponse[];
 };
 
 type ExploreAction = {
@@ -15,7 +15,7 @@ type ExploreAction = {
     setSearchInput: (input: string) => void;
     clearSearchInput: () => void;
     setIsSearch: (isSearch: boolean) => void;
-    setItemList: (itemList: ItemSearchRequest) => void;
+    setItemList: (itemList: ItemSearchResponse[]) => void;
     initItemList: () => void;
   };
 };
@@ -23,7 +23,7 @@ type ExploreAction = {
 const initialExplore = {
   searchInput: "",
   isSearch: false,
-  itemList: {},
+  itemList: [],
 };
 
 const exploreStore = create<ExploreState & ExploreAction>()(
@@ -47,7 +47,7 @@ const exploreStore = create<ExploreState & ExploreAction>()(
           set((state) => {
             state.itemList = itemList;
           }),
-        initItemList: () => set((state) => (state.itemList = {})),
+        initItemList: () => set((state) => (state.itemList = [])),
       },
     })),
   ),
