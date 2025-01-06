@@ -50,22 +50,23 @@ export default function RegistrationForm() {
   const [isOpenLocationForm, setIsOpenLocationForm] = useState(false);
   const watchCategory = watch("itemCreateRequest.categoryCode");
 
-  // const category = useQuery({
-  //   queryKey: ["category", CATEGORY_CODE],
-  //   queryFn: ({ queryKey }) => fetchCategoryList(queryKey[1]),
-  //   staleTime: MIDDLE_TIME,
-  //   gcTime: LONG_TIME,
-  // });
+  const category = useQuery({
+    queryKey: ["category", CATEGORY_CODE],
+    queryFn: ({ queryKey }) => fetchCategoryList(queryKey[1]),
+    staleTime: MIDDLE_TIME,
+    gcTime: LONG_TIME,
+  });
 
-  // const itemStatus = useQuery({
-  //   queryKey: ["itemStatus", ITEM_STATUS_CODE, isItemStatusType],
-  //   queryFn: ({ queryKey }) => fetchItemStatusList(queryKey[1], queryKey[2]),
-  //   staleTime: MIDDLE_TIME,
-  //   gcTime: LONG_TIME,
-  // });
+  const itemStatus = useQuery({
+    queryKey: ["itemStatus", ITEM_STATUS_CODE, isItemStatusType],
+    queryFn: ({ queryKey }) => fetchItemStatusList(queryKey[1], queryKey[2]),
+    staleTime: MIDDLE_TIME,
+    gcTime: LONG_TIME,
+  });
 
-  const category = { data: categoryData[CATEGORY_CODE] };
-  const itemStatus = { data: statusData[ITEM_STATUS_CODE] };
+  // 서버 에러 시 임시 하드코딩 용도도
+  // const category = { data: categoryData[CATEGORY_CODE] };
+  // const itemStatus = { data: statusData[ITEM_STATUS_CODE] };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === "Enter") {

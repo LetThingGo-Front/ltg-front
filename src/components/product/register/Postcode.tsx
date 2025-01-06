@@ -6,6 +6,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import { isMobile, isTablet } from "react-device-detect";
 import debounce from "debounce";
+import { FavoriteJuso } from "./RegistrationLocation";
 
 type Props = {
   addr: string;
@@ -14,6 +15,8 @@ type Props = {
   openPostcode: (open: boolean) => void;
   setSimpleAddr: (address: string) => void;
   setCoordinate: (coord: { lat: number; lng: number }) => void;
+  setIsNewFavorite: (isNewFavorite: boolean) => void;
+  favoriteJuso?: FavoriteJuso;
 };
 
 export default function Postcode({
@@ -23,6 +26,8 @@ export default function Postcode({
   openPostcode,
   setSimpleAddr,
   setCoordinate,
+  setIsNewFavorite,
+  favoriteJuso,
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -42,6 +47,8 @@ export default function Postcode({
         isFocused={isFocused}
         setIsFocused={setIsFocused}
         setCoordinate={setCoordinate}
+        setIsNewFavorite={setIsNewFavorite}
+        favoriteJuso={favoriteJuso}
       />
     </div>
   );

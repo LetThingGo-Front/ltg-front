@@ -8,6 +8,11 @@ import SelectDaysButton from "./button/SelectDaysButton";
 import TimeList from "./TimeList";
 import SelectTimesButton from "./button/SelectTimesButton";
 import { ItemAvailabiltyDto } from "@/models/data-contracts";
+import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
+import { fetchDaysList } from "@/data/commonData";
+import { useQuery } from "@tanstack/react-query";
+import { DAYS_CODE } from "@/constants/code";
+import daysData from "@/mocks/data/code/daysData.json";
 
 type Props = {
   isDayShare: boolean;
@@ -29,6 +34,16 @@ export default function SelctDaysAndTimes({
 }: Props) {
   const [openTime, setOpenTime] = useState(false); // 시간대 선택 여부
   const [activeDay, setActiveDay] = useState<string>(""); // 선택된 요일
+
+  const days = useQuery({
+    queryKey: ["days", DAYS_CODE],
+    queryFn: ({ queryKey }) => fetchDaysList(queryKey[1]),
+    staleTime: MIDDLE_TIME,
+    gcTime: LONG_TIME,
+  });
+
+  // 서버 에러 시 임시 하드코딩 용도
+  // const days = { data: daysData[DAYS_CODE] };
 
   const isSelectedAllTimes =
     selectTimeInfoList.filter((v) => v.dayOfWeek === activeDay).length ===
@@ -164,7 +179,7 @@ export default function SelctDaysAndTimes({
   return (
     <div className="flex flex-col gap-4 sm:gap-6">
       <div className="flex justify-between">
-        {daysList.map((d: Codes) => (
+        {days.data?.map((d: Codes) => (
           <button
             key={d.codeSeq}
             className={clsx(

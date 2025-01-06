@@ -15,6 +15,7 @@ import { isMobile, isTablet } from "react-device-detect";
 import jusoData from "@/mocks/data/juso/jusoData.json";
 import useSearchStore from "@/store/searchStore";
 import { useNavermaps } from "react-naver-maps";
+import { FavoriteJuso } from "./RegistrationLocation";
 
 type Props = {
   addr: string;
@@ -26,33 +27,35 @@ type Props = {
   isFocused: boolean;
   setIsFocused: (isFocused: boolean) => void;
   setCoordinate: (coordinate: { lat: number; lng: number }) => void;
+  setIsNewFavorite: (isNewFavorite: boolean) => void;
+  favoriteJuso?: FavoriteJuso;
 };
 
 export type JusoProps = {
-  admCd: string;
-  bdKdcd: string;
-  bdMgtSn: string;
-  bdNm: string;
-  buldMnnm: string;
-  buldSlno: string;
-  detBdNmList: string;
-  emdNm: string;
-  emdNo: string;
-  engAddr: string;
-  jibunAddr: string;
-  liNm: string;
-  lnbrMnnm: string;
-  lnbrSlno: string;
-  mtYn: string;
-  rn: string;
-  rnMgtSn: string;
-  roadAddr: string;
+  admCd?: string;
+  bdKdcd?: string;
+  bdMgtSn?: string;
+  bdNm?: string;
+  buldMnnm?: string;
+  buldSlno?: string;
+  detBdNmList?: string;
+  emdNm?: string;
+  emdNo?: string;
+  engAddr?: string;
+  jibunAddr?: string;
+  liNm?: string;
+  lnbrMnnm?: string;
+  lnbrSlno?: string;
+  mtYn?: string;
+  rn?: string;
+  rnMgtSn?: string;
+  roadAddr?: string;
   roadAddrPart1: string;
-  roadAddrPart2: string;
-  sggNm: string;
-  siNm: string;
-  udrtYn: string;
-  zipNo: string;
+  roadAddrPart2?: string;
+  sggNm?: string;
+  siNm?: string;
+  udrtYn?: string;
+  zipNo?: string;
 };
 
 export default function SearchInput({
@@ -65,6 +68,8 @@ export default function SearchInput({
   isFocused,
   setIsFocused,
   setCoordinate,
+  setIsNewFavorite,
+  favoriteJuso,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -146,6 +151,7 @@ export default function SearchInput({
     } else if (e.key === "Enter" && selectedIndex !== -1) {
       // 엔터 키로 선택
       handleSetAddress(searchList[selectedIndex]);
+      setIsNewFavorite(true);
     }
   };
 
@@ -155,6 +161,7 @@ export default function SearchInput({
         ? `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(address.bdNm)})`
         : `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
       searchAddressToCoordinate(addressNm);
+      console.log(addressNm);
       setAddress(addressNm);
       setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
       if (inputRef.current) inputRef.current.value = addressNm;
@@ -163,6 +170,21 @@ export default function SearchInput({
       setSearchList([]);
     },
     [searchAddressToCoordinate, setAddress, setSimpleAddr, setIsFocused],
+  );
+
+  const handleSetFavoriteAddress = useCallback(
+    (address: JusoProps) => {
+      const addressNm = address.bdNm
+        ? `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(address.bdNm)})`
+        : `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
+      setAddress(addressNm);
+      setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
+      if (inputRef.current) inputRef.current.value = addressNm;
+      setSelectedIndex(-1);
+      setIsFocused(false);
+      setSearchList([]);
+    },
+    [setAddress, setSimpleAddr, setIsFocused],
   );
 
   const searchInputFocus = () => {
@@ -174,6 +196,17 @@ export default function SearchInput({
       }, 100);
     }
   };
+
+  useEffect(() => {
+    if (favoriteJuso) {
+      const handleJuso = {
+        roadAddrPart1: favoriteJuso.address,
+        sggNm: favoriteJuso.district,
+        emdNm: favoriteJuso.dong,
+      };
+      handleSetFavoriteAddress(handleJuso);
+    }
+  }, [favoriteJuso, handleSetFavoriteAddress]);
 
   useEffect(() => {
     if (selectedIndex !== -1 && searchListRef.current) {
@@ -332,6 +365,7 @@ export default function SearchInput({
                 isSelected={selectedIndex === idx}
                 isOpenMoblieView={isOpenMoblieView}
                 handleSetAddress={handleSetAddress}
+                setIsNewFavorite={setIsNewFavorite}
               />
             ))}
         </div>

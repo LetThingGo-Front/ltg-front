@@ -8,6 +8,7 @@ type Props = {
   isSelected: boolean;
   isOpenMoblieView: boolean;
   handleSetAddress: (address: JusoProps) => void;
+  setIsNewFavorite?: (isNewFavorite: boolean) => void;
 };
 
 export default function AddressButton({
@@ -15,6 +16,7 @@ export default function AddressButton({
   isSelected,
   isOpenMoblieView,
   handleSetAddress,
+  setIsNewFavorite,
 }: Props) {
   // naver geocode api에서 지하라는 단어가 포함된 주소는 검색이 안되서 강제 소거처리(ex. 지하222)
   // 지하 단어 제외해도 주소는 같음. naver api 확인 필요
@@ -34,6 +36,7 @@ export default function AddressButton({
       onClick={(e) => {
         e.stopPropagation();
         handleSetAddress(address);
+        if (setIsNewFavorite) setIsNewFavorite(true);
       }}
     >
       {addressNm}

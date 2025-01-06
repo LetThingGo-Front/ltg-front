@@ -38,6 +38,8 @@ type Props = {
   progressStatus?: "register" | "complete";
   setIsFullScreen?: (isFullScreen: boolean) => void;
   isFullScreen?: boolean;
+  setIsNewFavorite?: (isNwFavorite: boolean) => void;
+  modifyLocation?: boolean;
 };
 
 type SearchLocationInfo = {
@@ -91,6 +93,8 @@ export default memo(function RegistrationMap({
   progressStatus = "register",
   setIsFullScreen,
   isFullScreen,
+  setIsNewFavorite,
+  modifyLocation,
 }: Props) {
   const [isEnabled, setIsEnabled] = useState(false);
   const [zoom, setZoom] = useState<number>(17);
@@ -331,6 +335,7 @@ export default memo(function RegistrationMap({
         <AddressModal
           address={searchLocationInfo.address}
           saveLocation={saveLocation}
+          setIsNewFavorite={setIsNewFavorite}
         />
       )}
     </div>

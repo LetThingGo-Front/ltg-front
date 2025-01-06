@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { commonHandler } from "./handlers/commonHandler";
 import { itemHandler } from "./handlers/itemHandler";
+import { userHandler } from "./handlers/userHandler";
 
 const app = express();
 const port = 9090; // Mock 서버 포트
@@ -15,6 +16,6 @@ app.use(
   }),
 );
 app.use(express.json());
-app.use(createMiddleware(...commonHandler, ...itemHandler)); // MSW 핸들러 연결
+app.use(createMiddleware(...commonHandler, ...itemHandler, ...userHandler)); // MSW 핸들러 연결
 
 app.listen(port, () => console.log(`Mock server is running on port: ${port}`));

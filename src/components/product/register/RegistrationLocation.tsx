@@ -6,7 +6,6 @@ import MinSemiTitle from "./MinSemiTitle";
 import Image from "next/image";
 import RegistrationMap from "./map/RegistrationMap";
 import ToggleButton from "./button/ToggleButton";
-import { daysList, timeList } from "./constants/constants";
 import TextInput from "./TextInput";
 import clsx from "clsx";
 import Postcode from "./Postcode";
@@ -14,14 +13,10 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { duration } from "@/constants/animation/style";
 import { ItemAvailabiltyDto, ItemLocationDto } from "@/models/data-contracts";
-import { useQuery } from "@tanstack/react-query";
-import { fetchDaysList } from "@/data/commonData";
-import { Codes } from "@/types/common";
-import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
-import { DAYS_CODE } from "@/constants/code";
 import SelctDaysAndTimes from "./SelctDaysAndTimes";
-import daysData from "@/mocks/data/code/daysData.json";
 import FavoriteLocation from "./FavoriteLocation";
+import SavedFavoriteLocation from "./SavedFavoriteLocation";
+import { axiosAuth } from "@/lib/axios";
 
 type Props = {
   idx: number;
@@ -31,6 +26,16 @@ type Props = {
   locationList: ItemLocationDto[];
   isOpenLocationForm: boolean;
   setIsOpenLocationForm: (isOpen: boolean) => void;
+};
+
+export type FavoriteJuso = {
+  address: string;
+  description: string;
+  district: string;
+  dong: string;
+  favoritePlaceId: number;
+  latitude: number;
+  longitude: number;
 };
 
 const locationVariants = {
@@ -58,9 +63,6 @@ export default function RegistrationLocation({
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isTodayShare, setIsTodayShare] = useState(false); // 오늘 번개 나눔 여부
   const [isDayShare, setIsDayShare] = useState(false); // 나눔 가능 요일 및 시간대 선택 여부
-  const [selectDay, setSelectDay] = useState<Array<string>>([]); // 선택된 요일
-  const [openTime, setOpenTime] = useState(false); // 시간대 선택 여부
-  const [selectDayTime, setSelectDayTime] = useState<Array<string>>([]); // 나눔 가능 요일 시간대
   const [isOpenSearchAddr, setIsOpenSearchAddr] = useState(false); // 주소 검색창 오픈 여부
   const [address, setAddress] = useState(""); // 주소
   const [addExplain, setAddExplain] = useState(""); // 장소 세부 설명
@@ -73,52 +75,10 @@ export default function RegistrationLocation({
   const [selectTimeInfoList, setSelectTimeInfoList] = useState<
     ItemAvailabiltyDto[]
   >([]); // 선택된 요일 시간대
+  const [favorite, setFavorite] = useState(""); // 선택된 즐겨찾기 장소
+  const [isNewFavorite, setIsNewFavorite] = useState(false); // 신규 즐겨찾기 장소 버튼 여부
+  const [favoriteJuso, setFavoriteJuso] = useState<FavoriteJuso>(); // 즐겨찾기 장소 정보
 
-  // const days = useQuery({
-  //   queryKey: ["days", DAYS_CODE],
-  //   queryFn: ({ queryKey }) => fetchDaysList(queryKey[1]),
-  //   staleTime: MIDDLE_TIME,
-  //   gcTime: LONG_TIME,
-  // });
-
-  const days = { data: daysData[DAYS_CODE] };
-
-  const toggleSelectDay = () => {
-    if (isDayShare) {
-      setSelectDay([]);
-    }
-    setIsDayShare(!isDayShare);
-    setOpenTime(false);
-  };
-
-  const processItemAvailabilities = () => {
-    const numberTimeList = selectDayTime.map((time) =>
-      Number(time.split(":")[0]),
-    );
-    const min = Math.min(...numberTimeList);
-    const max = Math.max(...numberTimeList);
-    let newSelectDay: string[] = [];
-    if (selectDay.includes("주중")) {
-      newSelectDay.push("월", "화", "수", "목", "금");
-    }
-    if (selectDay.includes("주말")) {
-      newSelectDay.push("토", "일");
-    }
-    const filteredDay = [
-      ...newSelectDay,
-      ...selectDay.filter((day) => !["주중", "주말"].includes(day)),
-    ];
-
-    const itemAvailabilities = filteredDay.map((day) => {
-      return {
-        dayOfWeek:
-          days.data.find((d: Codes) => d.codeKorName === day)?.code ?? "0",
-        startTime: min < 10 ? `0${min}00` : `${min}00`,
-        endTime: max < 10 ? `0${max}59` : `${max}59`,
-      };
-    });
-    return itemAvailabilities;
-  };
   const saveLocationInfo = () => {
     const newLocation: ItemLocationDto = {
       address: address,
@@ -128,9 +88,10 @@ export default function RegistrationLocation({
       latitude: coordinate.lat,
       longitude: coordinate.lng,
       lightningYn: isTodayShare ? "Y" : "N",
+      placeType: favorite,
+      favoritePlaceId: favoriteJuso?.favoritePlaceId,
       itemAvailabilities: selectTimeInfoList,
     };
-
     // 인덱스 번호가 저장한 장소 정보 개수 이상일 경우 신규등록
     if (locationList.length <= idx) {
       onSave([...locationList, newLocation]);
@@ -158,6 +119,7 @@ export default function RegistrationLocation({
   const initLocationInfo = useCallback(() => {
     // save한 나눔 장소 불러오기
     if (locationInfo) {
+      setFavoriteJuso(undefined);
       setAddress(locationInfo.address);
       setAddExplain(locationInfo.addressDescription ?? "");
       setSimpleAddr(`${locationInfo.district} ${locationInfo.dong}`);
@@ -167,25 +129,37 @@ export default function RegistrationLocation({
       });
       setIsTodayShare(locationInfo.lightningYn === "Y");
       setSelectTimeInfoList(locationInfo.itemAvailabilities ?? []);
+      setFavorite(locationInfo.placeType ?? "");
     }
   }, [locationInfo]);
+
+  const saveFavoriteLocation = () => {};
+
+  const getFavoriteLocation = async (placeType: string) => {
+    try {
+      const response = await axiosAuth.get(
+        `/v1/users/favorite-places/${placeType}`,
+      );
+      setFavoriteJuso(response.data.data[placeType]);
+      setCoordinate({
+        lat: response.data.data[placeType].latitude,
+        lng: response.data.data[placeType].longitude,
+      });
+      setFavorite(placeType);
+    } catch (error) {
+      console.log(`get favorite location error`, error);
+    }
+  };
+
+  useEffect(() => {
+    if (isNewFavorite) {
+      setFavorite("");
+    }
+  }, [isNewFavorite]);
 
   useEffect(() => {
     initLocationInfo();
   }, [modifyLocation, locationInfo, initLocationInfo]);
-
-  useEffect(() => {
-    const weekly = ["월", "화", "수", "목", "금"];
-    const weekend = ["토", "일"];
-    if (weekly.every((day) => selectDay.includes(day))) {
-      // 월 ~ 금 빼고 주중 추가
-      setSelectDay([...selectDay.filter((d) => !weekly.includes(d)), "주중"]);
-    }
-    if (weekend.every((day) => selectDay.includes(day))) {
-      // 토, 일 빼고 주말 추가
-      setSelectDay([...selectDay.filter((d) => !weekend.includes(d)), "주말"]);
-    }
-  }, [selectDay]);
 
   return (
     <div>
@@ -209,48 +183,14 @@ export default function RegistrationLocation({
             </div> */}
             <MinSemiTitle title="나눔 장소 설정" required />
             <Line />
-            <FavoriteLocation />
-            {/* <div className="flex gap-2">
-              <div className="flex items-center gap-1">
-                <div className="h-3 w-3 sm:h-5 sm:w-5">
-                  <Image
-                    src="/assets/images/home.svg"
-                    width={20}
-                    height={21}
-                    alt="home"
-                  />
-                </div>
-                <p className="text-xs font-bold text-grey-400 sm:text-sm">
-                  집근처
-                </p>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="h-3 w-3 sm:h-5 sm:w-5">
-                  <Image
-                    src="/assets/images/building.svg"
-                    width={20}
-                    height={21}
-                    alt="company"
-                  />
-                </div>
-                <p className="text-xs font-bold text-grey-400 sm:text-sm">
-                  회사 근처
-                </p>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="mt-[1px] h-4 w-4 sm:h-5 sm:w-5">
-                  <Image
-                    src="/assets/images/marker/location_marked.svg"
-                    width={20}
-                    height={21}
-                    alt="etc"
-                  />
-                </div>
-                <p className="text-xs font-bold text-grey-400 sm:text-sm">
-                  기타
-                </p>
-              </div>
-            </div> */}
+            {isNewFavorite ? (
+              <FavoriteLocation favorite={favorite} setFavorite={setFavorite} />
+            ) : (
+              <SavedFavoriteLocation
+                favorite={favorite}
+                getFavoriteLocation={getFavoriteLocation}
+              />
+            )}
             <Postcode
               addr={address}
               setAddress={setAddress}
@@ -258,6 +198,8 @@ export default function RegistrationLocation({
               openPostcode={setIsOpenSearchAddr}
               setSimpleAddr={setSimpleAddr}
               setCoordinate={setCoordinate}
+              setIsNewFavorite={setIsNewFavorite}
+              favoriteJuso={favoriteJuso}
             />
             <TextInput
               placeholder="길안내 (예: 지상 강남역 12번 출구 앞)"
@@ -284,6 +226,8 @@ export default function RegistrationLocation({
               isTodayShare={isTodayShare}
               setIsFullScreen={setIsFullScreen}
               isFullScreen={isFullScreen}
+              setIsNewFavorite={setIsNewFavorite}
+              modifyLocation={modifyLocation}
             />
           </div>
           <div className="flex w-full flex-col gap-2">
@@ -306,7 +250,7 @@ export default function RegistrationLocation({
                   나눔 가능 요일 및 시간대 선택
                 </p>
                 <ToggleButton
-                  toggle={() => toggleSelectDay()}
+                  toggle={() => setIsDayShare((prev) => !prev)}
                   on={isDayShare}
                   onText="나눔자"
                   offText="신청자"
