@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Line from "./Line";
 import MinSemiTitle from "./MinSemiTitle";
 import Image from "next/image";
@@ -17,6 +17,7 @@ import SelctDaysAndTimes from "./SelctDaysAndTimes";
 import FavoriteLocation from "./FavoriteLocation";
 import SavedFavoriteLocation from "./SavedFavoriteLocation";
 import { axiosAuth } from "@/lib/axios";
+import { numberToDay } from "./utils/util";
 
 type Props = {
   idx: number;
@@ -150,6 +151,21 @@ export default function RegistrationLocation({
       console.log(`get favorite location error`, error);
     }
   };
+
+  const availableDays = useMemo(() => {
+    const availableList: string[] = [];
+
+    selectTimeInfoList.forEach((timeInfo) => {
+      availableList.push(timeInfo.dayOfWeek);
+    });
+    const sortedList = availableList.sort((a, b) => {
+      return Number(a) - Number(b);
+    });
+
+    const filteredList = [...new Set(sortedList)];
+    const filteredDayList = filteredList.map((v) => numberToDay(v));
+    return `${filteredDayList.join(", ")} 가능`;
+  }, [selectTimeInfoList]);
 
   useEffect(() => {
     if (isNewFavorite) {
@@ -312,17 +328,19 @@ export default function RegistrationLocation({
                 </div>
                 <p>{simpleAddr}</p>
               </div>
-              <div className="flex gap-1">
-                <div className="h-4 w-4 sm:h-5 sm:w-5">
-                  <Image
-                    src="/assets/images/calendar.svg"
-                    width={20}
-                    height={20}
-                    alt="calendar"
-                  />
+              {selectTimeInfoList.length > 0 && (
+                <div className="flex gap-1">
+                  <div className="h-4 w-4 sm:h-5 sm:w-5">
+                    <Image
+                      src="/assets/images/calendar.svg"
+                      width={20}
+                      height={20}
+                      alt="calendar"
+                    />
+                  </div>
+                  <p>{availableDays}</p>
                 </div>
-                <p>주중 나눔 가능</p>
-              </div>
+              )}
             </div>
             <div className="flex gap-2 sm:gap-6">
               <button

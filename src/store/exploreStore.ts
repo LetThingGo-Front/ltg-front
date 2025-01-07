@@ -2,7 +2,7 @@ import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import createSelectors from "./selectorStore";
 import { create } from "zustand";
-import { ItemSearchRequest, ItemSearchResponse } from "@/models/data-contracts";
+import { ItemSearchResponse } from "@/models/data-contracts";
 
 type ExploreState = {
   searchInput: string;

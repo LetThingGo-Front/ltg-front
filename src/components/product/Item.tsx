@@ -13,20 +13,13 @@ export default function Item() {
   const [requestPopup, setRequestPopup] = useState(false);
   const [star, setStar] = useState(false);
 
-  useEffect(() => {
-    const randomValue = Math.random();
-    if (randomValue < 0.5) {
-      throw new Error();
-    }
-  }, []);
-
   return (
     <div className="flex justify-center">
       <div
         className={`relative flex justify-center ${requestPopup ? "sm:h-full sm:w-[660px] sm:-translate-x-[570px] sm:px-24" : "sm:max-h-[828px] sm:w-[800px] sm:translate-x-0"} mb-[80px] h-[calc(100vh-64px)] duration-500`}
       >
-        <div className="absolute z-10 flex w-full flex-col items-center justify-center gap-[12px] bg-white bg-opacity-80 py-[10px] backdrop-blur-lg max-sm:px-[50px] sm:gap-5">
-          <div className="flex items-center justify-center gap-1 max-sm:h-[30px] sm:gap-3">
+        <div className="absolute z-10 flex w-full flex-col items-center justify-center gap-[12px] bg-white bg-opacity-80 py-[10px] backdrop-blur-lg sm:gap-5 max-sm:px-[50px]">
+          <div className="flex items-center justify-center gap-1 sm:gap-3 max-sm:h-[30px]">
             <p className="text-lg font-bold sm:text-[28px]">
               세상에서 가장 쉬운 코딩책
             </p>
@@ -51,7 +44,7 @@ export default function Item() {
             </span>
           </div>
         </div>
-        <div className="flex flex-col gap-6 overflow-x-hidden pt-[112px] scrollbar-hide max-sm:mb-[80px] max-sm:px-[30px] sm:gap-[52px]">
+        <div className="flex flex-col gap-6 overflow-x-hidden pt-[112px] scrollbar-hide sm:gap-[52px] max-sm:mb-[80px] max-sm:px-[30px]">
           <div className="flex justify-center">
             <div className="h-[328px] w-[300px] sm:h-[474px] sm:w-[440px]">
               <ItemSwiper />

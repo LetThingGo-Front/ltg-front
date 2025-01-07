@@ -37,4 +37,29 @@ const dayToStrNumber = (day: string) => {
   }
 };
 
-export { timeArrSort, dayToStrNumber };
+const numberToDay = (num: string) => {
+  switch (num) {
+    case "1":
+      return "월";
+    case "2":
+      return "화";
+    case "3":
+      return "수";
+    case "4":
+      return "목";
+    case "5":
+      return "금";
+    case "6":
+      return "토";
+    case "7":
+      return "일";
+    case "8":
+      return "주중";
+    case "9":
+      return "주말";
+    default:
+      return "";
+  }
+};
+
+export { timeArrSort, dayToStrNumber, numberToDay };

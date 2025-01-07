@@ -21,6 +21,8 @@ import EmptyLocationBox from "./EmptyLocationBox";
 import statusData from "@/mocks/data/code/statusData.json";
 import categoryData from "@/mocks/data/code/categoryData.json";
 import debounce from "debounce";
+import { usePathname, useRouter } from "next/navigation";
+import useHistoryStore from "@/store/historyStore";
 
 const sharingLocation = [
   { locationId: "나눔 장소 A", color: "bg-green-400" },
@@ -28,6 +30,9 @@ const sharingLocation = [
 ];
 
 export default function RegistrationForm() {
+  const router = useRouter();
+  const saveHistory = useHistoryStore.use.actions().saveHistory;
+  const pathname = usePathname();
   const {
     control,
     formState: { errors, isValid, isDirty }, // isDirty: 변경됨, isValid: 유효함, errors: 에러
@@ -45,6 +50,9 @@ export default function RegistrationForm() {
     // } catch (error) {
     //   console.error(`register item error: ${error}`);
     // }
+    const itemId = 1;
+    saveHistory({ previousUrl: pathname, itemId });
+    router.push(`/product/${itemId}`);
   };
   const [isItemStatusType, setIsItemStatusType] = useState("N");
   const [isOpenLocationForm, setIsOpenLocationForm] = useState(false);

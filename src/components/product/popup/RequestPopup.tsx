@@ -38,8 +38,8 @@ export default function RequestPopup({ setRequestPopup, requestPopup }: Props) {
         <Swiper
           modules={[Pagination]}
           pagination={{ clickable: true }}
-          onSwiper={(swiper) => console.log(swiper)}
-          onSlideChange={() => console.log("slide change")}
+          onSwiper={(swiper) => {}}
+          onSlideChange={() => {}}
         >
           <SwiperSlide>
             <div className="flex h-full w-full flex-col items-center justify-center overflow-y-auto">
