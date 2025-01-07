@@ -164,7 +164,7 @@ export default function RegistrationLocation({
 
     const filteredList = [...new Set(sortedList)];
     const filteredDayList = filteredList.map((v) => numberToDay(v));
-    return `${filteredDayList.join(", ")} 가능`;
+    return `${filteredDayList.join(", ")} 나눔 가능`;
   }, [selectTimeInfoList]);
 
   useEffect(() => {
