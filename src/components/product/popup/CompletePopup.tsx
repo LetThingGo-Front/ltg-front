@@ -11,7 +11,7 @@ const closeVariants = {
   exit: {
     opacity: 0,
     ease: "easeInOut",
-    transition: { type: "tween", ...duration.short },
+    transition: { type: "tween", ...duration.medium },
   },
 };
 
