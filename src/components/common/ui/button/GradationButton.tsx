@@ -1,4 +1,3 @@
-import { commonHover, commonTap, duration } from "@/constants/animation/style";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import React from "react";
@@ -27,11 +26,10 @@ export default function GradationButton({
     >
       <motion.button
         className={clsx(
-          "h-full w-full rounded-full disabled:opacity-50", // 레이아웃, 크기, 모양, 테두리
+          "h-full w-full rounded-full duration-300 hover:bg-[#474747] hover:text-white disabled:opacity-50", // 레이아웃, 크기, 모양, 테두리
         )}
-        whileHover={disabled ? "" : commonHover}
-        whileTap={disabled ? "" : commonTap}
-        // transition={{ ease: "easeInOut", ...duration.short }}
+        // whileHover={disabled ? "" : commonHover}
+        // whileTap={disabled ? "" : commonTap}
         onClick={onClick}
         type={type}
         disabled={disabled}

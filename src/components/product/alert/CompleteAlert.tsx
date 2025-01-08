@@ -15,7 +15,7 @@ const closeVariants = {
   },
 };
 
-export default function CompletePopup() {
+export default function CompleteAlert() {
   const pathname = usePathname();
   const previousUrl = useHistoryStore.use.previousUrl();
   const savedItemId = useHistoryStore.use.itemId();
@@ -36,7 +36,7 @@ export default function CompletePopup() {
           variants={closeVariants}
           exit="exit"
         >
-          <div className="flex h-[6rem] w-[16.6875rem] items-center rounded-[1.25rem] bg-black/70 sm:h-[8rem] sm:w-[22.5rem] sm:pl-[7.5rem] max-sm:pl-[3.875rem]">
+          <div className="flex h-[6rem] w-[16.6875rem] items-center rounded-[1.25rem] bg-grey-800 sm:h-[8rem] sm:w-[22.5rem] sm:pl-[7.5rem] max-sm:pl-[3.875rem]">
             <div className="flex items-center gap-4">
               <p className="text-lg font-semibold text-green-400">
                 나눔 등록 완료

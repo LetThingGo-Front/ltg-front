@@ -10,6 +10,9 @@ import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
 import SearchNav from "./explore/SearchNav";
 import useLoginPopupStore from "@/store/loginServiceStore";
+import clsx from "clsx";
+
+const IS_NUMBER = /^[+-]?\d+$/;
 
 export default function Header({ token }: CommonProps) {
   const pathname = usePathname();
@@ -61,13 +64,25 @@ export default function Header({ token }: CommonProps) {
               />
             </Link>
           </li>
-          <li className="cursor-pointer hover:font-bold">
+          <li
+            className={clsx(
+              "cursor-pointer hover:font-bold",
+              pathname === "/explore" && "text-green-600",
+            )}
+          >
             <Link href="/explore">나눔 탐색</Link>
           </li>
           <li className="cursor-pointer hover:font-bold">
             <Link href="/a">띵즈</Link>
           </li>
-          <li className="cursor-pointer hover:font-bold">
+          <li
+            className={clsx(
+              "cursor-pointer hover:font-bold",
+              pathname.split("/")[1] === "product" &&
+                IS_NUMBER.test(pathname.split("/")[2]) &&
+                "text-green-600",
+            )}
+          >
             <Link href="/product/1">캘린더</Link>
           </li>
           <li className="cursor-pointer hover:font-bold">

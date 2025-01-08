@@ -11,7 +11,7 @@ import Maps from "./Maps";
 import { isMobile } from "react-device-detect";
 import Image from "next/image";
 import clsx from "clsx";
-import AddressModal from "../AddressModal";
+import AddressModal from "../modal/AddressModal";
 import LocationButton from "../button/LocationButton";
 
 export type Latlng = {

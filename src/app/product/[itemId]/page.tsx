@@ -1,12 +1,12 @@
 import Item from "@/components/product/Item";
-import CompletePopup from "@/components/product/popup/CompletePopup";
+import CompleteAlert from "@/components/product/alert/CompleteAlert";
 import React from "react";
 
 export default function page() {
   return (
     <div>
       <Item />
-      <CompletePopup />
+      <CompleteAlert />
     </div>
   );
 }

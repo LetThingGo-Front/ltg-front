@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import ItemSwiper from "./ItemSwiper";
 import Image from "next/image";
 import ShareMap from "./map/ShareMap";
-import RequestPopup from "./popup/RequestPopup";
+import RequestPopup from "./alert/RequestPopup";
 import ProfileButton from "./ProfileButton";
 import GradationTwoButton from "../common/ui/button/GradationTwoButton";
 import { UNKNOWN_ERROR_MESSAGE } from "@/constants/message";
@@ -86,7 +86,6 @@ export default function Item() {
             secondButtonFn={() => {}}
             firstButtonText="나눔 신청"
             secondButtonText="오늘 번개 신청"
-            isImage
           />
         )}
       </div>

@@ -31,11 +31,4 @@ const scale = {
   extraLarge: { scale: 1.15 },
 };
 
-const commonHover = { backgroundColor: "#474747", color: "#ffffff" };
-const commonTap = {
-  backgroundColor: "#474747",
-  color: "#ffffff",
-  transition: { duration: 0 },
-};
-
-export { delay, duration, scale, commonHover, commonTap };
+export { delay, duration, scale };

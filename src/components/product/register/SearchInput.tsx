@@ -268,7 +268,7 @@ export default function SearchInput({
       <div
         ref={containerRef}
         className={clsx(
-          "group/search flex h-11 backdrop-blur-[50px] pointerhover:hover:bg-[#474747] max-sm:hidden",
+          "group/search flex h-11 backdrop-blur-[50px] duration-300 pointerhover:hover:bg-[#474747] max-sm:hidden",
           !isOpenMoblieView && isFocused ? "bg-[#474747]" : "bg-grey-50",
           (!isFocused || searchList.length === 0) && "rounded-b-[0.625rem]",
           isOpenMoblieView
