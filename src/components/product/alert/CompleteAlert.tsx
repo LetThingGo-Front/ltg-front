@@ -34,6 +34,8 @@ export default function CompleteAlert() {
         <motion.div
           className="absolute inset-0 z-50 flex h-full w-full items-center justify-center bg-white/85"
           variants={closeVariants}
+          initial="start"
+          animate="end"
           exit="exit"
         >
           <div className="flex h-[6rem] w-[16.6875rem] items-center rounded-[1.25rem] bg-grey-800 sm:h-[8rem] sm:w-[22.5rem] sm:pl-[7.5rem] max-sm:pl-[3.875rem]">

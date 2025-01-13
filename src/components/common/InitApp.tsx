@@ -12,6 +12,7 @@ export default function InitApp({ token }: CommonProps) {
   const deleteCookieAccessToken = async () => {
     await axiosAuth.delete("/v1/cookie/access-token");
   };
+
   useEffect(() => {
     setupInterceptor();
     if (token) {

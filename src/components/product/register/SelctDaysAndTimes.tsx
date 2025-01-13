@@ -9,7 +9,7 @@ import TimeList from "./TimeList";
 import SelectTimesButton from "./button/SelectTimesButton";
 import { ItemAvailabiltyDto } from "@/models/data-contracts";
 import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
-import { fetchDaysList } from "@/data/commonData";
+import { getDaysList } from "@/data/commonData";
 import { useQuery } from "@tanstack/react-query";
 import { DAYS_CODE } from "@/constants/code";
 import daysData from "@/mocks/data/code/daysData.json";
@@ -37,7 +37,7 @@ export default function SelctDaysAndTimes({
 
   const days = useQuery({
     queryKey: ["days", DAYS_CODE],
-    queryFn: ({ queryKey }) => fetchDaysList(queryKey[1]),
+    queryFn: ({ queryKey }) => getDaysList(queryKey[1]),
     staleTime: MIDDLE_TIME,
     gcTime: LONG_TIME,
   });

@@ -1,12 +1,18 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import ItemCardList from "./ItemCardList";
 import debounce from "debounce";
 import { useSearchParams } from "next/navigation";
 import useExploreStore from "@/store/exploreStore";
 import clsx from "clsx";
+import { ItemSearchRequestPagination } from "@/types/item";
+import { useQuery } from "@tanstack/react-query";
+import { getCategoryList } from "@/data/commonData";
+import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
+import { getItemList } from "@/data/itemData";
+import { ItemSearchResponse } from "@/models/data-contracts";
 
 const INITIAL_SNAP = 2;
 const CONTENT_VIEW_HEIGHT = 250; // pc 화면에서 컨텐츠 한 줄 보이는 높이
@@ -24,6 +30,17 @@ export default function SheetModal() {
   const sheetRef = useRef<SheetRef>(null);
   const [windowHeight, setWindowHeight] = useState<number>(1080);
   const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [itemRequest, setItemRequest] = useState<ItemSearchRequestPagination>({
+    dong: "",
+    categoryCode: "",
+    itemStatus: "",
+    dayOfWeek: "",
+    page: 0,
+    size: 10,
+  });
+  const itemRef = useRef();
+  const [itemList, setItemList] = useState<ItemSearchResponse[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
   const getWindowSize = debounce(() => {
     setWindowWidth(window.innerWidth);
     setWindowHeight(window.innerHeight);
@@ -51,6 +68,31 @@ export default function SheetModal() {
     }
   };
 
+  const getItemListHandler = useCallback(async () => {
+    try {
+      const data = await getItemList(itemRequest);
+      if (itemList.length < 50) setItemList([...itemList, ...data?.content]);
+      setTotalCount(data?.totalElements);
+    } catch (error) {
+      console.log(` getItemListHandler error: ${error}`);
+    }
+  }, [itemList, itemRequest]);
+
+  const pagingItemRequest = () => {
+    if (itemRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = itemRef.current;
+      // 스크롤이 맨 아래에 도달하면 다음 페이지 호출
+      if (scrollTop + clientHeight >= scrollHeight) {
+        console.log("스크롤이 맨 아래에 도달");
+        setItemRequest((prev) => ({ ...prev, page: (prev.page ?? 0) + 1 }));
+        getItemListHandler();
+      }
+    }
+  };
+  const getItemSearchListScrolling = debounce(() => {
+    pagingItemRequest();
+  }, 300);
+
   useEffect(() => {
     window.addEventListener("resize", getWindowSize);
     return () => {
@@ -60,10 +102,13 @@ export default function SheetModal() {
   useEffect(() => {
     getWindowSize();
     setTimeout(() => {
-      // setOpen(type || isSearch ? true : false);
       setOpen(true);
     }, 300);
   }, [getWindowSize, isSearch, type]);
+
+  useEffect(() => {
+    getItemListHandler();
+  }, []);
 
   return (
     <Sheet
@@ -113,22 +158,24 @@ export default function SheetModal() {
             </div>
             <div className="mb-2 flex justify-center sm:mb-5 sm:ml-6 sm:text-xl">
               <div className="flex w-[19.5rem] justify-start sm:w-full">
-                <span className="font-bold text-grey-800">
-                  {isSearch ? "검색 결과" : "총"}
+                <span className="font-bold text-grey-800">검색 결과</span>
+                <span className="text-gresy-500 font-semibold">
+                  ({totalCount})
                 </span>
-                <span className="text-gresy-500 font-semibold">(20)</span>
               </div>
             </div>
           </Sheet.Header>
           <Sheet.Content>
             <Sheet.Scroller
+              ref={itemRef}
+              onScroll={getItemSearchListScrolling}
               style={{
                 height: windowHeight * snapPoints[currentSnapPoint],
                 WebkitOverflowScrolling: "touch",
                 scrollBehavior: "smooth",
               }}
             >
-              <ItemCardList />
+              <ItemCardList itemSearchList={itemList} />
             </Sheet.Scroller>
           </Sheet.Content>
         </div>

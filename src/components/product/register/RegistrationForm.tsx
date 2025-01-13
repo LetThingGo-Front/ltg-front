@@ -12,7 +12,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { CreateItemPayload } from "@/models/data-contracts";
 import utils from "@/utils/cmmnUtil";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCategoryList, fetchItemStatusList } from "@/data/commonData";
+import { getCategoryList, getItemStatusList } from "@/data/commonData";
 import { Codes } from "@/types/common";
 import axios, { axiosAuth } from "@/lib/axios";
 import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
@@ -60,14 +60,14 @@ export default function RegistrationForm() {
 
   const category = useQuery({
     queryKey: ["category", CATEGORY_CODE],
-    queryFn: ({ queryKey }) => fetchCategoryList(queryKey[1]),
+    queryFn: ({ queryKey }) => getCategoryList(queryKey[1]),
     staleTime: MIDDLE_TIME,
     gcTime: LONG_TIME,
   });
 
   const itemStatus = useQuery({
     queryKey: ["itemStatus", ITEM_STATUS_CODE, isItemStatusType],
-    queryFn: ({ queryKey }) => fetchItemStatusList(queryKey[1], queryKey[2]),
+    queryFn: ({ queryKey }) => getItemStatusList(queryKey[1], queryKey[2]),
     staleTime: MIDDLE_TIME,
     gcTime: LONG_TIME,
   });

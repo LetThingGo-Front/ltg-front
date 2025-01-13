@@ -2,8 +2,13 @@
 
 import React from "react";
 import ItemCard from "./ItemCard";
+import { ItemSearchResponse } from "@/models/data-contracts";
 
-export default function ItemCardList() {
+type Props = {
+  itemSearchList?: ItemSearchResponse[];
+};
+
+export default function ItemCardList({ itemSearchList }: Props) {
   const cardList = Array.from({ length: 20 }, (_, i) => i);
 
   return (
@@ -12,12 +17,10 @@ export default function ItemCardList() {
       onTouchStart={(e) => e.stopPropagation()}
       onTouchEnd={(e) => e.stopPropagation()}
     >
-      {cardList.map((_, i) => (
-        <ItemCard key={i} />
-      ))}
-      <button className="h-[7rem] w-[19.5rem] rounded-[1.875rem] bg-green-400">
+      {itemSearchList?.map((_, i) => <ItemCard key={i} />)}
+      {/* <button className="h-[7rem] w-[19.5rem] rounded-[1.875rem] bg-green-400">
         last item
-      </button>
+      </button> */}
     </div>
   );
 }
