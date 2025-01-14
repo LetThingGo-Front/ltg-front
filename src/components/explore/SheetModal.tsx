@@ -195,10 +195,7 @@ export default function SheetModal() {
             </div>
           </Sheet.Header>
           <Sheet.Content>
-            <div
-              onTouchStart={(e) => e.stopPropagation()}
-              onTouchEnd={(e) => e.stopPropagation()}
-            >
+            <Sheet.Scroller>
               <InfiniteScroll
                 dataLength={itemList.length}
                 next={getInfiniteScroll}
@@ -221,7 +218,7 @@ export default function SheetModal() {
                   <div key={i}>{item.itemName}</div>
                 ))} */}
               </InfiniteScroll>
-            </div>
+            </Sheet.Scroller>
           </Sheet.Content>
         </div>
       </Sheet.Container>
