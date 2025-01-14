@@ -195,28 +195,33 @@ export default function SheetModal() {
             </div>
           </Sheet.Header>
           <Sheet.Content>
-            <InfiniteScroll
-              dataLength={itemList.length}
-              next={getInfiniteScroll}
-              hasMore={hasMore}
-              loader={<div className="loader" key={0}></div>}
-              height={windowHeight * snapPoints[currentSnapPoint]}
-              // endMessage={
-              //   <p style={{ textAlign: "center" }}>
-              //     <b>Yay! You have seen it all</b>
-              //   </p>
-              // }
-              style={{
-                WebkitOverflowScrolling: "touch",
-                scrollBehavior: "smooth",
-                overflow: "scroll",
-              }}
+            <div
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
             >
-              <ItemCardList itemSearchList={itemList} />
-              {/* {itemList.map((item, i) => (
+              <InfiniteScroll
+                dataLength={itemList.length}
+                next={getInfiniteScroll}
+                hasMore={hasMore}
+                loader={<div className="loader" key={0}></div>}
+                height={windowHeight * snapPoints[currentSnapPoint]}
+                // endMessage={
+                //   <p style={{ textAlign: "center" }}>
+                //     <b>Yay! You have seen it all</b>
+                //   </p>
+                // }
+                style={{
+                  WebkitOverflowScrolling: "touch",
+                  scrollBehavior: "smooth",
+                  overflow: "scroll",
+                }}
+              >
+                <ItemCardList itemSearchList={itemList} />
+                {/* {itemList.map((item, i) => (
                   <div key={i}>{item.itemName}</div>
                 ))} */}
-            </InfiniteScroll>
+              </InfiniteScroll>
+            </div>
           </Sheet.Content>
         </div>
       </Sheet.Container>
