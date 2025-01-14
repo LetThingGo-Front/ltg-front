@@ -195,30 +195,28 @@ export default function SheetModal() {
             </div>
           </Sheet.Header>
           <Sheet.Content>
-            <Sheet.Scroller>
-              <InfiniteScroll
-                dataLength={itemList.length}
-                next={getInfiniteScroll}
-                hasMore={hasMore}
-                loader={<div className="loader" key={0}></div>}
-                height={windowHeight * snapPoints[currentSnapPoint]}
-                // endMessage={
-                //   <p style={{ textAlign: "center" }}>
-                //     <b>Yay! You have seen it all</b>
-                //   </p>
-                // }
-                style={{
-                  WebkitOverflowScrolling: "touch",
-                  scrollBehavior: "smooth",
-                  overflow: "scroll",
-                }}
-              >
-                <ItemCardList itemSearchList={itemList} />
-                {/* {itemList.map((item, i) => (
+            <InfiniteScroll
+              dataLength={itemList.length}
+              next={getInfiniteScroll}
+              hasMore={hasMore}
+              loader={<div className="loader" key={0}></div>}
+              height={windowHeight * snapPoints[currentSnapPoint]}
+              // endMessage={
+              //   <p style={{ textAlign: "center" }}>
+              //     <b>Yay! You have seen it all</b>
+              //   </p>
+              // }
+              style={{
+                WebkitOverflowScrolling: "touch",
+                scrollBehavior: "smooth",
+                overflow: "scroll",
+              }}
+            >
+              <ItemCardList itemSearchList={itemList} />
+              {/* {itemList.map((item, i) => (
                   <div key={i}>{item.itemName}</div>
                 ))} */}
-              </InfiniteScroll>
-            </Sheet.Scroller>
+            </InfiniteScroll>
           </Sheet.Content>
         </div>
       </Sheet.Container>
