@@ -13,12 +13,25 @@ import { getCategoryList } from "@/data/commonData";
 import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
 import { getItemList } from "@/data/itemData";
 import { ItemSearchResponse } from "@/models/data-contracts";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const INITIAL_SNAP = 2;
 const CONTENT_VIEW_HEIGHT = 250; // pc 화면에서 컨텐츠 한 줄 보이는 높이
 const SM_CONTENT_VIEW_HEIGHT = 195; // 모바일 화면 컨텐츠 한 줄 보이는 높이
 const SHEET_HEADER_HEIGHT = 48;
 const SM_SHEET_HEADER_HEIGHT = 28;
+
+export type ItemListResponse = {
+  itemId: number;
+  itemName: string;
+  dongList: string;
+  availableDayList: string;
+  itemThumbnailUrl: string;
+  itemCreatedDateTime: string;
+  itemUpdatedDateTime: string;
+  isLightningAvailableToday: boolean;
+  isScheduleSuggestible: boolean;
+};
 
 export default function SheetModal() {
   const searchParams = useSearchParams();
@@ -36,11 +49,11 @@ export default function SheetModal() {
     itemStatus: "",
     dayOfWeek: "",
     page: 0,
-    size: 10,
+    size: 20,
   });
-  const itemRef = useRef();
-  const [itemList, setItemList] = useState<ItemSearchResponse[]>([]);
+  const [itemList, setItemList] = useState<ItemListResponse[]>([]);
   const [totalCount, setTotalCount] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
   const getWindowSize = debounce(() => {
     setWindowWidth(window.innerWidth);
     setWindowHeight(window.innerHeight);
@@ -68,30 +81,46 @@ export default function SheetModal() {
     }
   };
 
-  const getItemListHandler = useCallback(async () => {
+  const getItemListHandler = async () => {
     try {
+      console.log(">>>getItemListHandler!!");
+      if (hasMore && itemList.length > 0) {
+        setItemRequest((prev) => ({ ...prev, page: (prev.page ?? 0) + 1 }));
+      }
       const data = await getItemList(itemRequest);
-      if (itemList.length < 50) setItemList([...itemList, ...data?.content]);
+      setItemList([...itemList, ...data.content]);
       setTotalCount(data?.totalElements);
+      if (
+        itemRequest.page !== undefined &&
+        itemRequest.page >= data.totalPages
+      ) {
+        setHasMore(false);
+      }
     } catch (error) {
       console.log(` getItemListHandler error: ${error}`);
     }
-  }, [itemList, itemRequest]);
+  };
 
-  const pagingItemRequest = () => {
-    if (itemRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = itemRef.current;
-      // 스크롤이 맨 아래에 도달하면 다음 페이지 호출
-      if (scrollTop + clientHeight >= scrollHeight) {
-        console.log("스크롤이 맨 아래에 도달");
-        setItemRequest((prev) => ({ ...prev, page: (prev.page ?? 0) + 1 }));
-        getItemListHandler();
+  const getInitialItemList = async () => {
+    try {
+      const data = await getItemList(itemRequest);
+      setItemList(data.content);
+      setTotalCount(data?.totalElements);
+      setItemRequest((prev) => ({ ...prev, page: 1 }));
+      if (
+        itemRequest.page !== undefined &&
+        itemRequest.page === data.totalPages - 1
+      ) {
+        setHasMore(false);
       }
+    } catch (error) {
+      console.log(` getInitialItemList error: ${error}`);
     }
   };
-  const getItemSearchListScrolling = debounce(() => {
-    pagingItemRequest();
-  }, 300);
+
+  const getInfiniteScroll = debounce(() => {
+    getItemListHandler();
+  }, 500);
 
   useEffect(() => {
     window.addEventListener("resize", getWindowSize);
@@ -107,7 +136,7 @@ export default function SheetModal() {
   }, [getWindowSize, isSearch, type]);
 
   useEffect(() => {
-    getItemListHandler();
+    getInitialItemList();
   }, []);
 
   return (
@@ -166,17 +195,28 @@ export default function SheetModal() {
             </div>
           </Sheet.Header>
           <Sheet.Content>
-            <Sheet.Scroller
-              ref={itemRef}
-              onScroll={getItemSearchListScrolling}
+            <InfiniteScroll
+              dataLength={itemList.length}
+              next={getInfiniteScroll}
+              hasMore={hasMore}
+              loader={<div className="loader" key={0}></div>}
+              height={windowHeight * snapPoints[currentSnapPoint]}
+              // endMessage={
+              //   <p style={{ textAlign: "center" }}>
+              //     <b>Yay! You have seen it all</b>
+              //   </p>
+              // }
               style={{
-                height: windowHeight * snapPoints[currentSnapPoint],
                 WebkitOverflowScrolling: "touch",
                 scrollBehavior: "smooth",
+                overflow: "scroll",
               }}
             >
               <ItemCardList itemSearchList={itemList} />
-            </Sheet.Scroller>
+              {/* {itemList.map((item, i) => (
+                  <div key={i}>{item.itemName}</div>
+                ))} */}
+            </InfiniteScroll>
           </Sheet.Content>
         </div>
       </Sheet.Container>

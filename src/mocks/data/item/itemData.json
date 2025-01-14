@@ -1,119 +1,229 @@
 {
     "content": [
       {
-        "itemId": 1,
-        "itemName": "자바의 정석1",
-        "dongList": "삼성동,역삼동",
-        "availableDayList": "월,화,주말",
-        "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/b52bd189e2684cfe85b8741d31ee6595.jpg",
-        "itemCreatedDateTime": "2024-12-12 21:58:13",
-        "itemUpdatedDateTime": "2024-12-12 21:58:13",
-        "isLightningAvailableToday": false,
-        "isScheduleSuggestible": false
-      },
-      {
-        "itemId": 2,
-        "itemName": "자바의 정석2",
-        "dongList": "삼성동",
-        "availableDayList": "월요일",
-        "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/d4fb4140b65e44a998886b7ff7209338.jpg",
-        "itemCreatedDateTime": "2024-12-10 22:02:23",
-        "itemUpdatedDateTime": "2024-12-10 22:02:23",
-        "isLightningAvailableToday": false,
-        "isScheduleSuggestible": false
-      },
-      {
-        "itemId": 3,
-        "itemName": "자바의 정석3",
-        "dongList": "삼성동",
-        "availableDayList": "월요일",
-        "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/0ce7495daab041a7816dac649e1a325c.jpg",
-        "itemCreatedDateTime": "2024-12-10 21:39:17",
-        "itemUpdatedDateTime": "2024-12-10 21:39:17",
-        "isLightningAvailableToday": false,
-        "isScheduleSuggestible": false
-      },
-      {
-        "itemId": 4,
-        "itemName": "자바의 정석4",
-        "dongList": "삼성동",
-        "availableDayList": "월요일",
-        "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/64103041599044c2be667b0cb6c17f4f.jpg",
-        "itemCreatedDateTime": "2024-12-10 21:30:45",
-        "itemUpdatedDateTime": "2024-12-10 21:30:45",
-        "isLightningAvailableToday": false,
-        "isScheduleSuggestible": false
-      },
-      {
-        "itemId": 5,
-        "itemName": "자바의 정석5",
-        "dongList": "삼성동,역삼동",
-        "availableDayList": "월,화,주말",
-        "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/b52bd189e2684cfe85b8741d31ee6595.jpg",
-        "itemCreatedDateTime": "2024-12-12 21:58:13",
-        "itemUpdatedDateTime": "2024-12-12 21:58:13",
-        "isLightningAvailableToday": false,
-        "isScheduleSuggestible": false
-      },
-      {
-        "itemId": 6,
-        "itemName": "자바의 정석6",
-        "dongList": "삼성동",
-        "availableDayList": "월요일",
-        "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/d4fb4140b65e44a998886b7ff7209338.jpg",
-        "itemCreatedDateTime": "2024-12-10 22:02:23",
-        "itemUpdatedDateTime": "2024-12-10 22:02:23",
-        "isLightningAvailableToday": false,
-        "isScheduleSuggestible": false
-      },
-      {
-        "itemId": 7,
-        "itemName": "자바의 정석7",
-        "dongList": "삼성동",
-        "availableDayList": "월요일",
-        "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/0ce7495daab041a7816dac649e1a325c.jpg",
-        "itemCreatedDateTime": "2024-12-10 21:39:17",
-        "itemUpdatedDateTime": "2024-12-10 21:39:17",
-        "isLightningAvailableToday": false,
-        "isScheduleSuggestible": false
-      },
-      {
-        "itemId": 8,
-        "itemName": "자바의 정석8",
-        "dongList": "삼성동",
-        "availableDayList": "월요일",
-        "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/64103041599044c2be667b0cb6c17f4f.jpg",
-        "itemCreatedDateTime": "2024-12-10 21:30:45",
-        "itemUpdatedDateTime": "2024-12-10 21:30:45",
-        "isLightningAvailableToday": false,
-        "isScheduleSuggestible": false
-      },
-      {
-        "itemId": 9,
-        "itemName": "자바의 정석9",
-        "dongList": "삼성동,역삼동",
-        "availableDayList": "월,화,주말",
-        "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/b52bd189e2684cfe85b8741d31ee6595.jpg",
-        "itemCreatedDateTime": "2024-12-12 21:58:13",
-        "itemUpdatedDateTime": "2024-12-12 21:58:13",
-        "isLightningAvailableToday": false,
-        "isScheduleSuggestible": false
-      },
-      {
-        "itemId": 10,
-        "itemName": "자바의 정석10",
-        "dongList": "삼성동",
-        "availableDayList": "월요일",
-        "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/d4fb4140b65e44a998886b7ff7209338.jpg",
-        "itemCreatedDateTime": "2024-12-10 22:02:23",
-        "itemUpdatedDateTime": "2024-12-10 22:02:23",
-        "isLightningAvailableToday": false,
-        "isScheduleSuggestible": false
-      }
+    "itemId": 1,
+    "itemName": "자바의 정석1",
+    "dongList": "삼성동,역삼동",
+    "availableDayList": "월,화,주말",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/b52bd189e2684cfe85b8741d31ee6595.jpg",
+    "itemCreatedDateTime": "2025-01-14 12:58:13",
+    "itemUpdatedDateTime": "2025-01-14 12:58:13",
+    "isLightningAvailableToday": true,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 2,
+    "itemName": "자바의 정석2",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/d4fb4140b65e44a998886b7ff7209338.jpg",
+    "itemCreatedDateTime": "2024-12-10 22:02:23",
+    "itemUpdatedDateTime": "2024-12-10 22:02:23",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": true
+  },
+  {
+    "itemId": 3,
+    "itemName": "자바의 정석3",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/0ce7495daab041a7816dac649e1a325c.jpg",
+    "itemCreatedDateTime": "2024-12-10 21:39:17",
+    "itemUpdatedDateTime": "2024-12-10 21:39:17",
+    "isLightningAvailableToday": true,
+    "isScheduleSuggestible": true
+  },
+  {
+    "itemId": 4,
+    "itemName": "자바의 정석4",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/64103041599044c2be667b0cb6c17f4f.jpg",
+    "itemCreatedDateTime": "2024-12-10 21:30:45",
+    "itemUpdatedDateTime": "2024-12-10 21:30:45",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 5,
+    "itemName": "자바의 정석5",
+    "dongList": "삼성동,역삼동",
+    "availableDayList": "월,화,주말",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/b52bd189e2684cfe85b8741d31ee6595.jpg",
+    "itemCreatedDateTime": "2024-12-12 21:58:13",
+    "itemUpdatedDateTime": "2024-12-12 21:58:13",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 6,
+    "itemName": "자바의 정석6",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/d4fb4140b65e44a998886b7ff7209338.jpg",
+    "itemCreatedDateTime": "2024-12-10 22:02:23",
+    "itemUpdatedDateTime": "2024-12-10 22:02:23",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 7,
+    "itemName": "자바의 정석7",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/0ce7495daab041a7816dac649e1a325c.jpg",
+    "itemCreatedDateTime": "2024-12-10 21:39:17",
+    "itemUpdatedDateTime": "2024-12-10 21:39:17",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 8,
+    "itemName": "자바의 정석8",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/64103041599044c2be667b0cb6c17f4f.jpg",
+    "itemCreatedDateTime": "2024-12-10 21:30:45",
+    "itemUpdatedDateTime": "2024-12-10 21:30:45",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 9,
+    "itemName": "자바의 정석9",
+    "dongList": "삼성동,역삼동",
+    "availableDayList": "월,화,주말",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/b52bd189e2684cfe85b8741d31ee6595.jpg",
+    "itemCreatedDateTime": "2024-12-12 21:58:13",
+    "itemUpdatedDateTime": "2024-12-12 21:58:13",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 10,
+    "itemName": "자바의 정석10",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/d4fb4140b65e44a998886b7ff7209338.jpg",
+    "itemCreatedDateTime": "2024-12-10 22:02:23",
+    "itemUpdatedDateTime": "2024-12-10 22:02:23",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 11,
+    "itemName": "자바의 정석11",
+    "dongList": "삼성동,역삼동",
+    "availableDayList": "월,화,주말",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/b52bd189e2684cfe85b8741d31ee6595.jpg",
+    "itemCreatedDateTime": "2024-12-12 21:58:13",
+    "itemUpdatedDateTime": "2024-12-12 21:58:13",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 12,
+    "itemName": "자바의 정석12",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/d4fb4140b65e44a998886b7ff7209338.jpg",
+    "itemCreatedDateTime": "2024-12-10 22:02:23",
+    "itemUpdatedDateTime": "2024-12-10 22:02:23",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 13,
+    "itemName": "자바의 정석13",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/0ce7495daab041a7816dac649e1a325c.jpg",
+    "itemCreatedDateTime": "2024-12-10 21:39:17",
+    "itemUpdatedDateTime": "2024-12-10 21:39:17",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 14,
+    "itemName": "자바의 정석14",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/64103041599044c2be667b0cb6c17f4f.jpg",
+    "itemCreatedDateTime": "2024-12-10 21:30:45",
+    "itemUpdatedDateTime": "2024-12-10 21:30:45",
+    "isLightningAvailableToday": true,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 15,
+    "itemName": "자바의 정석15",
+    "dongList": "삼성동,역삼동",
+    "availableDayList": "월,화,주말",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/b52bd189e2684cfe85b8741d31ee6595.jpg",
+    "itemCreatedDateTime": "2024-12-12 21:58:13",
+    "itemUpdatedDateTime": "2024-12-12 21:58:13",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 16,
+    "itemName": "자바의 정석16",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/d4fb4140b65e44a998886b7ff7209338.jpg",
+    "itemCreatedDateTime": "2024-12-10 22:02:23",
+    "itemUpdatedDateTime": "2024-12-10 22:02:23",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 17,
+    "itemName": "자바의 정석17",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/0ce7495daab041a7816dac649e1a325c.jpg",
+    "itemCreatedDateTime": "2024-12-10 21:39:17",
+    "itemUpdatedDateTime": "2024-12-10 21:39:17",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 18,
+    "itemName": "자바의 정석18",
+    "dongList": "삼성동,역삼동",
+    "availableDayList": "월,화,주말",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/b52bd189e2684cfe85b8741d31ee6595.jpg",
+    "itemCreatedDateTime": "2024-12-12 21:58:13",
+    "itemUpdatedDateTime": "2024-12-12 21:58:13",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 19,
+    "itemName": "자바의 정석19",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/d4fb4140b65e44a998886b7ff7209338.jpg",
+    "itemCreatedDateTime": "2024-12-10 22:02:23",
+    "itemUpdatedDateTime": "2024-12-10 22:02:23",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  },
+  {
+    "itemId": 20,
+    "itemName": "자바의 정석20",
+    "dongList": "삼성동",
+    "availableDayList": "월요일",
+    "itemThumbnailUrl": "https://letthinggo-bucket.s3.ap-northeast-2.amazonaws.com/items/thumbs/0ce7495daab041a7816dac649e1a325c.jpg",
+    "itemCreatedDateTime": "2024-12-10 21:39:17",
+    "itemUpdatedDateTime": "2024-12-10 21:39:17",
+    "isLightningAvailableToday": false,
+    "isScheduleSuggestible": false
+  }
     ],
     "pageable": {
       "pageNumber": 0,
-      "pageSize": 10,
+      "pageSize": 20,
       "sort": {
         "empty": false,
         "unsorted": false,
@@ -123,17 +233,17 @@
       "unpaged": false,
       "paged": true
     },
-    "totalPages": 1,
-    "totalElements": 12,
+    "totalPages": 3,
+    "totalElements": 60,
     "last": true,
-    "size": 10,
+    "size": 20,
     "number": 0,
     "sort": {
       "empty": false,
       "unsorted": false,
       "sorted": true
     },
-    "numberOfElements": 4,
+    "numberOfElements": 20,
     "first": true,
     "empty": false
   }

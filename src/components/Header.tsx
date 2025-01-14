@@ -76,12 +76,13 @@ export default function Header({ token }: CommonProps) {
             <Link href="/a">띵즈</Link>
           </li>
           <li
-            className={clsx(
-              "cursor-pointer hover:font-bold",
-              pathname.split("/")[1] === "product" &&
-                IS_NUMBER.test(pathname.split("/")[2]) &&
-                "text-green-600",
-            )}
+            className="cursor-pointer hover:font-bold"
+            // className={clsx(
+            //   "cursor-pointer hover:font-bold",
+            //   pathname.split("/")[1] === "product" &&
+            //     IS_NUMBER.test(pathname.split("/")[2]) &&
+            //     "text-green-600",
+            // )}
           >
             <Link href="/product/1">캘린더</Link>
           </li>
