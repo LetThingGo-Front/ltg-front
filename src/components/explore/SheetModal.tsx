@@ -91,10 +91,7 @@ export default function SheetModal() {
       const data = await getItemList(itemRequest);
       setItemList([...itemList, ...data.content]);
       setTotalCount(data?.totalElements);
-      if (
-        itemRequest.page !== undefined &&
-        itemRequest.page >= data.totalPages
-      ) {
+      if (data.content.length === 0) {
         setHasMore(false);
       }
       if (scrollRef.current) {
@@ -121,15 +118,12 @@ export default function SheetModal() {
       setItemList(data.content);
       setTotalCount(data?.totalElements);
       setItemRequest((prev) => ({ ...prev, page: 1 }));
-      if (
-        itemRequest.page !== undefined &&
-        itemRequest.page === data.totalPages - 1
-      ) {
+      if (data.content.length === 0) {
         setHasMore(false);
       }
       setTimeout(() => {
         setOpen(true);
-      }, 1000);
+      }, 500);
     } catch (error) {
       console.log(` getInitialItemList error: ${error}`);
     }
