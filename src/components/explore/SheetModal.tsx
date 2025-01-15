@@ -119,12 +119,9 @@ export default function SheetModal() {
   const paginationScroll = () => {
     if (scrollRef.current) {
       const { scrollTop, clientHeight, scrollHeight } = scrollRef.current;
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (Math.ceil(scrollTop) + clientHeight >= scrollHeight) {
         getItemListHandler();
       }
-      alert(
-        `scrollTop: ${scrollTop} / clientHeight: ${clientHeight} / scrollHeight: ${scrollHeight}`,
-      );
     }
   };
 
