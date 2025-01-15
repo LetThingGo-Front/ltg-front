@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import ItemCardList from "./ItemCardList";
 import debounce from "debounce";
@@ -14,13 +8,7 @@ import { useSearchParams } from "next/navigation";
 import useExploreStore from "@/store/exploreStore";
 import clsx from "clsx";
 import { ItemSearchRequestPagination } from "@/types/item";
-import { useQuery } from "@tanstack/react-query";
-import { getCategoryList } from "@/data/commonData";
-import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
 import { getItemList } from "@/data/itemData";
-import { ItemSearchResponse } from "@/models/data-contracts";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { Controller } from "react-hook-form";
 
 const INITIAL_SNAP = 2;
 const CONTENT_VIEW_HEIGHT = 250; // pc 화면에서 컨텐츠 한 줄 보이는 높이
@@ -67,10 +55,13 @@ export default function SheetModal() {
     setWindowHeight(window.innerHeight);
   }, 500);
   const headerHeight = useMemo(() => {
-    const rootStyle = getComputedStyle(document.documentElement);
-    const safeHeight =
-      parseFloat(rootStyle.getPropertyValue("--safe-area-inset-top")) || 0;
-    return windowWidth > 640 ? 238 : 141 + safeHeight;
+    if (typeof window !== "undefined") {
+      const rootStyle = getComputedStyle(document.documentElement);
+      const safeHeight =
+        parseFloat(rootStyle.getPropertyValue("--safe-area-inset-top")) || 0;
+      return windowWidth > 640 ? 238 : 141 + safeHeight;
+    }
+    return 238;
   }, [windowWidth]);
   const snapPoints = [
     (windowHeight - headerHeight) / windowHeight,
@@ -187,15 +178,14 @@ export default function SheetModal() {
           backgroundColor: "transparent",
           borderRadius: "1.875rem",
           boxShadow: "rgba(0, 0, 0, 0.2) 0px -4px 30px",
+          backdropFilter: "blur(20px)",
         }}
       >
         <div
           className={clsx(
-            "group h-full rounded-t-[1.875rem] backdrop-blur-xl pointerhover:hover:bg-black/10",
+            "group h-full rounded-t-[1.875rem] pointerhover:hover:bg-black/10",
             isSheetActive ? "bg-black/10" : "bg-white/30",
           )}
-          onTouchStart={() => setIsSheetActive(true)}
-          onTouchEnd={() => setIsSheetActive(false)}
         >
           <Sheet.Header className="cursor-grab">
             <div className="mb-1 flex h-7 w-full items-center justify-center sm:mb-3 sm:h-12">
@@ -216,7 +206,7 @@ export default function SheetModal() {
               </div>
             </div>
           </Sheet.Header>
-          <Sheet.Content className="bg-transparent">
+          <Sheet.Content className="relative">
             <Sheet.Scroller
               ref={scrollRef}
               style={{
@@ -229,9 +219,6 @@ export default function SheetModal() {
               }}
             >
               <ItemCardList itemSearchList={itemList} />
-              {/* {itemList.map((item, i) => (
-                  <div key={i}>{item.itemName}</div>
-                ))} */}
             </Sheet.Scroller>
           </Sheet.Content>
         </div>
