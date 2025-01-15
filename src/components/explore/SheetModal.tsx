@@ -70,7 +70,6 @@ export default function SheetModal() {
     const rootStyle = getComputedStyle(document.documentElement);
     const safeHeight =
       parseFloat(rootStyle.getPropertyValue("--safe-area-inset-top")) || 0;
-    console.log(safeHeight);
     return windowWidth > 640 ? 238 : 141 + safeHeight;
   }, [windowWidth]);
   const snapPoints = [
@@ -122,8 +121,10 @@ export default function SheetModal() {
       const { scrollTop, clientHeight, scrollHeight } = scrollRef.current;
       if (scrollTop + clientHeight >= scrollHeight) {
         getItemListHandler();
+        alert(
+          `scrollTop: ${scrollTop} / clientHeight: ${clientHeight} / scrollHeight: ${scrollHeight}`,
+        );
       }
-      alert({ scrollTop, clientHeight, scrollHeight });
     }
   };
 
