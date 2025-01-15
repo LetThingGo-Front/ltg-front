@@ -11,7 +11,7 @@ type Props = {
 export default function ItemCardList({ itemSearchList }: Props) {
   return (
     <div
-      className="mb-5 flex flex-wrap justify-center gap-5 sm:mb-[8.4375rem] sm:ml-6 sm:justify-start sm:gap-12"
+      className="flex flex-wrap justify-center gap-5 sm:ml-6 sm:justify-start sm:gap-12"
       onTouchStart={(e) => e.stopPropagation()}
       onTouchEnd={(e) => e.stopPropagation()}
     >

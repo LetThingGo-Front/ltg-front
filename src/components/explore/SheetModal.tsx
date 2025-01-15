@@ -51,7 +51,7 @@ export default function SheetModal() {
     itemStatus: "",
     dayOfWeek: "",
     page: 0,
-    size: 1,
+    size: 2,
   });
   const [itemList, setItemList] = useState<ItemListResponse[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -60,9 +60,10 @@ export default function SheetModal() {
     setWindowWidth(window.innerWidth);
     setWindowHeight(window.innerHeight);
   }, 500);
+  const headerHeight = windowWidth > 640 ? 238 : 141;
   const snapPoints = [
-    0.7,
-    0.5,
+    (windowHeight - headerHeight) / windowHeight,
+    0.4,
     windowWidth > 640
       ? CONTENT_VIEW_HEIGHT / windowHeight
       : SM_CONTENT_VIEW_HEIGHT / windowHeight,
@@ -89,14 +90,15 @@ export default function SheetModal() {
         setItemRequest((prev) => ({ ...prev, page: (prev.page ?? 0) + 1 }));
       }
       const data = await getItemList(itemRequest);
-      setItemList([...itemList, ...data.content]);
       setTotalCount(data?.totalElements);
-      if (data.content.length === 0) {
+      if (data.content.length > 0) {
+        setItemList([...itemList, ...data.content]);
+        if (scrollRef.current) {
+          const { scrollTop, clientHeight } = scrollRef.current;
+          scrollRef.current.scrollTop = scrollTop - clientHeight;
+        }
+      } else {
         setHasMore(false);
-      }
-      if (scrollRef.current) {
-        const { scrollTop, clientHeight } = scrollRef.current;
-        scrollRef.current.scrollTop = scrollTop - clientHeight;
       }
     } catch (error) {
       console.log(` getItemListHandler error: ${error}`);
@@ -115,10 +117,11 @@ export default function SheetModal() {
   const getInitialItemList = async () => {
     try {
       const data = await getItemList(itemRequest);
-      setItemList(data.content);
-      setTotalCount(data?.totalElements);
-      setItemRequest((prev) => ({ ...prev, page: 1 }));
-      if (data.content.length === 0) {
+      if (data.content.length > 0) {
+        setItemList(data.content);
+        setTotalCount(data?.totalElements);
+        setItemRequest((prev) => ({ ...prev, page: 1 }));
+      } else {
         setHasMore(false);
       }
       setTimeout(() => {
@@ -131,7 +134,7 @@ export default function SheetModal() {
 
   const getInfiniteScroll = debounce(() => {
     paginationScroll();
-  }, 500);
+  }, 100);
 
   useEffect(() => {
     window.addEventListener("resize", getWindowSize);
@@ -206,9 +209,9 @@ export default function SheetModal() {
             <Sheet.Scroller
               ref={scrollRef}
               style={{
-                height: windowHeight * snapPoints[currentSnapPoint] - 48,
+                height: windowHeight * snapPoints[currentSnapPoint] - 80,
                 WebkitOverflowScrolling: "touch",
-                overflow: "scroll",
+                overflow: "auto",
               }}
               onScroll={() => {
                 hasMore && getInfiniteScroll();
