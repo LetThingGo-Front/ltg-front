@@ -145,7 +145,7 @@ export default function SheetModal() {
 
   const getInfiniteScroll = debounce(() => {
     paginationScroll();
-  }, 100);
+  }, 500);
 
   useEffect(() => {
     window.addEventListener("resize", getWindowSize);
