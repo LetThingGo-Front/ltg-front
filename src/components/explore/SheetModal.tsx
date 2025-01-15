@@ -14,6 +14,7 @@ import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
 import { getItemList } from "@/data/itemData";
 import { ItemSearchResponse } from "@/models/data-contracts";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Controller } from "react-hook-form";
 
 const INITIAL_SNAP = 2;
 const CONTENT_VIEW_HEIGHT = 250; // pc 화면에서 컨텐츠 한 줄 보이는 높이
@@ -41,6 +42,7 @@ export default function SheetModal() {
   const [currentSnapPoint, setCurrentSnapPoint] = useState(INITIAL_SNAP);
   const [isSheetActive, setIsSheetActive] = useState(false);
   const sheetRef = useRef<SheetRef>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [windowHeight, setWindowHeight] = useState<number>(1080);
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [itemRequest, setItemRequest] = useState<ItemSearchRequestPagination>({
@@ -83,7 +85,6 @@ export default function SheetModal() {
 
   const getItemListHandler = async () => {
     try {
-      console.log(">>>getItemListHandler!!");
       if (hasMore && itemList.length > 0) {
         setItemRequest((prev) => ({ ...prev, page: (prev.page ?? 0) + 1 }));
       }
@@ -96,8 +97,21 @@ export default function SheetModal() {
       ) {
         setHasMore(false);
       }
+      if (scrollRef.current) {
+        const { scrollTop, clientHeight } = scrollRef.current;
+        scrollRef.current.scrollTop = scrollTop - clientHeight;
+      }
     } catch (error) {
       console.log(` getItemListHandler error: ${error}`);
+    }
+  };
+
+  const paginationScroll = () => {
+    if (scrollRef.current) {
+      const { scrollTop, clientHeight, scrollHeight } = scrollRef.current;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        getItemListHandler();
+      }
     }
   };
 
@@ -119,7 +133,7 @@ export default function SheetModal() {
   };
 
   const getInfiniteScroll = debounce(() => {
-    getItemListHandler();
+    paginationScroll();
   }, 500);
 
   useEffect(() => {
@@ -148,7 +162,7 @@ export default function SheetModal() {
       }}
       snapPoints={snapPoints}
       initialSnap={INITIAL_SNAP}
-      onSnap={(index) => {
+      onSnap={(index: number) => {
         setCurrentSnapPoint(index);
       }}
       // disableDrag={true}
@@ -194,29 +208,23 @@ export default function SheetModal() {
               </div>
             </div>
           </Sheet.Header>
-          <Sheet.Content>
-            <InfiniteScroll
-              dataLength={itemList.length}
-              next={getInfiniteScroll}
-              hasMore={hasMore}
-              loader={<div className="loader" key={0}></div>}
-              height={windowHeight * snapPoints[currentSnapPoint]}
-              // endMessage={
-              //   <p style={{ textAlign: "center" }}>
-              //     <b>Yay! You have seen it all</b>
-              //   </p>
-              // }
+          <Sheet.Content className="bg-transparent">
+            <Sheet.Scroller
+              ref={scrollRef}
               style={{
+                height: windowHeight * snapPoints[currentSnapPoint] - 48,
                 WebkitOverflowScrolling: "touch",
-                scrollBehavior: "smooth",
                 overflow: "scroll",
+              }}
+              onScroll={() => {
+                hasMore && getInfiniteScroll();
               }}
             >
               <ItemCardList itemSearchList={itemList} />
               {/* {itemList.map((item, i) => (
                   <div key={i}>{item.itemName}</div>
                 ))} */}
-            </InfiniteScroll>
+            </Sheet.Scroller>
           </Sheet.Content>
         </div>
       </Sheet.Container>
