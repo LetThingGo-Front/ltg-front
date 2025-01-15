@@ -121,10 +121,10 @@ export default function SheetModal() {
       const { scrollTop, clientHeight, scrollHeight } = scrollRef.current;
       if (scrollTop + clientHeight >= scrollHeight) {
         getItemListHandler();
-        alert(
-          `scrollTop: ${scrollTop} / clientHeight: ${clientHeight} / scrollHeight: ${scrollHeight}`,
-        );
       }
+      alert(
+        `scrollTop: ${scrollTop} / clientHeight: ${clientHeight} / scrollHeight: ${scrollHeight}`,
+      );
     }
   };
 
