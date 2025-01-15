@@ -51,7 +51,7 @@ export default function SheetModal() {
     itemStatus: "",
     dayOfWeek: "",
     page: 0,
-    size: 20,
+    size: 1,
   });
   const [itemList, setItemList] = useState<ItemListResponse[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -127,6 +127,9 @@ export default function SheetModal() {
       ) {
         setHasMore(false);
       }
+      setTimeout(() => {
+        setOpen(true);
+      }, 1000);
     } catch (error) {
       console.log(` getInitialItemList error: ${error}`);
     }
@@ -144,9 +147,6 @@ export default function SheetModal() {
   }, [getWindowSize]);
   useEffect(() => {
     getWindowSize();
-    setTimeout(() => {
-      setOpen(true);
-    }, 300);
   }, [getWindowSize, isSearch, type]);
 
   useEffect(() => {
