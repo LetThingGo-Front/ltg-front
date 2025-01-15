@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import ItemCardList from "./ItemCardList";
 import debounce from "debounce";
@@ -60,7 +66,13 @@ export default function SheetModal() {
     setWindowWidth(window.innerWidth);
     setWindowHeight(window.innerHeight);
   }, 500);
-  const headerHeight = windowWidth > 640 ? 238 : 141;
+  const headerHeight = useMemo(() => {
+    const rootStyle = getComputedStyle(document.documentElement);
+    const safeHeight =
+      parseFloat(rootStyle.getPropertyValue("--safe-area-inset-top")) || 0;
+    console.log(safeHeight);
+    return windowWidth > 640 ? 238 : 141 + safeHeight;
+  }, [windowWidth]);
   const snapPoints = [
     (windowHeight - headerHeight) / windowHeight,
     0.4,
@@ -111,6 +123,7 @@ export default function SheetModal() {
       if (scrollTop + clientHeight >= scrollHeight) {
         getItemListHandler();
       }
+      alert({ scrollTop, clientHeight, scrollHeight });
     }
   };
 
