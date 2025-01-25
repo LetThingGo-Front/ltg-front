@@ -45,7 +45,7 @@ export default function SheetModal() {
     itemStatus: "",
     dayOfWeek: "",
     page: 0,
-    size: 2,
+    size: 20,
   });
   const [itemList, setItemList] = useState<ItemListResponse[]>([]);
   const [totalCount, setTotalCount] = useState(0);
