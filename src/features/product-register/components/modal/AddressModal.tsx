@@ -1,6 +1,6 @@
 "use client";
 
-import { delay, duration } from "@/constants/animation/style";
+import { delay, duration } from "@/common/constants/animation/style";
 import { motion } from "framer-motion";
 import React from "react";
 

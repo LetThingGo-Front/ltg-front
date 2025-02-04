@@ -1,6 +1,6 @@
 "use client";
 
-import ErrorPage from "@/components/common/ErrorPage";
+import ErrorPage from "@/common/components/ErrorPage";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";

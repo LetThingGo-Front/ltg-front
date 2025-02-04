@@ -1,18 +1,20 @@
 "use client";
 
-import FullScreenButton from "@/components/common/map/FullScreenButton";
-import FullScreenTextButton from "@/components/common/map/FullScreenTextButton";
-import MoveCenter from "@/components/common/map/MoveCenter";
-import ZoomControl from "@/components/common/map/ZoomControl";
+import FullScreenButton from "@/common/components/map/FullScreenButton";
+import FullScreenTextButton from "@/common/components/map/FullScreenTextButton";
+import MoveCenter from "@/common/components/map/MoveCenter";
+import ZoomControl from "@/common/components/map/ZoomControl";
 import axios from "axios";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Container as MapDiv, Marker, useNavermaps } from "react-naver-maps";
-import Maps from "./Maps";
+
 import { isMobile } from "react-device-detect";
 import Image from "next/image";
 import clsx from "clsx";
-import AddressModal from "../modal/AddressModal";
-import LocationButton from "../button/LocationButton";
+import AddressModal from "../AddressModal";
+
+import Maps from "../../map/Maps";
+import LocationButton from "../../button/LocationButton";
 
 export type Latlng = {
   y: number;

@@ -5,9 +5,9 @@ import ItemSwiper from "./ItemSwiper";
 import Image from "next/image";
 import ShareMap from "./map/ShareMap";
 import RequestPopup from "./alert/RequestPopup";
-import ProfileButton from "./ProfileButton";
-import GradationTwoButton from "../common/ui/button/GradationTwoButton";
-import { UNKNOWN_ERROR_MESSAGE } from "@/constants/message";
+import ProfileButton from "./button/ProfileButton";
+import GradationTwoButton from "../../../common/components/button/GradationTwoButton";
+import { UNKNOWN_ERROR_MESSAGE } from "@/common/constants/message";
 
 export default function Item() {
   const [requestPopup, setRequestPopup] = useState(false);

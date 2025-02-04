@@ -8,9 +8,9 @@ import Link from "next/link";
 import { useEffect } from "react";
 import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
-import SearchNav from "./explore/SearchNav";
 import useLoginPopupStore from "@/store/loginServiceStore";
 import clsx from "clsx";
+import SearchNav from "@/features/explore/components/SearchNav";
 
 const IS_NUMBER = /^[+-]?\d+$/;
 

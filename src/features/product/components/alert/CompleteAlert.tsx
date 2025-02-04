@@ -5,7 +5,7 @@ import Image from "next/image";
 import useHistoryStore from "@/store/historyStore";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { duration } from "@/constants/animation/style";
+import { duration } from "@/common/constants/animation/style";
 
 const closeVariants = {
   exit: {

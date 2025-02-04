@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import imageCompression from "browser-image-compression";
-import LoadingMapSpinner from "@/components/common/LoadingMapSpinner";
+import LoadingMapSpinner from "@/common/components/LoadingMapSpinner";
 
 const MAX_FILE_UPLOAD_COUNT = 5;
 const MAX_FILE_SIZE_MB = 1;

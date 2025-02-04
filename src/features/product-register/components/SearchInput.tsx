@@ -10,12 +10,13 @@ import Image from "next/image";
 import debounce from "debounce";
 import axios from "axios";
 import utils from "@/utils/cmmnUtil";
-import AddressButton from "./button/AddressButton";
+
 import { isMobile, isTablet } from "react-device-detect";
 import jusoData from "@/mocks/data/juso/jusoData.json";
 import useSearchStore from "@/store/searchStore";
 import { useNavermaps } from "react-naver-maps";
 import { FavoriteJuso } from "./RegistrationLocation";
+import AddressButton from "./button/AddressButton";
 
 type Props = {
   addr: string;

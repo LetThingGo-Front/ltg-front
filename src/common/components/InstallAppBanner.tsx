@@ -1,6 +1,6 @@
 "use client";
 
-import { duration } from "@/constants/animation/style";
+import { duration } from "@/common/constants/animation/style";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";

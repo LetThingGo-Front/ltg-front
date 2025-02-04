@@ -1,13 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Line from "@/components/product/register/Line";
-import SemiTitle from "@/components/product/register/SemiTitle";
-import ItemBox from "@/components/product/register/ItemBox";
-import RegistrationLocation from "./RegistrationLocation";
 import ImageUpload from "./ImageUpload";
 import TextInput from "./TextInput";
-import GradationButton from "@/components/common/ui/button/GradationButton";
+import GradationButton from "@/common/components/button/GradationButton";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { CreateItemPayload } from "@/models/data-contracts";
 import utils from "@/utils/cmmnUtil";
@@ -15,14 +11,18 @@ import { useQuery } from "@tanstack/react-query";
 import { getCategoryList, getItemStatusList } from "@/data/commonData";
 import { Codes } from "@/types/common";
 import axios, { axiosAuth } from "@/lib/axios";
-import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
-import { CATEGORY_CODE, ITEM_STATUS_CODE } from "@/constants/code";
+import { LONG_TIME, MIDDLE_TIME } from "@/common/constants/time";
+import { CATEGORY_CODE, ITEM_STATUS_CODE } from "@/common/constants/code";
 import EmptyLocationBox from "./EmptyLocationBox";
 import statusData from "@/mocks/data/code/statusData.json";
 import categoryData from "@/mocks/data/code/categoryData.json";
 import debounce from "debounce";
 import { usePathname, useRouter } from "next/navigation";
 import useHistoryStore from "@/store/historyStore";
+import SemiTitle from "./SemiTitle";
+import Line from "./Line";
+import ItemBox from "./ItemBox";
+import RegistrationLocation from "./RegistrationLocation";
 
 const sharingLocation = [
   { locationId: "나눔 장소 A", color: "bg-green-400" },

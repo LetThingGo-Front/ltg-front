@@ -2,7 +2,7 @@ import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import createSelectors from "./selectorStore";
 import { create } from "zustand";
-import { JusoProps } from "@/components/product/register/SearchInput";
+import { JusoProps } from "@/features/product-register/components/SearchInput";
 
 type SearchState = {
   isOpen: boolean;

@@ -1,7 +1,7 @@
 import {
   NETWORK_ERROR_MESSAGE,
   UNKNOWN_ERROR_MESSAGE,
-} from "@/constants/message";
+} from "@/common/constants/message";
 import { AxiosError } from "axios";
 import React from "react";
 

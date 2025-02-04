@@ -1,6 +1,6 @@
 "use client";
 
-import { duration } from "@/constants/animation/style";
+import { duration } from "@/common/constants/animation/style";
 import { axiosAuth } from "@/lib/axios";
 import useLoginPopupStore from "@/store/loginServiceStore";
 import useSideNavStore from "@/store/sideNavStore";

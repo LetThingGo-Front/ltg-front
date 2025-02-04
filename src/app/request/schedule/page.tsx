@@ -1,4 +1,4 @@
-import { NETWORK_ERROR_MESSAGE } from "@/constants/message";
+import { NETWORK_ERROR_MESSAGE } from "@/common/constants/message";
 import React from "react";
 
 export default function page() {

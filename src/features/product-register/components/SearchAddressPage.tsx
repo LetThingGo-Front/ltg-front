@@ -4,12 +4,12 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 import axios from "axios";
-import { JusoProps } from "./SearchInput";
 import jusoData from "@/mocks/data/juso/jusoData.json";
 import debounce from "debounce";
 import utils from "@/utils/cmmnUtil";
 import useSearchStore from "@/store/searchStore";
 import { isAndroid } from "react-device-detect";
+import { JusoProps } from "./SearchInput";
 
 export default function SearchAddressPage() {
   const [searchList, setSearchList] = useState<JusoProps[]>([]);

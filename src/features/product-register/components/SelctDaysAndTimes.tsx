@@ -1,18 +1,18 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { daysList, timeList } from "./constants/constants";
+import { daysList, timeList } from "../constants/constants";
 import { Codes } from "@/types/common";
 import clsx from "clsx";
-import SelectDaysButton from "./button/SelectDaysButton";
 import TimeList from "./TimeList";
-import SelectTimesButton from "./button/SelectTimesButton";
 import { ItemAvailabiltyDto } from "@/models/data-contracts";
-import { LONG_TIME, MIDDLE_TIME } from "@/constants/time";
+import { LONG_TIME, MIDDLE_TIME } from "@/common/constants/time";
 import { getDaysList } from "@/data/commonData";
 import { useQuery } from "@tanstack/react-query";
-import { DAYS_CODE } from "@/constants/code";
+import { DAYS_CODE } from "@/common/constants/code";
 import daysData from "@/mocks/data/code/daysData.json";
+import SelectDaysButton from "./button/SelectDaysButton";
+import SelectTimesButton from "./button/SelectTimesButton";
 
 type Props = {
   isDayShare: boolean;

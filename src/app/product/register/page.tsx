@@ -1,4 +1,4 @@
-import RegistrationForm from "@/components/product/register/RegistrationForm";
+import RegistrationForm from "@/features/product-register/components/RegistrationForm";
 import React from "react";
 
 export default function page() {

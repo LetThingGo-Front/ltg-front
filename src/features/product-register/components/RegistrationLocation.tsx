@@ -5,19 +5,20 @@ import Line from "./Line";
 import MinSemiTitle from "./MinSemiTitle";
 import Image from "next/image";
 import RegistrationMap from "./map/RegistrationMap";
-import ToggleButton from "./button/ToggleButton";
+
 import TextInput from "./TextInput";
 import clsx from "clsx";
 import Postcode from "./Postcode";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { duration } from "@/constants/animation/style";
+import { duration } from "@/common/constants/animation/style";
 import { ItemAvailabiltyDto, ItemLocationDto } from "@/models/data-contracts";
-import SelctDaysAndTimes from "./SelctDaysAndTimes";
 import FavoriteLocation from "./FavoriteLocation";
-import SavedFavoriteLocation from "./SavedFavoriteLocation";
 import { axiosAuth } from "@/lib/axios";
-import { numberToDay } from "./utils/util";
+import { numberToDay } from "../utils/util";
+import ToggleButton from "./button/ToggleButton";
+import SavedFavoriteLocation from "./SavedFavoriteLocation";
+import SelctDaysAndTimes from "./SelctDaysAndTimes";
 
 type Props = {
   idx: number;

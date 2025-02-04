@@ -1,6 +1,6 @@
 "use client";
 
-import { duration } from "@/constants/animation/style";
+import { duration } from "@/common/constants/animation/style";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import React from "react";

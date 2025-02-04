@@ -1,6 +1,6 @@
-import ExploreLayerControl from "@/components/explore/ExploreLayerControl";
-import ExploreMap from "@/components/explore/ExploreMap";
-import SheetModal from "@/components/explore/SheetModal";
+import ExploreLayerControl from "@/features/explore/components/ExploreLayerControl";
+import ExploreMap from "@/features/explore/components/ExploreMap";
+import SheetModal from "@/features/explore/components/SheetModal";
 import React from "react";
 
 export default function page() {

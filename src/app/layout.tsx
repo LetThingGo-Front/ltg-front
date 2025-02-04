@@ -1,16 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import SignIn from "@/components/signin/Signin";
-import Header from "@/components/Header";
-import SideNav from "@/components/SideNav";
+import SignIn from "@/features/signin/components/Signin";
+import Header from "@/common/components/Header";
+import SideNav from "@/common/components/SideNav";
 import localFont from "next/font/local";
 import MapsProvider from "@/provider/MapsProvider";
-import InitApp from "@/components/common/InitApp";
+import InitApp from "@/common/components/InitApp";
 import { cookies } from "next/headers";
 import ReactQueryProviders from "@/provider/ReactQueryProviders";
 import splashScreens from "./splashScreens";
-import InstallAppBanner from "@/components/common/InstallAppBanner";
-import SearchAddressPage from "@/components/product/register/SearchAddressPage";
+import InstallAppBanner from "@/common/components/InstallAppBanner";
+import SearchAddressPage from "@/features/product-register/components/SearchAddressPage";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
