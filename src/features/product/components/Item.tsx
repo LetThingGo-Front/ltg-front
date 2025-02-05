@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ItemSwiper from "./ItemSwiper";
 import Image from "next/image";
-import ShareMap from "./map/ShareMap";
-import RequestPopup from "./alert/RequestPopup";
+import ShareMap from "./ShareMap";
+import RequestSheet from "./RequestSheet";
 import ProfileButton from "./button/ProfileButton";
 import GradationTwoButton from "../../../common/components/button/GradationTwoButton";
 import { UNKNOWN_ERROR_MESSAGE } from "@/common/constants/message";
 
 export default function Item() {
-  const [requestPopup, setRequestPopup] = useState(false);
+  const [requestSheet, setRequestSheet] = useState(false);
   const [star, setStar] = useState(false);
 
   return (
     <div className="flex justify-center">
       <div
-        className={`relative flex justify-center ${requestPopup ? "sm:h-full sm:w-[660px] sm:-translate-x-[570px] sm:px-24" : "sm:max-h-[828px] sm:w-[800px] sm:translate-x-0"} mb-[80px] h-[calc(100vh-64px)] duration-500`}
+        className={`relative flex justify-center ${requestSheet ? "sm:h-full sm:w-[660px] sm:-translate-x-[570px] sm:px-24" : "sm:max-h-[828px] sm:w-[800px] sm:translate-x-0"} mb-[80px] h-[calc(100vh-64px)] duration-500`}
       >
         <div className="absolute z-10 flex w-full flex-col items-center justify-center gap-[12px] bg-white bg-opacity-80 py-[10px] backdrop-blur-lg sm:gap-5 max-sm:px-[50px]">
           <div className="flex items-center justify-center gap-1 sm:gap-3 max-sm:h-[30px]">
@@ -66,7 +66,7 @@ export default function Item() {
               by&nbsp;Rifki
             </p>
           </div>
-          {!requestPopup && (
+          {!requestSheet && (
             <div className="mb-[100px]">
               <div className="h-[250px]">
                 <ShareMap />
@@ -75,14 +75,14 @@ export default function Item() {
           )}
         </div>
       </div>
-      <RequestPopup
-        setRequestPopup={setRequestPopup}
-        requestPopup={requestPopup}
+      <RequestSheet
+        setRequestSheet={setRequestSheet}
+        requestSheet={requestSheet}
       />
       <div className="fixed bottom-5 z-10 flex w-full justify-center sm:bottom-10">
-        {!requestPopup && (
+        {!requestSheet && (
           <GradationTwoButton
-            firstButtonFn={() => setRequestPopup(true)}
+            firstButtonFn={() => setRequestSheet(true)}
             secondButtonFn={() => {}}
             firstButtonText="나눔 신청"
             secondButtonText="오늘 번개 신청"
@@ -90,7 +90,7 @@ export default function Item() {
         )}
       </div>
       <div
-        className={`fixed left-0 top-0 z-10 h-screen w-screen bg-black opacity-50 ${!requestPopup && "hidden"}`}
+        className={`fixed left-0 top-0 z-10 h-screen w-screen bg-black opacity-50 ${!requestSheet && "hidden"}`}
       ></div>
     </div>
   );

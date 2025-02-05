@@ -2,7 +2,7 @@
 
 import setupInterceptor from "@/lib/setupInterceptor";
 import { CommonProps } from "@/types/common";
-import utils from "@/utils/cmmnUtil";
+import utils from "@/common/utils/cmmnUtil";
 import { useEffect } from "react";
 import { axiosAuth } from "@/lib/axios";
 import { useRouter } from "next/navigation";

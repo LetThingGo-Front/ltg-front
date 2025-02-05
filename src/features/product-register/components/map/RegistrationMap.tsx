@@ -1,9 +1,9 @@
 "use client";
 
-import FullScreenButton from "@/common/components/map/FullScreenButton";
-import FullScreenTextButton from "@/common/components/map/FullScreenTextButton";
-import MoveCenter from "@/common/components/map/MoveCenter";
-import ZoomControl from "@/common/components/map/ZoomControl";
+import FullScreenButton from "@/common/components/map-utils/FullScreenButton";
+import FullScreenTextButton from "@/common/components/map-utils/FullScreenTextButton";
+import MoveCenter from "@/common/components/map-utils/MoveCenter";
+import ZoomControl from "@/common/components/map-utils/ZoomControl";
 import axios from "axios";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Container as MapDiv, Marker, useNavermaps } from "react-naver-maps";
@@ -11,7 +11,7 @@ import Maps from "./Maps";
 import { isMobile } from "react-device-detect";
 import Image from "next/image";
 import clsx from "clsx";
-import AddressModal from "../modal/AddressModal";
+import AddressSheet from "../AddressSheet";
 import LocationButton from "../button/LocationButton";
 
 export type Latlng = {
@@ -332,7 +332,7 @@ export default memo(function RegistrationMap({
         </Maps>
       </MapDiv>
       {(isEnabled || isFullScreen) && searchLocationInfo.address && (
-        <AddressModal
+        <AddressSheet
           address={searchLocationInfo.address}
           saveLocation={saveLocation}
           setIsNewFavorite={setIsNewFavorite}

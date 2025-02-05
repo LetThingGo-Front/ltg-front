@@ -2,26 +2,26 @@
 
 import Image from "next/image";
 import React from "react";
-import PopupDetail from "./PopupDetail";
+import RequestSheetDetail from "./RequestSheetDetail";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Pagination, Navigation, Scrollbar, A11y } from "swiper/modules";
 import "swiper/css/pagination";
 
 type Props = {
-  setRequestPopup: (isPopup: boolean) => void;
-  requestPopup: boolean;
+  setRequestSheet: (isPopup: boolean) => void;
+  requestSheet: boolean;
 };
-export default function RequestPopup({ setRequestPopup, requestPopup }: Props) {
+export default function RequestSheet({ setRequestSheet, requestSheet }: Props) {
   return (
     <div
-      className={`${requestPopup ? "sm:block max-sm:translate-x-0" : "sm:hidden max-sm:translate-x-full"} fixed bottom-0 right-0 z-[11] h-[calc(100%-44px)] w-[calc(100%-10px)] rounded-tl-3xl bg-white duration-500 sm:h-[calc(100%-21px)] sm:w-[1140px]`}
+      className={`${requestSheet ? "sm:block max-sm:translate-x-0" : "sm:hidden max-sm:translate-x-full"} fixed bottom-0 right-0 z-[11] h-[calc(100%-44px)] w-[calc(100%-10px)] rounded-tl-3xl bg-white duration-500 sm:h-[calc(100%-21px)] sm:w-[1140px]`}
     >
       <div className="w-full">
         <div className="flex items-center justify-between py-5 sm:px-[45px] sm:py-10 max-sm:mb-[26px] max-sm:mt-[10px] max-sm:h-10 max-sm:pl-5 max-sm:pr-[10px]">
           <button
             className="w-[23px] sm:h-[72px] sm:w-[72px]"
-            onClick={() => setRequestPopup(false)}
+            onClick={() => setRequestSheet(false)}
           >
             <Image
               src="/assets/images/button/arrow_left.svg"
@@ -43,12 +43,12 @@ export default function RequestPopup({ setRequestPopup, requestPopup }: Props) {
         >
           <SwiperSlide>
             <div className="flex h-full w-full flex-col items-center justify-center overflow-y-auto">
-              <PopupDetail />
+              <RequestSheetDetail />
             </div>
           </SwiperSlide>
           <SwiperSlide>
             <div className="flex h-full w-full flex-col items-center justify-center overflow-y-auto">
-              <PopupDetail />
+              <RequestSheetDetail />
             </div>
           </SwiperSlide>
         </Swiper>

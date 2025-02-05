@@ -2,8 +2,8 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import LandingButton from "./button/LandingButton";
-import utils from "@/utils/cmmnUtil";
+import utils from "@/common/utils/cmmnUtil";
+import LandingButton from "./LandingButton";
 
 export default function LandingModal() {
   const isLogin = utils.getStorage("accessToken") ? true : false;

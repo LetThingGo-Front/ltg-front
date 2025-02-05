@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import axios, { axiosAuth } from "@/lib/axios";
-import utils from "@/utils/cmmnUtil";
+import utils from "@/common/utils/cmmnUtil";
 import Link from "next/link";
 import { useEffect } from "react";
 import useSideNavStore from "@/store/sideNavStore";

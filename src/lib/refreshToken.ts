@@ -1,5 +1,5 @@
 import axios from "./axios";
-import utils from "@/utils/cmmnUtil";
+import utils from "@/common/utils/cmmnUtil";
 
 const refreshToken = async () => {
   try {

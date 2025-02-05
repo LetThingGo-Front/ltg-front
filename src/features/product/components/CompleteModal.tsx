@@ -15,7 +15,7 @@ const closeVariants = {
   },
 };
 
-export default function CompleteAlert() {
+export default function CompleteModal() {
   const pathname = usePathname();
   const previousUrl = useHistoryStore.use.previousUrl();
   const savedItemId = useHistoryStore.use.itemId();
@@ -25,7 +25,7 @@ export default function CompleteAlert() {
   useEffect(() => {
     setTimeout(() => {
       initHistory();
-    }, 2000);
+    }, 3000);
   }, [initHistory, pathItemId, pathname, savedItemId]);
 
   return (

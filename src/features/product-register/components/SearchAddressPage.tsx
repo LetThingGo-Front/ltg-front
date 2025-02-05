@@ -6,7 +6,7 @@ import clsx from "clsx";
 import axios from "axios";
 import jusoData from "@/mocks/data/juso/jusoData.json";
 import debounce from "debounce";
-import utils from "@/utils/cmmnUtil";
+import utils from "@/common/utils/cmmnUtil";
 import useSearchStore from "@/store/searchStore";
 import { isAndroid } from "react-device-detect";
 import { JusoProps } from "./SearchInput";

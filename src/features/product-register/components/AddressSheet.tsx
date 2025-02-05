@@ -27,7 +27,7 @@ const modalVariants = {
   },
 };
 
-export default function AddressModal({
+export default function AddressSheet({
   address,
   saveLocation,
   setIsNewFavorite,

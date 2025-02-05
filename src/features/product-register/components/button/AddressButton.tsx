@@ -1,6 +1,6 @@
 import React from "react";
 import { JusoProps } from "../SearchInput";
-import utils from "@/utils/cmmnUtil";
+import utils from "@/common/utils/cmmnUtil";
 import clsx from "clsx";
 
 type Props = {

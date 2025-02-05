@@ -28,7 +28,7 @@ const dayOfWeekOption = ["월", "화", "수", "목", "금", "토", "일"];
 
 const dateOptions = ["22", "23", "24", "25", "26", "27", "28"];
 
-export default function Calendar() {
+export default function RequestSheetCalendar() {
   return (
     <div className="inline-flex shrink grow basis-0 flex-col items-center justify-start gap-10">
       <div className="flex flex-col items-center justify-start gap-3 max-sm:hidden">

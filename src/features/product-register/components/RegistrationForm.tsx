@@ -6,7 +6,7 @@ import TextInput from "./TextInput";
 import GradationButton from "@/common/components/button/GradationButton";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { CreateItemPayload } from "@/models/data-contracts";
-import utils from "@/utils/cmmnUtil";
+import utils from "@/common/utils/cmmnUtil";
 import { useQuery } from "@tanstack/react-query";
 import { getCategoryList, getItemStatusList } from "@/data/commonData";
 import { Codes } from "@/types/common";

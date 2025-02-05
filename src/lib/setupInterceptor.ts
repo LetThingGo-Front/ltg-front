@@ -6,7 +6,7 @@ import {
   subscribeTokenRefresh,
   onTokenRefreshed,
 } from "./tokenService";
-import utils from "@/utils/cmmnUtil";
+import utils from "@/common/utils/cmmnUtil";
 
 const setupInterceptor = () => {
   axiosAuth.interceptors.request.use(

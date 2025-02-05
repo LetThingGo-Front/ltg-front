@@ -3,7 +3,7 @@
 import React from "react";
 import { Container as MapDiv, NaverMap } from "react-naver-maps";
 
-export default function MainMap() {
+export default function LandingMap() {
   return (
     <MapDiv
       style={{

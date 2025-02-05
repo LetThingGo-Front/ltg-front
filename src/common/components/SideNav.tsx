@@ -5,7 +5,7 @@ import { axiosAuth } from "@/lib/axios";
 import useLoginPopupStore from "@/store/loginServiceStore";
 import useSideNavStore from "@/store/sideNavStore";
 import { CommonProps } from "@/types/common";
-import utils from "@/utils/cmmnUtil";
+import utils from "@/common/utils/cmmnUtil";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";

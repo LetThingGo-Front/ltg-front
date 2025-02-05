@@ -9,7 +9,7 @@ import React, {
 import Image from "next/image";
 import debounce from "debounce";
 import axios from "axios";
-import utils from "@/utils/cmmnUtil";
+import utils from "@/common/utils/cmmnUtil";
 
 import { isMobile, isTablet } from "react-device-detect";
 import jusoData from "@/mocks/data/juso/jusoData.json";
