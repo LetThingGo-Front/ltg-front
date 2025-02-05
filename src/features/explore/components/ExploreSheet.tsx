@@ -28,7 +28,7 @@ export type ItemListResponse = {
   isScheduleSuggestible: boolean;
 };
 
-export default function SheetModal() {
+export default function ExploreSheet() {
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
   const isSearch = useExploreStore.use.isSearch();

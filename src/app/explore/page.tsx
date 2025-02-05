@@ -1,6 +1,6 @@
 import ExploreLayerControl from "@/features/explore/components/ExploreLayerControl";
 import ExploreMap from "@/features/explore/components/ExploreMap";
-import SheetModal from "@/features/explore/components/SheetModal";
+import ExploreSheet from "@/features/explore/components/ExploreSheet";
 import React from "react";
 
 export default function page() {
@@ -10,7 +10,7 @@ export default function page() {
         <ExploreLayerControl />
         <ExploreMap />
       </div>
-      <SheetModal />
+      <ExploreSheet />
     </div>
   );
 }

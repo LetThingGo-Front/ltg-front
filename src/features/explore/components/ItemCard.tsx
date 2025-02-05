@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import Image from "next/image";
-import { ItemListResponse } from "./SheetModal";
+import { ItemListResponse } from "./ExploreSheet";
 import { useRouter } from "next/navigation";
 
 type Props = {
