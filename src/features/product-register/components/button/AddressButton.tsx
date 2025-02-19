@@ -1,5 +1,5 @@
 import React from "react";
-import { JusoProps } from "../SearchInput";
+import { JusoProps } from "../AddressSearchInput";
 import utils from "@/common/utils/cmmnUtil";
 import clsx from "clsx";
 

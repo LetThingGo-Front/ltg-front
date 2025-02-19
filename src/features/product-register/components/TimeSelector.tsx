@@ -25,7 +25,7 @@ const timeVariants = {
   },
 };
 
-export default function TimeList({
+export default function TimeSelector({
   selectTimeInfoList,
   addSelectTime,
   setOpenTime,

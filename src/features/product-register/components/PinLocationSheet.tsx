@@ -27,7 +27,7 @@ const modalVariants = {
   },
 };
 
-export default function AddressSheet({
+export default function PinLocationSheet({
   address,
   saveLocation,
   setIsNewFavorite,

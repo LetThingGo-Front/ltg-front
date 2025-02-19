@@ -1,9 +1,9 @@
 import React from "react";
-import ShareMap from "./ShareMap";
+import ProductLocationMap from "./ProductLocationMap";
 import Image from "next/image";
-import RequestSheetCalendar from "./RequestSheetCalendar";
+import RequestScheduleCalendar from "./RequestScheduleCalendar";
 
-export default function RequestSheetDetail() {
+export default function RequestDetailView() {
   return (
     <div className="relative flex h-full w-full flex-col items-center gap-[25px] px-5 pb-5 pt-[26px] sm:h-[704p] sm:w-[946px] sm:gap-9 sm:px-6 sm:pb-9 sm:pt-8">
       <p className="h-[21px] w-[84px] rounded bg-green-400 px-2 py-[2px] text-center font-bold sm:h-[31px] sm:w-[102px] sm:rounded-lg sm:px-3 sm:py-1 max-sm:text-xs">
@@ -39,9 +39,9 @@ export default function RequestSheetDetail() {
       </div>
       <div className="flex w-full gap-[25px] sm:h-[486px] sm:w-[898px] sm:gap-7 max-sm:flex-col max-sm:px-5">
         <div className="h-20 w-full rounded-[10px] bg-grey-100 shadow-[inset_0_4px_10px_0_rgba(0,0,0,0.10)] sm:h-[486px]">
-          <ShareMap />
+          <ProductLocationMap />
         </div>
-        <RequestSheetCalendar />
+        <RequestScheduleCalendar />
       </div>
       <div className="w-full max-sm:px-5">
         <div className="flex h-[30px] w-full items-center justify-center gap-2 rounded-[10px] bg-black/10 sm:h-[47px] max-sm:px-3 max-sm:py-2">

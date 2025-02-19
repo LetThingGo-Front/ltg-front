@@ -3,7 +3,7 @@
 import React from "react";
 import { NaverMap } from "react-naver-maps";
 import debounce from "debounce";
-import { Latlng } from "./RegistrationMap";
+import { Latlng } from "./LocationRegistrationMap";
 
 type Props = {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ type Props = {
   searchCoordinateToAddress?: (latlng: Latlng) => void;
 };
 
-export default function Maps({
+export default function InteractiveMap({
   children,
   coordinate,
   isFullScreen,

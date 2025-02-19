@@ -9,7 +9,10 @@ type Props = {
   setFavorite: (favorite: string) => void;
 };
 
-export default function FavoriteLocation({ favorite, setFavorite }: Props) {
+export default function FavoriteLocationPicker({
+  favorite,
+  setFavorite,
+}: Props) {
   return (
     <div className="flex gap-2">
       <div className="flex w-full items-center gap-3">

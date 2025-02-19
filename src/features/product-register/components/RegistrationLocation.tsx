@@ -1,24 +1,24 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Line from "./Line";
-import MinSemiTitle from "./MinSemiTitle";
+import Separator from "./Separator";
+import OptionalTitleIndicator from "./OptionalTitleIndicator";
 import Image from "next/image";
-import RegistrationMap from "./map/RegistrationMap";
+import RegistrationMap from "./map/LocationRegistrationMap";
 
-import TextInput from "./TextInput";
+import InputField from "./InputField";
 import clsx from "clsx";
 import Postcode from "./Postcode";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { duration } from "@/common/constants/animation/style";
 import { ItemAvailabiltyDto, ItemLocationDto } from "@/models/data-contracts";
-import FavoriteLocation from "./FavoriteLocation";
+import FavoriteLocationPicker from "./FavoriteLocationPicker";
 import { axiosAuth } from "@/lib/axios";
 import { numberToDay } from "../utils/util";
 import ToggleButton from "./button/ToggleButton";
-import SavedFavoriteLocation from "./SavedFavoriteLocation";
-import SelctDaysAndTimes from "./SelctDaysAndTimes";
+import SavedLocationPicker from "./SavedLocationPicker";
+import ScheduleDayTimeSelector from "./ScheduleDayTimeSelector";
 
 type Props = {
   idx: number;
@@ -198,12 +198,15 @@ export default function RegistrationLocation({
           <div className="flex w-full flex-col gap-2 sm:gap-4">
             {/* <div className="flex flex-col gap-2">
             </div> */}
-            <MinSemiTitle title="나눔 장소 설정" required />
-            <Line />
+            <OptionalTitleIndicator title="나눔 장소 설정" required />
+            <Separator />
             {isNewFavorite ? (
-              <FavoriteLocation favorite={favorite} setFavorite={setFavorite} />
+              <FavoriteLocationPicker
+                favorite={favorite}
+                setFavorite={setFavorite}
+              />
             ) : (
-              <SavedFavoriteLocation
+              <SavedLocationPicker
                 favorite={favorite}
                 getFavoriteLocation={getFavoriteLocation}
               />
@@ -218,7 +221,7 @@ export default function RegistrationLocation({
               setIsNewFavorite={setIsNewFavorite}
               favoriteJuso={favoriteJuso}
             />
-            <TextInput
+            <InputField
               placeholder="길안내 (예: 지상 강남역 12번 출구 앞)"
               clearField={() => setAddExplain("")}
               value={addExplain}
@@ -248,8 +251,8 @@ export default function RegistrationLocation({
             />
           </div>
           <div className="flex w-full flex-col gap-2">
-            <MinSemiTitle title="나눔 가능 일정 선택" />
-            <Line />
+            <OptionalTitleIndicator title="나눔 가능 일정 선택" />
+            <Separator />
           </div>
           <div className="flex w-full flex-col gap-3 sm:gap-9">
             <div className="flex items-center justify-between">
@@ -274,7 +277,7 @@ export default function RegistrationLocation({
                   isShort={false}
                 />
               </div>
-              <SelctDaysAndTimes
+              <ScheduleDayTimeSelector
                 isDayShare={isDayShare}
                 selectTimeInfoList={selectTimeInfoList}
                 setSelectTimeInfoList={setSelectTimeInfoList}

@@ -59,7 +59,7 @@ export type JusoProps = {
   zipNo?: string;
 };
 
-export default function SearchInput({
+export default function AddressSearchInput({
   addr,
   isOpenMoblieView,
   setIsOpenMoblieView,

@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { daysList, timeList } from "../constants/constants";
 import { Codes } from "@/types/common";
 import clsx from "clsx";
-import TimeList from "./TimeList";
+import TimeSelector from "./TimeSelector";
 import { ItemAvailabiltyDto } from "@/models/data-contracts";
 import { LONG_TIME, MIDDLE_TIME } from "@/common/constants/time";
 import { getDaysList } from "@/data/commonData";
@@ -27,7 +27,7 @@ const WEEKENDS_CODE = "9";
 const WEEKDAYS_REGEX = /[1-5]/;
 const WEEKEND_REGEX = /[6-7]/;
 
-export default function SelctDaysAndTimes({
+export default function ScheduleDayTimeSelector({
   isDayShare,
   selectTimeInfoList,
   setSelectTimeInfoList,
@@ -214,7 +214,7 @@ export default function SelctDaysAndTimes({
           />
         )}
         {openTime && (
-          <TimeList
+          <TimeSelector
             selectTimeInfoList={selectTimeInfoList}
             addSelectTime={addSelectDayTime}
             setOpenTime={() => setOpenTime(false)}

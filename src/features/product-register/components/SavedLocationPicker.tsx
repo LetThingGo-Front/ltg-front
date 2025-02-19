@@ -8,7 +8,7 @@ type Props = {
   getFavoriteLocation: (fcode: string) => void;
 };
 
-export default function SavedFavoriteLocation({
+export default function SavedLocationPicker({
   favorite,
   getFavoriteLocation,
 }: Props) {

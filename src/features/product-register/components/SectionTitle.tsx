@@ -6,7 +6,7 @@ type Props = {
   subText?: string;
 };
 
-export default function SemiTitle({ title, required, subText }: Props) {
+export default function SectionTitle({ title, required, subText }: Props) {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-start justify-start">

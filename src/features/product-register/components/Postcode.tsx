@@ -6,7 +6,7 @@ import Image from "next/image";
 import { isMobile, isTablet } from "react-device-detect";
 import debounce from "debounce";
 import { FavoriteJuso } from "./RegistrationLocation";
-import SearchInput from "./SearchInput";
+import AddressSearchInput from "./AddressSearchInput";
 
 type Props = {
   addr: string;
@@ -33,7 +33,7 @@ export default function Postcode({
 
   return (
     <div className="w-full">
-      <SearchInput
+      <AddressSearchInput
         addr={addr}
         isOpenMoblieView={isOpen}
         setIsOpenMoblieView={() => {

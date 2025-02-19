@@ -15,7 +15,7 @@ const closeVariants = {
   },
 };
 
-export default function CompleteModal() {
+export default function CompletionNotification() {
   const pathname = usePathname();
   const previousUrl = useHistoryStore.use.previousUrl();
   const savedItemId = useHistoryStore.use.itemId();

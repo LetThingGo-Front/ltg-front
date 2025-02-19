@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import ItemSwiper from "./ItemSwiper";
+import ProductImageCarousel from "./ProductImageSwiper";
 import Image from "next/image";
-import ShareMap from "./ShareMap";
+import ProductLocationMap from "./ProductLocationMap";
 import RequestSheet from "./RequestSheet";
 import ProfileButton from "./button/ProfileButton";
 import GradationTwoButton from "../../../common/components/button/GradationTwoButton";
 import { UNKNOWN_ERROR_MESSAGE } from "@/common/constants/message";
 
-export default function Item() {
+export default function ProductItem() {
   const [requestSheet, setRequestSheet] = useState(false);
   const [star, setStar] = useState(false);
 
@@ -47,7 +47,7 @@ export default function Item() {
         <div className="flex flex-col gap-6 overflow-x-hidden pt-[112px] scrollbar-hide sm:gap-[52px] max-sm:mb-[80px] max-sm:px-[30px]">
           <div className="flex justify-center">
             <div className="h-[328px] w-[300px] sm:h-[474px] sm:w-[440px]">
-              <ItemSwiper />
+              <ProductImageCarousel />
             </div>
           </div>
           <div className="relative flex justify-center max-sm:p-2">
@@ -69,7 +69,7 @@ export default function Item() {
           {!requestSheet && (
             <div className="mb-[100px]">
               <div className="h-[250px]">
-                <ShareMap />
+                <ProductLocationMap />
               </div>
             </div>
           )}

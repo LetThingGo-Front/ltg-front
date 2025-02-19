@@ -13,7 +13,7 @@ type TextInputProps = {
   isError?: boolean;
 };
 
-export default function TextInput({
+export default function InputField({
   placeholder,
   clearField,
   value,

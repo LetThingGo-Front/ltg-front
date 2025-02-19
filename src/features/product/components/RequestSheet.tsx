@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React from "react";
-import RequestSheetDetail from "./RequestSheetDetail";
+import RequestDetailView from "./RequestDetailView";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Pagination, Navigation, Scrollbar, A11y } from "swiper/modules";
@@ -43,12 +43,12 @@ export default function RequestSheet({ setRequestSheet, requestSheet }: Props) {
         >
           <SwiperSlide>
             <div className="flex h-full w-full flex-col items-center justify-center overflow-y-auto">
-              <RequestSheetDetail />
+              <RequestDetailView />
             </div>
           </SwiperSlide>
           <SwiperSlide>
             <div className="flex h-full w-full flex-col items-center justify-center overflow-y-auto">
-              <RequestSheetDetail />
+              <RequestDetailView />
             </div>
           </SwiperSlide>
         </Swiper>

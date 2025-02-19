@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ImageUpload from "./ImageUpload";
-import TextInput from "./TextInput";
+import ImageUploader from "./ImageUploader";
+import InputField from "./InputField";
 import GradationButton from "@/common/components/button/GradationButton";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { CreateItemPayload } from "@/models/data-contracts";
@@ -13,15 +13,15 @@ import { Codes } from "@/types/common";
 import axios, { axiosAuth } from "@/lib/axios";
 import { LONG_TIME, MIDDLE_TIME } from "@/common/constants/time";
 import { CATEGORY_CODE, ITEM_STATUS_CODE } from "@/common/constants/code";
-import EmptyLocationBox from "./EmptyLocationBox";
+import AddLocationButton from "./AddLocationButton";
 import statusData from "@/mocks/data/code/statusData.json";
 import categoryData from "@/mocks/data/code/categoryData.json";
 import debounce from "debounce";
 import { usePathname, useRouter } from "next/navigation";
 import useHistoryStore from "@/store/historyStore";
-import SemiTitle from "./SemiTitle";
-import Line from "./Line";
-import ItemBox from "./ItemBox";
+import SectionTitle from "./SectionTitle";
+import Separator from "./Separator";
+import ProductButton from "./ProductButton";
 import RegistrationLocation from "./RegistrationLocation";
 
 const sharingLocation = [
@@ -104,9 +104,9 @@ export default function RegistrationForm() {
         rules={{ required: "물품명은 필수입니다." }}
         render={({ field: { onChange, value } }) => (
           <div className="flex flex-col gap-2 sm:gap-3">
-            <SemiTitle title="물품명" required />
-            <Line />
-            <TextInput
+            <SectionTitle title="물품명" required />
+            <Separator />
+            <InputField
               placeholder="물품명을 입력해주세요"
               clearField={() => {
                 resetField("itemCreateRequest.itemName", { keepTouched: true });
@@ -126,12 +126,12 @@ export default function RegistrationForm() {
         render={({ field: { onChange, value } }) => (
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-2">
-              <SemiTitle title="카테고리" required subText="(택1)" />
-              <Line />
+              <SectionTitle title="카테고리" required subText="(택1)" />
+              <Separator />
             </div>
             <div className="flex flex-wrap gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
               {category.data?.map((c: Codes) => (
-                <ItemBox
+                <ProductButton
                   key={c.codeSeq}
                   name={c.codeKorName}
                   select={c.code === value}
@@ -151,14 +151,14 @@ export default function RegistrationForm() {
         render={({ field: { onChange } }) => (
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-2">
-              <SemiTitle
+              <SectionTitle
                 title="이미지"
                 required
                 subText="최소 한장의 물품 이미지 필수 업로드(최대 5장), 실물 사진 업로드 권장"
               />
-              <Line />
+              <Separator />
             </div>
-            <ImageUpload onChange={onChange} />
+            <ImageUploader onChange={onChange} />
           </div>
         )}
       />
@@ -171,12 +171,12 @@ export default function RegistrationForm() {
         render={({ field: { onChange, value } }) => (
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-2">
-              <SemiTitle title="물품상태" required subText="(택1)" />
-              <Line />
+              <SectionTitle title="물품상태" required subText="(택1)" />
+              <Separator />
             </div>
             <div className="flex flex-col gap-x-2 gap-y-2 sm:gap-x-[1.125rem] sm:gap-y-3">
               {itemStatus.data?.map((s: Codes) => (
-                <ItemBox
+                <ProductButton
                   key={s.codeSeq}
                   name={s.codeKorName}
                   select={s.code === value}
@@ -204,12 +204,12 @@ export default function RegistrationForm() {
           return (
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
-                <SemiTitle
+                <SectionTitle
                   title="나눔 장소 및 일정"
                   required
                   subText={`최대 ${sharingLocation.length}개 등록 가능`}
                 />
-                <Line />
+                <Separator />
               </div>
               <div className="mt-3 flex flex-col gap-[1.125rem] sm:gap-[2.625rem]">
                 {container?.map((v, i) => (
@@ -225,7 +225,7 @@ export default function RegistrationForm() {
                         setIsOpenLocationForm={setIsOpenLocationForm}
                       />
                     ) : (
-                      <EmptyLocationBox
+                      <AddLocationButton
                         setIsOpenLocationForm={() =>
                           setIsOpenLocationForm(true)
                         }
@@ -245,9 +245,9 @@ export default function RegistrationForm() {
         defaultValue=""
         render={({ field: { onChange, value } }) => (
           <div className="flex flex-col gap-2 sm:gap-3">
-            <SemiTitle title="상세설명" subText="(선택입력)" />
-            <Line />
-            <TextInput
+            <SectionTitle title="상세설명" subText="(선택입력)" />
+            <Separator />
+            <InputField
               placeholder="상세설명을 남겨주세요(최소 10자 이상)"
               clearField={() => {
                 resetField("itemCreateRequest.itemDescription", {

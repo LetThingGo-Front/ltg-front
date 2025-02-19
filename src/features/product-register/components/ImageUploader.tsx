@@ -16,7 +16,7 @@ type Props = {
   onChange: (acceptedFiles: File[]) => void;
 };
 
-export default function ImageUpload({ onChange }: Props) {
+export default function ImageUploader({ onChange }: Props) {
   const [files, setFiles] = useState<Array<File & { preview: string }>>([]);
   const [resizing, setResizing] = useState(false);
 

@@ -7,11 +7,11 @@ import ZoomControl from "@/common/components/map-utils/ZoomControl";
 import axios from "axios";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Container as MapDiv, Marker, useNavermaps } from "react-naver-maps";
-import Maps from "./Maps";
+import InteractiveMap from "./InteractiveMap";
 import { isMobile } from "react-device-detect";
 import Image from "next/image";
 import clsx from "clsx";
-import AddressSheet from "../AddressSheet";
+import PinLocationSheet from "../PinLocationSheet";
 import LocationButton from "../button/LocationButton";
 
 export type Latlng = {
@@ -81,7 +81,7 @@ const INIT_SEARCH_LOCATION_INFO = {
   coordinate: { lat: 0, lng: 0 },
 };
 
-export default memo(function RegistrationMap({
+export default memo(function LocationRegistrationMap({
   address,
   setAddress,
   coordinate,
@@ -256,7 +256,7 @@ export default memo(function RegistrationMap({
             {locationId}
           </div>
         )}
-        <Maps
+        <InteractiveMap
           coordinate={coordinate}
           isEnabled={isEnabled}
           isFullScreen={isFullScreen}
@@ -329,10 +329,10 @@ export default memo(function RegistrationMap({
           {(isEnabled || isFullScreen) && (
             <LocationButton address={searchLocationInfo.address} />
           )}
-        </Maps>
+        </InteractiveMap>
       </MapDiv>
       {(isEnabled || isFullScreen) && searchLocationInfo.address && (
-        <AddressSheet
+        <PinLocationSheet
           address={searchLocationInfo.address}
           saveLocation={saveLocation}
           setIsNewFavorite={setIsNewFavorite}

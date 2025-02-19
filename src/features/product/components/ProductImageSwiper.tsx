@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Pagination, Navigation, Scrollbar, A11y } from "swiper/modules";
 import "swiper/css/pagination";
 
-export default function ItemSwiper() {
+export default function ProductImageSwiper() {
   return (
     <Swiper
       modules={[Pagination]}
