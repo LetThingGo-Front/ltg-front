@@ -43,7 +43,7 @@ export default function SearchAddressPage() {
     }
   }, []);
 
-  const AddAddressButton = (address: JusoProps) => {
+  const SelectAddressButton = (address: JusoProps) => {
     const addressNm = address.bdNm
       ? `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(address.bdNm)})`
       : `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
@@ -152,7 +152,7 @@ export default function SearchAddressPage() {
           )}
         >
           {searchList.map((addr, idx) => (
-            <AddAddressButton key={idx} {...addr} />
+            <SelectAddressButton key={idx} {...addr} />
           ))}
         </div>
       </div>
