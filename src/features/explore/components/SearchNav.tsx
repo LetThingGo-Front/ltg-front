@@ -1,16 +1,27 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import SearchCategroyButton from "./SearchCategroyButton";
 import useExploreStore from "@/store/exploreStore";
+import SubCateButton from "./SubCateButton";
 
+const regionList = [
+  "강북구 1",
+  "동작구 10",
+  "서대문구 1",
+  "서초구 100",
+  "성동구 9",
+  "용산구 10",
+  "종로구 1",
+];
 export default function SearchNav() {
   const setSearchInput = useExploreStore.use.actions().setSearchInput;
   const clearSearchInput = useExploreStore.use.actions().clearSearchInput;
   const setItemList = useExploreStore.use.actions().setItemList;
   const setIsSearch = useExploreStore.use.actions().setIsSearch;
   const searchInputValue = useExploreStore.use.searchInput();
+  const [activeCategoryBtn, setActiveCategoryBtn] = useState("");
 
   const getSearchItemList = () => {
     setItemList([]);
@@ -61,11 +72,34 @@ export default function SearchNav() {
         )}
       </div>
       <div className="flex w-full items-center justify-between sm:gap-7 max-xl:max-w-[27.75rem]">
-        <SearchCategroyButton categoryName="지역" />
-        <SearchCategroyButton categoryName="카테고리" />
-        <SearchCategroyButton categoryName="물품선택" />
-        <SearchCategroyButton categoryName="나눔요일" />
+        <SearchCategroyButton
+          categoryName="지역"
+          activeCategoryBtn={activeCategoryBtn}
+          setActiveCategoryBtn={setActiveCategoryBtn}
+        />
+        <SearchCategroyButton
+          categoryName="카테고리"
+          activeCategoryBtn={activeCategoryBtn}
+          setActiveCategoryBtn={setActiveCategoryBtn}
+        />
+        <SearchCategroyButton
+          categoryName="물품선택"
+          activeCategoryBtn={activeCategoryBtn}
+          setActiveCategoryBtn={setActiveCategoryBtn}
+        />
+        <SearchCategroyButton
+          categoryName="나눔요일"
+          activeCategoryBtn={activeCategoryBtn}
+          setActiveCategoryBtn={setActiveCategoryBtn}
+        />
       </div>
+      {activeCategoryBtn && (
+        <div className="my-3 flex max-w-[444px] flex-wrap gap-2">
+          {regionList.map((v) => (
+            <SubCateButton key={v} name={v} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

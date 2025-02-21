@@ -135,8 +135,6 @@ export default function RegistrationLocation({
     }
   }, [locationInfo]);
 
-  const saveFavoriteLocation = () => {};
-
   const getFavoriteLocation = async (placeType: string) => {
     try {
       const response = await axiosAuth.get(
