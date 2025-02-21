@@ -223,7 +223,7 @@ export default function ImageUploader({ onChange }: Props) {
       {thumbs}
       {emptyThumbs}
       {resizing && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/50">
+        <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/50">
           <LoadingMapSpinner isBlur={false} />
         </div>
       )}
