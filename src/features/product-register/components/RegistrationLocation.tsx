@@ -80,6 +80,7 @@ export default function RegistrationLocation({
   const [favorite, setFavorite] = useState(""); // 선택된 즐겨찾기 장소
   const [isNewFavorite, setIsNewFavorite] = useState(false); // 신규 즐겨찾기 장소 버튼 여부
   const [favoriteJuso, setFavoriteJuso] = useState<FavoriteJuso>(); // 즐겨찾기 장소 정보
+  const [inputDisabled, setInputDisabled] = useState(false);
 
   const saveLocationInfo = () => {
     const newLocation: ItemLocationDto = {
@@ -207,6 +208,8 @@ export default function RegistrationLocation({
               <SavedLocationPicker
                 favorite={favorite}
                 getFavoriteLocation={getFavoriteLocation}
+                inputDisabled={inputDisabled}
+                setInputDisabled={setInputDisabled}
               />
             )}
             <Postcode
@@ -218,6 +221,9 @@ export default function RegistrationLocation({
               setCoordinate={setCoordinate}
               setIsNewFavorite={setIsNewFavorite}
               favoriteJuso={favoriteJuso}
+              inputDisabled={inputDisabled}
+              setInputDisabled={setInputDisabled}
+              setFavorite={setFavorite}
             />
             <InputField
               placeholder="길안내 (예: 지상 강남역 12번 출구 앞)"

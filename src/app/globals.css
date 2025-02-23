@@ -79,5 +79,9 @@ li {
 }
 
 input::-webkit-contacts-auto-fill-button {
-  display: none;
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
 }

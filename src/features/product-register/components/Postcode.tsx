@@ -17,6 +17,9 @@ type Props = {
   setCoordinate: (coord: { lat: number; lng: number }) => void;
   setIsNewFavorite: (isNewFavorite: boolean) => void;
   favoriteJuso?: FavoriteJuso;
+  inputDisabled: boolean;
+  setInputDisabled: (inputDisabled: boolean) => void;
+  setFavorite: (favorite: string) => void;
 };
 
 export default function Postcode({
@@ -28,6 +31,9 @@ export default function Postcode({
   setCoordinate,
   setIsNewFavorite,
   favoriteJuso,
+  inputDisabled,
+  setInputDisabled,
+  setFavorite,
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -49,6 +55,9 @@ export default function Postcode({
         setCoordinate={setCoordinate}
         setIsNewFavorite={setIsNewFavorite}
         favoriteJuso={favoriteJuso}
+        inputDisabled={inputDisabled}
+        setInputDisabled={setInputDisabled}
+        setFavorite={setFavorite}
       />
     </div>
   );

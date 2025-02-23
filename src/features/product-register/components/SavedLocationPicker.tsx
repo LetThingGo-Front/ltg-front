@@ -6,11 +6,15 @@ import SavedFavoriteButton from "./button/SavedFavoriteButton";
 type Props = {
   favorite: string;
   getFavoriteLocation: (fcode: string) => void;
+  inputDisabled: boolean;
+  setInputDisabled: (inputDisabled: boolean) => void;
 };
 
 export default function SavedLocationPicker({
   favorite,
   getFavoriteLocation,
+  inputDisabled,
+  setInputDisabled,
 }: Props) {
   return (
     <div className="flex gap-2">
@@ -21,7 +25,10 @@ export default function SavedLocationPicker({
           name="집 근처"
           fcode="H"
           favorite={favorite}
-          onClick={() => getFavoriteLocation("H")}
+          onClick={() => {
+            getFavoriteLocation("H");
+            setInputDisabled(true);
+          }}
         />
         <SavedFavoriteButton
           defaultImageUrl="/assets/images/building.svg"
@@ -29,7 +36,10 @@ export default function SavedLocationPicker({
           name="회사 근처"
           fcode="W"
           favorite={favorite}
-          onClick={() => getFavoriteLocation("W")}
+          onClick={() => {
+            getFavoriteLocation("W");
+            setInputDisabled(true);
+          }}
         />
         <SavedFavoriteButton
           defaultImageUrl="/assets/images/marker/location_marked.svg"
@@ -37,7 +47,10 @@ export default function SavedLocationPicker({
           name="기타"
           fcode="E"
           favorite={favorite}
-          onClick={() => getFavoriteLocation("E")}
+          onClick={() => {
+            getFavoriteLocation("E");
+            setInputDisabled(true);
+          }}
         />
       </div>
     </div>

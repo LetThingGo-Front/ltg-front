@@ -94,7 +94,7 @@ export default function SearchNav() {
         />
       </div>
       {activeCategoryBtn && (
-        <div className="my-3 flex max-w-[444px] flex-wrap gap-2">
+        <div className="flex max-w-[444px] flex-wrap gap-2">
           {regionList.map((v) => (
             <SubCateButton key={v} name={v} />
           ))}

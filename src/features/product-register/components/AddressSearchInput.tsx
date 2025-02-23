@@ -30,6 +30,9 @@ type Props = {
   setCoordinate: (coordinate: { lat: number; lng: number }) => void;
   setIsNewFavorite: (isNewFavorite: boolean) => void;
   favoriteJuso?: FavoriteJuso;
+  inputDisabled: boolean;
+  setInputDisabled: (inputDisabled: boolean) => void;
+  setFavorite: (favorite: string) => void;
 };
 
 export type JusoProps = {
@@ -71,6 +74,9 @@ export default function AddressSearchInput({
   setCoordinate,
   setIsNewFavorite,
   favoriteJuso,
+  inputDisabled,
+  setInputDisabled,
+  setFavorite,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -125,7 +131,7 @@ export default function AddressSearchInput({
       const response = await axios.get("/api/address", {
         params: { keyword: search },
       });
-      // setSearchList(jusoData);
+      setSearchList(jusoData);
       if (response.status === 200 && response.data.results.juso) {
         setSearchList(response.data.results.juso);
       }
@@ -138,6 +144,9 @@ export default function AddressSearchInput({
     e.stopPropagation();
     setSearchList([]);
     setSelectedIndex(-1);
+    setInputDisabled(false);
+    setIsNewFavorite(false);
+    setFavorite("");
     if (inputRef.current) {
       inputRef.current.value = "";
       inputRef.current.focus();
@@ -169,6 +178,7 @@ export default function AddressSearchInput({
       setSelectedIndex(-1);
       setIsFocused(false);
       setSearchList([]);
+      setInputDisabled(true);
     },
     [searchAddressToCoordinate, setAddress, setSimpleAddr, setIsFocused],
   );
@@ -330,6 +340,7 @@ export default function AddressSearchInput({
               setIsFocused(false);
             }
           }}
+          disabled={inputDisabled}
         />
         {inputRef.current?.value && (
           <button
