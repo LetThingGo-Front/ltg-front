@@ -208,7 +208,6 @@ export default function RegistrationLocation({
               <SavedLocationPicker
                 favorite={favorite}
                 getFavoriteLocation={getFavoriteLocation}
-                inputDisabled={inputDisabled}
                 setInputDisabled={setInputDisabled}
               />
             )}
