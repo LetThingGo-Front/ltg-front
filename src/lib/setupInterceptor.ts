@@ -12,11 +12,9 @@ const setupInterceptor = () => {
   axiosAuth.interceptors.request.use(
     (config) => {
       const updatedConfig = { ...config };
-      if (!updatedConfig.headers.Authorization) {
-        const accessToken = utils.getStorage("accessToken");
-        if (accessToken) {
-          updatedConfig.headers.Authorization = `Bearer ${accessToken}`;
-        }
+      const accessToken = utils.getStorage("accessToken");
+      if (!updatedConfig.headers.Authorization && accessToken) {
+        updatedConfig.headers.Authorization = `Bearer ${accessToken}`;
       }
 
       return updatedConfig;

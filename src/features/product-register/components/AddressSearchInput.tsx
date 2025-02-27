@@ -100,7 +100,7 @@ export default function AddressSearchInput({
         },
         (status: number, response: any) => {
           if (status === 200) {
-            if (response.v2.meta.totalCount === 0) {
+            if (response.v2?.meta.totalCount === 0) {
               console.log("searchAddressToCoordinate 검색 결과가 없습니다.");
             } else {
               const { x, y } = response.v2.addresses[0];
@@ -108,6 +108,8 @@ export default function AddressSearchInput({
                 setCoordinate({ lat: y, lng: x });
               }
             }
+          } else {
+            console.error("searchAddressToCoordinate: ", status);
           }
         },
       );
@@ -154,43 +156,65 @@ export default function AddressSearchInput({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (searchList.length === 0) return;
+
     if (e.key === "ArrowDown") {
+      e.preventDefault();
       setSelectedIndex((prev) => Math.min(searchList.length - 1, prev + 1));
     } else if (e.key === "ArrowUp") {
+      e.preventDefault();
       setSelectedIndex((prev) => Math.max(0, prev - 1));
     } else if (e.key === "Enter" && selectedIndex !== -1) {
-      // 엔터 키로 선택
-      handleSetAddress(searchList[selectedIndex]);
-      setIsNewFavorite(true);
+      if (selectedIndex >= 0 && selectedIndex < searchList.length) {
+        e.preventDefault();
+        handleSetAddress(searchList[selectedIndex]);
+        setIsNewFavorite(true);
+      }
     }
+  };
+
+  const getFormattedAddress = (address: JusoProps) => {
+    const baseAddr = address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1");
+    return address.bdNm
+      ? `${baseAddr} (${utils.unescapeHtml(address.bdNm)})`
+      : baseAddr;
   };
 
   const handleSetAddress = useCallback(
     (address: JusoProps) => {
-      const addressNm = address.bdNm
-        ? `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(address.bdNm)})`
-        : `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
+      const addressNm = getFormattedAddress(address);
       searchAddressToCoordinate(addressNm);
-      console.log(addressNm);
       setAddress(addressNm);
       setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
-      if (inputRef.current) inputRef.current.value = addressNm;
+
+      if (inputRef.current) {
+        inputRef.current.value = addressNm;
+      }
+
       setSelectedIndex(-1);
       setIsFocused(false);
       setSearchList([]);
       setInputDisabled(true);
     },
-    [searchAddressToCoordinate, setAddress, setSimpleAddr, setIsFocused],
+    [
+      searchAddressToCoordinate,
+      setAddress,
+      setSimpleAddr,
+      setIsFocused,
+      setInputDisabled,
+    ],
   );
 
   const handleSetFavoriteAddress = useCallback(
     (address: JusoProps) => {
-      const addressNm = address.bdNm
-        ? `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")} (${utils.unescapeHtml(address.bdNm)})`
-        : `${address.roadAddrPart1.replace(/지하\s*(\d+)/g, "$1")}`;
+      const addressNm = getFormattedAddress(address);
       setAddress(addressNm);
       setSimpleAddr(`${address.sggNm} ${address.emdNm}`);
-      if (inputRef.current) inputRef.current.value = addressNm;
+
+      if (inputRef.current) {
+        inputRef.current.value = addressNm;
+      }
+
       setSelectedIndex(-1);
       setIsFocused(false);
       setSearchList([]);
@@ -247,6 +271,14 @@ export default function AddressSearchInput({
       initSearchAddressStore();
     };
   }, [handleSetAddress, initSearchAddressStore, searchAddressGlobal]);
+
+  useEffect(() => {
+    return () => {
+      if (setAddressInput && typeof setAddressInput.clear === "function") {
+        setAddressInput.clear();
+      }
+    };
+  }, []);
 
   return (
     <>

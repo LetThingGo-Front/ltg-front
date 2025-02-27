@@ -148,7 +148,7 @@ export default function RegistrationLocation({
       });
       setFavorite(placeType);
     } catch (error) {
-      console.log(`get favorite location error`, error);
+      console.error(`get favorite location error`, error);
     }
   };
 

@@ -50,10 +50,7 @@ export default function ExploreSheet() {
   const [itemList, setItemList] = useState<ItemListResponse[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const getWindowSize = debounce(() => {
-    setWindowWidth(window.innerWidth);
-    setWindowHeight(window.innerHeight);
-  }, 500);
+
   const headerHeight = useMemo(() => {
     if (typeof window !== "undefined") {
       const rootStyle = getComputedStyle(document.documentElement);
@@ -94,7 +91,7 @@ export default function ExploreSheet() {
       const data = await getItemList(itemRequest);
       setTotalCount(data?.totalElements);
       if (data.content.length > 0) {
-        setItemList([...itemList, ...data.content]);
+        setItemList((prev) => [...prev, ...data.content]);
         if (scrollRef.current) {
           const { scrollTop, clientHeight } = scrollRef.current;
           scrollRef.current.scrollTop = scrollTop - clientHeight;
@@ -134,19 +131,27 @@ export default function ExploreSheet() {
     }
   };
 
-  const getInfiniteScroll = debounce(() => {
-    paginationScroll();
-  }, 500);
+  const handleInfiniteScroll = () => {
+    if (hasMore) {
+      paginationScroll();
+    }
+  };
+
+  const getInfiniteScroll = debounce(handleInfiniteScroll, 500);
 
   useEffect(() => {
+    const getWindowSize = debounce(() => {
+      setWindowWidth(window.innerWidth);
+      setWindowHeight(window.innerHeight);
+    }, 500);
+
     window.addEventListener("resize", getWindowSize);
+    getWindowSize();
     return () => {
       window.removeEventListener("resize", getWindowSize);
+      if (getWindowSize.clear) getWindowSize.clear();
     };
-  }, [getWindowSize]);
-  useEffect(() => {
-    getWindowSize();
-  }, [getWindowSize, isSearch, type]);
+  }, []);
 
   useEffect(() => {
     getInitialItemList();
@@ -214,9 +219,7 @@ export default function ExploreSheet() {
                 WebkitOverflowScrolling: "touch",
                 overflow: "auto",
               }}
-              onScroll={() => {
-                hasMore && getInfiniteScroll();
-              }}
+              onScroll={getInfiniteScroll}
             >
               <ItemCardList itemSearchList={itemList} />
             </Sheet.Scroller>

@@ -1,7 +1,7 @@
 import React from "react";
 import { timeList } from "../constants/constants";
 import clsx from "clsx";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { duration } from "@/common/constants/animation/style";
 import { ItemAvailabiltyDto } from "@/models/data-contracts";
 

@@ -20,115 +20,23 @@ const timeList = [
   "23:00",
 ];
 
-const daysList = [
-  {
-    code: "8",
-    codeKorName: "주중",
-    codeEngName: "WEEKDAY",
-    mngItem1: "월,화,수,목,금요일",
-    mngItem2: "",
-    mngItem3: "",
-    mngItem4: "",
-    description: "",
-    useYn: "Y",
-    codeSeq: 10,
-  },
-  {
-    code: "9",
-    codeKorName: "주말",
-    codeEngName: "WEEKEND",
-    mngItem1: "토,일요일",
-    mngItem2: "",
-    mngItem3: "",
-    mngItem4: "",
-    description: "",
-    useYn: "Y",
-    codeSeq: 11,
-  },
-  {
-    code: "1",
-    codeKorName: "월",
-    codeEngName: "MONDAY",
-    mngItem1: "월요일",
-    mngItem2: "",
-    mngItem3: "",
-    mngItem4: "",
-    description: "",
-    useYn: "Y",
-    codeSeq: 3,
-  },
-  {
-    code: "2",
-    codeKorName: "화",
-    codeEngName: "TUESDAY",
-    mngItem1: "화요일",
-    mngItem2: "",
-    mngItem3: "",
-    mngItem4: "",
-    description: "",
-    useYn: "Y",
-    codeSeq: 4,
-  },
-  {
-    code: "3",
-    codeKorName: "수",
-    codeEngName: "WEDNESDAY",
-    mngItem1: "수요일",
-    mngItem2: "",
-    mngItem3: "",
-    mngItem4: "",
-    description: "",
-    useYn: "Y",
-    codeSeq: 5,
-  },
-  {
-    code: "4",
-    codeKorName: "목",
-    codeEngName: "THURSDAY",
-    mngItem1: "목요일",
-    mngItem2: "",
-    mngItem3: "",
-    mngItem4: "",
-    description: "",
-    useYn: "Y",
-    codeSeq: 6,
-  },
-  {
-    code: "5",
-    codeKorName: "금",
-    codeEngName: "FRIDAY",
-    mngItem1: "금요일",
-    mngItem2: "",
-    mngItem3: "",
-    mngItem4: "",
-    description: "",
-    useYn: "Y",
-    codeSeq: 7,
-  },
-  {
-    code: "6",
-    codeKorName: "토",
-    codeEngName: "SATURDAY",
-    mngItem1: "토요일",
-    mngItem2: "",
-    mngItem3: "",
-    mngItem4: "",
-    description: "",
-    useYn: "Y",
-    codeSeq: 8,
-  },
-  {
-    code: "7",
-    codeKorName: "일",
-    codeEngName: "SUNDAY",
-    mngItem1: "일요일",
-    mngItem2: "",
-    mngItem3: "",
-    mngItem4: "",
-    description: "",
-    useYn: "Y",
-    codeSeq: 9,
-  },
-];
+/**
+ *  요일 코드
+ *  8: 주중
+ * 9: 주말
+ * 1~5 : 월~금
+ * 6: 토
+ * 7: 일
+ */
+const WEEKDAYS_CODE = "8";
+const WEEKENDS_CODE = "9";
+const WEEKDAYS_REGEX = /[1-5]/;
+const WEEKEND_REGEX = /[6-7]/;
 
-export { timeList, daysList };
+export {
+  timeList,
+  WEEKDAYS_CODE,
+  WEEKENDS_CODE,
+  WEEKDAYS_REGEX,
+  WEEKEND_REGEX,
+};

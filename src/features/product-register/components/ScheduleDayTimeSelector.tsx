@@ -1,7 +1,13 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import { daysList, timeList } from "../constants/constants";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  timeList,
+  WEEKDAYS_CODE,
+  WEEKDAYS_REGEX,
+  WEEKEND_REGEX,
+  WEEKENDS_CODE,
+} from "../constants/constants";
 import { Codes } from "@/types/common";
 import clsx from "clsx";
 import TimeSelector from "./TimeSelector";
@@ -21,12 +27,6 @@ type Props = {
     React.SetStateAction<ItemAvailabiltyDto[]>
   >;
 };
-
-const WEEKDAYS_CODE = "8";
-const WEEKENDS_CODE = "9";
-const WEEKDAYS_REGEX = /[1-5]/;
-const WEEKEND_REGEX = /[6-7]/;
-
 export default function ScheduleDayTimeSelector({
   isDayShare,
   selectTimeInfoList,
@@ -49,89 +49,72 @@ export default function ScheduleDayTimeSelector({
     selectTimeInfoList.filter((v) => v.dayOfWeek === activeDay).length ===
     timeList.length;
 
-  const handleSelectDaysButton = () => {
+  /**
+   * 특정 요일의 요일만 선택하기 클릭
+   */
+  const handleSelectDaysButton = useCallback(() => {
     setOpenTime(false);
-    const isSelectedDaysButton =
-      selectTimeInfoList.filter((v) => v.dayOfWeek === activeDay).length ===
-      timeList.length;
+    setSelectTimeInfoList((prev) => {
+      const isSelectedDaysButton =
+        prev.filter((v) => v.dayOfWeek === activeDay).length ===
+        timeList.length;
+      let newList = prev.filter((v) => v.dayOfWeek !== activeDay); // 선택된 요일의 모든 시간대 삭제
+      // 요일만 선택하기가 활성화 되어 있는 경우 클릭 시 해당 요일의 모든 시간대 삭제
+      if (isSelectedDaysButton) {
+        if (activeDay === WEEKDAYS_CODE) {
+          newList = newList.filter((v) => !WEEKDAYS_REGEX.test(v.dayOfWeek));
+        } else if (activeDay === WEEKENDS_CODE) {
+          newList = newList.filter((v) => !WEEKEND_REGEX.test(v.dayOfWeek));
+        }
 
-    setSelectTimeInfoList(
-      selectTimeInfoList.filter((v) => v.dayOfWeek !== activeDay),
-    );
-    if (!isSelectedDaysButton) {
-      const isContainWeekdays = selectTimeInfoList.some((v) =>
-        WEEKDAYS_REGEX.test(String(v.dayOfWeek)),
-      );
-      const isContainWeekends = selectTimeInfoList.some((v) =>
-        WEEKEND_REGEX.test(String(v.dayOfWeek)),
-      );
-      if (activeDay === "8" && isContainWeekdays) {
-        setSelectTimeInfoList(
-          selectTimeInfoList.filter((v) => {
-            if (!WEEKDAYS_REGEX.test(v.dayOfWeek.toString())) return v;
-          }),
-        );
-      }
-      if (activeDay === "9" && isContainWeekends) {
-        setSelectTimeInfoList(
-          selectTimeInfoList.filter((v) => {
-            if (!WEEKEND_REGEX.test(v.dayOfWeek.toString())) return v;
-          }),
-        );
-      }
-
-      const activeDayAllTm = timeList.map((v) => {
-        return {
+        return newList;
+      } else {
+        const activeDayAllTm = timeList.map((v) => ({
           dayOfWeek: activeDay,
           startTime: v,
           endTime: `${v.split(":")[0]}:59`,
-        };
-      });
+        }));
 
-      setSelectTimeInfoList((prev) => [...prev, ...activeDayAllTm]);
-    }
-  };
-
-  const addSelectDayTime = (time: string) => {
-    const isExistSelectTime = selectTimeInfoList.some((v) => {
-      return v.dayOfWeek == activeDay && v.startTime === time;
+        return [...newList, ...activeDayAllTm];
+      }
     });
+  }, [activeDay, setSelectTimeInfoList]);
 
-    if (isExistSelectTime) {
-      setSelectTimeInfoList(
-        selectTimeInfoList.filter((v) => {
+  /**
+   * 특정 요일 시간대 추가
+   * @param time 시간
+   */
+  const addSelectDayTime = useCallback(
+    (time: string) => {
+      setSelectTimeInfoList((prev) => {
+        const isContain = prev.some(
+          (v) => v.dayOfWeek === activeDay && v.startTime === time,
+        );
+        let newList = prev.filter((v) => {
           return !(v.dayOfWeek === activeDay && v.startTime === time);
-        }),
-      );
-      const isContainWeekdays = selectTimeInfoList.some((v) =>
-        WEEKDAYS_REGEX.test(String(v.dayOfWeek)),
-      );
-      const isContainWeekends = selectTimeInfoList.some((v) =>
-        WEEKEND_REGEX.test(String(v.dayOfWeek)),
-      );
-      if (activeDay === "8" && isContainWeekdays) {
-        setSelectTimeInfoList(
-          selectTimeInfoList.filter((v) => {
-            if (!WEEKDAYS_REGEX.test(v.dayOfWeek.toString())) return v;
-          }),
-        );
-      }
-      if (activeDay === "9" && isContainWeekends) {
-        setSelectTimeInfoList(
-          selectTimeInfoList.filter((v) => {
-            if (!WEEKEND_REGEX.test(v.dayOfWeek.toString())) return v;
-          }),
-        );
-      }
-    } else {
-      const timeInfo = {
-        dayOfWeek: activeDay,
-        startTime: time,
-        endTime: `${time.split(":")[0]}:59`,
-      };
-      setSelectTimeInfoList((prev) => [...prev, timeInfo]);
-    }
-  };
+        });
+        // 이미 선택된 시간대가 있는 경우 삭제
+        if (isContain) {
+          if (activeDay === WEEKDAYS_CODE) {
+            // 주중 편집 중일 경우 주중 요일 삭제
+            newList = newList.filter((v) => !WEEKDAYS_REGEX.test(v.dayOfWeek));
+          } else if (activeDay === WEEKENDS_CODE) {
+            // 주말 편집 중일 경우 주말 요일 삭제
+            newList = newList.filter((v) => !WEEKEND_REGEX.test(v.dayOfWeek));
+          }
+          return newList;
+        } else {
+          const timeInfo = {
+            dayOfWeek: activeDay,
+            startTime: time,
+            endTime: `${time.split(":")[0]}:59`,
+          };
+          return [...newList, timeInfo];
+        }
+      });
+    },
+    [activeDay, setSelectTimeInfoList],
+  );
 
   const buttonStatusStyle = useMemo(
     () => (dayCode: string) => {
